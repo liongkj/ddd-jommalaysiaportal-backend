@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Api", "JomMalaysia\JomMalaysia.Api.csproj", "{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Api", "JomMalaysia\JomMalaysia.Api.csproj", "{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{7613BE18-4C8B-424F-B2D4-3CF070AD5989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{7613BE18-4C8B-424F-B2D4-3CF070AD5989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Test", "JomMalaysia.Test\JomMalaysia.Test.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test", "JomMalaysia.Test\JomMalaysia.Test.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Presentation", "JomMalaysia.Presentation\JomMalaysia.Presentation.csproj", "{744C0751-2A30-4DD1-9DDC-03896CD13CE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
