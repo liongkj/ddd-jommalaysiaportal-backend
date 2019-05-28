@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace JomMalaysia
+namespace JomMalaysia.Api
 {
     public class Startup
     {
