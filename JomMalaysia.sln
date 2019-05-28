@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Api", "JomMalaysia\JomMalaysia.Api.csproj", "{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{7613BE18-4C8B-424F-B2D4-3CF070AD5989}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test", "JomMalaysia.Test\JomMalaysia.Test.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Presentation", "JomMalaysia.Presentation\JomMalaysia.Presentation.csproj", "{744C0751-2A30-4DD1-9DDC-03896CD13CE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Presentation", "JomMalaysia.Presentation\JomMalaysia.Presentation.csproj", "{744C0751-2A30-4DD1-9DDC-03896CD13CE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Api", "JomMalaysia.Api\JomMalaysia.Api.csproj", "{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E47D6E0A-83FE-4CE3-BA15-DE45347F92D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744C0751-2A30-4DD1-9DDC-03896CD13CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
