@@ -3,15 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{7613BE18-4C8B-424F-B2D4-3CF070AD5989}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test", "JomMalaysia.Test\JomMalaysia.Test.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Presentation", "JomMalaysia.Presentation\JomMalaysia.Presentation.csproj", "{744C0751-2A30-4DD1-9DDC-03896CD13CE2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Api", "JomMalaysia.Api\JomMalaysia.Api.csproj", "{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{3900F1A2-E1D8-4125-9590-CC6B4DB73133}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3E474E90-133A-464F-88A7-9B8054565B38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B79FBDF1-D9D5-4B32-A714-C9637789911C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{480F83BB-A04C-4BAB-B928-FB861C8A79C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{A3BE860C-5899-4212-8BC0-758C9F827738}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{50EC0915-059C-49B2-9017-1BCD930EB6A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71071CDB-BB50-42B7-8D4A-A06BAFCA6C76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7613BE18-4C8B-424F-B2D4-3CF070AD5989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7613BE18-4C8B-424F-B2D4-3CF070AD5989}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7613BE18-4C8B-424F-B2D4-3CF070AD5989}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7613BE18-4C8B-424F-B2D4-3CF070AD5989}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,9 +39,22 @@ Global
 		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3BE860C-5899-4212-8BC0-758C9F827738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3BE860C-5899-4212-8BC0-758C9F827738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3BE860C-5899-4212-8BC0-758C9F827738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3BE860C-5899-4212-8BC0-758C9F827738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50EC0915-059C-49B2-9017-1BCD930EB6A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50EC0915-059C-49B2-9017-1BCD930EB6A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50EC0915-059C-49B2-9017-1BCD930EB6A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50EC0915-059C-49B2-9017-1BCD930EB6A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{744C0751-2A30-4DD1-9DDC-03896CD13CE2} = {B79FBDF1-D9D5-4B32-A714-C9637789911C}
+		{A3BE860C-5899-4212-8BC0-758C9F827738} = {3900F1A2-E1D8-4125-9590-CC6B4DB73133}
+		{50EC0915-059C-49B2-9017-1BCD930EB6A4} = {3E474E90-133A-464F-88A7-9B8054565B38}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9BC760D7-D948-4463-97B1-F13710A5B29B}

@@ -1,0 +1,15 @@
+﻿{
+  "defaultAssembly": "JomMalaysia.Infrastructure",
+  "modules": [
+    {
+      "type": "JomMalaysia.WebApi.Module, JomMalaysia.WebApi",
+      "properties": {
+      }
+    },
+    {
+      "type": "JomMalaysia.Infrastructure.ApplicationModule",
+      "properties": {
+      }
+    }
+  ]
+}
