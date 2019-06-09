@@ -20,4 +20,9 @@
     <ProjectReference Include="..\JomMalaysia.Core\JomMalaysia.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth0\" />
+    <Folder Include="Data\MongoDb\" />
+  </ItemGroup>
+
 </Project>

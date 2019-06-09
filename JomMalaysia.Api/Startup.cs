@@ -14,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Autofac.Extensions.DependencyInjection;
 
 namespace JomMalaysia.Api
 {
@@ -46,7 +45,7 @@ namespace JomMalaysia.Api
             .AddCookie()
             .AddOpenIdConnect("Auth0", options => SetOpenIdConnectOptions(options));
             //Add mongodb
-            services.AddAutofac();
+          
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //add workflow
         }
