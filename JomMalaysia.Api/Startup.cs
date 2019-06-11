@@ -8,12 +8,23 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using System.Reflection;
+using JomMalaysia.Api.UseCases.CreateMerchant;
+using JomMalaysia.Core;
+using JomMalaysia.Infrastructure;
+using JomMalaysia.Infrastructure.Data.Mapping;
+using JomMalaysia.Infrastructure.Data.MongoDb;
+using JomMalaysia.Core.Interfaces;
 using Microsoft.Extensions.Options;
+using JomMalaysia.Infrastructure.Data.MongoDb.Repositories;
+using JomMalaysia.Api.UseCases.Merchants.GetAllMerchant;
 
 namespace JomMalaysia.Api
 {
@@ -27,7 +38,7 @@ namespace JomMalaysia.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -45,9 +56,37 @@ namespace JomMalaysia.Api
             .AddCookie()
             .AddOpenIdConnect("Auth0", options => SetOpenIdConnectOptions(options));
             //Add mongodb
-          
+            services.Configure<ApplicationDbContext>(Configuration.GetSection(nameof(ApplicationDbContext)));
+            services.AddSingleton<IApplicationDbContext>(sp => sp.GetRequiredService<IOptions<ApplicationDbContext>>().Value);
+            services.AddSingleton<MerchantRepository>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //add workflow
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new DataProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            // Now register our services with Autofac container.
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule(new CoreModule());
+            builder.RegisterModule(new InfrastructureModule());
+
+            // Presenters
+            builder.RegisterType<CreateMerchantPresenter>().SingleInstance();
+            builder.RegisterType<GetAllMerchantPresenter>().SingleInstance();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
+
+            builder.Populate(services);
+            var container = builder.Build();
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(container);
+        
         }
         private void SetOpenIdConnectOptions(OpenIdConnectOptions options)
         {
@@ -105,9 +144,6 @@ namespace JomMalaysia.Api
             };
         }
 
-
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -118,17 +154,13 @@ namespace JomMalaysia.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            //var host = app.ApplicationServices.GetService<IWorkflowHost>();
-            //host.RegisterWorkflow<ReviewWorkflow, Models.Workflow>();
-            //host.Start();
-            //host.StartWorkflow("ReviewWorkflow", 1, null);
 
 
         }

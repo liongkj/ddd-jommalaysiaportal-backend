@@ -6,7 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="autofac.mongodb.json.old" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="autofac.mongodb.json.old" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="MediatR" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
@@ -19,6 +31,7 @@
     <ProjectReference Include="..\JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\" />
     <Folder Include="UseCases\Login\" />
   </ItemGroup>
 

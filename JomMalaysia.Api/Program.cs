@@ -13,14 +13,6 @@ namespace JomMalaysia.Api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-             .ConfigureAppConfiguration((builderContext, config) =>
-             {
-                 IHostingEnvironment env = builderContext.HostingEnvironment;
-                
-                 config.AddEnvironmentVariables();
-
-             });
-
+                .UseStartup<Startup>();
     }
 }
