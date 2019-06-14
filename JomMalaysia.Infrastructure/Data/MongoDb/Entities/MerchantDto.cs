@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
-using JomMalaysia.Core.Domain.ValueObjects;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
 {
-    public class MerchantDto:BaseEntity
+    public class MerchantDto
     {
-        [BsonElement("FirstName")]
-        public string FirstName { get; set; }
-        [BsonElement("LastName")]
-        public string LastName { get; set; }
-        [BsonElement("CompanyName")]
+
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string CompanyName { get; set; }
-        [BsonElement("CompanyRegNo")]
         public string CompanyRegistrationNumber { get; set; }
-        public Address Address { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public AddressDto Address { get; set; }
+        public string ContactEmail { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
+        public ICollection<ListingDto> Listings { get; set; }
+        public MerchantDto()
+        {
+            Listings = new Collection<ListingDto>();
+        }
     }
 }

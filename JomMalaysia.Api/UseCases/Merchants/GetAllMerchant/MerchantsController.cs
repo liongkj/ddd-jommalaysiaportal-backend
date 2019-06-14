@@ -15,13 +15,11 @@ namespace JomMalaysia.Api.UseCases.Merchants.GetAllMerchant
     {
         private readonly IGetAllMerchantUseCase _getAllMerchantUseCase;
         private readonly GetAllMerchantPresenter _getAllMerchantPresenter;
-        private readonly IMerchantRepository _merchantRepository;
 
-        public MerchantsController(GetAllMerchantPresenter getAllMerchantPresenter, IGetAllMerchantUseCase getAllMerchantUseCase, IMerchantRepository merchantRepository)
+        public MerchantsController(GetAllMerchantPresenter getAllMerchantPresenter, IGetAllMerchantUseCase getAllMerchantUseCase)
         {
             _getAllMerchantPresenter = getAllMerchantPresenter;
             _getAllMerchantUseCase = getAllMerchantUseCase;
-            _merchantRepository = merchantRepository;
         }
 
 

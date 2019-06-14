@@ -6,15 +6,15 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Api.UseCases.Merchants
 {
-    public class MerchantModel
+    public class MerchantViewModel
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string MerchantId { get; set; }
+        public Name Name { get; set; }
         public string Email { get; set; }
         public string CompanyName { get; set; }
         public string CompanyRegistrationNumber { get; set; }
         public Address Address { get; set; }
-        public string Phone { get; set; }
+        public Phone Phone { get; set; }
         public string Fax { get; set; }
     }
 }

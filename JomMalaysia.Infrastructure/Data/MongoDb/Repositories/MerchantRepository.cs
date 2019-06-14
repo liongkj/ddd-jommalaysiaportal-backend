@@ -28,7 +28,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public CreateMerchantResponse CreateMerchant(Merchant merchant)
         {
-            MerchantDto NewMerchant = _mapper.Map<MerchantDto>(merchant);
+            MerchantDto NewMerchant = _mapper.Map<Merchant,MerchantDto>(merchant);
             try
             {
                 _merchants.InsertOne(NewMerchant);
@@ -48,7 +48,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
         }
 
-        
+
         public async Task<GetAllMerchantResponse> GetAllMerchants()
         {
             var result =
@@ -58,7 +58,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             List<Merchant> merchants = new List<Merchant>();
             foreach (var merchant in result)
             {
-                merchants.Add(_mapper.Map<Merchant>(merchant));
+                merchants.Add(_mapper.Map<MerchantDto,Merchant>(merchant));
             }
             return new GetAllMerchantResponse(merchants, true);
 

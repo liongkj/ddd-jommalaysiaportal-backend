@@ -30,10 +30,14 @@ namespace JomMalaysia.Test.UseCases
             {
                 Add1 = "123"
             };
+            Name name = new Name("kj", "Liong");
+            Email email = (Email)("khaijiet@hotmail.com");
+            Phone phone = (Phone)("018-636789");
             var testOutputPort = new Mock<IOutputPort<CreateMerchantResponse>>();
             testOutputPort.Setup(outputPort => outputPort.Handle(It.IsAny<CreateMerchantResponse>()));
 
-            var response = useCase.Handle(new CreateMerchantRequest("KFC", "002623588-K", "kj", "liong", address, "0123456789", "031324123"),testOutputPort.Object);
+            var response = useCase.Handle(new CreateMerchantRequest("KFC", "002623588-K", name, address, phone,
+            "03449846", email), testOutputPort.Object);
 
             Assert.True(response);
         }

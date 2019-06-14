@@ -5,7 +5,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.Services.UseCaseResponses
 {
-    public class CreateMerchantResponse:UseCaseResponseMessage
+    public class CreateMerchantResponse : UseCaseResponseMessage
     {
         public string Id { get; }
         public IEnumerable<string> Errors { get; }

@@ -6,9 +6,9 @@ using FluentValidation;
 
 namespace JomMalaysia.Api.UseCases.Merchants
 {
-    public class MerchantModelValidator:AbstractValidator<MerchantModel>
+    public class MerchantViewModelValidator : AbstractValidator<MerchantViewModel>
     {
-        public MerchantModelValidator()
+        public MerchantViewModelValidator()
         {
             RuleFor(x => x.CompanyName).Length(3, 30);
         }
