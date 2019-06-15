@@ -8,21 +8,21 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Services.UseCaseRequests;
 using JomMalaysia.Core.Services.UseCaseResponses;
 
-namespace JomMalaysia.Core.UseCases
+namespace JomMalaysia.Core.UseCases.MerchantUseCase
 {
-    public sealed class CreateMerchantUseCase : ICreateMerchantUseCase
+    public class UpdateMerchantUseCase : IUpdateMerchantUseCase
     {
         private readonly IMerchantRepository _merchantRepository;
 
-        public CreateMerchantUseCase(IMerchantRepository merchantRepository)
+        public UpdateMerchantUseCase(IMerchantRepository merchantRepository)
         {
             _merchantRepository = merchantRepository;
         }
-        public bool Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse>outputPort)
+        public bool Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
         {
-            var response = _merchantRepository.CreateMerchant(new Merchant(message.CompanyName,message.CompanyRegistrationNumber,message.ContactName,message.Address,message.Phone,message.Fax,message.ContactEmail));
-            
-            outputPort.Handle(response.Success ? new CreateMerchantResponse(response.Id, true) : new CreateMerchantResponse(response.Errors));
+            var response = _merchantRepository.Update(message.MerchantId, new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.ContactName, message.Address, message.Phone, message.Fax, message.ContactEmail));
+
+            outputPort.Handle(response.Success ? new UpdateMerchantResponse(response.Id, true) : new UpdateMerchantResponse(response.Errors));
             return response.Success;
         }
 

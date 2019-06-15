@@ -7,7 +7,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Services.UseCaseRequests;
 using JomMalaysia.Core.Services.UseCaseResponses;
-using JomMalaysia.Core.UseCases;
+using JomMalaysia.Core.UseCases.MerchantUseCase;
 using Moq;
 using Xunit;
 
@@ -26,10 +26,7 @@ namespace JomMalaysia.Test.UseCases
 
             //use case
             var useCase = new CreateMerchantUseCase(testMerchantRepository.Object);
-            Address address = new Address
-            {
-                Add1 = "123"
-            };
+            Address address = new Address("123", "s2a", "seremban", "seremban 2", "70300", "Malaysia");
             Name name = new Name("kj", "Liong");
             Email email = (Email)("khaijiet@hotmail.com");
             Phone phone = (Phone)("018-636789");

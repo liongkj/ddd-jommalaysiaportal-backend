@@ -34,35 +34,5 @@ namespace JomMalaysia.Core.Domain.Entities
             this.Phone = Phone;
             this.Fax = Fax;
         }
-
-        public void Delete(Merchant m)
-        {
-
-        }
-
-        public void UpdatePhone(string no)
-        {
-            var OldPhone = Phone;
-            var NewPhone = Phone.For(no);
-            Phone = NewPhone;
-            //update db
-        }
-
-        public void AddListing(Listing Listing)
-        {
-            Listings.Add(Listing);
-        }
-
-        public void DeleteListing(Listing ListingId)
-        {
-            foreach (Listing l in Listings)
-            {
-                if (l.ListingId.Equals(ListingId))
-                    l.Delete();
-                throw new Exception("Listing not found");
-            }
-        }
-
-
     }
 }

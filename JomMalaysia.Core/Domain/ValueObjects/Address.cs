@@ -6,14 +6,24 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Address : ValueObject
     {
-        public string Add1 { get; set; }
-        public string Add2 { get; set; }
-        public string City { get; set; }
-        public string Region { get; set; }
-        public string PostalCode { get; set; }
-        public string Country { get; set; }
+        public Address(string add1, string add2, string city, string region, string postalCode, string country)
+        {
+            this.Add1 = add1;
+            this.Add2 = add2;
+            this.City = city;
+            this.Region = region;
+            this.PostalCode = postalCode;
+            this.Country = country;
 
-        public void ChangeAddress()
+        }
+        public string Add1 { get; private set; }
+        public string Add2 { get; private set; }
+        public string City { get; private set; }
+        public string Region { get; private set; }
+        public string PostalCode { get; private set; }
+        public string Country { get; private set; }
+
+        private Address()
         {
 
         }

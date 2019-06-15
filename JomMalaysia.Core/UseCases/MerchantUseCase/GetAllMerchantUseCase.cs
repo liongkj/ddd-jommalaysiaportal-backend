@@ -6,7 +6,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Services.UseCaseRequests;
 using JomMalaysia.Core.Services.UseCaseResponses;
 
-namespace JomMalaysia.Core.UseCases
+namespace JomMalaysia.Core.UseCases.MerchantUseCase
 {
     public class GetAllMerchantUseCase : IGetAllMerchantUseCase
     {
@@ -22,7 +22,7 @@ namespace JomMalaysia.Core.UseCases
             if (!response.Success)
             {
                 outputPort.Handle(new GetAllMerchantResponse(response.Errors));
-                
+
             }
             outputPort.Handle(new GetAllMerchantResponse(response.Merchants, true));
 

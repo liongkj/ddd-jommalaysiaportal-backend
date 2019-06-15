@@ -5,6 +5,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Phone : ValueObject
     {
+        //TODO Use google phone library
         private Phone() { }
 
         public string Number { get; private set; }

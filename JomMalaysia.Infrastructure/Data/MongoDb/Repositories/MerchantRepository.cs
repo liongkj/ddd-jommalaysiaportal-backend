@@ -28,7 +28,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public CreateMerchantResponse CreateMerchant(Merchant merchant)
         {
-            MerchantDto NewMerchant = _mapper.Map<Merchant,MerchantDto>(merchant);
+            MerchantDto NewMerchant = _mapper.Map<Merchant, MerchantDto>(merchant);
             try
             {
                 _merchants.InsertOne(NewMerchant);
@@ -58,7 +58,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             List<Merchant> merchants = new List<Merchant>();
             foreach (var merchant in result)
             {
-                merchants.Add(_mapper.Map<MerchantDto,Merchant>(merchant));
+                merchants.Add(_mapper.Map<MerchantDto, Merchant>(merchant));
             }
             return new GetAllMerchantResponse(merchants, true);
 
@@ -70,9 +70,20 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         //    return new CreateUserResponse(appUser.Id, identityResult.Succeeded, identityResult.Succeeded ? null : identityResult.Errors.Select(e => new Error(e.Code, e.Description)));
         //}
 
-        public Task<DeleteMerchantResponse> Delete(string id)
+        public DeleteMerchantResponse Delete(string id)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                _merchants.DeleteOne(m => m.Id == id);
+
+            }
+            catch (Exception ex)
+            {
+                return new DeleteMerchantResponse(ex.ToString());
+            }
+
+            return new DeleteMerchantResponse(id, true);
         }
 
         public Task<Merchant> FindById(string id)
@@ -85,7 +96,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<UpdateMerchantResponse> Update(Merchant merchant)
+        public UpdateMerchantResponse Update(string id, Merchant merchant)
         {
             throw new NotImplementedException();
         }
