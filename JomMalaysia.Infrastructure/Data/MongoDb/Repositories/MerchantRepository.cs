@@ -72,26 +72,25 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public DeleteMerchantResponse Delete(string id)
         {
-
             try
             {
                 _merchants.DeleteOne(m => m.Id == id);
-
             }
             catch (Exception ex)
             {
                 return new DeleteMerchantResponse(ex.ToString());
             }
-
             return new DeleteMerchantResponse(id, true);
         }
 
-        public Task<Merchant> FindById(string id)
+        public GetMerchantResponse FindById(string id)
         {
-            throw new NotImplementedException();
+            MerchantDto merchant = _merchants.Find(m => m.Id == id).FirstOrDefault();
+            var found = _mapper.Map<MerchantDto, Merchant>(merchant);
+            return new GetMerchantResponse(found, true);
         }
 
-        public Task<Merchant> FindByName(string name)
+        public GetMerchantResponse FindByName(string name)
         {
             throw new NotImplementedException();
         }

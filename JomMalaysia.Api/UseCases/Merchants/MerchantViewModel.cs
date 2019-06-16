@@ -10,7 +10,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
     {
         public string MerchantId { get; set; }
         public Name Name { get; set; }
-        public string Email { get; set; }
+        public Email Email { get; set; }
         public string CompanyName { get; set; }
         public string CompanyRegistrationNumber { get; set; }
         public Address Address { get; set; }

@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                 var index = emailstring.IndexOf("@", StringComparison.Ordinal);
                 email.User= emailstring.Substring(0, index);
                 email.Domain = emailstring.Substring(index + 1);
-                email.User = emailstring;
+                
             }catch(Exception e) { }
             return email;
         }

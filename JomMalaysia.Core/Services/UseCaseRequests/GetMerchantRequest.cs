@@ -10,13 +10,13 @@ using JomMalaysia.Core.Services.UseCaseResponses;
 
 namespace JomMalaysia.Core.Services.UseCaseRequests
 {
-    public class GetAllMerchantRequest:IUseCaseRequest<GetAllMerchantResponse>
+    public class GetMerchantRequest:IUseCaseRequest<GetMerchantResponse>
     {
-       public ICollection<Merchant> Merchants { get; set; }
+        public string MerchantId { get; set; }
 
-        public GetAllMerchantRequest()
+        public GetMerchantRequest(string merchantId)
         {
-            Merchants = new Collection<Merchant>();
+            MerchantId = merchantId;
         }
     }
 }

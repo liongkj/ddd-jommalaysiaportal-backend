@@ -4,19 +4,19 @@ using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Services.UseCaseResponses;
 
-namespace JomMalaysia.Api.UseCases.Merchants.CreateMerchant
+namespace JomMalaysia.Api.UseCases.Merchants.DeleteMerchant
 {
-    public sealed class CreateMerchantPresenter : IOutputPort<CreateMerchantResponse>
+    public sealed class DeleteMerchantPresenter : IOutputPort<DeleteMerchantResponse>
     {
         public JsonContentResult ContentResult { get; }
 
-        public CreateMerchantPresenter()
+        public DeleteMerchantPresenter()
         {
             ContentResult = new JsonContentResult();
         }
  
 
-        public void Handle(CreateMerchantResponse response)
+        public void Handle(DeleteMerchantResponse response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
             ContentResult.Content = JsonSerializer.SerializeObject(response);

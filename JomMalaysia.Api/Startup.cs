@@ -12,11 +12,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using System.Reflection;
-using JomMalaysia.Api.UseCases.CreateMerchant;
 using JomMalaysia.Core;
 using JomMalaysia.Infrastructure;
 using JomMalaysia.Infrastructure.Data.Mapping;
@@ -24,8 +22,10 @@ using JomMalaysia.Infrastructure.Data.MongoDb;
 using JomMalaysia.Core.Interfaces;
 using Microsoft.Extensions.Options;
 using JomMalaysia.Infrastructure.Data.MongoDb.Repositories;
-using JomMalaysia.Api.UseCases.Merchants.GetAllMerchant;
 using Swashbuckle.AspNetCore.Swagger;
+using JomMalaysia.Api.UseCases.Merchants;
+using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
+using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 
 namespace JomMalaysia.Api
 {
@@ -78,6 +78,7 @@ namespace JomMalaysia.Api
             builder.RegisterModule(new InfrastructureModule());
             // Presenters
             builder.RegisterType<CreateMerchantPresenter>().SingleInstance();
+            builder.RegisterType<GetMerchantPresenter>().SingleInstance();
             builder.RegisterType<GetAllMerchantPresenter>().SingleInstance();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
             builder.Populate(services);

@@ -12,8 +12,8 @@ namespace JomMalaysia.Core.Interfaces
         CreateMerchantResponse CreateMerchant(Merchant merchant);
         Task<GetAllMerchantResponse> GetAllMerchants();
         DeleteMerchantResponse Delete(string id);
-        Task<Merchant> FindByName(string name);
-        Task<Merchant> FindById(string id);
+        GetMerchantResponse FindByName(string name);
+        GetMerchantResponse FindById(string id);
         UpdateMerchantResponse Update(string id, Merchant merchant);
     }
 }

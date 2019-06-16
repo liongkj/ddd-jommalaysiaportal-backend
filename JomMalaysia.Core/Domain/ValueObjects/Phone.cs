@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using com.google.i18n.phonenumbers.geocoding;
+using libphonenumber;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
@@ -9,23 +11,37 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         private Phone() { }
 
         public string Number { get; private set; }
-        public string AreaCode { get; private set; }
-        public bool isLandLine { get; private set; }
+        public string Area { get; private set; }
+        public bool isMobile { get; private set; }
 
         public static Phone For(string phoneString)
         {
             var phone = new Phone();
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.Instance;
+
             try
             {
-                var index = phoneString.IndexOf("-", StringComparison.Ordinal);
-                phone.AreaCode = phoneString.Substring(0, index);
-                phone.Number = phoneString.Substring(index + 1);
-                //TODO
-                //determine is landline
+                string countryCode = "MY";
+                PhoneNumber parsedPhone = phoneUtil.Parse(phoneString, countryCode);
+                if (parsedPhone.NumberType.Equals(PhoneNumberUtil.PhoneNumberType.MOBILE))
+                {
+                    phone.isMobile = true;
+
+                }
+                else
+                {
+                    phone.isMobile = false;
+                    //TODO get area based on phone 
+                    //06 = Seremban
+                    //03 = KL
+                }
+
+                phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+
             }
             catch (Exception ex)
             {
-                throw new Exception("Invalid Phone number");
+                throw new Exception(ex.ToString());
             }
 
             return phone;
@@ -35,16 +51,12 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return For(phoneString);
         }
 
-        public override string ToString()
-        {
-            return $"+{AreaCode}-{Number}";
-        }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Number;
-            yield return AreaCode;
-            yield return isLandLine;
+            yield return Area;
+            yield return isMobile;
         }
 
 
