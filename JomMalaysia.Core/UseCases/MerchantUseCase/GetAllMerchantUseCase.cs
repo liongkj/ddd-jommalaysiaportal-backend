@@ -22,7 +22,6 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
             if (!response.Success)
             {
                 outputPort.Handle(new GetAllMerchantResponse(response.Errors));
-
             }
             outputPort.Handle(new GetAllMerchantResponse(response.Merchants, true));
 

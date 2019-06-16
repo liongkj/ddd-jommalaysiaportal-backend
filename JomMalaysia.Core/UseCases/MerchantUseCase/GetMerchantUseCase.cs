@@ -20,12 +20,17 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
             if (!response.Success)
             {
                 outputPort.Handle(new GetMerchantResponse(response.Errors));
-
             }
-            outputPort.Handle(new GetMerchantResponse(response.Merchant, true));
-
-            return response.Success;
-
+            if (response.Merchant != null)
+            {
+                outputPort.Handle(new GetMerchantResponse(response.Merchant, true));
+                return response.Success;
+            }
+            else
+            {
+                outputPort.Handle(new GetMerchantResponse(response.Errors,false,"Merchant Deleted or Not Found"));
+                return false;
+            }
         }
     }
 }

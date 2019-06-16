@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -75,12 +76,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             try
             {
                 _merchants.DeleteOne(m => m.Id == id);
+                //TODO
+                //Soft Delete
             }
             catch (Exception ex)
             {
-                return new DeleteMerchantResponse(ex.ToString());
+                return new DeleteMerchantResponse((IEnumerable<string>) ex,false,"mongodb: Merchant delete failed");
             }
-            return new DeleteMerchantResponse(id, true);
+            return new DeleteMerchantResponse(id, true,"Merchant deleted successfully");
         }
 
         public GetMerchantResponse FindById(string id)
@@ -94,7 +97,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             throw new NotImplementedException();
         }
-
+         
         public UpdateMerchantResponse Update(string id, Merchant merchant)
         {
             throw new NotImplementedException();

@@ -15,7 +15,6 @@ namespace JomMalaysia.Api.UseCases.Merchants.DeleteMerchant
             ContentResult = new JsonContentResult();
         }
  
-
         public void Handle(DeleteMerchantResponse response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);

@@ -16,15 +16,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string Id { get; set; }
         public string CompanyName { get; set; }
         public string CompanyRegistrationNumber { get; set; }
-        public Name ContactName { get; set; }
         public Address Address { get; set; }
-        public Email ContactEmail { get; set; }
-        public Phone Phone { get; set; }
-        public string Fax { get; set; }
-        public ICollection<ListingDto> Listings { get; set; }
+        public ICollection<Contact> Contacts { get; set; }
+        public ICollection<string> ListingIds { get; set; }
         public MerchantDto()
         {
-            Listings = new Collection<ListingDto>();
+            ListingIds = new Collection<string>();
+            Contacts = new Collection<Contact>();
         }
     }
 }

@@ -12,27 +12,27 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             Listings = new HashSet<Listing>();
         }
-
         public string MerchantId { get; private set; }
         public string CompanyName { get; private set; }
         public string CompanyRegistrationNumber { get; private set; }
-        public Name ContactName { get; private set; }
         public Address Address { get; private set; }
-        public Email ContactEmail { get; private set; }
-        public Phone Phone { get; private set; }
-        public string Fax { get; private set; }
         public ICollection<Listing> Listings { get; private set; }
+        public ICollection<Contact> Contacts { get; private set; }
 
-        public Merchant(string CompanyName, string CompanyRegistrationNumber, Name ContactName, Address Address, Phone Phone, string Fax, Email Email)
+        public Merchant(string CompanyName, string CompanyRegistrationNumber, Address Address )
         {
             Listings = new Collection<Listing>();
-            this.ContactEmail = Email ?? throw new Exception("Email is required");
+            Contacts = new Collection<Contact>();
+            
             this.CompanyName = CompanyName;
             this.CompanyRegistrationNumber = CompanyRegistrationNumber;
-            this.ContactName = ContactName ?? throw new Exception("Name is required");
             this.Address = Address ?? throw new Exception("Address is required");
-            this.Phone = Phone;
-            this.Fax = Fax;
+
+        }
+
+        public Merchant(string CompanyName, string CompanyRegistrationNumber, Address Address, ICollection<Contact> contacts) : this(CompanyName, CompanyRegistrationNumber, Address)
+        {
+            Contacts = contacts;
         }
     }
 }

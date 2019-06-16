@@ -77,9 +77,6 @@ namespace JomMalaysia.Api
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
             // Presenters
-            builder.RegisterType<CreateMerchantPresenter>().SingleInstance();
-            builder.RegisterType<GetMerchantPresenter>().SingleInstance();
-            builder.RegisterType<GetAllMerchantPresenter>().SingleInstance();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
             builder.Populate(services);
             var container = builder.Build();

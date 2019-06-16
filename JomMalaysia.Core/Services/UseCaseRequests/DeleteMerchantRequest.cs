@@ -9,15 +9,17 @@ namespace JomMalaysia.Core.Services.UseCaseRequests
     public class DeleteMerchantRequest : IUseCaseRequest<DeleteMerchantResponse>
     {
         public string MerchantId { get; set; }
-        public ICollection<Listing> Listings { get; set; }
+        public ICollection<Listing> Listings { get; private set; }
+        public Merchant Merchant { get; private set; }
 
-        public DeleteMerchantRequest(string MerchantId, ICollection<Listing> Listings)
+        public DeleteMerchantRequest(string MerchantId)
         {
-            if (string.IsNullOrWhiteSpace(MerchantId))
+            if (string.IsNullOrWhiteSpace(MerchantId)) 
             {
-                throw new System.ArgumentException("Select a Merchant", nameof(MerchantId));
+                throw new System.ArgumentException("Delete Merchant: Listing Id null", nameof(MerchantId));
             }
             Listings = new Collection<Listing>();
+            
             this.MerchantId = MerchantId;
         }
     }

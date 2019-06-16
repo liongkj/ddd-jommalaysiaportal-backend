@@ -16,9 +16,5 @@ namespace JomMalaysia.Core.Interfaces
         public string Id { get; }
         public IEnumerable<string> Errors { get; }
 
-        public DeleteMerchantResponse()
-        {
-
-        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.UseCases;
 using JomMalaysia.Core.Services.UseCaseRequests;
@@ -15,14 +16,23 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
 
         public bool Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
         {
-            if (message.Listings.Count > 0)
+            Merchant merchant = (_merchant.FindById(message.MerchantId)).Merchant;
+            if (merchant == null)
             {
-                //still have listing, cannot delete
-                outputPort.Handle(new DeleteMerchantResponse("Merchant still has listing associated"));
+                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId,false,"Merchant Not Found"));
+                return false;
             }
-            var response = _merchant.Delete(message.MerchantId);
-            outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, true));
-            return response.Success;
+            else
+            {
+                if (merchant.Listings.Count > 0)
+                {
+                    //still have listing, cannot delete
+                    outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant still has listing associated"));
+                }
+                var response = _merchant.Delete(message.MerchantId);
+                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, true , merchant.MerchantId+" deleted"));
+                return response.Success;
+            }
         }
     }
 }

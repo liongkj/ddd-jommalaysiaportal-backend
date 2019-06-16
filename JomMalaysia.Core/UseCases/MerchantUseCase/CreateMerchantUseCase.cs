@@ -20,8 +20,16 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
         }
         public bool Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
         {
-            var response = _merchantRepository.CreateMerchant(new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.ContactName, message.Address, message.Phone, message.Fax, message.ContactEmail));
-
+            Merchant merchant;
+            if (message.Contacts.Count() > 1)
+            {
+                merchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address,message.Contacts);
+            }
+            else
+            {
+               merchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address);
+            }
+            var response = _merchantRepository.CreateMerchant(merchant);
             outputPort.Handle(response.Success ? new CreateMerchantResponse(response.Id, true) : new CreateMerchantResponse(response.Errors));
             return response.Success;
         }

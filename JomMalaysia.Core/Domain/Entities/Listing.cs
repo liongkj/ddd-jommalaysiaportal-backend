@@ -24,22 +24,6 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             Tags = new Collection<string>();
         }
-        public void UpdateCategory(Category Category)
-        {
-
-        }
-
-        public void UpdateTags(ICollection<string> tags)
-        {
-
-        }
-        public void Delete()
-        {
-            if (Publish.IsPublished)
-            {
-                throw new Exception("Listing is still published");
-            }
-
-        }
+        
     }
 }
