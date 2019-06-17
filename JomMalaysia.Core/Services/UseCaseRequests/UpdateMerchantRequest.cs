@@ -9,19 +9,13 @@ namespace JomMalaysia.Core.Services.UseCaseRequests
 {
     public class UpdateMerchantRequest : IUseCaseRequest<UpdateMerchantResponse>
     {
-        public UpdateMerchantRequest(string companyName, string companyRegistrationNumber, Contact Contact, Address address)
+        public UpdateMerchantRequest(string merchantId, Merchant Updated)
         {
-            this.CompanyName = companyName;
-            this.CompanyRegistrationNumber = companyRegistrationNumber;
-            this.Contact = Contact;
-            this.Address = address;
+            MerchantId = merchantId;
+            this.Updated = Updated;
         }
         public string MerchantId { get; }
-        public string CompanyName { get; }
-        public string CompanyRegistrationNumber { get; }
-        public Address Address { get; }
-
-        public Contact Contact { get; }
+        public Merchant Updated { get; }
 
 
     }

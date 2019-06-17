@@ -6,11 +6,11 @@ namespace JomMalaysia.Core.Services.UseCaseRequests
 {
     public class GetMerchantRequest:IUseCaseRequest<GetMerchantResponse>
     {
-        public string MerchantId { get; set; }
+        public string Id { get; }
 
         public GetMerchantRequest(string merchantId)
         {
-            MerchantId = merchantId;
+            Id = merchantId;
         }
     }
 }

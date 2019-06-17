@@ -20,8 +20,9 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
         }
         public bool Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
         {
-            var UpdatedMerchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address);
-            var response = _merchantRepository.Update(message.MerchantId,UpdatedMerchant);
+            //TODO
+            //verify update??
+            var response = _merchantRepository.Update(message.MerchantId,message.Updated);
 
             outputPort.Handle(response.Success ? new UpdateMerchantResponse(response.Id, true) : new UpdateMerchantResponse(response.Errors));
             return response.Success;

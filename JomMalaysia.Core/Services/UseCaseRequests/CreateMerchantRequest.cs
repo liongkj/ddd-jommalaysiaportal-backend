@@ -19,7 +19,7 @@ namespace JomMalaysia.Core.Services.UseCaseRequests
             this.Address = Address;
             Listings = new Collection<Listing>();
         }
-        public string MerchantId { get; }
+        
         public string CompanyName { get; }
         public string CompanyRegistrationNumber { get; }
         public Address Address { get; }

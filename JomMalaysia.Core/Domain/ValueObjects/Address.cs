@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
     public class Address : ValueObject
     {
 
-        public static Address For(string add1,string add2, string city, string region, string postalCode, string country)
+        public static Address For(string add1,string add2, string city, string state, string postalCode, string country)
         {
             if (string.IsNullOrWhiteSpace(add1))
             {
@@ -24,9 +24,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                 throw new ArgumentException("message", nameof(city));
             }
 
-            if (string.IsNullOrWhiteSpace(region))
+            if (string.IsNullOrWhiteSpace(state))
             {
-                throw new ArgumentException("message", nameof(region));
+                throw new ArgumentException("message", nameof(state));
             }
 
             if (string.IsNullOrWhiteSpace(postalCode))
@@ -52,12 +52,12 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
 
 
-        public Address(string add1, string add2, string city, string region, string postalCode, string country)
+        public Address(string add1, string add2, string city, string state, string postalCode, string country)
         {
             this.Add1 = add1;
             this.Add2 = add2;
             this.City = city;
-            this.Region = region;
+            this.State = state;
             this.PostalCode = postalCode;
             this.Country = country;
 
@@ -65,7 +65,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public string Add1 { get; private set; }
         public string Add2 { get; private set; }
         public string City { get; private set; }
-        public string Region { get; private set; }
+        public string State { get; private set; }
         public string PostalCode { get; private set; }
         public string Country { get; private set; }
 
@@ -79,7 +79,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             yield return Add1;
             yield return Add2;
             yield return City;
-            yield return Region;
+            yield return State;
             yield return PostalCode;
             yield return Country;
         }

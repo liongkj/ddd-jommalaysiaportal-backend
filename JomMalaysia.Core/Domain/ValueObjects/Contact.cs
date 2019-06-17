@@ -13,12 +13,33 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         }
 
+
+        public Contact(string name, string email, string phone)
+        {
+
+            Name = (Name)name;
+            Email = (Email)email;
+            Phone = (Phone)phone;
+           
+        }
+
+        public static Contact For(string name, string email, string phone)
+        {
+            var contact = new Contact
+            {
+                Name = (Name)name,
+                Email = (Email)email,
+                Phone = (Phone)phone
+            };
+            return contact;
+        }
         protected override IEnumerable<object> GetAtomicValues()
         {
             throw new NotImplementedException();
         }
-        public Name ContactName { get; private set; }
-        public Email ContactEmail { get; private set; }
-        public Phone ContactPhone { get; private set; }
+        
+        public Name Name { get; private set; }
+        public Email Email { get; private set; }
+        public Phone Phone { get; private set; }
     }
 }

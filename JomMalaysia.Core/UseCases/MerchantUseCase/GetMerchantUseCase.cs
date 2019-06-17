@@ -16,7 +16,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
         }
         public bool Handle(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
         {
-            var response = _merchantRepository.FindById(message.MerchantId);
+            var response = _merchantRepository.FindById(message.Id);
             if (!response.Success)
             {
                 outputPort.Handle(new GetMerchantResponse(response.Errors));

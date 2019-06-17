@@ -17,10 +17,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
         {
             //domain to dto
             CreateMap<Merchant, MerchantDto>()
-                //.ForPath(m => m.FirstName, opt => opt.MapFrom(md => md.ContactName.FirstName))
-                //.ForPath(m => m.LastName, opt => opt.MapFrom(md => md.ContactName.LastName))
+                .ForMember(md=>md.Id,opt=>opt.MapFrom(m=>m.MerchantId))
                 .ForMember(md => md.Contacts, opt => opt.MapFrom(m=> m.Contacts))
-                .ForMember(md => md.Listings, opt => opt.MapFrom(m => m.Listings ) ) ;
+                .ForMember(md => md.ListingIds, opt => opt.MapFrom(m => 
+                     m.Listings.Select(l=>l.ListingId)));
                 
             //.ForMember(m => m.Address, opt => opt.MapFrom(m =>
             //   new AddressDto { Add1 = m.Address.Add1, Add2 = m.Address.Add2, City = m.Address.City, Country = m.Address.Country, PostalCode = m.Address.PostalCode, Region = m.Address.Region }));
@@ -31,8 +31,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             //dto --> domain
 
             CreateMap<MerchantDto, Merchant>()
-                .ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
-                .ForMember(m => m.Listings, opt => opt.MapFrom(md => md.Listings));
+                .ForMember(m => m.MerchantId, opt => opt.MapFrom(md=>md.Id))
+                //.ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
+                ;
+                
                
             CreateMap<ListingDto, Listing>();
 

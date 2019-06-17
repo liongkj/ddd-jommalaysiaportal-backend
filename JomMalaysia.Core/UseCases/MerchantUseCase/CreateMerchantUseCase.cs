@@ -21,7 +21,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
         public bool Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
         {
             Merchant merchant;
-            if (message.Contacts.Count() > 1)
+            if (message.Contacts.Count() > 0)
             {
                 merchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address,message.Contacts);
             }

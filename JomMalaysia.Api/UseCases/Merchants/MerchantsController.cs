@@ -28,12 +28,15 @@ namespace JomMalaysia.Api.UseCases.Merchants
         private readonly GetMerchantPresenter _getMerchantPresenter;
         private readonly IDeleteMerchantUseCase _deleteMerchantUseCase;
         private readonly DeleteMerchantPresenter _deleteMerchantPresenter;
+        private readonly IUpdateMerchantUseCase _updateMerchantUseCase;
+        private readonly UpdateMerchantPresenter _updateMerchantPresenter;
         
 
 
         public MerchantsController(IMapper mapper,ICreateMerchantUseCase createMerchantUseCase,CreateMerchantPresenter MerchantPresenter, 
             IGetAllMerchantUseCase getAllMerchantUseCase,GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase,GetMerchantPresenter getMerchantPresenter,
-            IDeleteMerchantUseCase deleteMerchantUseCase,DeleteMerchantPresenter deleteMerchantPresenter)
+            IDeleteMerchantUseCase deleteMerchantUseCase,DeleteMerchantPresenter deleteMerchantPresenter,
+            IUpdateMerchantUseCase updateMerchantUseCase, UpdateMerchantPresenter updateMerchantPresenter)
         {
             _mapper = mapper;
             _createMerchantUseCase = createMerchantUseCase;
@@ -44,6 +47,8 @@ namespace JomMalaysia.Api.UseCases.Merchants
             _getMerchantPresenter = getMerchantPresenter;
             _deleteMerchantUseCase = deleteMerchantUseCase;
             _deleteMerchantPresenter = deleteMerchantPresenter;
+            _updateMerchantUseCase = updateMerchantUseCase;
+            _updateMerchantPresenter = updateMerchantPresenter;
         }
 
         //GET api/merchants
@@ -73,6 +78,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
                 return BadRequest(ModelState);
             }
             Merchant m = _mapper.Map<MerchantDto, Merchant>(request);
+            
             var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
             _createMerchantUseCase.Handle(req, _createMerchantPresenter);
@@ -91,9 +97,15 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         //PUT api/merchants/{id}
         [HttpPut("{id}")]
-        public IActionResult Update(string id, Merchant updatedMerchant)
+        public IActionResult Update(string id, [FromBody] MerchantDto updatedMerchant)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var req = new UpdateMerchantRequest(id, _mapper.Map<MerchantDto, Merchant>(updatedMerchant));
+            _updateMerchantUseCase.Handle(req, _updateMerchantPresenter);
+            return _updateMerchantPresenter.ContentResult;
         }
 
 

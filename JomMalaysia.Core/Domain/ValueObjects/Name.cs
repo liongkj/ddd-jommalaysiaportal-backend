@@ -10,6 +10,10 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public string LastName { get; private set; }
 
         private Name() { }
+        public static explicit operator Name(string nameString)
+        {
+            return For(nameString);
+        }
         public static Name For(string nameString)
         {
             var name = new Name();
@@ -25,7 +29,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             }
             return name;
         }
-
+        
         public Name(string FirstName, string LastName)
         {
             if (string.IsNullOrWhiteSpace(FirstName)) throw new Exception("First name is invalid");

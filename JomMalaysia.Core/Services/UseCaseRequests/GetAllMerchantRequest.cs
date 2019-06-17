@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.Services.UseCaseRequests
     public class GetAllMerchantRequest:IUseCaseRequest<GetAllMerchantResponse>
     {
        public ICollection<Merchant> Merchants { get; set; }
-
+        public string Id { get; set; }
         public GetAllMerchantRequest()
         {
             Merchants = new Collection<Merchant>();

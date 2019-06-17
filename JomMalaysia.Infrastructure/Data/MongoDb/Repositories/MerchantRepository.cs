@@ -53,14 +53,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public async Task<GetAllMerchantResponse> GetAllMerchants()
         {
             var result =
-                await _merchants
-                .Find("{ }")
-                .ToListAsync();
-            List<Merchant> merchants = new List<Merchant>();
-            foreach (var merchant in result)
-            {
-                merchants.Add(_mapper.Map<MerchantDto, Merchant>(merchant));
-            }
+                await _merchants.Find(md => true).ToListAsync();
+            var merchants = _mapper.Map<List<MerchantDto>, List < Merchant >> (result);
+            
             return new GetAllMerchantResponse(merchants, true);
 
         }
@@ -90,7 +85,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             MerchantDto merchant = _merchants.Find(m => m.Id == id).FirstOrDefault();
             var found = _mapper.Map<MerchantDto, Merchant>(merchant);
-            return new GetMerchantResponse(found, true);
+            return new GetMerchantResponse(found, true, merchant.CompanyName + "Found by id");
         }
 
         public GetMerchantResponse FindByName(string name)
@@ -98,9 +93,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             throw new NotImplementedException();
         }
          
-        public UpdateMerchantResponse Update(string id, Merchant merchant)
+        public UpdateMerchantResponse Update(string id, Merchant newMerchant)
         {
-            throw new NotImplementedException();
+            MerchantDto m =_mapper.Map<Merchant, MerchantDto>(newMerchant);
+            _merchants.ReplaceOne(md =>md.Id == id, m);
+            return new UpdateMerchantResponse(m.Id, true, "Merchant " + m.Id + " updated");
         }
 
 
