@@ -5,7 +5,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public class Contact:ValueObject
+    public class Contact:ValueObjectBase
     {
 
         private Contact()

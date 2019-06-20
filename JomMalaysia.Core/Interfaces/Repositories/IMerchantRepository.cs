@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Services.Merchants.UseCaseResponses;
 
 namespace JomMalaysia.Core.Interfaces
 {
@@ -15,5 +16,6 @@ namespace JomMalaysia.Core.Interfaces
         GetMerchantResponse FindByName(string name);
         GetMerchantResponse FindById(string id);
         UpdateMerchantResponse Update(string id, Merchant merchant);
+        
     }
 }

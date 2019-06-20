@@ -5,14 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.Services.Merchants.UseCaseResponses;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
+
+    //https://github.com/dj-nitehawk/MongoDB.Entities/wiki/1.-Getting-Started
     public class MerchantRepository : IMerchantRepository
     {
         private readonly IMongoCollection<MerchantDto> _merchants;
@@ -54,8 +57,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             var result =
                 await _merchants.Find(md => true).ToListAsync();
-            var merchants = _mapper.Map<List<MerchantDto>, List < Merchant >> (result);
-            
+            var merchants = _mapper.Map<List<MerchantDto>, List<Merchant>>(result);
+
             return new GetAllMerchantResponse(merchants, true);
 
         }
@@ -76,9 +79,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception ex)
             {
-                return new DeleteMerchantResponse((IEnumerable<string>) ex,false,"mongodb: Merchant delete failed");
+                return new DeleteMerchantResponse((IEnumerable<string>)ex, false, "mongodb: Merchant delete failed");
             }
-            return new DeleteMerchantResponse(id, true,"Merchant deleted successfully");
+            return new DeleteMerchantResponse(id, true, "Merchant deleted successfully");
         }
 
         public GetMerchantResponse FindById(string id)
@@ -92,11 +95,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             throw new NotImplementedException();
         }
-         
+
         public UpdateMerchantResponse Update(string id, Merchant newMerchant)
         {
-            MerchantDto m =_mapper.Map<Merchant, MerchantDto>(newMerchant);
-            _merchants.ReplaceOne(md =>md.Id == id, m);
+            MerchantDto m = _mapper.Map<Merchant, MerchantDto>(newMerchant);
+            _merchants.ReplaceOne(md => md.Id == id, m);
             return new UpdateMerchantResponse(m.Id, true, "Merchant " + m.Id + " updated");
         }
 

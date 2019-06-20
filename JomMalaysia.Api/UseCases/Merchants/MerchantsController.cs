@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
@@ -7,8 +8,8 @@ using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Interfaces.UseCases;
-using JomMalaysia.Core.Services.UseCaseRequests;
+using JomMalaysia.Core.Interfaces.UseCases.Merchants;
+using JomMalaysia.Core.Services.Merchants.UseCaseRequests;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,12 +31,11 @@ namespace JomMalaysia.Api.UseCases.Merchants
         private readonly DeleteMerchantPresenter _deleteMerchantPresenter;
         private readonly IUpdateMerchantUseCase _updateMerchantUseCase;
         private readonly UpdateMerchantPresenter _updateMerchantPresenter;
-        
 
 
-        public MerchantsController(IMapper mapper,ICreateMerchantUseCase createMerchantUseCase,CreateMerchantPresenter MerchantPresenter, 
-            IGetAllMerchantUseCase getAllMerchantUseCase,GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase,GetMerchantPresenter getMerchantPresenter,
-            IDeleteMerchantUseCase deleteMerchantUseCase,DeleteMerchantPresenter deleteMerchantPresenter,
+        public MerchantsController(IMapper mapper, ICreateMerchantUseCase createMerchantUseCase, CreateMerchantPresenter MerchantPresenter,
+            IGetAllMerchantUseCase getAllMerchantUseCase, GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase, GetMerchantPresenter getMerchantPresenter,
+            IDeleteMerchantUseCase deleteMerchantUseCase, DeleteMerchantPresenter deleteMerchantPresenter,
             IUpdateMerchantUseCase updateMerchantUseCase, UpdateMerchantPresenter updateMerchantPresenter)
         {
             _mapper = mapper;
@@ -49,6 +49,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
             _deleteMerchantPresenter = deleteMerchantPresenter;
             _updateMerchantUseCase = updateMerchantUseCase;
             _updateMerchantPresenter = updateMerchantPresenter;
+
         }
 
         //GET api/merchants
@@ -78,7 +79,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
                 return BadRequest(ModelState);
             }
             Merchant m = _mapper.Map<MerchantDto, Merchant>(request);
-            
+
             var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
             _createMerchantUseCase.Handle(req, _createMerchantPresenter);
@@ -95,6 +96,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         }
 
+
         //PUT api/merchants/{id}
         [HttpPut("{id}")]
         public IActionResult Update(string id, [FromBody] MerchantDto updatedMerchant)
@@ -108,8 +110,8 @@ namespace JomMalaysia.Api.UseCases.Merchants
             return _updateMerchantPresenter.ContentResult;
         }
 
+        //Get api/merchants/{id}/listings
 
     }
 
 }
-

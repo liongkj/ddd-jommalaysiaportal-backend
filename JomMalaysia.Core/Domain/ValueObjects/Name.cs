@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public sealed class Name : ValueObject
+    public sealed class Name : ValueObjectBase
     {
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -29,7 +29,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             }
             return name;
         }
-        
+
         public Name(string FirstName, string LastName)
         {
             if (string.IsNullOrWhiteSpace(FirstName)) throw new Exception("First name is invalid");

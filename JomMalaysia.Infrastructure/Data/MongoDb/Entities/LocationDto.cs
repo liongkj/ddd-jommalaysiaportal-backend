@@ -10,6 +10,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
     public class LocationDto
     {
         //TODO
+        
         public string Id { get; set; }
         public int LocationId { get; set; }
         public string Code { get; set; }

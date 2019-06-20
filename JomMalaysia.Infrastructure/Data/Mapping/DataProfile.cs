@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Services.UseCaseRequests;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
@@ -17,26 +15,49 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
         {
             //domain to dto
             CreateMap<Merchant, MerchantDto>()
-                .ForMember(md=>md.Id,opt=>opt.MapFrom(m=>m.MerchantId))
-                .ForMember(md => md.Contacts, opt => opt.MapFrom(m=> m.Contacts))
-                .ForMember(md => md.ListingIds, opt => opt.MapFrom(m => 
-                     m.Listings.Select(l=>l.ListingId)));
+                .ForMember(md => md.Id, opt => opt.MapFrom(m => m.MerchantId))
+                .ForMember(md => md.Contacts, opt => opt.MapFrom(m => m.Contacts))
+                .ForMember(md => md.ListingIds, opt => opt.MapFrom(m =>
+                     m.Listings.Select(l => l.ListingId)));
+
+
+            CreateMap<Listing, ListingDto>()
+                .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
+                //.ForMember(ld => ld.Category.Subcategories, opt => opt.MapFrom(l => l.Category.Subcategories))
+                ;
+
+            CreateMap<Category, CategoryDto>()
+
+            //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
+            ;
+
+            CreateMap<Subcategory, SubcategoryDto>()
                 
-            //.ForMember(m => m.Address, opt => opt.MapFrom(m =>
-            //   new AddressDto { Add1 = m.Address.Add1, Add2 = m.Address.Add2, City = m.Address.City, Country = m.Address.Country, PostalCode = m.Address.PostalCode, Region = m.Address.Region }));
-            
-            
-       
-            CreateMap<Listing, ListingDto>();
+                ;
             //dto --> domain
 
             CreateMap<MerchantDto, Merchant>()
-                .ForMember(m => m.MerchantId, opt => opt.MapFrom(md=>md.Id))
-                //.ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
+                .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
+                .ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
                 ;
-                
-               
-            CreateMap<ListingDto, Listing>();
+
+
+            CreateMap<ListingDto, Listing>()
+                .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
+                .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
+                .ForPath(l => l.Merchant.MerchantId, opt => opt.MapFrom(ld => ld.MerchantId))
+                ;
+            CreateMap<CategoryDto, Category>()
+                .ForMember(c => c.Subcategories,opt=>opt.MapFrom(cd=>cd.Subcategories))
+                ;
+
+            CreateMap<SubcategoryDto,Subcategory>()
+                .ForMember(s => s.SubcategoryName, opt => opt.MapFrom(sd => sd.SubcategoryName))
+                .ForMember(s => s.SubcategoryNameMs, opt => opt.MapFrom(sd => sd.SubcategoryNameMs))
+                .ForMember(s => s.SubcategoryNameZh, opt => opt.MapFrom(sd => sd.SubcategoryNameZh))
+            ;
+
+
 
         }
     }

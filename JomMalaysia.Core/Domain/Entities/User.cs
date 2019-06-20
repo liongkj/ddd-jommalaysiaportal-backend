@@ -18,5 +18,35 @@ namespace JomMalaysia.Core.Domain.Entities
         public string Email { get; set; }
         public Name Name { get; set; }
 
+
+        public void AddListing()
+        {
+
+        }
+
+        public void AddNewUser(User user)
+        {
+
+        }
+
+        public void PublishListing(Listing l)
+        {
+            
+        }
+
+        public void UnpublishListing()
+        {
+
+        }
+
+        public void ApproveWorkflow(Workflow w)
+        {
+
+        }
+
+        public void RejectWorkflow(Workflow w)
+        {
+
+        }
     }
 }

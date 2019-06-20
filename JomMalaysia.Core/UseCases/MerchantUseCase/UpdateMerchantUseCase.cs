@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.UseCaseRequests;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.Interfaces.UseCases.Merchants;
+using JomMalaysia.Core.Services.Merchants.UseCaseRequests;
+using JomMalaysia.Core.Services.Merchants.UseCaseResponses;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase
 {

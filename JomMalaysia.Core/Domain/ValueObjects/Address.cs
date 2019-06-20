@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public class Address : ValueObject
+    public class Address : ValueObjectBase
     {
 
         public static Address For(string add1,string add2, string city, string state, string postalCode, string country)

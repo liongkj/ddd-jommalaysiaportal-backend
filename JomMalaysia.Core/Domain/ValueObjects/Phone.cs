@@ -5,7 +5,7 @@ using libphonenumber;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public class Phone : ValueObject
+    public class Phone : ValueObjectBase
     {
         //TODO Use google phone library
         private Phone() { }

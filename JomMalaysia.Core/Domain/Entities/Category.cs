@@ -7,21 +7,28 @@ namespace JomMalaysia.Core.Domain.Entities
     {
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public ICollection<Subcategory> Subcategory { get; set; }
-        public string CategoryNameMs { get; private set; }
-        public string CategoryNameZh { get; private set; }
+        public Collection<Subcategory> Subcategories { get; }
+        public string CategoryNameMs { get; set; }
+        public string CategoryNameZh { get; set; }
 
         public Category()
         {
-            Subcategory = new Collection<Subcategory>();
+            Subcategories = new Collection<Subcategory>();
         }
 
-        public void UpdateCategoryName(string language, string newName)
+        public Category(string categoryName, string categoryNameMs, string categoryNameZh)
         {
-            if (language == "en")
-            {
-                //TODO
-            }
+            CategoryName = categoryName;
+            CategoryNameMs = categoryNameMs;
+            CategoryNameZh = categoryNameZh;
+            Subcategories = new Collection<Subcategory>();
+        }
+
+        public Subcategory CreateSubCategory(string SubcategoryName, string CategoryNameMs, string CategoryNameZh)
+        {
+            var sub = new Subcategory(this, SubcategoryName, CategoryNameMs, CategoryNameZh);
+            Subcategories.Add(sub);
+            return sub;
         }
     }
 }

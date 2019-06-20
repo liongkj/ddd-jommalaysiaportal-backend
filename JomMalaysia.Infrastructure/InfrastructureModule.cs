@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using JomMalaysia.Core.Interfaces;
@@ -8,7 +9,7 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Repositories;
 
 namespace JomMalaysia.Infrastructure
 {
-    public class InfrastructureModule : Module
+    public class InfrastructureModule : Autofac.Module
     {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
@@ -20,8 +21,11 @@ namespace JomMalaysia.Infrastructure
                 .WithParameter("databaseName", DatabaseName)
                 .SingleInstance();
 
-            builder.RegisterType<MerchantRepository>().As<IMerchantRepository>().InstancePerLifetimeScope();
-           
+
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                   .Where(repo => repo.Name.EndsWith("Repository"))
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
         }
     }
 }

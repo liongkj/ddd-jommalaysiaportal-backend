@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public class Email : ValueObject, IEquatable<Email>, IEquatable<string>
+    public class Email : ValueObjectBase, IEquatable<Email>, IEquatable<string>
     {
         private Email() { }
 

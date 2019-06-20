@@ -6,11 +6,11 @@ using Moq;
 using Microsoft.AspNetCore.Mvc;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.Services.Merchants.UseCaseResponses;
 using JomMalaysia.Core.UseCases;
-using JomMalaysia.Core.Services.UseCaseRequests;
+using JomMalaysia.Core.Services.Merchants.UseCaseRequests;
 
-using JomMalaysia.Api.UseCases.CreateMerchant;
+using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 
 namespace JomMalaysia.Test.UseCases
 {

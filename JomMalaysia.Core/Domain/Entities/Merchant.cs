@@ -10,29 +10,50 @@ namespace JomMalaysia.Core.Domain.Entities
     {
         public Merchant()
         {
-            Listings = new HashSet<Listing>();
+
         }
         public string MerchantId { get; private set; }
         public string CompanyName { get; private set; }
         public string CompanyRegistrationNumber { get; private set; }
         public Address Address { get; private set; }
-        public ICollection<Listing> Listings { get; private set; }
-        public ICollection<Contact> Contacts { get; private set; }
 
-        public Merchant(string CompanyName, string CompanyRegistrationNumber, Address Address )
+        private readonly Collection<Listing> _listingItems;
+        public IReadOnlyCollection<Listing> Listings => _listingItems;
+
+        private readonly Collection<Contact> _contactItems;
+        public IReadOnlyCollection<Contact> Contacts => _contactItems;
+
+        public Merchant(string CompanyName, string CompanyRegistrationNumber, Address Address)
         {
-            Listings = new Collection<Listing>();
-            Contacts = new Collection<Contact>();
-            
+            _listingItems = new Collection<Listing>();
+            _contactItems = new Collection<Contact>();
+
+
             this.CompanyName = CompanyName;
             this.CompanyRegistrationNumber = CompanyRegistrationNumber;
             this.Address = Address ?? throw new Exception("Address is required");
 
         }
 
-        public Merchant(string CompanyName, string CompanyRegistrationNumber, Address Address, ICollection<Contact> contacts) : this(CompanyName, CompanyRegistrationNumber, Address)
+        public void AddContact(Contact c)
         {
-            Contacts = contacts;
+
+            if (c != null)
+            {
+                _contactItems.Add(c);
+            }
+        }
+    
+
+    public void DeleteContact(string name, string email, string phone)
+    {
+        Contact UpdateContact = Contact.For(name, email, phone);
+
+        if (_contactItems.Contains(UpdateContact))
+        {
+            _contactItems.Remove(UpdateContact);
         }
     }
 }
+    }
+
