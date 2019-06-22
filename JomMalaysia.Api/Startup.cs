@@ -82,7 +82,7 @@ namespace JomMalaysia.Api
             var container = builder.Build();
             // Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(container);
-        
+
         }
         private void SetOpenIdConnectOptions(OpenIdConnectOptions options)
         {
@@ -158,6 +158,7 @@ namespace JomMalaysia.Api
             //app.UseAuthentication();
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

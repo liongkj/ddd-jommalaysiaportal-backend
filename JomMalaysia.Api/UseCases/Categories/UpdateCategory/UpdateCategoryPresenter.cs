@@ -5,7 +5,7 @@ using JomMalaysia.Core.Services.Categories.UseCaseResponses;
 
 namespace JomMalaysia.Api.UseCases.Categories.UpdateCategory
 {
-    public class UpdateCategoryPresenter : IOutputPort<UpdateCategoryResponse>, IOutputPort<CreateSubcategoryResponse>
+    public class UpdateCategoryPresenter : IOutputPort<UpdateCategoryResponse>, IOutputPort<CreateSubcategoryResponse>,IOutputPort<DeleteSubcategoryResponse>
     {
         public JsonContentResult ContentResult { get; }
 
@@ -21,6 +21,12 @@ namespace JomMalaysia.Api.UseCases.Categories.UpdateCategory
         }
 
         public void Handle(CreateSubcategoryResponse response)
+        {
+            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
+            ContentResult.Content = JsonSerializer.SerializeObject(response);
+        }
+
+        public void Handle(DeleteSubcategoryResponse response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
             ContentResult.Content = JsonSerializer.SerializeObject(response);

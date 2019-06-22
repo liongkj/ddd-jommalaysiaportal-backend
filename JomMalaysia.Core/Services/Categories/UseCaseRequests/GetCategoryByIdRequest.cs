@@ -4,13 +4,14 @@ using JomMalaysia.Core.Services.Categories.UseCaseResponses;
 
 namespace JomMalaysia.Core.Services.Categories.UseCaseRequests
 {
-    public class GetCategoryRequest : IUseCaseRequest<GetCategoryResponse>
+    public class GetCategoryByIdRequest : IUseCaseRequest<GetCategoryResponse>
     {
-        public string Id { get; }
 
-        public GetCategoryRequest(string CategoryId)
+        public string Id { get; }
+        public GetCategoryByIdRequest(string Id)
         {
-            Id = CategoryId;
+            this.Id = Id;
+
         }
     }
 }

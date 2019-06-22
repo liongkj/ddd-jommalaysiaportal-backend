@@ -11,7 +11,6 @@ namespace JomMalaysia.Core.Services.Categories.UseCaseRequests
     {
         public string CategoryId { get; set; }
         public ICollection<Subcategory> Subcategories { get; private set; }
-        public Category Category { get; private set; }
 
         public DeleteCategoryRequest(string CategoryId)
         {

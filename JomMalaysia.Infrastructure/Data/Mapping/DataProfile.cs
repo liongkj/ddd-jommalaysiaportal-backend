@@ -27,12 +27,14 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 ;
 
             CreateMap<Category, CategoryDto>()
-
+                .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
             //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
             ;
 
             CreateMap<Subcategory, SubcategoryDto>()
-                
+                    .ForMember(s => s.SubcategoryName, opt => opt.MapFrom(sd => sd.SubcategoryName))
+                .ForMember(s => s.SubcategoryNameMs, opt => opt.MapFrom(sd => sd.SubcategoryNameMs))
+                .ForMember(s => s.SubcategoryNameZh, opt => opt.MapFrom(sd => sd.SubcategoryNameZh))
                 ;
             //dto --> domain
 
@@ -48,10 +50,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForPath(l => l.Merchant.MerchantId, opt => opt.MapFrom(ld => ld.MerchantId))
                 ;
             CreateMap<CategoryDto, Category>()
-                .ForMember(c => c.Subcategories,opt=>opt.MapFrom(cd=>cd.Subcategories))
+                .ForMember(c=>c.CategoryId,opt=>opt.MapFrom(cd=>cd.Id))
+                .ForMember(c => c.Subcategories, opt => opt.MapFrom(cd => cd.Subcategories))
                 ;
 
-            CreateMap<SubcategoryDto,Subcategory>()
+            CreateMap<SubcategoryDto, Subcategory>()
                 .ForMember(s => s.SubcategoryName, opt => opt.MapFrom(sd => sd.SubcategoryName))
                 .ForMember(s => s.SubcategoryNameMs, opt => opt.MapFrom(sd => sd.SubcategoryNameMs))
                 .ForMember(s => s.SubcategoryNameZh, opt => opt.MapFrom(sd => sd.SubcategoryNameZh))

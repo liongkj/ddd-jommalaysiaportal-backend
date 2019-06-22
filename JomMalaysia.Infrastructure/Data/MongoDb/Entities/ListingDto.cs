@@ -17,13 +17,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string Description { get; set; }
         public int ListingTypeId { get; set; }
         public Address ListingAddress { get; set; }
-        
+
         public CategoryDto Category { get; set; }
         public ICollection<string> Tags { get; set; }
         public string ListingLogo { get; set; }
         public string CoverPhoto { get; set; }
         public string ExteriorPhoto { get; set; }
         public bool isPublished { get; set; }
-        
+
     }
 }

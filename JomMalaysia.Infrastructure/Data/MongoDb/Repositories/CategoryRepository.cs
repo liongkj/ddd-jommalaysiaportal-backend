@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +72,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             var filter = Builders<CategoryDto>.Filter.Eq(cd => cd.Id, id);
             var result = _db.Find(filter).SingleOrDefault();
-       
+
             var found = _mapper.Map<CategoryDto, Category>(result);
 
             return new GetCategoryResponse(found, true, found.CategoryName + "Found by id");
@@ -91,25 +93,70 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             throw new NotImplementedException();
         }
 
-        
+
 
         public UpdateCategoryResponse Update(string id, Category Category)
         {
             throw new NotImplementedException();
         }
 
+
+        //subcategory
+        public GetAllSubcategoryResponse GetAllSubcategory(string categoryId)
+        {
+            if (categoryId == null)
+            {
+                throw new ArgumentNullException(nameof(categoryId));
+            }
+
+            //var filter = Builders<CategoryDto>.Filter.Eq(cd => cd.Id, categoryId);
+            var result = _db
+            .AsQueryable()
+            .Where(x => x.Id == categoryId)
+            .SelectMany(x => x.Subcategories)
+            .ToList();
+
+
+            List<Subcategory> subs = _mapper.Map<List<Subcategory>>(result);
+            return new GetAllSubcategoryResponse(subs, true);
+        }
+
         public CreateSubcategoryResponse CreateSubcategory(string categoryId, Subcategory subcategory)
         {
-            SubcategoryDto sub = _mapper.Map< Subcategory, SubcategoryDto>(subcategory);
+            if (categoryId == null)
+            {
+                throw new ArgumentNullException(nameof(categoryId));
+            }
+
+            if (subcategory == null)
+            {
+                throw new ArgumentNullException(nameof(subcategory));
+            }
+
+            SubcategoryDto sub = _mapper.Map<Subcategory, SubcategoryDto>(subcategory);
             var filter = Builders<CategoryDto>.Filter.Eq(cd => cd.Id, categoryId);
-            var update = Builders<CategoryDto>.Update.AddToSet(cd=>cd.Subcategories, sub);
+            var update = Builders<CategoryDto>.Update.Push(cd => cd.Subcategories, sub);
             var result = _db.UpdateOne(filter, update);
+
 
             if (result.ModifiedCount == 1)
                 return new CreateSubcategoryResponse(result.ToString(), true);
             else return new CreateSubcategoryResponse(result.ToString(), false);
-
-
         }
+
+        public DeleteSubcategoryResponse DeleteSubcategory(string categoryId, Subcategory subcategory)
+        {
+            SubcategoryDto sub = _mapper.Map<Subcategory, SubcategoryDto>(subcategory);
+            var filter = Builders<CategoryDto>.Filter.Eq(cd => cd.Id, categoryId);
+            var update = Builders<CategoryDto>.Update.Pull(cd => cd.Subcategories, sub);
+            var result = _db.UpdateOne(filter, update);
+
+
+            if (result.ModifiedCount == 1)
+                return new DeleteSubcategoryResponse(result.ToString(), true);
+            else return new DeleteSubcategoryResponse(result.ToString(), false);
+        }
+
+
     }
 }

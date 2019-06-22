@@ -20,12 +20,12 @@ namespace JomMalaysia.Core.Domain.Entities
         public string CoverPhoto { get; set; }
         public string ExteriorPhoto { get; set; }
 
-
+        public Contact contact { get; set; }
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; private set; }
         public Category Category { get; set; }
-        
-        
+
+
         public Listing()
         {
             Tags = new Collection<string>();
@@ -43,13 +43,22 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public void Publish()
         {
-            
+
         }
 
         public void UpdateCategory(Category category) { }
         public void UpdatePhoto() { }
+        public void UpdateContact(Contact contact)
+        {
+            contact = Contact.For(contact.Name.ToString(), contact.Email.ToString(), contact.Phone.ToString());
+        }
         public void RemovePhoto() { }
         public void UpdateDescription() { }
+
+        public void UpdateAds()
+        {
+
+        }
 
         public void UpdateKeywords(Collection<string> tags)
         {

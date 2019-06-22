@@ -1,36 +1,35 @@
-﻿
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.Interfaces.UseCases.Categories;
-
 using JomMalaysia.Core.Services.Categories.UseCaseRequests;
 using JomMalaysia.Core.Services.Categories.UseCaseResponses;
 
 namespace JomMalaysia.Core.UseCases.CategoryUseCase
 {
-    public class GetCategoryUseCase : IGetCategoryUseCase
+    public class GetAllSubcategoryUseCase : IGetAllSubcategoryUseCase
     {
         private readonly ICategoryRepository _CategoryRepository;
 
-        public GetCategoryUseCase(ICategoryRepository CategoryRepository)
+        public GetAllSubcategoryUseCase(ICategoryRepository CategoryRepository)
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(GetCategoryRequest message, IOutputPort<GetCategoryResponse> outputPort)
+        public bool Handle(GetAllSubcategoryRequest message, IOutputPort<GetAllSubcategoryResponse> outputPort)
         {
-            var response = _CategoryRepository.FindById(message.Id);
+
+            var response = _CategoryRepository.GetAllSubcategory(message.Id);
             if (!response.Success)
             {
-                outputPort.Handle(new GetCategoryResponse(response.Errors));
+                outputPort.Handle(new GetAllSubcategoryResponse(response.Errors));
             }
-            if (response.Category != null)
+            if (response != null)
             {
-                outputPort.Handle(new GetCategoryResponse(response.Category, true));
+                outputPort.Handle(new GetAllSubcategoryResponse(response.Subcategories, true));
                 return response.Success;
             }
             else
             {
-                outputPort.Handle(new GetCategoryResponse(response.Errors, false, "Category Deleted or Not Found"));
+                outputPort.Handle(new GetAllSubcategoryResponse(response.Errors, false, "Category Deleted or Not Found"));
                 return false;
             }
         }

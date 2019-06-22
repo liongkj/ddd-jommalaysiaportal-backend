@@ -21,9 +21,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase
         }
         public bool Handle(CreateListingRequest message, IOutputPort<CreateListingResponse> outputPort)
         {
-            Listing listing =  new Listing(message.MerchantId,message.ListingName,message.Description,message.Category,message.ListingLocation);
-            
-  
+
+
+            //validate listing
+            //create listing
+            Listing listing = new Listing(message.MerchantId, message.ListingName, message.Description, message.Category, message.ListingLocation);
+            //add to category collection
+
             var response = _listingRepository.CreateListing(listing);
             outputPort.Handle(response.Success ? new CreateListingResponse(response.Id, true) : new CreateListingResponse(response.Errors));
             return response.Success;

@@ -18,10 +18,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
     {
         private readonly IMongoCollection<ListingDto> _db;
         public readonly IMapper _mapper;
+        MongoClient client;
 
         public ListingRepository(IApplicationDbContext settings, IMapper mapper)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
             _db = database.GetCollection<ListingDto>("Listing");
@@ -33,6 +34,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             ListingDto NewListing = _mapper.Map<Listing, ListingDto>(merchant);
             try
             {
+                var session = client.StartSession();
                 //TODO
                 _db.InsertOne(NewListing);
                 return new CreateListingResponse(NewListing.Id, true);
@@ -56,8 +58,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             var result =
                 await _db.Find(md => true).ToListAsync();
-            var merchants = _mapper.Map<List<ListingDto>, List < Listing >> (result);
-            
+            var merchants = _mapper.Map<List<ListingDto>, List<Listing>>(result);
+
             return new GetAllListingResponse(merchants, true);
 
         }
@@ -73,9 +75,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception ex)
             {
-                return new DeleteListingResponse((IEnumerable<string>) ex,false,"mongodb: Listing delete failed");
+                return new DeleteListingResponse((IEnumerable<string>)ex, false, "mongodb: Listing delete failed");
             }
-            return new DeleteListingResponse(id, true,"Listing deleted successfully");
+            return new DeleteListingResponse(id, true, "Listing deleted successfully");
         }
 
         public GetListingResponse FindById(string id)
@@ -90,14 +92,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             throw new NotImplementedException();
         }
-         
+
         public UpdateListingResponse Update(string id, Listing newListing)
         {
-            ListingDto m =_mapper.Map<Listing, ListingDto>(newListing);
-            _db.ReplaceOne(md =>md.Id == id, m);
+            ListingDto m = _mapper.Map<Listing, ListingDto>(newListing);
+            _db.ReplaceOne(md => md.Id == id, m);
             return new UpdateListingResponse(m.Id, true, "Listing " + m.Id + " updated");
         }
 
-        
+
     }
 }

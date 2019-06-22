@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
     public class Address : ValueObjectBase
     {
 
-        public static Address For(string add1,string add2, string city, string state, string postalCode, string country)
+        public static Address For(string add1, string add2, string city, string state, string postalCode, string country)
         {
             if (string.IsNullOrWhiteSpace(add1))
             {
@@ -40,7 +40,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             }
 
             var add = new Address();
-            
+
             try
             {
                 //format address 

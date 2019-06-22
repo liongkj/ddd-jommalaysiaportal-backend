@@ -6,6 +6,7 @@ using JomMalaysia.Core.Domain.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
+
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
 {
     public class CategoryDto

@@ -30,5 +30,6 @@ namespace JomMalaysia.Core.Domain.Entities
             Subcategories.Add(sub);
             return sub;
         }
+
     }
 }

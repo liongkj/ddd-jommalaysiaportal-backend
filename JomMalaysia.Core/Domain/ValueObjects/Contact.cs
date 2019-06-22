@@ -5,7 +5,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public class Contact:ValueObjectBase
+    public class Contact : ValueObjectBase
     {
 
         private Contact()
@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             Name = (Name)name;
             Email = (Email)email;
             Phone = (Phone)phone;
-           
+
         }
 
         public static Contact For(string name, string email, string phone)
@@ -37,7 +37,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         {
             throw new NotImplementedException();
         }
-        
+
         public Name Name { get; private set; }
         public Email Email { get; private set; }
         public Phone Phone { get; private set; }
