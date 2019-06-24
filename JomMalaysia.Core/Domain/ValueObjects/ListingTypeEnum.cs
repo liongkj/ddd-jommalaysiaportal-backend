@@ -15,5 +15,11 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         {
 
         }
+
+        public static ListingTypeEnum For(string enumstring)
+        {
+
+            throw new NotImplementedException();
+        }
     }
 }

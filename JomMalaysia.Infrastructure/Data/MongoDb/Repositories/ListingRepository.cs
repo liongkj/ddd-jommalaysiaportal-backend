@@ -14,29 +14,39 @@ using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
-    public class ListingRepository : IListingRepository
+    public class ListingRepository :IListingRepository
     {
         private readonly IMongoCollection<ListingDto> _db;
+        
         public readonly IMapper _mapper;
-        MongoClient client;
 
-        public ListingRepository(IApplicationDbContext settings, IMapper mapper)
+        private readonly IMongoDbConfiguration _context;
+        public ListingRepository(IMongoDbConfiguration settings, IMapper mapper,IMongoDbConfiguration context)
         {
-            client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            _context = context;
 
-            _db = database.GetCollection<ListingDto>("Listing");
+            _db = settings.Database.GetCollection<ListingDto>("Listing");
+
             _mapper = mapper;
         }
 
-        public CreateListingResponse CreateListing(Listing merchant)
+        public async Task<CreateListingResponse> CreateListing(IMongoClient client, IClientSessionHandle session, Listing listing)
         {
-            ListingDto NewListing = _mapper.Map<Listing, ListingDto>(merchant);
+
+            await _context.StartSession();
+            var listingdb = client.GetDatabase("jomn9").GetCollection<ListingDto>("Listing");
+            var categorydb = client.GetDatabase("jomn9").GetCollection<CategoryDto>("Category");
+            ListingDto NewListing = _mapper.Map<Listing, ListingDto>(listing);
+
+            session.StartTransaction(new TransactionOptions(readConcern: ReadConcern.Snapshot, writeConcern: WriteConcern.WMajority));
             try
             {
-                var session = client.StartSession();
+                var filter = Builders<SubcategoryDto>.Filter.Eq(c => c.Id, NewListing.SubcategoryDto.Id);
+                var update = Builders<SubcategoryDto>.Update.Push(cd => cd.ListingIds, NewListing.Id);
+                listingdb.InsertOne(session, NewListing);
+
                 //TODO
-                _db.InsertOne(NewListing);
+
                 return new CreateListingResponse(NewListing.Id, true);
             }
             catch (MongoWriteException e)
@@ -53,38 +63,18 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
         }
 
-
-        public async Task<GetAllListingResponse> GetAllListings()
+        public Task<CreateListingResponse> CreateListing(Listing listing)
         {
-            var result =
-                await _db.Find(md => true).ToListAsync();
-            var merchants = _mapper.Map<List<ListingDto>, List<Listing>>(result);
-
-            return new GetAllListingResponse(merchants, true);
-
+            throw new NotImplementedException();
         }
 
+        public Task<GetAllListingResponse> GetAllListings()
+        {
+            throw new NotImplementedException();
+        }
 
         public DeleteListingResponse Delete(string id)
         {
-            try
-            {
-                _db.DeleteOne(m => m.Id == id);
-                //TODO
-                //Soft Delete
-            }
-            catch (Exception ex)
-            {
-                return new DeleteListingResponse((IEnumerable<string>)ex, false, "mongodb: Listing delete failed");
-            }
-            return new DeleteListingResponse(id, true, "Listing deleted successfully");
-        }
-
-        public GetListingResponse FindById(string id)
-        {
-            //ListingDto listing = _db.Find(m => m.Id == id).FirstOrDefault();
-            //var found = _mapper.Map<ListingDto, Listing>(listing);
-            //return new GetListingResponse( "Found by id");
             throw new NotImplementedException();
         }
 
@@ -93,13 +83,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             throw new NotImplementedException();
         }
 
-        public UpdateListingResponse Update(string id, Listing newListing)
+        public GetListingResponse FindById(string id)
         {
-            ListingDto m = _mapper.Map<Listing, ListingDto>(newListing);
-            _db.ReplaceOne(md => md.Id == id, m);
-            return new UpdateListingResponse(m.Id, true, "Listing " + m.Id + " updated");
+            throw new NotImplementedException();
         }
 
-
+        public UpdateListingResponse Update(string id, Listing listing)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

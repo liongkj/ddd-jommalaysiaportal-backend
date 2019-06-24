@@ -8,7 +8,7 @@ using JomMalaysia.Core.Services.Listings.UseCaseResponses;
 
 namespace JomMalaysia.Core.Interfaces.UseCases.Listings
 {
-    public interface ICreateListingUseCase : IUseCaseHandler<CreateListingRequest, CreateListingResponse>
+    public interface ICreateListingUseCase : IUseCaseHandlerAsync<CreateListingRequest, CreateListingResponse>
     {
 
     }

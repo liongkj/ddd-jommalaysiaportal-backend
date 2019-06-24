@@ -19,6 +19,11 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
         }
         public async Task<bool> Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
         {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             var response = await _merchantRepository.GetAllMerchants();
             if (!response.Success)
             {

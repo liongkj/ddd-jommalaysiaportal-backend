@@ -21,12 +21,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         private readonly IMongoCollection<MerchantDto> _merchants;
         public readonly IMapper _mapper;
 
-        public MerchantRepository(IApplicationDbContext settings, IMapper mapper)
+        public MerchantRepository(IMongoDbConfiguration settings, IMapper mapper)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+           
+            var database = settings.Database.GetCollection<MerchantDto>("Merchant");
 
-            _merchants = database.GetCollection<MerchantDto>("Merchant");
             _mapper = mapper;
         }
 

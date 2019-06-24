@@ -8,8 +8,8 @@ namespace JomMalaysia.Core.Domain.Entities
 {
     public class Listing
     {
+        //TODO : Factory Patter? Create Event, Government, Social and Private
         private string MerchantId;
-
         public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
@@ -20,9 +20,9 @@ namespace JomMalaysia.Core.Domain.Entities
         public string CoverPhoto { get; set; }
         public string ExteriorPhoto { get; set; }
 
-        public Contact contact { get; set; }
+        public Contact Contact { get; set; }
         public PublishStatus isPublish { get; set; }
-        public ListingTypeEnum ListingType { get; private set; }
+        public ListingTypeEnum ListingType { get; set; }
         public Category Category { get; set; }
 
 
@@ -50,7 +50,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public void UpdatePhoto() { }
         public void UpdateContact(Contact contact)
         {
-            contact = Contact.For(contact.Name.ToString(), contact.Email.ToString(), contact.Phone.ToString());
+            Contact = Contact.For(contact.Name.ToString(), contact.Email.ToString(), contact.Phone.ToString());
         }
         public void RemovePhoto() { }
         public void UpdateDescription() { }

@@ -58,8 +58,9 @@ namespace JomMalaysia.Api
             .AddCookie()
             .AddOpenIdConnect("Auth0", options => SetOpenIdConnectOptions(options));
             //Add mongodb
-            services.Configure<ApplicationDbContext>(Configuration.GetSection(nameof(ApplicationDbContext)));
-            services.AddSingleton<IApplicationDbContext>(sp => sp.GetRequiredService<IOptions<ApplicationDbContext>>().Value);
+
+            services.Configure<MongoDbContext>(Configuration.GetSection(nameof(MongoDbContext)));
+            services.AddSingleton<IMongoDbConfiguration>(sp => sp.GetRequiredService<IOptions<MongoDbContext>>().Value);
             services.AddSingleton<MerchantRepository>();
             //Add Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

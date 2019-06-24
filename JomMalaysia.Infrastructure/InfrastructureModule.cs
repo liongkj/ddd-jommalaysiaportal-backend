@@ -15,8 +15,8 @@ namespace JomMalaysia.Infrastructure
         public string DatabaseName { get; set; }
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ApplicationDbContext>()
-                .As<ApplicationDbContext>()
+            builder.RegisterType<MongoDbContext>()
+                .As<MongoDbContext>()
                 .WithParameter("connectionString", ConnectionString)
                 .WithParameter("databaseName", DatabaseName)
                 .SingleInstance();

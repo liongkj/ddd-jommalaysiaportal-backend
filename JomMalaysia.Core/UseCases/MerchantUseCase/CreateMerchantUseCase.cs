@@ -21,6 +21,11 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
         }
         public bool Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
         {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             Merchant merchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address);
             if (message.Contacts != null)
             {

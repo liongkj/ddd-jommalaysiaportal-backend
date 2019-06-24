@@ -20,12 +20,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         private readonly IMongoCollection<CategoryDto> _db;
         public readonly IMapper _mapper;
 
-        public CategoryRepository(IApplicationDbContext settings, IMapper mapper)
+        public CategoryRepository(IMongoDbConfiguration settings, IMapper mapper)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _db = database.GetCollection<CategoryDto>("Category");
+            
+            _db = settings.Database.GetCollection<CategoryDto>("Category");
             _mapper = mapper;
         }
 

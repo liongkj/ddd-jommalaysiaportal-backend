@@ -18,6 +18,11 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase
 
         public bool Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
         {
+            if (message.MerchantId == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             Merchant merchant = (_merchant.FindById(message.MerchantId)).Merchant;
             if (merchant == null)
             {
