@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JomMalaysia.Api.UseCases.Categories.GetCategory;
+﻿using JomMalaysia.Api.UseCases.Categories.GetCategory;
 using JomMalaysia.Api.UseCases.Categories.UpdateCategory;
-using JomMalaysia.Core.Interfaces.UseCases.Categories;
-using JomMalaysia.Core.Services.Categories.UseCaseRequests;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Categories

@@ -2,15 +2,16 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Api.UseCases.Categories.CreateCategory;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Interfaces.UseCases.Categories;
-using JomMalaysia.Core.Services.Categories.UseCaseRequests;
-using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using JomMalaysia.Api.UseCases.Categories.DeleteCategory;
 using JomMalaysia.Api.UseCases.Categories.GetCategory;
 using JomMalaysia.Api.UseCases.Categories.UpdateCategory;
+using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Categories
 {

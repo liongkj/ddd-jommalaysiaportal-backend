@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using JomMalaysia.Core.Domain.Entities;
+﻿using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.Merchants.UseCaseRequests;
-using JomMalaysia.Core.Services.Merchants.UseCaseResponses;
-using JomMalaysia.Core.UseCases.MerchantUseCase;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
 using Moq;
 using Xunit;
 

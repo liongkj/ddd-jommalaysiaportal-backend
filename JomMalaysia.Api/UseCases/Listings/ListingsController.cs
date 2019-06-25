@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using JomMalaysia.Api.UseCases.Listings.CreateListing;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Interfaces.UseCases.Listings;
-using JomMalaysia.Core.Services.Listings.UseCaseRequests;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
+using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Listings
@@ -60,9 +55,10 @@ namespace JomMalaysia.Api.UseCases.Listings
             }
             Listing l = _mapper.Map<ListingDto, Listing>(request);
 
-            var req = new CreateListingRequest(request.MerchantId,l);
+            var req = l;
+            //new CreateListingRequest(request.MerchantId,l);
 
-            _createListingUseCase.Handle(req, _createListingPresenter);
+            //_createListingUseCase.Handle(req, _createListingPresenter);
             return _createListingPresenter.ContentResult;
         }
     }

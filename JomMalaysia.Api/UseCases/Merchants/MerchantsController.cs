@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using JomMalaysia.Api.UseCases.Merchants.DeleteMerchant;
 using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Interfaces.UseCases.Merchants;
-using JomMalaysia.Core.Services.Merchants.UseCaseRequests;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Merchants

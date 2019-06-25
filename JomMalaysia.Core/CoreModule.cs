@@ -1,9 +1,6 @@
 ﻿
 using System.Reflection;
 using Autofac;
-using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Interfaces.UseCases;
-using JomMalaysia.Core.UseCases.MerchantUseCase;
 
 namespace JomMalaysia.Core
 {

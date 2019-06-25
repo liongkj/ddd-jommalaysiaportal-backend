@@ -2,7 +2,7 @@
 using System.Net;
 using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.Listings.UseCaseResponses;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 
 namespace JomMalaysia.Api.UseCases.Listings.CreateListing
 {

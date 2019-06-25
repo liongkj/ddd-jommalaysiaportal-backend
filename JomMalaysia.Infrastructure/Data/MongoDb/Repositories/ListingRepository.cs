@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.Listings.UseCaseResponses;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
+using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
+using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
@@ -20,12 +18,12 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         
         public readonly IMapper _mapper;
 
-        private readonly IMongoDbConfiguration _context;
-        public ListingRepository(IMongoDbConfiguration settings, IMapper mapper,IMongoDbConfiguration context)
+        private readonly IMongoDbContext _context;
+        public ListingRepository(IMongoDbContext context, IMapper mapper)
         {
-            _context = context;
+            
 
-            _db = settings.Database.GetCollection<ListingDto>("Listing");
+            _db = context.Database.GetCollection<ListingDto>("Listing");
 
             _mapper = mapper;
         }

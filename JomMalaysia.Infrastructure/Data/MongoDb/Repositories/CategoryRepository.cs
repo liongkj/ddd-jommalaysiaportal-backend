@@ -1,16 +1,16 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using System.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.Services.Categories.UseCaseResponses;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
@@ -20,10 +20,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         private readonly IMongoCollection<CategoryDto> _db;
         public readonly IMapper _mapper;
 
-        public CategoryRepository(IMongoDbConfiguration settings, IMapper mapper)
+        public CategoryRepository(IMongoDbContext context, IMapper mapper)
         {
             
-            _db = settings.Database.GetCollection<CategoryDto>("Category");
+            _db = context.Database.GetCollection<CategoryDto>("Category");
             _mapper = mapper;
         }
 

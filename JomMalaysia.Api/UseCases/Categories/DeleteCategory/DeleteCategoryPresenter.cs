@@ -2,7 +2,7 @@
 using System.Net;
 using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.Categories.UseCaseResponses;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 
 namespace JomMalaysia.Api.UseCases.Categories.DeleteCategory
 {

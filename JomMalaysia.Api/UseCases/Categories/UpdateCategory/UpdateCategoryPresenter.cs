@@ -1,7 +1,9 @@
 using System.Net;
 using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.Categories.UseCaseResponses;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 
 namespace JomMalaysia.Api.UseCases.Categories.UpdateCategory
 {
