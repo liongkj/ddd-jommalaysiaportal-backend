@@ -16,6 +16,6 @@ namespace JomMalaysia.Core.Interfaces
         GetMerchantResponse FindByName(string name);
         GetMerchantResponse FindById(string id);
         UpdateMerchantResponse Update(string id, Merchant merchant);
-        
+
     }
 }

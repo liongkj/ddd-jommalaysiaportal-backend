@@ -22,7 +22,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public CategoryRepository(IMongoDbConfiguration settings, IMapper mapper)
         {
-            
+
             _db = settings.Database.GetCollection<CategoryDto>("Category");
             _mapper = mapper;
         }
@@ -132,6 +132,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
 
             SubcategoryDto sub = _mapper.Map<Subcategory, SubcategoryDto>(subcategory);
+            sub.Id = ObjectId.GenerateNewId().ToString();
             var filter = Builders<CategoryDto>.Filter.Eq(cd => cd.Id, categoryId);
             var update = Builders<CategoryDto>.Update.Push(cd => cd.Subcategories, sub);
             var result = _db.UpdateOne(filter, update);
@@ -155,6 +156,19 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             else return new DeleteSubcategoryResponse(result.ToString(), false);
         }
 
+        public UpdateCategoryResponse UpdateSubcategory(string subcategoryId, Subcategory subcategory)
+        {
+            SubcategoryDto sub = _mapper.Map<Subcategory, SubcategoryDto>(subcategory);
+
+
+            var filter = Builders<CategoryDto>.Filter.Eq(sub.Id, subcategoryId);
+            var update = Builders<CategoryDto>.Update.Set("Subcategories.", sub);
+            var result = _db.UpdateOne(filter, update);
+            if (result.ModifiedCount == 1)
+                return new UpdateCategoryResponse(result.ToString(), true);
+            else return new UpdateCategoryResponse(result.ToString(), false);
+
+        }
 
     }
 }

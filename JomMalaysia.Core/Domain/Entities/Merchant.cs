@@ -35,6 +35,23 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
+        public Listing AddListing(Listing newListing)
+        {
+            newListing.Merchant = this;
+            _listingItems.Add(newListing);
+            return newListing;
+        }
+
+        public bool RemoveListing(Listing removeListing)
+        {
+            if (removeListing.isPublish.IsPublished)
+            {
+                return false;
+            }
+            _listingItems.Remove(removeListing);
+            return true;
+        }
+
         public void AddContact(Contact c)
         {
 
@@ -43,17 +60,16 @@ namespace JomMalaysia.Core.Domain.Entities
                 _contactItems.Add(c);
             }
         }
-    
 
-    public void DeleteContact(string name, string email, string phone)
-    {
-        Contact UpdateContact = Contact.For(name, email, phone);
 
-        if (_contactItems.Contains(UpdateContact))
+        public void DeleteContact(string name, string email, string phone)
         {
-            _contactItems.Remove(UpdateContact);
+            Contact UpdateContact = Contact.For(name, email, phone);
+
+            if (_contactItems.Contains(UpdateContact))
+            {
+                _contactItems.Remove(UpdateContact);
+            }
         }
     }
 }
-    }
-

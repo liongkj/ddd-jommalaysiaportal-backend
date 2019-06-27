@@ -16,23 +16,34 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase
     {
         private readonly IListingRepository _listingRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMerchantRepository _merchantRepository;
+        private readonly IMongoDbConfiguration _db;
 
-        public CreateListingUseCase(IListingRepository listingRepository,ICategoryRepository categoryRepository)
+        public CreateListingUseCase(IListingRepository listingRepository, ICategoryRepository categoryRepository,
+        IMerchantRepository merchantRepository)
         {
+            _merchantRepository = merchantRepository;
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
         }
         public async Task<bool> Handle(CreateListingRequest message, IOutputPort<CreateListingResponse> outputPort)
         {
+            //create listing
+            ListingFactory lf = new ListingFactory();
+            Listing NewListing = lf.GetListing(message.ListingType.ToString());
+            //find merchant and add to merchant
+            var merchant = _merchantRepository.FindById(message.MerchantId).Merchant;
+            merchant.AddListing(NewListing);
 
-            //TODO
+
             var subcategory = _categoryRepository.GetAllSubcategory(message.Category.CategoryId);
-
             //validate listing
             var category = message.Category;
-            //create listing
-            Listing NewListing = new Listing(message.MerchantId, message.ListingName, message.Description, message.Category, message.ListingLocation);
-            
+
+            //start transaction
+            await _db.StartSession();
+            //add to listing collection
+
             //add to category collection
 
             var response = _listingRepository.CreateListing(NewListing).Result;
@@ -40,6 +51,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase
             return response.Success;
         }
 
-        
+
     }
 }

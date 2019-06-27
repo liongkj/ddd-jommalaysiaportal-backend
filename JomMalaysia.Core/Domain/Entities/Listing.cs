@@ -6,7 +6,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
-    public class Listing
+    public abstract class Listing
     {
         //TODO : Factory Patter? Create Event, Government, Social and Private
         private string MerchantId;
@@ -20,6 +20,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string CoverPhoto { get; set; }
         public string ExteriorPhoto { get; set; }
 
+
         public Contact Contact { get; set; }
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
@@ -31,9 +32,8 @@ namespace JomMalaysia.Core.Domain.Entities
             Tags = new Collection<string>();
         }
 
-        public Listing(string merchantId, string listingName, string description, Category category, Location listingLocation)
+        public Listing(string listingName, string description, Category category, Location listingLocation)
         {
-            this.MerchantId = merchantId;
             ListingName = listingName;
             Description = description;
             Category = category;
@@ -41,10 +41,6 @@ namespace JomMalaysia.Core.Domain.Entities
             Tags = new Collection<string>();
         }
 
-        public void Publish()
-        {
-
-        }
 
         public void UpdateCategory(Category category) { }
         public void UpdatePhoto() { }

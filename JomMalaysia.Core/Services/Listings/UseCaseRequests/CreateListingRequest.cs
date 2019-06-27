@@ -11,10 +11,10 @@ namespace JomMalaysia.Core.Services.Listings.UseCaseRequests
 {
     public class CreateListingRequest : IUseCaseRequest<CreateListingResponse>
     {
-        public CreateListingRequest(string MerchantId, string ListingName, string Description, Category Category, Location Location, ListingTypeEnum listingType)
+        public CreateListingRequest(string MerchantId, string ListingName, string Description, Category Category, Subcategory Subcategory, Location Location, ListingTypeEnum listingType)
         {
             Tags = new Collection<string>();
-
+            Subcategory = Subcategory;
             this.MerchantId = MerchantId;
             this.ListingName = ListingName;
             this.Description = Description;
@@ -30,8 +30,9 @@ namespace JomMalaysia.Core.Services.Listings.UseCaseRequests
             this.Description = l.Description;
             this.Category = l.Category;
             this.ListingLocation = l.ListingLocation;
-          
+
         }
+        public Subcategory Subcategory { get; set; }
         public string MerchantId { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }

@@ -19,7 +19,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public ICollection<string> ListingIds { get; }
         public SubcategoryDto()
         {
-            ListingIds = new Collection<string>();
+            ListingIds = new List<string>();
         }
     }
 }
