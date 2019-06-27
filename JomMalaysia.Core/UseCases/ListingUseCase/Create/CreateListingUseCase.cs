@@ -10,7 +10,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         private readonly IListingRepository _listingRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMerchantRepository _merchantRepository;
-        private readonly IMongoDbConfiguration _db;
+        private readonly IMongoDbContext _db;
 
         public CreateListingUseCase(IListingRepository listingRepository, ICategoryRepository categoryRepository,
         IMerchantRepository merchantRepository)

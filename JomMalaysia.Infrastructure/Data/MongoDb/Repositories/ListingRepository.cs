@@ -12,17 +12,15 @@ using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
-    public class ListingRepository :IListingRepository
+    public class ListingRepository : IListingRepository
     {
         private readonly IMongoCollection<ListingDto> _db;
-        
+
         public readonly IMapper _mapper;
 
         private readonly IMongoDbContext _context;
         public ListingRepository(IMongoDbContext context, IMapper mapper)
         {
-            
-
             _db = context.Database.GetCollection<ListingDto>("Listing");
 
             _mapper = mapper;

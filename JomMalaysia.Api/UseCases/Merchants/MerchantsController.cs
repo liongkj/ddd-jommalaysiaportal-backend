@@ -30,7 +30,6 @@ namespace JomMalaysia.Api.UseCases.Merchants
         private readonly IUpdateMerchantUseCase _updateMerchantUseCase;
         private readonly UpdateMerchantPresenter _updateMerchantPresenter;
 
-
         public MerchantsController(IMapper mapper, ICreateMerchantUseCase createMerchantUseCase, CreateMerchantPresenter MerchantPresenter,
             IGetAllMerchantUseCase getAllMerchantUseCase, GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase, GetMerchantPresenter getMerchantPresenter,
             IDeleteMerchantUseCase deleteMerchantUseCase, DeleteMerchantPresenter deleteMerchantPresenter,

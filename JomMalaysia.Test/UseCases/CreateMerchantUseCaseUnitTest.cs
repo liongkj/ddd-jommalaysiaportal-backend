@@ -9,8 +9,7 @@ namespace JomMalaysia.Test.UseCases
 {
     public class CreateMerchantUseCaseUnitTest
     {
-        JomMalaysia.Core.UseCases.MerchantUseCase.Create;
-using 
+
         [Fact]
         public void Can_Create_Merchant()
         {

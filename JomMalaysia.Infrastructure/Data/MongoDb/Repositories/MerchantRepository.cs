@@ -22,7 +22,6 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public MerchantRepository(IMongoDbContext context, IMapper mapper)
         {
-
             _db = context.Database.GetCollection<MerchantDto>("Merchant");
 
             _mapper = mapper;
