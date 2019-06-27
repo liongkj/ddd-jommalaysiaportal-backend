@@ -23,9 +23,7 @@ using JomMalaysia.Core.Interfaces;
 using Microsoft.Extensions.Options;
 using JomMalaysia.Infrastructure.Data.MongoDb.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
-using JomMalaysia.Api.UseCases.Merchants;
-using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
-using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
+
 
 namespace JomMalaysia.Api
 {
@@ -59,9 +57,9 @@ namespace JomMalaysia.Api
             .AddOpenIdConnect("Auth0", options => SetOpenIdConnectOptions(options));
             //Add mongodb
 
-            services.Configure<MongoDbContext>(Configuration.GetSection(nameof(MongoDbContext)));
-            services.AddSingleton<IMongoDbConfiguration>(sp => sp.GetRequiredService<IOptions<MongoDbContext>>().Value);
-            services.AddSingleton<MerchantRepository>();
+            services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
+            services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
+            //services.AddSingleton<MerchantRepository>();
             //Add Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //add swagger
@@ -76,7 +74,7 @@ namespace JomMalaysia.Api
             // Now register our services with Autofac container.
             var builder = new ContainerBuilder();
             builder.RegisterModule(new CoreModule());
-            builder.RegisterModule(new InfrastructureModule());
+            builder.RegisterModule(new InfrastructureModule()) ;
             // Presenters
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
             builder.Populate(services);

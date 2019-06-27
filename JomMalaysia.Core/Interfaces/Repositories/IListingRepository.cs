@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Services.Listings.UseCaseResponses;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
+using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
+using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 
 namespace JomMalaysia.Core.Interfaces
 {

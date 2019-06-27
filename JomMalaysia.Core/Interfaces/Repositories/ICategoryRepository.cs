@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Services.Categories.UseCaseResponses;
-
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 
 namespace JomMalaysia.Core.Interfaces.Repositories
 {

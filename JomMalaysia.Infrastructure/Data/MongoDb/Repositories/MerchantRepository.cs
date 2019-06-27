@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.Merchants.UseCaseResponses;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
@@ -18,13 +17,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
     //https://github.com/dj-nitehawk/MongoDB.Entities/wiki/1.-Getting-Started
     public class MerchantRepository : IMerchantRepository
     {
-        private readonly IMongoCollection<MerchantDto> _merchants;
+        private readonly IMongoCollection<MerchantDto> _db;
         public readonly IMapper _mapper;
 
-        public MerchantRepository(IMongoDbConfiguration settings, IMapper mapper)
+        public MerchantRepository(IMongoDbContext context, IMapper mapper)
         {
-           
-            var database = settings.Database.GetCollection<MerchantDto>("Merchant");
+
+            _db = context.Database.GetCollection<MerchantDto>("Merchant");
 
             _mapper = mapper;
         }
@@ -34,7 +33,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             MerchantDto NewMerchant = _mapper.Map<Merchant, MerchantDto>(merchant);
             try
             {
-                _merchants.InsertOne(NewMerchant);
+                _db.InsertOne(NewMerchant);
                 return new CreateMerchantResponse(NewMerchant.Id, true);
             }
             catch (MongoWriteException e)
@@ -55,7 +54,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public async Task<GetAllMerchantResponse> GetAllMerchants()
         {
             var result =
-                await _merchants.Find(md => true).ToListAsync();
+                await _db.Find(md => true).ToListAsync();
             var merchants = _mapper.Map<List<MerchantDto>, List<Merchant>>(result);
 
             return new GetAllMerchantResponse(merchants, true);
@@ -72,7 +71,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             try
             {
-                _merchants.DeleteOne(m => m.Id == id);
+                _db.DeleteOne(m => m.Id == id);
                 //TODO
                 //Soft Delete
             }
@@ -85,7 +84,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public GetMerchantResponse FindById(string id)
         {
-            MerchantDto merchant = _merchants.Find(m => m.Id == id).FirstOrDefault();
+            MerchantDto merchant = _db.Find(m => m.Id == id).FirstOrDefault();
             var found = _mapper.Map<MerchantDto, Merchant>(merchant);
             return new GetMerchantResponse(found, true, merchant.CompanyName + "Found by id");
         }
@@ -98,7 +97,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public UpdateMerchantResponse Update(string id, Merchant newMerchant)
         {
             MerchantDto m = _mapper.Map<Merchant, MerchantDto>(newMerchant);
-            _merchants.ReplaceOne(md => md.Id == id, m);
+            _db.ReplaceOne(md => md.Id == id, m);
             return new UpdateMerchantResponse(m.Id, true, "Merchant " + m.Id + " updated");
         }
 

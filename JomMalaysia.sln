@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{480F83
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{A3BE860C-5899-4212-8BC0-758C9F827738}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{50EC0915-059C-49B2-9017-1BCD930EB6A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{50EC0915-059C-49B2-9017-1BCD930EB6A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
