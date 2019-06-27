@@ -70,7 +70,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         }
 
         //Get api/categories/{id}
-        [HttpGet("{id:alpha}")]
+        [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
             var req = new GetCategoryByIdRequest(id);

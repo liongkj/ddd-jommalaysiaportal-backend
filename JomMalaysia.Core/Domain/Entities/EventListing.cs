@@ -5,23 +5,21 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
-    public class EventListing : Listing
+    public sealed class EventListing : Listing
     {
+        public DateTime EventDateTime { get; private set; }
 
-        public DateTime EventDateTime { get; set; }
-
-        public EventListing()
+        public EventListing(string eventName, string description, Category category, Subcategory subcategory, Location listingLocation, DateTime eventDateTime) : base(eventName, description, category, subcategory, listingLocation, ListingTypeEnum.Event)
         {
-
-        }
-        public EventListing(string listingName, string description, Category category, Location listingLocation, DateTime eventDateTime)
-        {
-            ListingType = ListingTypeEnum.Event;
             EventDateTime = eventDateTime;
+
         }
-        public void setDetails(DateTime eventDateTime)
+
+        public void updateEventDate(DateTime eventDateTime)
         {
             EventDateTime = eventDateTime;
         }
+
+
     }
 }

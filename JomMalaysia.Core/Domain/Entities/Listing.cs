@@ -25,24 +25,33 @@ namespace JomMalaysia.Core.Domain.Entities
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public Category Category { get; set; }
+        public Subcategory Subcategory { get; set; }
 
 
-        public Listing()
-        {
-            Tags = new Collection<string>();
-        }
-
-        public Listing(string listingName, string description, Category category, Location listingLocation)
+        public Listing(string listingName, string description, Category category, Subcategory subcategory, Location listingLocation, ListingTypeEnum listingType)
         {
             ListingName = listingName;
             Description = description;
             Category = category;
+            Subcategory = subcategory;
             ListingLocation = listingLocation;
             Tags = new Collection<string>();
+            ListingType = listingType;
         }
 
-
-        public void UpdateCategory(Category category) { }
+        public bool SetCategory(Category category, Subcategory Subcategory)
+        {
+            this.Category = category;
+            if (category.Subcategories.Contains(Subcategory))
+            {
+                this.Subcategory = Subcategory;
+            }
+            else
+            {
+                throw new ArgumentException("Please select a valid subcategory");
+            }
+            return true;
+        }
         public void UpdatePhoto() { }
         public void UpdateContact(Contact contact)
         {

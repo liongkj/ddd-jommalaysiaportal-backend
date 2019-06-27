@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -22,28 +23,52 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public async Task<bool> Handle(CreateListingRequest message, IOutputPort<CreateListingResponse> outputPort)
         {
             //create listing
-            ListingFactory lf = new ListingFactory();
-            Listing NewListing = lf.GetListing(message.ListingType.ToString());
+
+            Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
+
             //find merchant and add to merchant
             var merchant = _merchantRepository.FindById(message.MerchantId).Merchant;
-            merchant.AddListing(NewListing);
+            var verified = merchant.AddListing(NewListing);
+            //find subcategory and add listing
+            var subcategories = _categoryRepository.GetAllSubcategory(NewListing.Category.CategoryId);
+            var subcategory = getSubcategory(subcategories.Subcategories, message.Subcategory.SubcategoryId, NewListing.ListingId);
+            if (subcategory == null)
+            {
 
+            }
+            else
+            {
+                //start transaction
+                await _db.StartSession();
+                //add to listing collection
+                await _listingRepository.CreateListing(NewListing);
+                //update category collection
+                _categoryRepository.UpdateSubcategoryListing(subcategory, NewListing, true);
+                //update merchant collection
+                //commit
+                _db.Session.CommitTransaction();
+            }
 
-            var subcategory = _categoryRepository.GetAllSubcategory(message.Category.CategoryId);
             //validate listing
-            var category = message.Category;
 
-            //start transaction
-            await _db.StartSession();
-            //add to listing collection
 
-            //add to category collection
+
 
             var response = _listingRepository.CreateListing(NewListing).Result;
             outputPort.Handle(response.Success ? new CreateListingResponse(response.Id, true) : new CreateListingResponse(response.Errors));
             return response.Success;
         }
-
-
+        Subcategory getSubcategory(List<Subcategory> subcategories, string subId, string ListingId)
+        {
+            foreach (var sub in subcategories)
+            {
+                if (sub.SubcategoryId == subId)
+                {
+                    sub.AddListingId(ListingId);
+                    return sub;
+                }
+            }
+            return null;
+        }
     }
 }

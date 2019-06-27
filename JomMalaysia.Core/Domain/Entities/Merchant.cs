@@ -37,9 +37,14 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Listing AddListing(Listing newListing)
         {
+
             newListing.Merchant = this;
             _listingItems.Add(newListing);
-            return newListing;
+            if (newListing.SetCategory(newListing.Category, newListing.Subcategory))
+            {
+                return newListing;
+            }
+            throw new ArgumentException("Listing is not valid");
         }
 
         public bool RemoveListing(Listing removeListing)

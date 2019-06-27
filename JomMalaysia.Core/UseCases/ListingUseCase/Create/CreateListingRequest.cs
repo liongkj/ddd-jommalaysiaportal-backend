@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -11,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public CreateListingRequest(string MerchantId, string ListingName, string Description, Category Category, Subcategory Subcategory, Location Location, ListingTypeEnum listingType)
         {
             Tags = new Collection<string>();
-            Subcategory = Subcategory;
+            this.Subcategory = Subcategory;
             this.MerchantId = MerchantId;
             this.ListingName = ListingName;
             this.Description = Description;
@@ -19,25 +20,16 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             this.ListingLocation = Location;
             ListingType = listingType;
         }
-        public CreateListingRequest(string merchantId, Listing l)
-        {
-            Tags = l.Tags;
-            this.MerchantId = merchantId;
-            this.ListingName = l.ListingName;
-            this.Description = l.Description;
-            this.Category = l.Category;
-            this.ListingLocation = l.ListingLocation;
 
-        }
-        public Subcategory Subcategory { get; set; }
-        
         public string MerchantId { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
 
+        public DateTime eventDate { get; set; }
         public ListingTypeEnum ListingType { get; set; }
 
         public Category Category { get; set; }
+        public Subcategory Subcategory { get; set; }
 
         public ICollection<string> Tags { get; private set; }
         public Location ListingLocation { get; set; }

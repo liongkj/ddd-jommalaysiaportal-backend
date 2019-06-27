@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +19,6 @@ using JomMalaysia.Infrastructure.Data.Mapping;
 using JomMalaysia.Infrastructure.Data.MongoDb;
 using JomMalaysia.Core.Interfaces;
 using Microsoft.Extensions.Options;
-using JomMalaysia.Infrastructure.Data.MongoDb.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 
 
@@ -74,7 +71,7 @@ namespace JomMalaysia.Api
             // Now register our services with Autofac container.
             var builder = new ContainerBuilder();
             builder.RegisterModule(new CoreModule());
-            builder.RegisterModule(new InfrastructureModule()) ;
+            builder.RegisterModule(new InfrastructureModule());
             // Presenters
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
             builder.Populate(services);

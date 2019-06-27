@@ -17,6 +17,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string Id { get; set; }
         public string CategoryName { get; set; }
         public List<SubcategoryDto> Subcategories { get; set; }
+        public Subcategory Subcategory { get; set; }
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
 
