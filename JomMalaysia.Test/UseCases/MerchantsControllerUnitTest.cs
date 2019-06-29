@@ -1,16 +1,5 @@
 ﻿
-using System.Net;
-
 using Xunit;
-using Moq;
-using Microsoft.AspNetCore.Mvc;
-using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Services.UseCaseResponses;
-using JomMalaysia.Core.UseCases;
-using JomMalaysia.Core.Services.UseCaseRequests;
-
-using JomMalaysia.Api.UseCases.CreateMerchant;
 
 namespace JomMalaysia.Test.UseCases
 {
