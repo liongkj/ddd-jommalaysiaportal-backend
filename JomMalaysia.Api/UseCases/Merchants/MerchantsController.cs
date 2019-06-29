@@ -1,14 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using JomMalaysia.Api.UseCases.Merchants.DeleteMerchant;
 using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
-using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Interfaces.UseCases;
-using JomMalaysia.Core.Services.UseCaseRequests;
-
-using Microsoft.AspNetCore.Http;
+using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Update;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Merchants
@@ -17,6 +18,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
     [ApiController]
     public class MerchantsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ICreateMerchantUseCase _createMerchantUseCase;
         private readonly CreateMerchantPresenter _createMerchantPresenter;
         private readonly IGetAllMerchantUseCase _getAllMerchantUseCase;
@@ -25,17 +27,26 @@ namespace JomMalaysia.Api.UseCases.Merchants
         private readonly GetMerchantPresenter _getMerchantPresenter;
         private readonly IDeleteMerchantUseCase _deleteMerchantUseCase;
         private readonly DeleteMerchantPresenter _deleteMerchantPresenter;
-        
+        private readonly IUpdateMerchantUseCase _updateMerchantUseCase;
+        private readonly UpdateMerchantPresenter _updateMerchantPresenter;
 
-
-        public MerchantsController(ICreateMerchantUseCase createMerchantUseCase, CreateMerchantPresenter MerchantPresenter, IGetAllMerchantUseCase getAllMerchantUseCase, GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase, GetMerchantPresenter getMerchantPresenter)
+        public MerchantsController(IMapper mapper, ICreateMerchantUseCase createMerchantUseCase, CreateMerchantPresenter MerchantPresenter,
+            IGetAllMerchantUseCase getAllMerchantUseCase, GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase, GetMerchantPresenter getMerchantPresenter,
+            IDeleteMerchantUseCase deleteMerchantUseCase, DeleteMerchantPresenter deleteMerchantPresenter,
+            IUpdateMerchantUseCase updateMerchantUseCase, UpdateMerchantPresenter updateMerchantPresenter)
         {
+            _mapper = mapper;
             _createMerchantUseCase = createMerchantUseCase;
             _createMerchantPresenter = MerchantPresenter;
             _getAllMerchantUseCase = getAllMerchantUseCase;
             _getAllMerchantPresenter = getAllMerchantPresenter;
             _getMerchantUseCase = getMerchantUseCase;
             _getMerchantPresenter = getMerchantPresenter;
+            _deleteMerchantUseCase = deleteMerchantUseCase;
+            _deleteMerchantPresenter = deleteMerchantPresenter;
+            _updateMerchantUseCase = updateMerchantUseCase;
+            _updateMerchantPresenter = updateMerchantPresenter;
+
         }
 
         //GET api/merchants
@@ -58,26 +69,46 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         // POST api/merchants
         [HttpPost]
-        public IActionResult Post([FromBody] MerchantViewModel request)
+        public IActionResult Post([FromBody] MerchantDto request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var req = new CreateMerchantRequest(request.CompanyName, request.CompanyRegistrationNumber, request.Name, request.Address, request.Phone, request.Fax, (Email)request.Email);
+            Merchant m = _mapper.Map<MerchantDto, Merchant>(request);
+
+            var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
             _createMerchantUseCase.Handle(req, _createMerchantPresenter);
             return _createMerchantPresenter.ContentResult;
         }
 
-        //DELETE api/merchant/id
-        [HttpDelete]
+        //DELETE api/merchants/{id}
+        [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            throw new NotImplementedException();
+            var req = new DeleteMerchantRequest(id);
+            _deleteMerchantUseCase.Handle(req, _deleteMerchantPresenter);
+            return _deleteMerchantPresenter.ContentResult;
+
         }
+
+
+        //PUT api/merchants/{id}
+        [HttpPut("{id}")]
+        public IActionResult Update(string id, [FromBody] MerchantDto updatedMerchant)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var req = new UpdateMerchantRequest(id, _mapper.Map<MerchantDto, Merchant>(updatedMerchant));
+            _updateMerchantUseCase.Handle(req, _updateMerchantPresenter);
+            return _updateMerchantPresenter.ContentResult;
+        }
+
+        //Get api/merchants/{id}/listings
 
     }
 
 }
-

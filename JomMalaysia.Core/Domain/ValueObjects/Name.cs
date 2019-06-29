@@ -4,12 +4,16 @@ using System.Collections.Generic;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
-    public sealed class Name : ValueObject
+    public sealed class Name : ValueObjectBase
     {
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
 
         private Name() { }
+        public static explicit operator Name(string nameString)
+        {
+            return For(nameString);
+        }
         public static Name For(string nameString)
         {
             var name = new Name();

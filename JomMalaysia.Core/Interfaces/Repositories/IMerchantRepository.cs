@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Update;
 
 namespace JomMalaysia.Core.Interfaces
 {
@@ -15,5 +15,6 @@ namespace JomMalaysia.Core.Interfaces
         GetMerchantResponse FindByName(string name);
         GetMerchantResponse FindById(string id);
         UpdateMerchantResponse Update(string id, Merchant merchant);
+
     }
 }

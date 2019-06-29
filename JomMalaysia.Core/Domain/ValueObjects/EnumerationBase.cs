@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+
+namespace JomMalaysia.Core.Domain.ValueObjects
+{
+    public abstract class EnumerationBase : IComparable
+    {
+        public string Name { get; private set; }
+
+        public int Id { get; private set; }
+
+        protected EnumerationBase(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public override string ToString() => Name;
+
+        public static IEnumerable<T> GetAll<T>() where T : EnumerationBase
+        {
+            var fields = typeof(T).GetFields(BindingFlags.Public |
+                                             BindingFlags.Static |
+                                             BindingFlags.DeclaredOnly);
+
+            return fields.Select(f => f.GetValue(null)).Cast<T>();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var otherValue = obj as EnumerationBase;
+
+            if (otherValue == null)
+                return false;
+
+            var typeMatches = GetType().Equals(obj.GetType());
+            var valueMatches = Id.Equals(otherValue.Id);
+
+            return typeMatches && valueMatches;
+        }
+
+        public int CompareTo(object other) => Id.CompareTo(((EnumerationBase)other).Id);
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Id);
+        }
+
+        // Other utility methods ... 
+    }
+}

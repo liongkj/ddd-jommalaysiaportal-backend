@@ -2,7 +2,7 @@
 using System.Net;
 using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
 
 namespace JomMalaysia.Api.UseCases.Merchants.GetMerchant
 {

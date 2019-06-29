@@ -10,29 +10,71 @@ namespace JomMalaysia.Core.Domain.Entities
     {
         public Merchant()
         {
-            Listings = new HashSet<Listing>();
-        }
 
+        }
         public string MerchantId { get; private set; }
         public string CompanyName { get; private set; }
         public string CompanyRegistrationNumber { get; private set; }
-        public Name ContactName { get; private set; }
         public Address Address { get; private set; }
-        public Email ContactEmail { get; private set; }
-        public Phone Phone { get; private set; }
-        public string Fax { get; private set; }
-        public ICollection<Listing> Listings { get; private set; }
 
-        public Merchant(string CompanyName, string CompanyRegistrationNumber, Name ContactName, Address Address, Phone Phone, string Fax, Email Email)
+        private readonly Collection<Listing> _listingItems;
+        public IReadOnlyCollection<Listing> Listings => _listingItems;
+
+        private readonly Collection<Contact> _contactItems;
+        public IReadOnlyCollection<Contact> Contacts => _contactItems;
+
+        public Merchant(string CompanyName, string CompanyRegistrationNumber, Address Address)
         {
-            Listings = new Collection<Listing>();
-            this.ContactEmail = Email ?? throw new Exception("Email is required");
+            _listingItems = new Collection<Listing>();
+            _contactItems = new Collection<Contact>();
+
+
             this.CompanyName = CompanyName;
             this.CompanyRegistrationNumber = CompanyRegistrationNumber;
-            this.ContactName = ContactName ?? throw new Exception("Name is required");
             this.Address = Address ?? throw new Exception("Address is required");
-            this.Phone = Phone;
-            this.Fax = Fax;
+
+        }
+
+        public Listing AddListing(Listing newListing)
+        {
+
+            newListing.Merchant = this;
+            _listingItems.Add(newListing);
+            if (newListing.SetCategory(newListing.Category, newListing.Subcategory))
+            {
+                return newListing;
+            }
+            throw new ArgumentException("Listing is not valid");
+        }
+
+        public bool RemoveListing(Listing removeListing)
+        {
+            if (removeListing.isPublish.IsPublished)
+            {
+                return false;
+            }
+            _listingItems.Remove(removeListing);
+            return true;
+        }
+
+        public void AddContact(Contact c)
+        {
+
+            if (c != null)
+            {
+                _contactItems.Add(c);
+            }
+        }
+
+
+        public void DeleteContact(string name, string email, string phone)
+        {
+            Contact UpdateContact = Contact.For(name, email, phone);
+
+            if (_contactItems.Contains(UpdateContact))
+            {
+                _contactItems.Remove(UpdateContact);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Net;
 using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.UseCaseResponses;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
 
 namespace JomMalaysia.Api.UseCases.Merchants.DeleteMerchant
 {
@@ -14,7 +14,6 @@ namespace JomMalaysia.Api.UseCases.Merchants.DeleteMerchant
         {
             ContentResult = new JsonContentResult();
         }
- 
 
         public void Handle(DeleteMerchantResponse response)
         {

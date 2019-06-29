@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -21,12 +19,12 @@ using JomMalaysia.Infrastructure.Data.Mapping;
 using JomMalaysia.Infrastructure.Data.MongoDb;
 using JomMalaysia.Core.Interfaces;
 using Microsoft.Extensions.Options;
-using JomMalaysia.Infrastructure.Data.MongoDb.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 using JomMalaysia.Api.UseCases.Merchants;
 using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
 using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace JomMalaysia.Api
 {
@@ -56,9 +54,10 @@ namespace JomMalaysia.Api
 
 
             //Add mongodb
-            services.Configure<ApplicationDbContext>(Configuration.GetSection(nameof(ApplicationDbContext)));
-            services.AddSingleton<IApplicationDbContext>(sp => sp.GetRequiredService<IOptions<ApplicationDbContext>>().Value);
-            services.AddSingleton<MerchantRepository>();
+
+            services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
+            services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
+            //services.AddSingleton<MerchantRepository>();
             //Add Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //add swagger
@@ -75,15 +74,12 @@ namespace JomMalaysia.Api
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
             // Presenters
-            builder.RegisterType<CreateMerchantPresenter>().SingleInstance();
-            builder.RegisterType<GetMerchantPresenter>().SingleInstance();
-            builder.RegisterType<GetAllMerchantPresenter>().SingleInstance();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
             builder.Populate(services);
             var container = builder.Build();
             // Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(container);
-        
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +100,7 @@ namespace JomMalaysia.Api
             app.UseAuthentication();
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
