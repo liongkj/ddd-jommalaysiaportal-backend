@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
+        public bool HandleAsync(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
             Category NewCategory = new Category(message.CategoryName, message.CategoryNameMs, message.CategoryNameZh);
 

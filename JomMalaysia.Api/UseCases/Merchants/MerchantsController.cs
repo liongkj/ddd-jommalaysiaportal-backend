@@ -63,7 +63,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
         public IActionResult Get(string id)
         {
             var req = new GetMerchantRequest(id);
-            _getMerchantUseCase.Handle(req, _getMerchantPresenter);
+            _getMerchantUseCase.HandleAsync(req, _getMerchantPresenter);
             return _getMerchantPresenter.ContentResult;
         }
 
@@ -79,7 +79,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
             var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
-            _createMerchantUseCase.Handle(req, _createMerchantPresenter);
+            _createMerchantUseCase.HandleAsync(req, _createMerchantPresenter);
             return _createMerchantPresenter.ContentResult;
         }
 
@@ -88,7 +88,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
         public IActionResult Delete(string id)
         {
             var req = new DeleteMerchantRequest(id);
-            _deleteMerchantUseCase.Handle(req, _deleteMerchantPresenter);
+            _deleteMerchantUseCase.HandleAsync(req, _deleteMerchantPresenter);
             return _deleteMerchantPresenter.ContentResult;
 
         }
@@ -103,7 +103,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
                 return BadRequest(ModelState);
             }
             var req = new UpdateMerchantRequest(id, _mapper.Map<MerchantDto, Merchant>(updatedMerchant));
-            _updateMerchantUseCase.Handle(req, _updateMerchantPresenter);
+            _updateMerchantUseCase.HandleAsync(req, _updateMerchantPresenter);
             return _updateMerchantPresenter.ContentResult;
         }
 

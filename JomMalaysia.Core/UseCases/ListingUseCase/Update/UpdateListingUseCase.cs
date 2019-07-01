@@ -10,7 +10,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         {
             _listingRepository = listingRepository;
         }
-        public bool Handle(UpdateListingRequest message, IOutputPort<UpdateListingResponse> outputPort)
+        public bool HandleAsync(UpdateListingRequest message, IOutputPort<UpdateListingResponse> outputPort)
         {
             //TODO
             //verify update??

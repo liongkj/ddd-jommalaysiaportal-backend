@@ -36,7 +36,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult Get(string CategoryId)
         {
             var req = new GetAllSubcategoryRequest(CategoryId);
-            _getAllSubcategoryUseCase.Handle(req, _getCategoryPresenter);
+            _getAllSubcategoryUseCase.HandleAsync(req, _getCategoryPresenter);
             return _getCategoryPresenter.ContentResult;
         }
 
@@ -53,7 +53,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult AddSubcategory(string CategoryId, [FromBody] SubcategoryDto request)
         {
             var req = new CreateSubcategoryRequest(CategoryId, request.SubcategoryName, request.SubcategoryNameMs, request.SubcategoryNameZh);
-            _createSubcategoryUseCase.Handle(req, _updateCategoryPresenter);
+            _createSubcategoryUseCase.HandleAsync(req, _updateCategoryPresenter);
             return _updateCategoryPresenter.ContentResult;
         }
 
@@ -62,7 +62,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult DeleteSubcategory(string id)
         {
             var req = new DeleteSubcategoryRequest(id);
-            _deleteSubcategoryUseCase.Handle(req, _updateCategoryPresenter);
+            _deleteSubcategoryUseCase.HandleAsync(req, _updateCategoryPresenter);
             return _updateCategoryPresenter.ContentResult;
         }
     }

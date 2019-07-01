@@ -5,7 +5,7 @@ namespace JomMalaysia.Core.Domain.Entities
 {
     public class User
     {
-        public User(string userId, string username, string email, Name name)
+        public User(string userId, string username, Email email, Name name)
         {
             this.UserId = userId;
             this.Username = username;
@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         public string UserId { get; set; }
         public string Username { get; set; }
-        public string Email { get; set; }
+        public Email Email { get; set; }
         public Name Name { get; set; }
 
 
@@ -31,7 +31,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public void PublishListing(Listing l)
         {
-            
+
         }
 
         public void UnpublishListing()
@@ -45,6 +45,16 @@ namespace JomMalaysia.Core.Domain.Entities
         }
 
         public void RejectWorkflow(Workflow w)
+        {
+
+        }
+
+        public void AddNewPackage()
+        {
+
+        }
+
+        public void DeletePackage()
         {
 
         }

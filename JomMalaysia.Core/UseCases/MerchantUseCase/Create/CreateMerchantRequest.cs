@@ -8,7 +8,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
 {
     public class CreateMerchantRequest : IUseCaseRequest<CreateMerchantResponse>
     {
-        public CreateMerchantRequest(string CompanyName, string CompanyRegistrationNumber, IReadOnlyCollection<Contact> Contacts, Address Address)
+        public CreateMerchantRequest(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, IReadOnlyCollection<Contact> Contacts, Address Address)
         {
             this.CompanyName = CompanyName;
             this.CompanyRegistrationNumber = CompanyRegistrationNumber;
@@ -16,9 +16,9 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
             this.Address = Address;
             Listings = new Collection<Listing>();
         }
-        
+
         public string CompanyName { get; }
-        public string CompanyRegistrationNumber { get; }
+        public CompanyRegistrationNumber CompanyRegistrationNumber { get; }
         public Address Address { get; }
         public IReadOnlyCollection<Contact> Contacts { get; }
         public ICollection<Listing> Listings { get; }

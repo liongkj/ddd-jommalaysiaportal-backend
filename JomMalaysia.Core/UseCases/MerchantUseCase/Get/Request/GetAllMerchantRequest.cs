@@ -6,9 +6,9 @@ using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request
 {
-    public class GetAllMerchantRequest:IUseCaseRequest<GetAllMerchantResponse>
+    public class GetAllMerchantRequest : IUseCaseRequest<GetAllMerchantResponse>
     {
-       public ICollection<Merchant> Merchants { get; set; }
+        public ICollection<Merchant> Merchants { get; set; }
         public string Id { get; set; }
         public GetAllMerchantRequest()
         {
