@@ -13,21 +13,29 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         {
             _merchantRepository = merchantRepository;
         }
-        public bool Handle(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
+        public bool HandleAsync(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
         {
+            if (message is null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
             var response = _merchantRepository.FindById(message.Id);
+            //if found
             if (!response.Success)
             {
                 outputPort.Handle(new GetMerchantResponse(response.Errors));
             }
+            //if merchant is null
             if (response.Merchant != null)
             {
                 outputPort.Handle(new GetMerchantResponse(response.Merchant, true));
                 return response.Success;
             }
             else
+            //handle not found
             {
-                outputPort.Handle(new GetMerchantResponse(response.Errors,false,"Merchant Deleted or Not Found"));
+                outputPort.Handle(new GetMerchantResponse(response.Errors, false, "Merchant Deleted or Not Found"));
                 return false;
             }
         }

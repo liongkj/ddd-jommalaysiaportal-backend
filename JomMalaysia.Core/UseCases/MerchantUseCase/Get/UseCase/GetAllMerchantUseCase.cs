@@ -16,6 +16,8 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         }
         public async Task<bool> Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
         {
+
+            //validate request
             if (message == null)
             {
                 throw new ArgumentNullException(nameof(message));

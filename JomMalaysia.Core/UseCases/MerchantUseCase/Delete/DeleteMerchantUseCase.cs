@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
             _merchant = merchant;
         }
 
-        public bool Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
+        public bool HandleAsync(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
         {
             if (message.MerchantId == null)
             {
@@ -22,18 +22,19 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
             Merchant merchant = (_merchant.FindById(message.MerchantId)).Merchant;
             if (merchant == null)
             {
-                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId,false,"Merchant Not Found"));
+                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant Not Found"));
                 return false;
             }
             else
             {
-                if (merchant.Listings.Count > 0)
+                if (merchant.isSafeToDelete())
                 {
                     //still have listing, cannot delete
                     outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant still has listing associated"));
+                    return false;
                 }
-                var response = _merchant.Delete(message.MerchantId);
-                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, true , merchant.MerchantId+" deleted"));
+                var response = _merchant.DeleteMerchant(message.MerchantId);
+                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, true, merchant.MerchantId + " deleted"));
                 return response.Success;
             }
         }

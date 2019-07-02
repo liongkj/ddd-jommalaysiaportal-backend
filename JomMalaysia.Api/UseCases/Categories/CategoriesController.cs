@@ -74,7 +74,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult Get(string id)
         {
             var req = new GetCategoryByIdRequest(id);
-            _getCategoryByIdUseCase.Handle(req, _getCategoryPresenter);
+            _getCategoryByIdUseCase.HandleAsync(req, _getCategoryPresenter);
             return _getCategoryPresenter.ContentResult;
         }
 
@@ -99,7 +99,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
             var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh);
 
-            _createCategoryUseCase.Handle(req, _createCategoryPresenter);
+            _createCategoryUseCase.HandleAsync(req, _createCategoryPresenter);
             return _createCategoryPresenter.ContentResult;
         }
 
@@ -108,7 +108,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult Delete(string id)
         {
             var req = new DeleteCategoryRequest(id);
-            _deleteCategoryUseCase.Handle(req, _deleteCategoryPresenter);
+            _deleteCategoryUseCase.HandleAsync(req, _deleteCategoryPresenter);
             return _deleteCategoryPresenter.ContentResult;
         }
 
@@ -119,7 +119,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         {
             Category updated = _mapper.Map<Category>(Updated);
             var req = new UpdateCategoryRequest(id, updated);
-            _updateCategoryUseCase.Handle(req, _updateCategoryPresenter);
+            _updateCategoryUseCase.HandleAsync(req, _updateCategoryPresenter);
             return _updateCategoryPresenter.ContentResult;
         }
     }

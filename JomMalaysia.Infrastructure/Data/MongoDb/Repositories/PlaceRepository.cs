@@ -13,6 +13,7 @@ using MongoDB.Driver;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
+    //https://github.com/ilkerkarimanov/DDD.Sample/blob/master/src/DDD.App.Cqs/CommandHandlers/Todos/TodosCommandHandler.cs
     //http://mongodb.github.io/mongo-csharp-driver/2.8/reference/driver/crud/linq/
     public class PlaceRepository : IPlaceRepository
     {

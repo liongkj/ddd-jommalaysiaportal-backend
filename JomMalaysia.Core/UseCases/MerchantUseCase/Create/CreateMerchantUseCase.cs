@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 
@@ -12,14 +13,17 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
         {
             _merchantRepository = merchantRepository;
         }
-        public bool Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
+        public async Task<bool> Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
         {
+            //dto validation
             if (message == null)
             {
                 throw new ArgumentNullException(nameof(message));
             }
-
+            //create new merchant
             Merchant merchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address);
+
+            //add contacts to merchant
             if (message.Contacts != null)
             {
                 foreach (var c in message.Contacts)
@@ -27,7 +31,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
                     merchant.AddContact(c);
                 }
             }
-            var response = _merchantRepository.CreateMerchant(merchant);
+            var response = await _merchantRepository.CreateMerchant(merchant);
             outputPort.Handle(response.Success ? new CreateMerchantResponse(response.Id, true) : new CreateMerchantResponse(response.Errors));
             return response.Success;
         }

@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             _Category = Category;
         }
 
-        public bool Handle(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
+        public bool HandleAsync(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
         {
             Category category = (_Category.FindById(message.CategoryId)).Category;
             if (category == null)
