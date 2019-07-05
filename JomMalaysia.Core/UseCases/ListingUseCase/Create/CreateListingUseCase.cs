@@ -28,7 +28,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             // Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
 
 
-            Listing NewListing = ListingFactory.Create(message.ListingType.Id);
+            Listing NewListing = ListingFactory.Create(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.ListingType);
             EventListing el = (EventListing)NewListing;
 
 
