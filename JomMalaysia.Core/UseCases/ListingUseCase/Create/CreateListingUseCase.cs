@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 
@@ -24,7 +25,12 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         {
             //create listing
 
-            Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
+            // Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
+
+
+            Listing NewListing = ListingFactory.Create(message.ListingType.Id);
+            EventListing el = (EventListing)NewListing;
+
 
             //find merchant and add to merchant
             var merchant = _merchantRepository.FindById(message.MerchantId).Merchant;

@@ -27,7 +27,10 @@ namespace JomMalaysia.Core.Domain.Entities
         public Category Category { get; set; }
         public Subcategory Subcategory { get; set; }
 
+        public Listing()
+        {
 
+        }
         public Listing(string listingName, string description, Category category, Subcategory subcategory, Location listingLocation, ListingTypeEnum listingType)
         {
             ListingName = listingName;
@@ -37,7 +40,10 @@ namespace JomMalaysia.Core.Domain.Entities
             ListingLocation = listingLocation;
             Tags = new Collection<string>();
             ListingType = listingType;
+
         }
+
+
 
         public bool SetCategory(Category category, Subcategory Subcategory)
         {

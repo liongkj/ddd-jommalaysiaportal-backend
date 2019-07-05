@@ -56,7 +56,7 @@ namespace JomMalaysia.Presentation.Controllers
                         Password = vm.Password,
                         Audience = _appSetting.WebApiUrl
                     });
-                    
+
                     // Get user info from token
                     var user = await client.GetUserInfoAsync(result.AccessToken);
 

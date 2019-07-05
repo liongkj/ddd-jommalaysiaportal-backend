@@ -79,7 +79,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
             var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
-            _createMerchantUseCase.HandleAsync(req, _createMerchantPresenter);
+            _createMerchantUseCase.Handle(req, _createMerchantPresenter);
             return _createMerchantPresenter.ContentResult;
         }
 
@@ -103,7 +103,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
                 return BadRequest(ModelState);
             }
             var req = new UpdateMerchantRequest(id, _mapper.Map<MerchantDto, Merchant>(updatedMerchant));
-            _updateMerchantUseCase.HandleAsync(req, _updateMerchantPresenter);
+            _updateMerchantUseCase.Handle(req, _updateMerchantPresenter);
             return _updateMerchantPresenter.ContentResult;
         }
 
