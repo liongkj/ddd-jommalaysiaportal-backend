@@ -44,5 +44,11 @@ namespace JomMalaysia.Presentation.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Login(User user)
+        {
+            String testing = user.email;
+            return View();
+        }
     }
 }
