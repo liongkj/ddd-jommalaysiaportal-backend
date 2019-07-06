@@ -24,7 +24,8 @@ using JomMalaysia.Api.UseCases.Merchants;
 using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
 using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using JomMalaysia.Presentation.Scope;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JomMalaysia.Api
 {
@@ -52,6 +53,12 @@ namespace JomMalaysia.Api
                 options.Audience = "https://localhost:44368/";
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:merchant", policy => policy.Requirements.Add(new HasScopeRequirement("read:merchant", "https://jomn9.auth0.com/")));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             //Add mongodb
 

@@ -13,5 +13,8 @@ namespace JomMalaysia.Presentation.Models
 
         [Display(Name = "Password")]
         public String password { get; set; }
+
+        [Display(Name = "ReturnURL")]
+        public String returnURL { get; set; }
     }
 }

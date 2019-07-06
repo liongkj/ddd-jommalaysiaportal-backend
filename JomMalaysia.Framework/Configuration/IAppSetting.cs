@@ -17,5 +17,7 @@ namespace JomMalaysia.Framework.Configuration
         string Auth0ClientSecret { get; }
 
         string DBConnection { get; }
+
+        string Scope { get; }
     }
 }

@@ -9,33 +9,25 @@ using Microsoft.AspNetCore.Authorization;
 using RestSharp;
 using JomMalaysia.Framework.Configuration;
 using System.Security.Claims;
+using JomMalaysia.Presentation.Manager;
 
 namespace JomMalaysia.Presentation.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IAppSetting _appSetting;
+        private readonly IAuthorizationManagers _authorizationManagers;
 
-        public HomeController(IAppSetting appSetting)
+        public HomeController(IAppSetting appSetting, IAuthorizationManagers authorizationManagers)
         {
             _appSetting = appSetting;
+            _authorizationManagers = authorizationManagers;
         }
+
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Privacy()
-        {
-            var token = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "profile_access_token")?.Value;
-            var client = new RestClient(_appSetting.WebApiUrl + "api/Dashboard");
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("authorization", "Bearer " + token);
-            request.AddHeader("content-type", "application/json");
-            IRestResponse response = client.Execute(request);
-
             return View();
         }
 
@@ -43,12 +35,6 @@ namespace JomMalaysia.Presentation.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Login(User user)
-        {
-            String testing = user.email;
-            return View();
         }
     }
 }

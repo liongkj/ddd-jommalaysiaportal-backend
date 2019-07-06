@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using JomMalaysia.Presentation.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JomMalaysia.Presentation.Controllers
 {
+    [Authorize("read:merchant")]
     public class MerchantController : Controller
     {
         private Merchant merchant;

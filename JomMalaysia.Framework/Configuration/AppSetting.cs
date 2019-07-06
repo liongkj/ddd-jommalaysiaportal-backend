@@ -13,6 +13,7 @@ namespace JomMalaysia.Framework.Configuration
         private static string _Auth0ClientSecret;
         private static string _WebApiUrl;
         private static string _DbConnection;
+        private static string _Scope;
 
         public AppSetting(IConfiguration IConfiguration)
         {
@@ -29,6 +30,8 @@ namespace JomMalaysia.Framework.Configuration
         public string WebApiUrl => _WebApiUrl;
 
         public string DBConnection => _DbConnection;
+
+        public string Scope => _Scope;
 
         public void Initialize()
         {
@@ -49,12 +52,17 @@ namespace JomMalaysia.Framework.Configuration
 
             if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:DBConnection")))
             {
-                _Auth0ClientSecret = _IConfiguration.GetValue<string>("Auth0:DBConnection");
+                _DbConnection = _IConfiguration.GetValue<string>("Auth0:DBConnection");
             }
 
             if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("WebApiURl")))
             {
                 _WebApiUrl = _IConfiguration.GetValue<string>("WebApiURl");
+            }
+
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:Scope")))
+            {
+                _Scope = _IConfiguration.GetValue<string>("Auth0:Scope");
             }
 
         }

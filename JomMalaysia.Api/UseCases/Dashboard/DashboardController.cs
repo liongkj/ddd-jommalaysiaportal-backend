@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Dashboard
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DashboardController : ControllerBase
     {
         [HttpGet]
+        [Authorize("read:merchant")]
         public async Task<IActionResult> Get()
         {
             return Ok();

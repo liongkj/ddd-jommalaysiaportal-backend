@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UseCases\Login\**" />
+    <Content Remove="UseCases\Login\**" />
+    <EmbeddedResource Remove="UseCases\Login\**" />
+    <None Remove="UseCases\Login\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="autofac.mongodb.json.old" />
   </ItemGroup>
 
@@ -37,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
-    <Folder Include="UseCases\Login\" />
   </ItemGroup>
 
 </Project>
