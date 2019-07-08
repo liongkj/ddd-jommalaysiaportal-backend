@@ -76,5 +76,49 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
+        //
+        public void AddTags(string newTag)
+        {
+            if (Tags.exist(newTag)) { Tags.add(newTag); }
+            else { throw new ArgumentException("Tag/keyword has already existed"); }
+        }
+
+        public void UpdateListing()
+        {
+            string updateListingName(string new_name)
+            {
+                ListingName = new_name;
+            }
+
+            string updateDescription(string new_description)
+            {
+                Description = new_description;
+            }
+
+            Category updateCategory(Category new_category)
+            {
+                Category = new_category;
+            }
+
+            Location updateLocation(Location new_location)
+            {
+                ListingLocation = new_location;
+            }
+
+            ListingTypeEnum updateListingType(ListingTypeEnum new_ListingType)
+            {
+                ListingType = new_ListingType;
+            }
+
+            //update the database 
+
+        }
+
+        public void DeleteListing(string name)
+        {
+        }
+
+
+
     }
 }
