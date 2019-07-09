@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Infrastructure"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5318BDB4-D930-495B-8D67-F41E5BF6575C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Framework", "JomMalaysia.Framework\JomMalaysia.Framework.csproj", "{B48AE61E-300F-49F0-A140-60A43447F894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Framework", "JomMalaysia.Framework\JomMalaysia.Framework.csproj", "{B48AE61E-300F-49F0-A140-60A43447F894}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "Core.Test\Core.Test.csproj", "{764E16B2-6279-4AF9-8FE7-6D150D185344}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{B48AE61E-300F-49F0-A140-60A43447F894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48AE61E-300F-49F0-A140-60A43447F894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48AE61E-300F-49F0-A140-60A43447F894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
