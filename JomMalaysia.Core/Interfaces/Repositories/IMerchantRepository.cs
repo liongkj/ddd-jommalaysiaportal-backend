@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
@@ -10,11 +11,11 @@ namespace JomMalaysia.Core.Interfaces
     public interface IMerchantRepository
     {
         Task<CreateMerchantResponse> CreateMerchant(Merchant merchant);
-        Task<GetAllMerchantResponse> GetAllMerchants();
+        GetAllMerchantResponse GetAllMerchants();
         DeleteMerchantResponse DeleteMerchant(string merchantId);
         GetMerchantResponse FindByName(string name);
         GetMerchantResponse FindById(string merchantId);
-        Task<UpdateMerchantResponse> UpdateMerchant(string id, Merchant updatedMerchant);
+        UpdateMerchantResponse UpdateMerchant(string id, Merchant updatedMerchant);
 
     }
 }

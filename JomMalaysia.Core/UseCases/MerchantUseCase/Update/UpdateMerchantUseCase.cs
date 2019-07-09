@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
         {
             _merchantRepository = merchantRepository;
         }
-        public async Task<bool> Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
+        public bool Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
         {
             if (message is null)
             {
@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
             }
             //TODO
             //verify update??
-            var response = await _merchantRepository.UpdateMerchant(message.MerchantId, message.Updated);
+            var response =  _merchantRepository.UpdateMerchant(message.MerchantId, message.Updated);
 
             outputPort.Handle(response.Success ? new UpdateMerchantResponse(response.Id, true) : new UpdateMerchantResponse(response.Errors));
             return response.Success;

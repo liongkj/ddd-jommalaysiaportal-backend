@@ -16,7 +16,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string CompanyName { get; set; }
-        public string CompanyRegistrationNumber { get; set; }
+        public CompanyRegistrationNumber CompanyRegistrationNumber { get; set; }
         public Address Address { get; set; }
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<string> ListingIds { get; set; }

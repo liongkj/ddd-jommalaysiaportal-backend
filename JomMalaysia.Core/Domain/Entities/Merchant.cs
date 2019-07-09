@@ -33,7 +33,7 @@ namespace JomMalaysia.Core.Domain.Entities
             this.Address = Address ?? throw new Exception("Address is required");
 
         }
-        public bool isSafeToDelete()
+        public bool IsSafeToDelete()
         {
             if (_listingItems.Count > 0)
             {

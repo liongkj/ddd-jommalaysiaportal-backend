@@ -30,8 +30,10 @@ namespace JomMalaysia.Api.UseCases.Merchants
         private readonly IUpdateMerchantUseCase _updateMerchantUseCase;
         private readonly UpdateMerchantPresenter _updateMerchantPresenter;
 
-        public MerchantsController(IMapper mapper, ICreateMerchantUseCase createMerchantUseCase, CreateMerchantPresenter MerchantPresenter,
-            IGetAllMerchantUseCase getAllMerchantUseCase, GetAllMerchantPresenter getAllMerchantPresenter, IGetMerchantUseCase getMerchantUseCase, GetMerchantPresenter getMerchantPresenter,
+        public MerchantsController(IMapper mapper,
+            ICreateMerchantUseCase createMerchantUseCase, CreateMerchantPresenter MerchantPresenter,
+            IGetAllMerchantUseCase getAllMerchantUseCase, GetAllMerchantPresenter getAllMerchantPresenter,
+            IGetMerchantUseCase getMerchantUseCase, GetMerchantPresenter getMerchantPresenter,
             IDeleteMerchantUseCase deleteMerchantUseCase, DeleteMerchantPresenter deleteMerchantPresenter,
             IUpdateMerchantUseCase updateMerchantUseCase, UpdateMerchantPresenter updateMerchantPresenter)
         {
@@ -51,9 +53,9 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         //GET api/merchants
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
-            await _getAllMerchantUseCase.Handle(new GetAllMerchantRequest(), _getAllMerchantPresenter);
+            _getAllMerchantUseCase.Handle(new GetAllMerchantRequest(), _getAllMerchantPresenter);
 
             return _getAllMerchantPresenter.ContentResult;
         }
@@ -63,13 +65,13 @@ namespace JomMalaysia.Api.UseCases.Merchants
         public IActionResult Get(string id)
         {
             var req = new GetMerchantRequest(id);
-            _getMerchantUseCase.HandleAsync(req, _getMerchantPresenter);
+            _getMerchantUseCase.Handle(req, _getMerchantPresenter);
             return _getMerchantPresenter.ContentResult;
         }
 
         // POST api/merchants
         [HttpPost]
-        public IActionResult Post([FromBody] MerchantDto request)
+        public async Task<IActionResult> Post([FromBody] MerchantDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -79,7 +81,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
             var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
-            _createMerchantUseCase.Handle(req, _createMerchantPresenter);
+            await _createMerchantUseCase.Handle(req, _createMerchantPresenter);
             return _createMerchantPresenter.ContentResult;
         }
 
@@ -88,7 +90,7 @@ namespace JomMalaysia.Api.UseCases.Merchants
         public IActionResult Delete(string id)
         {
             var req = new DeleteMerchantRequest(id);
-            _deleteMerchantUseCase.HandleAsync(req, _deleteMerchantPresenter);
+            _deleteMerchantUseCase.Handle(req, _deleteMerchantPresenter);
             return _deleteMerchantPresenter.ContentResult;
 
         }

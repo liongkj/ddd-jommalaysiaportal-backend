@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool HandleAsync(GetAllSubcategoryRequest message, IOutputPort<GetAllSubcategoryResponse> outputPort)
+        public bool Handle(GetAllSubcategoryRequest message, IOutputPort<GetAllSubcategoryResponse> outputPort)
         {
 
             var response = _CategoryRepository.GetAllSubcategory(message.Id);

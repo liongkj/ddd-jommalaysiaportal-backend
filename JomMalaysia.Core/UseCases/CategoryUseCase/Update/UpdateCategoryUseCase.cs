@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool HandleAsync(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
+        public bool Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
             //TODO
             //verify update??
