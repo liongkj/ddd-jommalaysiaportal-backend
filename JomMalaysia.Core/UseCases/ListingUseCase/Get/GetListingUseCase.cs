@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         {
             _listingRepository = listingRepository;
         }
-        public bool HandleAsync(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
+        public bool Handle(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
         {
             var response = _listingRepository.FindById(message.Id);
             if (!response.Success)

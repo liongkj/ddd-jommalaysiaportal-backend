@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
             _listing = listing;
         }
 
-        public bool HandleAsync(DeleteListingRequest message, IOutputPort<DeleteListingResponse> outputPort)
+        public bool Handle(DeleteListingRequest message, IOutputPort<DeleteListingResponse> outputPort)
         {
             //    Listing listing = (_listing.FindById(message.ListingId)).Listing;
             //    if (merchant == null)

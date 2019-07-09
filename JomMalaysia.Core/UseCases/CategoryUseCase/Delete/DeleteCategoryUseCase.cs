@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             _Category = Category;
         }
 
-        public bool HandleAsync(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
+        public bool Handle(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
         {
             Category category = (_Category.FindById(message.CategoryId)).Category;
             if (category == null)
@@ -23,17 +23,17 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             }
             else
             {
-                if (message.Subcategories.Count < 1) //if no subcategories
-                {
-                    var response = _Category.Delete(message.CategoryId);
-                    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, true, category.CategoryId + " deleted"));
-                    return response.Success;
-                }
-                else
-                {
-                    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, false, category.CategoryName + " still has subcategories"));
+                //if (message.Subcategories.Count < 1) //if no subcategories
+                //{
+                //    var response = _Category.Delete(message.CategoryId);
+                //    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, true, category.CategoryId + " deleted"));
+                //    return response.Success;
+                //}
+                //else
+                //{
+                //    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, false, category.CategoryName + " still has subcategories"));
                     return false;
-                }
+                //}
             }
         }
     }

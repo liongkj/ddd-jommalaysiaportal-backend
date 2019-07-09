@@ -6,8 +6,14 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Address : ValueObjectBase
     {
+        public string Add1 { get; private set; }
+        public string Add2 { get; private set; }
+        public string City { get; private set; }
+        public string State { get; private set; }
+        public string PostalCode { get; private set; }
+        public string Country { get; private set; }
 
-        public static Address For(string add1, string add2, string city, string state, string postalCode, string country)
+        public static Address For(string add1, string add2, string city, string state, string postalCode, string country="malaysia")
         {
             if (string.IsNullOrWhiteSpace(add1))
             {
@@ -62,12 +68,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             this.Country = country;
 
         }
-        public string Add1 { get; private set; }
-        public string Add2 { get; private set; }
-        public string City { get; private set; }
-        public string State { get; private set; }
-        public string PostalCode { get; private set; }
-        public string Country { get; private set; }
+       
 
         private Address()
         {

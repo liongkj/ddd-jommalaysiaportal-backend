@@ -19,7 +19,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public Address ListingAddress { get; set; }
 
         public CategoryDto Category { get; set; }
-        public SubcategoryDto SubcategoryDto { get; set; }
+
         public ICollection<string> Tags { get; set; }
         public string ListingLogo { get; set; }
         public string CoverPhoto { get; set; }

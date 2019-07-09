@@ -4,7 +4,7 @@ using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get
 {
-    public interface IGetAllMerchantUseCase : IUseCaseHandlerAsync<GetAllMerchantRequest, GetAllMerchantResponse>
+    public interface IGetAllMerchantUseCase : IUseCaseHandler<GetAllMerchantRequest, GetAllMerchantResponse>
     {
 
     }

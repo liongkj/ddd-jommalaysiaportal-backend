@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool HandleAsync(GetCategoryByIdRequest message, IOutputPort<GetCategoryResponse> outputPort)
+        public bool Handle(GetCategoryByIdRequest message, IOutputPort<GetCategoryResponse> outputPort)
         {
 
             var response = _CategoryRepository.FindById(message.Id);

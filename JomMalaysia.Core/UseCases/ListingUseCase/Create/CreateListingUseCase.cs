@@ -28,7 +28,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             // Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
 
 
-            Listing NewListing = ListingFactory.Create(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.ListingType);
+            Listing NewListing = ListingFactory.Create(message.ListingName, message.Description, message.Category, message.ListingLocation, message.ListingType);
             EventListing el = (EventListing)NewListing;
 
 
@@ -36,24 +36,24 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             var merchant = _merchantRepository.FindById(message.MerchantId).Merchant;
             var verified = merchant.AddListing(NewListing);
             //find subcategory and add listing
-            var subcategories = _categoryRepository.GetAllSubcategory(NewListing.Category.CategoryId);
-            var subcategory = getSubcategory(subcategories.Subcategories, message.Subcategory.SubcategoryId, NewListing.ListingId);
-            if (subcategory == null)
-            {
+            //var subcategories = _categoryRepository.GetAllSubcategory(NewListing.Category.CategoryId);
+           // var subcategory = getSubcategory(subcategories.Subcategories, message.Subcategory.SubcategoryId, NewListing.ListingId);
+            //if (subcategory == null)
+            //{
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 //start transaction
                 await _db.StartSession();
                 //add to listing collection
                 await _listingRepository.CreateListing(NewListing);
                 //update category collection
-                _categoryRepository.UpdateSubcategoryListing(subcategory, NewListing, true);
+                //_categoryRepository.UpdateSubcategoryListing(subcategory, NewListing, true);
                 //update merchant collection
                 //commit
                 _db.Session.CommitTransaction();
-            }
+           // }
 
             //validate listing
 
@@ -64,17 +64,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             outputPort.Handle(response.Success ? new CreateListingResponse(response.Id, true) : new CreateListingResponse(response.Errors));
             return response.Success;
         }
-        Subcategory getSubcategory(List<Subcategory> subcategories, string subId, string ListingId)
-        {
-            foreach (var sub in subcategories)
-            {
-                if (sub.SubcategoryId == subId)
-                {
-                    sub.AddListingId(ListingId);
-                    return sub;
-                }
-            }
-            return null;
-        }
+        
     }
 }

@@ -12,17 +12,17 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool HandleAsync(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
+        public bool Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
-            Category NewCategory = new Category(message.CategoryName, message.CategoryNameMs, message.CategoryNameZh);
+            Category NewCategory = new Category(message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, message.CategoryPath);
 
-            if (message.Subcategories.Count < 1)
-            {
-                foreach (var sub in message.Subcategories)
-                {
-                    NewCategory.CreateSubCategory(sub.SubcategoryName, sub.SubcategoryNameMs, sub.SubcategoryNameZh);
-                }
-            }
+            //if (message.Subcategories.Count < 1)
+            //{
+            //    foreach (var sub in message.Subcategories)
+            //    {
+            //        NewCategory.CreateSubCategory(sub.SubcategoryName, sub.SubcategoryNameMs, sub.SubcategoryNameZh);
+            //    }
+            //}
 
             var response = _CategoryRepository.CreateCategory(NewCategory);
             outputPort.Handle(response.Success ? new CreateCategoryResponse(response.Id, true) : new CreateCategoryResponse(response.Errors));

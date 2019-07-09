@@ -31,10 +31,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
             ;
 
-            CreateMap<Subcategory, SubcategoryDto>()
-                    .ForMember(s => s.SubcategoryName, opt => opt.MapFrom(sd => sd.SubcategoryName))
-                .ForMember(s => s.SubcategoryNameMs, opt => opt.MapFrom(sd => sd.SubcategoryNameMs))
-                .ForMember(s => s.SubcategoryNameZh, opt => opt.MapFrom(sd => sd.SubcategoryNameZh))
+           
                 ;
             //dto --> domain
 
@@ -51,15 +48,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 ;
             CreateMap<CategoryDto, Category>()
                 .ForMember(c => c.CategoryId, opt => opt.MapFrom(cd => cd.Id))
-                .ForMember(c => c.Subcategories, opt => opt.MapFrom(cd => cd.Subcategories))
+                
                 ;
 
-            CreateMap<SubcategoryDto, Subcategory>()
-            .ForMember(s => s.SubcategoryId, opt => opt.MapFrom(sd => sd.Id))
-                .ForMember(s => s.SubcategoryName, opt => opt.MapFrom(sd => sd.SubcategoryName))
-                .ForMember(s => s.SubcategoryNameMs, opt => opt.MapFrom(sd => sd.SubcategoryNameMs))
-                .ForMember(s => s.SubcategoryNameZh, opt => opt.MapFrom(sd => sd.SubcategoryNameZh))
-            ;
+           
 
 
 

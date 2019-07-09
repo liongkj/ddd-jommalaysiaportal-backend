@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
@@ -13,14 +14,14 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         {
             _merchantRepository = merchantRepository;
         }
-        public bool HandleAsync(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
+        public bool Handle(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
         {
             if (message is null)
             {
                 throw new System.ArgumentNullException(nameof(message));
             }
 
-            var response = _merchantRepository.FindById(message.Id);
+            var response =  _merchantRepository.FindById(message.Id);
             //if found
             if (!response.Success)
             {
@@ -29,7 +30,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
             //if merchant is null
             if (response.Merchant != null)
             {
-                outputPort.Handle(new GetMerchantResponse(response.Merchant, true));
+                 outputPort.Handle(new GetMerchantResponse(response.Merchant, true));
                 return response.Success;
             }
             else

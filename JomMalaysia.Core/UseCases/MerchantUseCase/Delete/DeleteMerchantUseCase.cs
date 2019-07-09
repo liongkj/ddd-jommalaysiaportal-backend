@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
             _merchant = merchant;
         }
 
-        public bool HandleAsync(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
+        public bool Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
         {
             if (message.MerchantId == null)
             {
@@ -27,7 +27,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
             }
             else
             {
-                if (merchant.isSafeToDelete())
+                if (!merchant.IsSafeToDelete())
                 {
                     //still have listing, cannot delete
                     outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant still has listing associated"));

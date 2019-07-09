@@ -14,7 +14,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         {
             _merchantRepository = merchantRepository;
         }
-        public async Task<bool> Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
+        public  bool Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
         {
 
             //validate request
@@ -23,7 +23,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
                 throw new ArgumentNullException(nameof(message));
             }
 
-            var response = await _merchantRepository.GetAllMerchants();
+            var response =  _merchantRepository.GetAllMerchants();
             if (!response.Success)
             {
                 outputPort.Handle(new GetAllMerchantResponse(response.Errors));

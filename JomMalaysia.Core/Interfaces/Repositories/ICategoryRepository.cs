@@ -17,8 +17,6 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         GetCategoryResponse FindById(string id);
         UpdateCategoryResponse Update(string id, Category Category);
         //subcategory
-        CreateSubcategoryResponse CreateSubcategory(string categoryid, Subcategory subcategory);
-        GetAllSubcategoryResponse GetAllSubcategory(string categoryid);
-        UpdateCategoryResponse UpdateSubcategoryListing(Subcategory subcategory, Listing listing, bool isAdd);
+
     }
 }
