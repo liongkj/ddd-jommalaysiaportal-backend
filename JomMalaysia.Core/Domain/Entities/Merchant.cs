@@ -43,22 +43,23 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         public Collection<Listing> AddListing(Listing newListing)
         {
-            if (newListing is null)
-            {
-                throw new ArgumentNullException(nameof(newListing));
-            }
+            //if (newListing is null)
+            //{
+            //    throw new ArgumentNullException(nameof(newListing));
+            //}
 
-            newListing.Merchant = this;
-            _listingItems.Add(newListing);
-            if (newListing.SetCategory(newListing.Category, newListing.Subcategory))
-            {
-                return _listingItems;
-            }
-            else
-            {
-                throw new ArgumentException("Listing category is not valid");
-            }
-            throw new ArgumentException("Listing is not valid");
+            //newListing.Merchant = this;
+            //_listingItems.Add(newListing);
+            //if (newListing.SetCategory(newListing.Category, newListing.Subcategory))
+            //{
+            //    return _listingItems;
+            //}
+            //else
+            //{
+            //    throw new ArgumentException("Listing category is not valid");
+            //}
+            //throw new ArgumentException("Listing is not valid");
+            throw new NotImplementedException();
         }
 
         public Collection<Listing> RemoveListing(Listing removeListing)

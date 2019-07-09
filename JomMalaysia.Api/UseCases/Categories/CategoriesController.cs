@@ -1,10 +1,7 @@
 ﻿
 using System.Threading.Tasks;
 using AutoMapper;
-using JomMalaysia.Api.UseCases.Categories.CreateCategory;
-using JomMalaysia.Api.UseCases.Categories.DeleteCategory;
-using JomMalaysia.Api.UseCases.Categories.GetCategory;
-using JomMalaysia.Api.UseCases.Categories.UpdateCategory;
+
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
@@ -21,75 +18,56 @@ namespace JomMalaysia.Api.UseCases.Categories
     {
         private readonly IMapper _mapper;
         private readonly ICreateCategoryUseCase _createCategoryUseCase;
-        private readonly CreateCategoryPresenter _createCategoryPresenter;
         private readonly IGetAllCategoryUseCase _getAllCategoryUseCase;
-        private readonly GetAllCategoryPresenter _getAllCategoryPresenter;
         private readonly IGetCategoryByIdUseCase _getCategoryByIdUseCase;
-        //private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
-        private readonly GetCategoryPresenter _getCategoryPresenter;
         private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
-        private readonly DeleteCategoryPresenter _deleteCategoryPresenter;
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
-        private readonly UpdateCategoryPresenter _updateCategoryPresenter;
-
-
-
+        private readonly CategoryPresenter _categoryPresenter;
 
         public CategoriesController(IMapper mapper,
-        ICreateCategoryUseCase createCategoryUseCase, CreateCategoryPresenter CreateCategoryPresenter,
-            IGetAllCategoryUseCase getAllCategoryUseCase, GetAllCategoryPresenter getAllCategoryPresenter,
-            IGetCategoryByIdUseCase getCategoryByIdUseCase, GetCategoryPresenter getCategoryPresenter,
+        ICreateCategoryUseCase createCategoryUseCase,
+            IGetAllCategoryUseCase getAllCategoryUseCase,
+            IGetCategoryByIdUseCase getCategoryByIdUseCase,
             //IGetCategoryByNameUseCase getCategoryByNameUseCase,
-            IDeleteCategoryUseCase deleteCategoryUseCase, DeleteCategoryPresenter deleteCategoryPresenter,
-            IUpdateCategoryUseCase updateCategoryUseCase, UpdateCategoryPresenter updateCategoryPresenter
+            IDeleteCategoryUseCase deleteCategoryUseCase,
+            IUpdateCategoryUseCase updateCategoryUseCase,
+            CategoryPresenter categoryPresenter
             )
         {
             _mapper = mapper;
             _createCategoryUseCase = createCategoryUseCase;
-            _createCategoryPresenter = CreateCategoryPresenter;
             _getAllCategoryUseCase = getAllCategoryUseCase;
-            _getAllCategoryPresenter = getAllCategoryPresenter;
             _getCategoryByIdUseCase = getCategoryByIdUseCase;
-            // _getCategoryByNameUseCase = getCategoryByNameUseCase;
-            _getCategoryPresenter = getCategoryPresenter;
             _deleteCategoryUseCase = deleteCategoryUseCase;
-            _deleteCategoryPresenter = deleteCategoryPresenter;
             _updateCategoryUseCase = updateCategoryUseCase;
-            _updateCategoryPresenter = updateCategoryPresenter;
-
-
+            _categoryPresenter = categoryPresenter;
         }
+
+        #region category
+
         //GET api/categories
+        //get whole category collection
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var req = new GetAllCategoryRequest();
-            await _getAllCategoryUseCase.Handle(req, _getAllCategoryPresenter);
-
-            return _getAllCategoryPresenter.ContentResult;
+            await _getAllCategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
         }
 
-        //Get api/categories/{id}
-        [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        //Get api/categories/{slug}
+        [HttpGet("{slug}")]
+        public IActionResult Get(string slug)
         {
-            var req = new GetCategoryByIdRequest(id);
-            _getCategoryByIdUseCase.Handle(req, _getCategoryPresenter);
-            return _getCategoryPresenter.ContentResult;
+            var req = new GetCategoryByIdRequest(slug);
+            _getCategoryByIdUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
         }
 
-        //Get api/categories/{name}
-        //[HttpGet("{name:max(14)}")]
-        //public IActionResult Get(string name)
-        //{
-        //    var req = new GetCategoryByNameRequest(name);
-        //    _getCategoryByNameUseCase.Handle(req, _getCategoryPresenter);
-        //    return _getCategoryPresenter.ContentResult;
-        //}
 
         // POST api/Categories
         [HttpPost]
-        public IActionResult Post([FromBody] CategoryDto request)
+        public IActionResult Create([FromBody] CategoryDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -97,30 +75,41 @@ namespace JomMalaysia.Api.UseCases.Categories
             }
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh);
+            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh,cat.CategoryPath);
 
-            _createCategoryUseCase.Handle(req, _createCategoryPresenter);
-            return _createCategoryPresenter.ContentResult;
+            _createCategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
         }
 
-        //DELETE api/categories/{id}
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        //DELETE api/categories/{slug}
+        [HttpDelete("{slug}")]
+        public IActionResult Delete(string slug)
         {
-            var req = new DeleteCategoryRequest(id);
-            _deleteCategoryUseCase.Handle(req, _deleteCategoryPresenter);
-            return _deleteCategoryPresenter.ContentResult;
+            var req = new DeleteCategoryRequest(slug);
+            _deleteCategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
         }
 
 
-        //PUT api/categories/{id}
-        [HttpPut("{id}")]
-        public IActionResult Put(string id, CategoryDto Updated)
+        //PUT api/categories/{slug}
+        [HttpPut("{slug}")]
+        public IActionResult Put(string slug, CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
-            var req = new UpdateCategoryRequest(id, updated);
-            _updateCategoryUseCase.Handle(req, _updateCategoryPresenter);
-            return _updateCategoryPresenter.ContentResult;
+            var req = new UpdateCategoryRequest(slug, updated);
+            _updateCategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
         }
+
+        #endregion
+
+        #region subcategory
+        //GET api/categories/{slug}/subcategories
+        //GET api/categories/{slug}/subcategories/{slug}
+        //POST api/categories/{slug}
+        //DELETE api/categories/{slug}/subcategories/{slug}
+        //PUT api/categories/{slug}//subcategories/{slug}
+
+        #endregion
     }
 }

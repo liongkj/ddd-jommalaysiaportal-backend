@@ -25,18 +25,17 @@ namespace JomMalaysia.Core.Domain.Entities
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public Category Category { get; set; }
-        public Subcategory Subcategory { get; set; }
 
         public Listing()
         {
 
         }
-        public Listing(string listingName, string description, Category category, Subcategory subcategory, Location listingLocation, ListingTypeEnum listingType)
+        public Listing(string listingName, string description, Category category,  Location listingLocation, ListingTypeEnum listingType)
         {
             ListingName = listingName;
             Description = description;
             Category = category;
-            Subcategory = subcategory;
+            //Subcategory = subcategory;
             ListingLocation = listingLocation;
             Tags = new Collection<string>();
             ListingType = listingType;
@@ -45,19 +44,19 @@ namespace JomMalaysia.Core.Domain.Entities
 
 
 
-        public bool SetCategory(Category category, Subcategory Subcategory)
-        {
-            this.Category = category;
-            if (category.Subcategories.Contains(Subcategory))
-            {
-                this.Subcategory = Subcategory;
-            }
-            else
-            {
-                throw new ArgumentException("Please select a valid subcategory");
-            }
-            return true;
-        }
+        //public bool SetCategory(Category category, Subcategory Subcategory)
+        //{
+        //    this.Category = category;
+        //    if (category.Subcategories.Contains(Subcategory))
+        //    {
+        //        this.Subcategory = Subcategory;
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentException("Please select a valid subcategory");
+        //    }
+        //    return true;
+        //}
         public void UpdatePhoto() { }
         public void UpdateContact(Contact contact)
         {

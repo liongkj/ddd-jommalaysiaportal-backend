@@ -11,9 +11,9 @@ namespace JomMalaysia.Core.Domain.Factories
         {
         }
 
-        public override Listing CreateListing(string listingName, string description, Category category, Subcategory subcategory, Location listingLocation, ListingTypeEnum ListingTypeEnum)
+        public override Listing CreateListing(string listingName, string description, Category category,  Location listingLocation, ListingTypeEnum ListingTypeEnum)
         {
-            return new EventListing(listingName, description, category, subcategory, listingLocation, ListingTypeEnum);
+            return new EventListing(listingName, description, category, listingLocation, ListingTypeEnum);
         }
     }
 }

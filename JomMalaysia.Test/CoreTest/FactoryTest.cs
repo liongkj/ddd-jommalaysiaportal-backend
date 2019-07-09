@@ -16,11 +16,11 @@ namespace JomMalaysia.Test.CoreTest
             var eventName = "Music Festival 2019";
             var eventDescription = "the best music festival in malaysia";
             var eventType = ListingTypeEnum.Event;
-            Category cat = new Category() { CategoryName = "music" };
-            Subcategory sub = cat.CreateSubCategory("festival", "festival", "音乐节");
+            Category cat = new Category("Music","muzik","音乐", (CategoryPath)(",Festival,")) ;
+            
             Location loc = new Location();
             //When
-            var listingobj = ListingFactory.Create(eventName, eventDescription, cat, sub, loc, eventType);
+            var listingobj = ListingFactory.Create(eventName, eventDescription, cat, loc, eventType);
             EventListing listing = (EventListing)listingobj;
 
             listing.updateEventDate(DateTime.Now);

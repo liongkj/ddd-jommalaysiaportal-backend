@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.Domain.Factories
         {
             get { return _properties; }
         }
-        public abstract Listing CreateListing(string listingName, string description, Category category, Subcategory subcategory, Location listingLocation, ListingTypeEnum ListingType);
+        public abstract Listing CreateListing(string listingName, string description, Category category,  Location listingLocation, ListingTypeEnum ListingType);
 
 
     }
