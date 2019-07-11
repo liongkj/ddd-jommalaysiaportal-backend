@@ -10,9 +10,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         //TODO Use google phone library
         private Phone() { }
 
-        public string Number { get; private set; }
-        public string Area { get; private set; }
-        public bool isMobile { get; private set; }
+        public string Number { get; set; }
+        public string Area { get; set; }
+        public bool isMobile { get; set; }
 
         public static Phone For(string phoneString)
         {

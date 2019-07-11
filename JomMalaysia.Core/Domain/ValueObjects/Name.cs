@@ -6,8 +6,8 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public sealed class Name : ValueObjectBase
     {
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         private Name() { }
         public static explicit operator Name(string nameString)
