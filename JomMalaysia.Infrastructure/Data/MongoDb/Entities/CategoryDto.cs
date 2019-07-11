@@ -17,17 +17,17 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string CategoryName { get; set; }
-        public CategoryPath CategoryPath { get; set; }
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
+        public Category Parent { get; set; }
+        public string CategoryPath { get; set; }
 
-        public CategoryDto(string categoryName, string categoryNameMs, string categoryNameZh, CategoryPath CategoryPath)
+        public CategoryDto()
         {
-            CategoryName = categoryName;
-            CategoryNameMs = categoryNameMs;
-            CategoryNameZh = categoryNameZh;
-            this.CategoryPath = CategoryPath;
+
         }
+
+
 
     }
 }

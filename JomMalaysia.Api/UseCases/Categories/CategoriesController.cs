@@ -69,13 +69,9 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpPost]
         public IActionResult Create([FromBody] CategoryDto request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh,cat.CategoryPath);
+            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh,request.Parent);
 
             _createCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;

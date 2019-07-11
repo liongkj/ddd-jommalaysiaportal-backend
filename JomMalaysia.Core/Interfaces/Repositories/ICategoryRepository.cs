@@ -9,14 +9,12 @@ namespace JomMalaysia.Core.Interfaces.Repositories
 {
     public interface ICategoryRepository
     {
-        //category
-        CreateCategoryResponse CreateCategory(Category Category);
-        Task<GetAllCategoryResponse> GetAllCategories();
+        Task<CreateCategoryResponse> CreateCategory(Category Category);
+        GetAllCategoryResponse GetAllCategories();
         DeleteCategoryResponse Delete(string id);
         GetCategoryResponse FindByName(string name);
         GetCategoryResponse FindById(string id);
         UpdateCategoryResponse Update(string id, Category Category);
-        //subcategory
 
     }
 }

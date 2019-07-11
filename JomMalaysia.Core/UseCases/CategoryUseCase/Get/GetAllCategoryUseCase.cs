@@ -14,7 +14,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         }
         public async Task<bool> Handle(GetAllCategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
         {
-            var response = await _CategoryRepository.GetAllCategories();
+            var response = _CategoryRepository.GetAllCategories();
             //foreach(var c in response.Categories){
             //    foreach(var sub in message.Subcategories)
             //    c.Subcategories.Add(sub);

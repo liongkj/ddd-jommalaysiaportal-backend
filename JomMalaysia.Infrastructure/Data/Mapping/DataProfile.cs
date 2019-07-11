@@ -28,6 +28,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<Category, CategoryDto>()
                 .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
+                .ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
             //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
             ;
 
