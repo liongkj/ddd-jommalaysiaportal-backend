@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Domain.FluentValidation;
+using JomMalaysia.Core.Validation.Extension;
 using System;
 using FluentValidation.Validators;
 using System.Linq;
