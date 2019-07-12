@@ -14,6 +14,7 @@ namespace JomMalaysia.Core.Validation
             RuleFor(x => x.Number)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
+                .NoStartWithWhiteSpace()
                 .Must(BeAnInteger).WithMessage("{PropertyName} can only contain digits")
                 .Must(BeAValidNumber).WithMessage("{PropertyName} is invalid")
                 .MinimumLength(11);

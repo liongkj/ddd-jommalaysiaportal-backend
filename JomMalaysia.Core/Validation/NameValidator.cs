@@ -12,11 +12,13 @@ namespace JomMalaysia.Core.Validation
             RuleFor(x => x.FirstName)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
+                .NoStartWithWhiteSpace()
                 .MaximumLength(50)
                 .Must(BeAValidName).WithMessage("{PropertyName} is invalid.");
             RuleFor(x => x.LastName)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
+                .NoStartWithWhiteSpace()
                 .Length(2,30)
                 .Must(BeAValidName).WithMessage("{PropertyName} is invalid.");
 

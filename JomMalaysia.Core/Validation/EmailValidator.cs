@@ -2,6 +2,8 @@
 using System.Linq;
 using FluentValidation;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Domain.FluentValidation;
+
 
 namespace JomMalaysia.Core.Validation
 {
@@ -12,11 +14,13 @@ namespace JomMalaysia.Core.Validation
             RuleFor(x => x.User)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
+                .NoStartWithWhiteSpace()
                 .Must(NotUpper).WithMessage("{PropertyName} must be in lowerCase")
                 .Matches(@"[^\s]");    //WhiteSpace            
             RuleFor(x => x.Domain)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
+                .NoStartWithWhiteSpace()
                 .Must(NotUpper).WithMessage("{PropertyName} must be in lowerCase")
                 .Must(BeAValidDomain).WithMessage("{PropertyName} is invalid")
                 .Matches(@"[^\s]");
