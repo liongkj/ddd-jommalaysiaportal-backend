@@ -13,9 +13,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         }
 
-        public Name Name { get; set; }
-        public Email Email { get; set; }
-        public Phone Phone { get; set; }
+        public Name Name { get; private set; }
+        public Email Email { get; private set; }
+        public Phone Phone { get; private set; }
 
         public Contact(string name, string email, string phone)
         {

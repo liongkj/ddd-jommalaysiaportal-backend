@@ -9,10 +9,22 @@ namespace JomMalaysia.Core.Validation
         {
             RuleFor(x => x.Add1).NotEmpty();
             RuleFor(x => x.Add2).NotEmpty();
-            RuleFor(x => x.State).NotEmpty().MaximumLength(15);
-            RuleFor(x => x.City).NotEmpty().MaximumLength(10);
-            RuleFor(x => x.Country).MaximumLength(30).NotEmpty();
-            RuleFor(x => x.PostalCode).MaximumLength(10).NotEmpty();
+            RuleFor(x => x.State)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .MaximumLength(15);
+            RuleFor(x => x.City)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .MaximumLength(10);
+            RuleFor(x => x.Country)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .MaximumLength(30)
+                .NotEmpty();
+            RuleFor(x => x.PostalCode)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .MaximumLength(10)
+                .NotEmpty();
 
             //update
             RuleFor(c => c.PostalCode).Matches(@"^\d{5}$")

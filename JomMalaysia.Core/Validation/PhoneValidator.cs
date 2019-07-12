@@ -3,6 +3,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Domain.FluentValidation;
 using System;
 using FluentValidation.Validators;
+using System.Linq;
 
 namespace JomMalaysia.Core.Validation
 {
@@ -10,9 +11,28 @@ namespace JomMalaysia.Core.Validation
     {
         public PhoneValidator()
         {
-            RuleFor(x => x.Number).NotEmpty().MinimumLength(9);
+            RuleFor(x => x.Number)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Must(BeAnInteger).WithMessage("{PropertyName} can only contain digits")
+                .Must(BeAValidNumber).WithMessage("{PropertyName} is invalid")
+                .MinimumLength(11);
+            
 
         }
+
+        protected bool BeAValidNumber(string number)
+        {
+            return number.StartsWith("0");
+
+        }
+
+        protected bool BeAnInteger(string number)
+        {
+            number = number.Replace("-", "");
+            return number.All(Char.IsDigit);
+        }
+        
     }
     
 }
