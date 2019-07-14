@@ -22,13 +22,14 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IGetCategoryByIdUseCase _getCategoryByIdUseCase;
         private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
+        private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
 
         public CategoriesController(IMapper mapper,
         ICreateCategoryUseCase createCategoryUseCase,
             IGetAllCategoryUseCase getAllCategoryUseCase,
             IGetCategoryByIdUseCase getCategoryByIdUseCase,
-            //IGetCategoryByNameUseCase getCategoryByNameUseCase,
+            IGetCategoryByNameUseCase getCategoryByNameUseCase,
             IDeleteCategoryUseCase deleteCategoryUseCase,
             IUpdateCategoryUseCase updateCategoryUseCase,
             CategoryPresenter categoryPresenter
@@ -40,6 +41,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             _getCategoryByIdUseCase = getCategoryByIdUseCase;
             _deleteCategoryUseCase = deleteCategoryUseCase;
             _updateCategoryUseCase = updateCategoryUseCase;
+            _getCategoryByNameUseCase = getCategoryByNameUseCase;
             _categoryPresenter = categoryPresenter;
         }
 
@@ -48,10 +50,10 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories
         //get whole category collection
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var req = new GetAllCategoryRequest();
-            await _getAllCategoryUseCase.Handle(req, _categoryPresenter);
+             _getAllCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
@@ -59,8 +61,8 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpGet("{slug}")]
         public IActionResult Get(string slug)
         {
-            var req = new GetCategoryByIdRequest(slug);
-            _getCategoryByIdUseCase.Handle(req, _categoryPresenter);
+            var req = new GetCategoryByNameRequest(slug);
+            _getCategoryByNameUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
@@ -86,7 +88,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
 
-
+        //TODO
         //PUT api/categories/{slug}
         [HttpPut("{slug}")]
         public IActionResult Put(string slug, CategoryDto Updated)

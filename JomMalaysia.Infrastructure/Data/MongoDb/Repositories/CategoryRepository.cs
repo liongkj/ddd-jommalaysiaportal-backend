@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
@@ -9,6 +13,7 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -21,20 +26,32 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public CategoryRepository(IMongoDbContext context, IMapper mapper)
         {
             _db = context.Database.GetCollection<CategoryDto>("Category");
-            
+
             _mapper = mapper;
         }
         public async Task<CreateCategoryResponse> CreateCategory(Category Category)
         {
             var CategoryDto = _mapper.Map<Category, CategoryDto>(Category);
-            
+
             await _db.InsertOneAsync(CategoryDto);
             return new CreateCategoryResponse(Category.CategoryId, true);
         }
 
         public DeleteCategoryResponse Delete(string id)
         {
-            throw new System.NotImplementedException();
+            //TODO Profile speed
+            //FilterDefinition<PlaceDto> filter = Builders<PlaceDto>.Filter.Eq(m => m.Id, id);
+            //DeleteResult deleteResult = await _db
+            //                                  .DeleteOneAsync(filter);
+            //var query = _db.AsQueryable()
+            //.Select(p => p.Id);
+            //return deleteResult.IsAcknowledged
+            //    && deleteResult.DeletedCount > 0;
+
+            //mongodb driver api
+            var result = _db.DeleteOne(filter: c => c.Id == id);
+            //todo TBC soft delete or hard delete
+            return new DeleteCategoryResponse(id, true);
         }
 
         public DeleteCategoryResponse DeleteCategory(string CategoryId)
@@ -60,7 +77,18 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public GetCategoryResponse FindByName(string name)
         {
-            throw new System.NotImplementedException();
+
+            CategoryPath cp = new CategoryPath(name, null);
+            //convert to slug
+            var querystring = cp.ToString();
+            //linq query
+            var query =
+                _db.AsQueryable()
+                .Where(M => M.CategoryPath.StartsWith(querystring))
+                .FirstOrDefault();
+            Category m = _mapper.Map<Category>(query);
+            var response = m == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(m, true);
+            return response;
         }
 
         public GetAllCategoryResponse GetAllCategories()
@@ -70,7 +98,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                  .ToList();
             List<Category> Categorys = _mapper.Map<List<Category>>(query);
             var response = Categorys.Count < 1 ?
-                new GetAllCategoryResponse(new List<string> { "No Categorys" }, false) :
+                new GetAllCategoryResponse(new List<string> { "No Categoriess" }, false) :
                 new GetAllCategoryResponse(Categorys, true);
             return response;
         }

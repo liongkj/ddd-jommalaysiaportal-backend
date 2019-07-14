@@ -57,9 +57,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         }
 
 
-
-
-
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
@@ -75,7 +72,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                     var sub = GenerateSlug(Subcategory);
                     Subcategory = sub;
                     builder.Append(sub);
-                   
                 }
                 
             }
@@ -84,7 +80,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return builder.ToString();
         }
 
-        private string GenerateSlug(string phrase)
+        public string GenerateSlug(string phrase)
         {
             string str = phrase.ToLower();
             // invalid chars           
@@ -97,6 +93,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return str;
         }
 
+
         private static string GeneratePhrase(string slug)
         {
             string str = slug;
@@ -107,23 +104,12 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return str;
         }
 
-        private string RemoveAccent(string txt)
-        {
-            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-            return System.Text.Encoding.ASCII.GetString(bytes);
-        }
-
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Category;
             yield return Subcategory;
         }
 
-        public bool SameAs(CategoryPath obj)
-        {
-            return 
-                   Category.Equals(obj.Category )&&
-                   Subcategory.Equals(obj.Subcategory);
-        }
+       
     }
 }
