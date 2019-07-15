@@ -56,7 +56,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return For(CategoryString);
         }
 
-
+        //build category path string
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
@@ -64,13 +64,12 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             if (!string.IsNullOrEmpty(Category) )
             {
                 var cat = GenerateSlug(Category);
-                Category = cat;
+
                 builder.Append(cat);
                 if (!string.IsNullOrEmpty(Subcategory))
                 {
                     builder.Append(DLM);
                     var sub = GenerateSlug(Subcategory);
-                    Subcategory = sub;
                     builder.Append(sub);
                 }
                 

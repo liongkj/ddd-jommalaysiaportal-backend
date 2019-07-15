@@ -34,7 +34,8 @@ namespace JomMalaysia.Api.UseCases.Categories
             IGetCategoryByNameUseCase getCategoryByNameUseCase,
             IDeleteCategoryUseCase deleteCategoryUseCase,
             IUpdateCategoryUseCase updateCategoryUseCase,
-            CategoryPresenter categoryPresenter
+            CategoryPresenter categoryPresenter,
+            IGetAllSubcategoryUseCase getAllSubcategoryUseCase
             )
         {
             _mapper = mapper;
@@ -45,6 +46,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             _updateCategoryUseCase = updateCategoryUseCase;
             _getCategoryByNameUseCase = getCategoryByNameUseCase;
             _categoryPresenter = categoryPresenter;
+            _getAllSubcategoryUseCase = getAllSubcategoryUseCase;
         }
 
         #region category
@@ -107,7 +109,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories/{slug}/subcategories
         
         [HttpGet("{slug}/subcategories")]
-        public IActionResult GetSubcategories(string slug)
+        public IActionResult GetSubcategories([FromRoute]string slug)
         {
             var req = new GetAllSubcategoryRequest(slug);
 

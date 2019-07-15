@@ -49,7 +49,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForPath(l => l.Merchant.MerchantId, opt => opt.MapFrom(ld => ld.MerchantId))
                 ;
             CreateMap<CategoryDto, Category>()
-               
+               .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
 
                 ;
 

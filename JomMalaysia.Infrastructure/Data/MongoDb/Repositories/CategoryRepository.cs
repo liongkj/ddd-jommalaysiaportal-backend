@@ -59,16 +59,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             //mongodb driver api
             var result = _db.DeleteOne(filter: c => c.Id == id);
             //todo TBC soft delete or hard delete
-            return new DeleteCategoryResponse(id, true);
+            return new DeleteCategoryResponse(id, result.IsAcknowledged);
         }
 
-        public DeleteCategoryResponse DeleteCategory(string CategoryId)
-        {
-            //mongodb driver api
-            var result = _db.DeleteOne(filter: m => m.Id == CategoryId);
-            //todo TBC soft delete or hard delete
-            return new DeleteCategoryResponse(CategoryId, true);
-        }
+
 
         public GetCategoryResponse FindById(string CategoryId)
         {
@@ -103,7 +97,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                var query =
                     _db.AsQueryable()
                     .ToList()
-                    //.OrderBy(c=>c.CategoryName)
+                    .OrderBy(c=>c.CategoryName)
                     ;
             
             List<Category> Categories = _mapper.Map<List<Category>>(query);
@@ -123,7 +117,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             var query =
                     _db.AsQueryable() 
                 .Where(M => M.CategoryPath.StartsWith(querystring))
-                .SkipWhile(m=>m.CategoryPath.Length.Equals(querystring.Length))
+                .Where(M=>!M.CategoryPath.Equals(querystring))
+                //.Where(m=>!(m.CategoryPath.str).Equals(querystring.Length))
+                .OrderBy(c => c.CategoryName)
                 .ToList();
 
             List<Category> Categories = _mapper.Map<List<Category>>(query);

@@ -14,6 +14,11 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         }
         public bool Handle(GetAllSubcategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
         {
+            if (message == null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
             var response = _CategoryRepository.GetAllCategories(message.CategoryName);
             if (!response.Success)
             {

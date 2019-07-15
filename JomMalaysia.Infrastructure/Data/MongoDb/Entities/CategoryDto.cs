@@ -19,6 +19,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string CategoryName { get; set; }
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
+        [BsonIgnoreIfNull]
         public string ParentCategory { get; set; }
         public string CategoryPath { get; set; }
 

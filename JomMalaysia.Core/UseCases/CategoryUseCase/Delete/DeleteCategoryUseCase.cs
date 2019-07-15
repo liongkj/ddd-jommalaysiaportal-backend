@@ -16,27 +16,31 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
         public bool Handle(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
         {
             Category category = (_Category.FindByName(message.Name)).Category;
-            if (category == null)//if cant find the category
+
+            if (category == null)//null check
             {
                 outputPort.Handle(new DeleteCategoryResponse(message.Name, false, "Category Not Found"));
                 return false;
             }
             else
             {
-                //TODO
-                //validate if has subcategories
 
-                //if (message.Subcategories.Count < 1) //if no subcategories
-                //{
+                //fetch subcategories
+                var Subcategories = _Category.GetAllCategories(message.Name).Categories;
+                if (category.HasSubcategories(Subcategories))
+                {
+                    outputPort.Handle(new DeleteCategoryResponse(category.CategoryName, false, category.CategoryName + " still has subcategories associated."));
+                    return false;
+                }
+                else //no subcategories
+                {
                     var response = _Category.Delete(category.CategoryId);
-                //    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, true, category.CategoryId + " deleted"));
-                //    return response.Success;
-                //}
-                //else
-                //{
-                    outputPort.Handle(new DeleteCategoryResponse(response.Id, true, category.CategoryName + " Deleted"));
-                    return true;
-                //}
+                    outputPort.Handle(new DeleteCategoryResponse(response.Id, response.Success, category.CategoryName + " Deleted"));
+                    return response.Success;
+
+
+                }
+
             }
         }
     }

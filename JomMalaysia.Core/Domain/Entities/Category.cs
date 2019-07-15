@@ -30,9 +30,20 @@ namespace JomMalaysia.Core.Domain.Entities
             CategoryNameZh = categoryNameZh;
         }
 
+        public bool HasSubcategories(List<Category> subcategories)
+        {
+            if (subcategories 
+                != null)
+            {
+                return subcategories.Count > 0;
+            }
+
+            return false;
+        }
+
         public bool HasDuplicate(List<Category> categories)
         {
-            if (categories != null )
+            if (categories != null)
             {
                 foreach (var c in categories)
                 {
@@ -45,27 +56,29 @@ namespace JomMalaysia.Core.Domain.Entities
             return false;
         }
 
-        internal void CreateCategoryPath(string parent
+
+
+        public void CreateCategoryPath(string parent
             )
         {
             if (parent == null)
             { //if is parent
-               IsParentCategory();
+                CreateParentPath();
             }
             else //is subcategory
             {
-                IsSubcategory(parent);
+                CreateSubPath(parent);
             }
         }
 
-        
 
-        private void IsParentCategory()
+
+        private void CreateParentPath()
         {
             CategoryPath = new CategoryPath(CategoryName, null);
         }
 
-        private void IsSubcategory(string parent)
+        private void CreateSubPath(string parent)
         {
             CategoryPath = new CategoryPath(parent, CategoryName);
 
