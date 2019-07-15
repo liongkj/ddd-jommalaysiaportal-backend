@@ -12,14 +12,14 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
-        public Category Parent { get; set; }
+        public string ParentCategory { get; set; }
 
-        public CreateCategoryRequest(string categoryName, string categoryNameMs, string categoryNameZh, Category parent)
+        public CreateCategoryRequest(string categoryName, string categoryNameMs, string categoryNameZh, string ParentCategory)
         {
             CategoryName = categoryName;
             CategoryNameMs = categoryNameMs;
             CategoryNameZh = categoryNameZh;
-            Parent = parent;
+            this.ParentCategory = ParentCategory;
         }
     }
 }

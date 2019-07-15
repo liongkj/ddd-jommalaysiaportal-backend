@@ -1,4 +1,5 @@
 ﻿
+
 using System.Threading.Tasks;
 using AutoMapper;
 
@@ -24,6 +25,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
         private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
+        private readonly IGetAllSubcategoryUseCase _getAllSubcategoryUseCase;
 
         public CategoriesController(IMapper mapper,
         ICreateCategoryUseCase createCategoryUseCase,
@@ -73,7 +75,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh,request.Parent);
+            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh,request.ParentCategory);
 
             _createCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
@@ -103,8 +105,27 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         #region subcategory
         //GET api/categories/{slug}/subcategories
+        
+        [HttpGet("{slug}/subcategories")]
+        public IActionResult GetSubcategories(string slug)
+        {
+            var req = new GetAllSubcategoryRequest(slug);
+
+            _getAllSubcategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
+        }
         //GET api/categories/{slug}/subcategories/{slug}
         //POST api/categories/{slug}
+        [HttpPost("{slug}/subcategories")]
+        public IActionResult CreateSubcategory([FromRoute] string slug,[FromBody] CategoryDto request)
+        {
+            Category cat = _mapper.Map<CategoryDto, Category>(request);
+
+            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
+
+            _createCategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
+        }
         //DELETE api/categories/{slug}/subcategories/{slug}
         //PUT api/categories/{slug}//subcategories/{slug}
 

@@ -37,6 +37,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return new CreateCategoryResponse(Category.CategoryId, true);
         }
 
+        //public async Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory)
+        //{
+        //    var CategoryDto = _mapper.Map<Category, CategoryDto>(Category);
+        //    //todo
+        //    await _db.InsertOneAsync(CategoryDto);
+        //    return new CreateCategoryResponse(Category.CategoryId, true);
+        //}
+
         public DeleteCategoryResponse Delete(string id)
         {
             //TODO Profile speed
@@ -77,14 +85,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public GetCategoryResponse FindByName(string name)
         {
-
             CategoryPath cp = new CategoryPath(name, null);
             //convert to slug
             var querystring = cp.ToString();
             //linq query
             var query =
                 _db.AsQueryable()
-                .Where(M => M.CategoryPath.StartsWith(querystring))
+                .Where(M => M.CategoryPath.Equals(querystring))
                 .FirstOrDefault();
             Category m = _mapper.Map<Category>(query);
             var response = m == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(m, true);
@@ -93,13 +100,36 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public GetAllCategoryResponse GetAllCategories()
         {
+               var query =
+                    _db.AsQueryable()
+                    .ToList()
+                    //.OrderBy(c=>c.CategoryName)
+                    ;
+            
+            List<Category> Categories = _mapper.Map<List<Category>>(query);
+            var response = Categories.Count < 1 ?
+                new GetAllCategoryResponse(new List<string> { "No Categories" }, false) :
+                new GetAllCategoryResponse(Categories, true);
+            return response;
+        }
+
+        //overload to get subcategories
+        public GetAllCategoryResponse GetAllCategories(string CategoryName)
+        {
+            CategoryPath cp = new CategoryPath(CategoryName, null);
+            //convert to slug
+            var querystring = cp.ToString();
+
             var query =
-                 _db.AsQueryable()
-                 .ToList();
-            List<Category> Categorys = _mapper.Map<List<Category>>(query);
-            var response = Categorys.Count < 1 ?
-                new GetAllCategoryResponse(new List<string> { "No Categoriess" }, false) :
-                new GetAllCategoryResponse(Categorys, true);
+                    _db.AsQueryable() 
+                .Where(M => M.CategoryPath.StartsWith(querystring))
+                .SkipWhile(m=>m.CategoryPath.Length.Equals(querystring.Length))
+                .ToList();
+
+            List<Category> Categories = _mapper.Map<List<Category>>(query);
+            var response = Categories.Count < 1 ?
+                new GetAllCategoryResponse(new List<string> { "No Subcategoriess" }, false) :
+                new GetAllCategoryResponse(Categories, true);
             return response;
         }
 

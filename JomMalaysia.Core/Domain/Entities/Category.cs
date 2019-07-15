@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,17 +32,21 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public bool HasDuplicate(List<Category> categories)
         {
-            foreach (var c in categories)
+            if (categories != null )
             {
-                if (c.CategoryPath.Equals(CategoryPath))
+                foreach (var c in categories)
                 {
-                    return true;
+                    if (c.CategoryPath.Equals(CategoryPath))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
         }
 
-        internal void CreateCategoryPath(Category parent)
+        internal void CreateCategoryPath(string parent
+            )
         {
             if (parent == null)
             { //if is parent
@@ -60,9 +65,9 @@ namespace JomMalaysia.Core.Domain.Entities
             CategoryPath = new CategoryPath(CategoryName, null);
         }
 
-        private void IsSubcategory(Category parent)
+        private void IsSubcategory(string parent)
         {
-            CategoryPath = new CategoryPath(parent.CategoryName, CategoryName);
+            CategoryPath = new CategoryPath(parent, CategoryName);
 
         }
 

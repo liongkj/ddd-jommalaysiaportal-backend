@@ -10,7 +10,9 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     public interface ICategoryRepository
     {
         Task<CreateCategoryResponse> CreateCategory(Category Category);
+        //Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory);
         GetAllCategoryResponse GetAllCategories();
+        GetAllCategoryResponse GetAllCategories(string categoryName);
         DeleteCategoryResponse Delete(string id);
         GetCategoryResponse FindByName(string name);
         GetCategoryResponse FindById(string id);
