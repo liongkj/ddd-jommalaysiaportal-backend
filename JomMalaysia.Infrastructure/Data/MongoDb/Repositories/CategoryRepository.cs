@@ -77,6 +77,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
+        /// <summary>
+        /// Get category object given category name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public GetCategoryResponse FindByName(string name)
         {
             CategoryPath cp = new CategoryPath(name, null);
@@ -92,6 +97,26 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
+        /// <summary>
+        /// Get subcategory given category and subcategory name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public GetCategoryResponse FindByName(string cat,string sub)
+        {
+            CategoryPath cp = new CategoryPath(cat, sub);
+            //convert to slug
+            var querystring = cp.ToString();
+            //linq query
+            var query =
+                _db.AsQueryable()
+                .Where(M => M.CategoryPath.Equals(querystring))
+                .FirstOrDefault();
+            Category m = _mapper.Map<Category>(query);
+            var response = m == null ? new GetCategoryResponse(new List<string> { "Subcategory Not Found" }, false) : new GetCategoryResponse(m, true);
+            return response;
+        }
+
         public GetAllCategoryResponse GetAllCategories()
         {
                var query =
@@ -101,12 +126,16 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     ;
             
             List<Category> Categories = _mapper.Map<List<Category>>(query);
-            var response = Categories.Count < 1 ?
-                new GetAllCategoryResponse(new List<string> { "No Categories" }, false) :
-                new GetAllCategoryResponse(Categories, true);
+            var response = new GetAllCategoryResponse(Categories, true);
             return response;
         }
 
+
+        /// <summary>
+        /// Get all subcategories given a category name
+        /// </summary>
+        /// <param name="CategoryName"></param>
+        /// <returns></returns>
         //overload to get subcategories
         public GetAllCategoryResponse GetAllCategories(string CategoryName)
         {
@@ -136,12 +165,36 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             throw new System.NotImplementedException();
         }
 
-        public UpdateCategoryResponse UpdateCategory(string id, Category updatedCategory)
+        public UpdateCategoryResponse UpdateCategoryWithSession(string id, Category updatedCategory,IClientSessionHandle session)
         {
-            ReplaceOneResult result = _db.ReplaceOne(Category => Category.Id == id, _mapper.Map<CategoryDto>(updatedCategory));
+
+            ReplaceOneResult result = _db.ReplaceOne(session,Category => Category.Id == id, _mapper.Map<CategoryDto>(updatedCategory));
             var response = result.ModifiedCount != 0 ? new UpdateCategoryResponse(id, true)
                 : new UpdateCategoryResponse(new List<string>() { "update Category failed" }, false);
             return response;
+        }
+
+        public UpdateCategoryResponse UpdateManyWithSession(List<Category> categories, IClientSessionHandle session)
+        {
+            
+            var categoryList = _mapper.Map<List<CategoryDto>>(categories);
+            
+            var bulkOps = new List<WriteModel<CategoryDto>>();
+
+            foreach (var record in categoryList)
+            {
+                var updateOne = new ReplaceOneModel<CategoryDto>(
+                    Builders<CategoryDto>.Filter.Where(c => c.Id == record.Id),
+                    record);
+                
+                bulkOps.Add(updateOne);
+            }
+            
+            var response =_db.BulkWrite(session,bulkOps);
+
+            return new UpdateCategoryResponse("update many operation",
+                response.RequestCount
+                == response.ModifiedCount, response.ModifiedCount + " updated");
         }
     }
 }

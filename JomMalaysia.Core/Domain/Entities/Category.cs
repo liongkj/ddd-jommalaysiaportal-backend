@@ -7,7 +7,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
-    public class Category : ICategory
+    public class Category
     {
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
@@ -32,7 +32,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public bool HasSubcategories(List<Category> subcategories)
         {
-            if (subcategories 
+            if (subcategories
                 != null)
             {
                 return subcategories.Count > 0;
@@ -58,8 +58,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
 
 
-        public void CreateCategoryPath(string parent
-            )
+        public void CreateCategoryPath(string parent)
         {
             if (parent == null)
             { //if is parent
@@ -71,8 +70,37 @@ namespace JomMalaysia.Core.Domain.Entities
             }
         }
 
+        public bool UpdateNameIsSuccess(Category updated)
+        {
+            if (updated == null)
+            {
+                throw new ArgumentNullException(nameof(updated));
+            }
+            UpdateName(updated);
 
+            CreateCategoryPath(CategoryPath.Subcategory == null ? null:updated.CategoryName );
 
+            return true;
+            //TODO update name logic
+        }
+
+        public List<Category> UpdateSubcategories(List<Category> subcategories,Category Updated)
+        {
+            if (subcategories.Count > 0)
+            {
+                List<Category> UpdatedSubs = new List<Category>();
+                foreach (var sub in subcategories)
+                {
+                    sub.CreateCategoryPath(Updated.CategoryPath.Category);
+                    UpdatedSubs.Add(sub);
+                    
+                }
+                return UpdatedSubs;
+            }
+            return subcategories;
+        }
+
+        #region private methods
         private void CreateParentPath()
         {
             CategoryPath = new CategoryPath(CategoryName, null);
@@ -84,22 +112,13 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public void UpdateName(string eng, string malay, string chinese)
+        private void UpdateName(Category updated)
         {
-            if (string.IsNullOrWhiteSpace(eng))
-            {
-                throw new ArgumentException("message", nameof(eng));
-            }
-
-            if (string.IsNullOrWhiteSpace(malay))
-            {
-                throw new ArgumentException("message", nameof(malay));
-            }
-
-            if (string.IsNullOrWhiteSpace(chinese))
-            {
-                throw new ArgumentException("message", nameof(chinese));
-            }
+            CategoryName = updated.CategoryName;
+            CategoryNameMs = updated.CategoryNameMs;
+            CategoryNameZh = updated.CategoryNameZh;
         }
+        #endregion
+
     }
 }

@@ -26,6 +26,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
         private readonly IGetAllSubcategoryUseCase _getAllSubcategoryUseCase;
+        private readonly IDeleteSubcategoryUseCase _deleteSubcategoryUseCase;
 
         public CategoriesController(IMapper mapper,
         ICreateCategoryUseCase createCategoryUseCase,
@@ -35,7 +36,8 @@ namespace JomMalaysia.Api.UseCases.Categories
             IDeleteCategoryUseCase deleteCategoryUseCase,
             IUpdateCategoryUseCase updateCategoryUseCase,
             CategoryPresenter categoryPresenter,
-            IGetAllSubcategoryUseCase getAllSubcategoryUseCase
+            IGetAllSubcategoryUseCase getAllSubcategoryUseCase,
+            IDeleteSubcategoryUseCase deleteSubcategoryUseCase
             )
         {
             _mapper = mapper;
@@ -47,6 +49,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             _getCategoryByNameUseCase = getCategoryByNameUseCase;
             _categoryPresenter = categoryPresenter;
             _getAllSubcategoryUseCase = getAllSubcategoryUseCase;
+            _deleteSubcategoryUseCase = deleteSubcategoryUseCase;
         }
 
         #region category
@@ -95,7 +98,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         //TODO
         //PUT api/categories/{slug}
         [HttpPut("{slug}")]
-        public IActionResult Put(string slug, CategoryDto Updated)
+        public IActionResult UpdateCategory(string slug, CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
             var req = new UpdateCategoryRequest(slug, updated);
@@ -129,6 +132,14 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
         //DELETE api/categories/{slug}/subcategories/{slug}
+        [HttpDelete("{cat}/subcategories/{slug}")]
+        public IActionResult Delete([FromRoute] string cat, [FromRoute]string slug)
+        {
+            var req = new DeleteSubcategoryRequest(cat,slug);
+            _deleteSubcategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
+        }
+
         //PUT api/categories/{slug}//subcategories/{slug}
 
         #endregion
