@@ -15,7 +15,9 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         //Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory);
         GetAllCategoryResponse GetAllCategories();
         GetAllCategoryResponse GetAllCategories(string categoryName);
+        GetCategoryResponse GetCategory(string name);
         DeleteCategoryResponse Delete(string id);
+
         GetCategoryResponse FindByName(string name);
         GetCategoryResponse FindByName(string cat,string sub);
         GetCategoryResponse FindById(string id);

@@ -10,6 +10,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
     {
         public Category Category { get; }
         public IEnumerable<string> Errors { get; }
+        public List<Category> Categories { get; }
 
         public GetCategoryResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
         {
@@ -19,6 +20,11 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         public GetCategoryResponse(Category Category, bool success = false, string message = null) : base(success, message)
         {
             this.Category = Category;
+        }
+
+        public GetCategoryResponse(List<Category> Categories, bool success = false, string message = null) : base(success, message)
+        {
+            this.Categories = Categories;
         }
     }
 }

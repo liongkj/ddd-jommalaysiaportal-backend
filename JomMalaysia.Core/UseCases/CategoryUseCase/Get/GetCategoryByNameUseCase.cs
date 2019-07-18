@@ -19,7 +19,11 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
             {
                 if (message.Name != null)//null check
                 {
-                    var response = _CategoryRepository.FindByName(message.Name);
+                    //option 1:return one category
+                    //var response = _CategoryRepository.FindByName(message.Name);
+
+                    //option 2: return category object with all sub
+                    var response = _CategoryRepository.GetCategory(message.Name);
                     return HandleResponseIsSuccess(response, outputPort);
                 }
             }
@@ -44,6 +48,11 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
             if (response.Category != null)
             {
                 outputPort.Handle(new GetCategoryResponse(response.Category, true));
+                return response.Success;
+            }
+            if (response.Categories != null)
+            {
+                outputPort.Handle(new GetCategoryResponse(response.Categories, true));
                 return response.Success;
             }
             else

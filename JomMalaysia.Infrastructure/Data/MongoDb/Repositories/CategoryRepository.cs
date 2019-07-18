@@ -77,6 +77,22 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
+        public GetCategoryResponse GetCategory(string name)
+        {
+            CategoryPath cp = new CategoryPath(name, null);
+            //convert to slug
+            var querystring = cp.ToString();
+            //linq query
+            var query =
+                _db.AsQueryable()
+                .Where(M => M.CategoryPath.StartsWith(querystring))
+                .ToList();
+            List<Category> c = _mapper.Map<List<Category>>(query);
+            var response = c == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(c, true);
+            return response;
+        }
+
+
         /// <summary>
         /// Get category object given category name
         /// </summary>
@@ -153,7 +169,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
             List<Category> Categories = _mapper.Map<List<Category>>(query);
             var response = Categories.Count < 1 ?
-                new GetAllCategoryResponse(new List<string> { "No Subcategoriess" }, false) :
+                new GetAllCategoryResponse(new List<string> { "No Subcategories" }, false) :
                 new GetAllCategoryResponse(Categories, true);
             return response;
         }
