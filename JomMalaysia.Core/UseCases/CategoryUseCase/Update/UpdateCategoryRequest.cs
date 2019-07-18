@@ -13,6 +13,15 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             this.CategoryName = CategoryName;
             this.Updated = Updated;
         }
+
+        public UpdateCategoryRequest(string ParentCategory ,string CategoryName, Category Updated)
+        {
+            this.ParentCategory = ParentCategory;
+            this.CategoryName = CategoryName;
+            this.Updated = Updated;
+        }
+
+        public string ParentCategory { get; }
         public string CategoryName { get; }
         public Category Updated { get; }
 

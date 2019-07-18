@@ -15,11 +15,31 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         }
         public bool Handle(GetCategoryByNameRequest message, IOutputPort<GetCategoryResponse> outputPort)
         {
-            
-            var response = _CategoryRepository.FindByName(message.Name);
+            if (message.ParentCategory == null)//is parent
+            {
+                if (message.Name != null)//null check
+                {
+                    var response = _CategoryRepository.FindByName(message.Name);
+                    return HandleResponseIsSuccess(response, outputPort);
+                }
+            }
+            else //is subcategory
+            {
+                if (message.Name != null)//null check
+                {
+                    var response = _CategoryRepository.FindByName(message.ParentCategory,message.Name);
+                    return HandleResponseIsSuccess(response, outputPort);
+                }
+            }
+            return false;
+        }
+
+        private bool HandleResponseIsSuccess(GetCategoryResponse response, IOutputPort<GetCategoryResponse> outputPort)
+        {
             if (!response.Success)
             {
                 outputPort.Handle(new GetCategoryResponse(response.Errors));
+                return false;
             }
             if (response.Category != null)
             {
@@ -28,7 +48,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
             }
             else
             {
-                outputPort.Handle(new GetCategoryResponse(response.Errors, false, "Category Deleted or Not Found"));
+                outputPort.Handle(new GetCategoryResponse(response.Errors, false, "Category/Subcategory Deleted or Not Found"));
                 return false;
             }
         }

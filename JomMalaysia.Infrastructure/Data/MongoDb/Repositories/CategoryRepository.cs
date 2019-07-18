@@ -102,7 +102,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public GetCategoryResponse FindByName(string cat,string sub)
+        public GetCategoryResponse FindByName(string cat, string sub)
         {
             CategoryPath cp = new CategoryPath(cat, sub);
             //convert to slug
@@ -119,12 +119,12 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public GetAllCategoryResponse GetAllCategories()
         {
-               var query =
-                    _db.AsQueryable()
-                    .ToList()
-                    .OrderBy(c=>c.CategoryName)
-                    ;
-            
+            var query =
+                 _db.AsQueryable()
+                 .ToList()
+                 .OrderBy(c => c.CategoryPath)
+                 ;
+
             List<Category> Categories = _mapper.Map<List<Category>>(query);
             var response = new GetAllCategoryResponse(Categories, true);
             return response;
@@ -144,9 +144,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             var querystring = cp.ToString();
 
             var query =
-                    _db.AsQueryable() 
+                    _db.AsQueryable()
                 .Where(M => M.CategoryPath.StartsWith(querystring))
-                .Where(M=>!M.CategoryPath.Equals(querystring))
+                .Where(M => !M.CategoryPath.Equals(querystring))
                 //.Where(m=>!(m.CategoryPath.str).Equals(querystring.Length))
                 .OrderBy(c => c.CategoryName)
                 .ToList();
@@ -159,16 +159,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         }
 
 
-
-        public UpdateCategoryResponse Update(string id, Category Category)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public UpdateCategoryResponse UpdateCategoryWithSession(string id, Category updatedCategory,IClientSessionHandle session)
+        public UpdateCategoryResponse UpdateCategoryWithSession(string id, Category updatedCategory, IClientSessionHandle session)
         {
 
-            ReplaceOneResult result = _db.ReplaceOne(session,Category => Category.Id == id, _mapper.Map<CategoryDto>(updatedCategory));
+            ReplaceOneResult result = _db.ReplaceOne(session, Category => Category.Id == id, _mapper.Map<CategoryDto>(updatedCategory));
             var response = result.ModifiedCount != 0 ? new UpdateCategoryResponse(id, true)
                 : new UpdateCategoryResponse(new List<string>() { "update Category failed" }, false);
             return response;
@@ -176,9 +170,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public UpdateCategoryResponse UpdateManyWithSession(List<Category> categories, IClientSessionHandle session)
         {
-            
+
             var categoryList = _mapper.Map<List<CategoryDto>>(categories);
-            
+
             var bulkOps = new List<WriteModel<CategoryDto>>();
 
             foreach (var record in categoryList)
@@ -186,15 +180,15 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 var updateOne = new ReplaceOneModel<CategoryDto>(
                     Builders<CategoryDto>.Filter.Where(c => c.Id == record.Id),
                     record);
-                
+
                 bulkOps.Add(updateOne);
             }
-            
-            var response =_db.BulkWrite(session,bulkOps);
+
+            var response = _db.BulkWrite(session, bulkOps);
 
             return new UpdateCategoryResponse("update many operation",
-                response.RequestCount
-                == response.ModifiedCount, response.ModifiedCount + " updated");
+                response.IsAcknowledged, 
+                response.ModifiedCount + " updated");
         }
     }
 }

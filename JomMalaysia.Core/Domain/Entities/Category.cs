@@ -58,42 +58,68 @@ namespace JomMalaysia.Core.Domain.Entities
 
 
 
-        public void CreateCategoryPath(string parent)
+        public void CreateCategoryPath(string category, string sub = null, bool IsUpdateCategoryOperation = false)
         {
-            if (parent == null)
+            //if is category
+            //create new path
+            if (category == null)
             { //if is parent
-                CreateParentPath();
+                CreateParentPath(sub);
             }
+            //if is subcategory, create new subpath with changed category
             else //is subcategory
             {
-                CreateSubPath(parent);
+                CreateSubPath(category, sub);
             }
+
+
         }
 
-        public bool UpdateNameIsSuccess(Category updated)
+        public bool UpdateCategoryIsSuccess(Category updated, bool IsUpdateCategoryOperation = true)
         {
             if (updated == null)
             {
                 throw new ArgumentNullException(nameof(updated));
             }
+            var oldCategoryName = CategoryName;
+            //1. update to new name
             UpdateName(updated);
 
-            CreateCategoryPath(CategoryPath.Subcategory == null ? null:updated.CategoryName );
+            //2. create new category path
+            if (IsUpdateCategoryOperation)//if update category operation
+            {
+                if (CategoryPath.Subcategory == null)
+                    //update category path
+                    CreateCategoryPath(updated.CategoryName);
+                //update subcategory path
+                else CreateCategoryPath(updated.CategoryName, CategoryPath.Subcategory);
+            }
+            else //IsupdateSubcategoryOperation
+            {
+                CreateCategoryPath(CategoryPath.Category, updated.CategoryName);
+            }
+
 
             return true;
+
+
             //TODO update name logic
         }
 
-        public List<Category> UpdateSubcategories(List<Category> subcategories,Category Updated)
+        //update name
+        //update category path
+
+
+        public List<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
         {
             if (subcategories.Count > 0)
             {
                 List<Category> UpdatedSubs = new List<Category>();
                 foreach (var sub in subcategories)
                 {
-                    sub.CreateCategoryPath(Updated.CategoryPath.Category);
+                    sub.CreateCategoryPath(Updated.CategoryPath.Category, sub.CategoryPath.Subcategory, false);
                     UpdatedSubs.Add(sub);
-                    
+
                 }
                 return UpdatedSubs;
             }
@@ -101,16 +127,20 @@ namespace JomMalaysia.Core.Domain.Entities
         }
 
         #region private methods
-        private void CreateParentPath()
+        private void CreateParentPath(string category)
         {
-            CategoryPath = new CategoryPath(CategoryName, null);
+            CategoryPath = new CategoryPath(category, null);
         }
 
-        private void CreateSubPath(string parent)
+        private void CreateSubPath(string category, string sub)
         {
-            CategoryPath = new CategoryPath(parent, CategoryName);
+
+            CategoryPath = new CategoryPath(category, sub);
+
 
         }
+
+
 
         private void UpdateName(Category updated)
         {

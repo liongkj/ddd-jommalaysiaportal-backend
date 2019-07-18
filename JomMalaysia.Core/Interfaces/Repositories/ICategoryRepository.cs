@@ -19,7 +19,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         GetCategoryResponse FindByName(string name);
         GetCategoryResponse FindByName(string cat,string sub);
         GetCategoryResponse FindById(string id);
-        UpdateCategoryResponse Update(string id, Category Category);
+   
         UpdateCategoryResponse UpdateManyWithSession(List<Category> categories, IClientSessionHandle session);
         UpdateCategoryResponse UpdateCategoryWithSession(string id, Category Category,IClientSessionHandle session);
 
