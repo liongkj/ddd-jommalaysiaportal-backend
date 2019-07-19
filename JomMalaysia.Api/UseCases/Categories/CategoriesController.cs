@@ -25,6 +25,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
         private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
+        
         private readonly IGetAllSubcategoryUseCase _getAllSubcategoryUseCase;
         private readonly IDeleteSubcategoryUseCase _deleteSubcategoryUseCase;
         private readonly IUpdateSubcategoryUseCase _updateSubcategoryUseCase;

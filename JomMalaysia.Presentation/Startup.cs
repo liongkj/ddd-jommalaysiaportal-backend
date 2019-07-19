@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
+using JomMalaysia.Framework;
 using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Presentation.Manager;
+using JomMalaysia.Presentation.Mapping;
 using JomMalaysia.Presentation.Scope;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +33,7 @@ namespace JomMalaysia.Presentation
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -57,10 +62,30 @@ namespace JomMalaysia.Presentation
             services.AddHttpContextAccessor();
 
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-            services.AddSingleton<IAppSetting, AppSetting>();
-            services.AddScoped<IAuthorizationManagers, AuthorizationManagers>();
 
+
+            //moved to presentationmodule
+            //services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+            //services.AddSingleton<IAppSetting, AppSetting>();
+            //services.AddScoped<IAuthorizationManagers, AuthorizationManagers>();
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new DataProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+
+            // Now register our services with Autofac container.
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new PresentationModule());
+            builder.RegisterModule(new FrameworkModule());
+            builder.Populate(services);
+            var container = builder.Build();
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
