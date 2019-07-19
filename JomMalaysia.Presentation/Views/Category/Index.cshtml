@@ -1,0 +1,62 @@
+﻿@model IEnumerable<JomMalaysia.Presentation.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--HEADER-->
+<div class="form-group col-md-12 no-padding d-none d-md-block">
+    <button type="button" class="btn btn-success col-md-2" onclick="window.location.href = '@Url.Action("Create","Category")'">New</button>
+    <button type="button" class="btn btn-primary col-md-2" onclick="window.location.href = '@Url.Action("Edit","Category")'">Edit</button>
+    <button type="button" class="btn btn-danger col-md-2" onclick="window.location.href = '@Url.Action("Delete","Category")'">Delete</button>
+    <button type="button" class="btn btn-secondary col-md-2" onclick="window.location.href = '@Url.Action("Publish","Category")'">Publish</button>
+</div>
+<div class="form-group col-md-12 no-padding d-sm-block d-md-none">
+    <div class="btn-group col-sm-12 no-padding" role="group">
+        <button type="button" class="btn btn-primary">Action</button>
+        <div id="dropdown-action-button" class="dropdown-menu col-sm-12" aria-labelledby="btnGroupDrop1" x-placement="bottom-start" style="display:none; position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
+            <a class="dropdown-item" onclick="window.location.href = '@Url.Action("Create","Category")'">New</a>
+            <a class="dropdown-item" onclick="window.location.href = '@Url.Action("Edit","Category")'">Edit</a>
+            <a class="dropdown-item" onclick="window.location.href = '@Url.Action("Delete","Category")'">Delete</a>
+            <a class="dropdown-item" onclick="window.location.href = '@Url.Action("Publish","Category")'">Publish</a>
+        </div>
+        <div id="action-button" class="btn-group" role="group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        </div>
+    </div>
+</div>
+<!--END OF HEADER-->
+
+<div class="col-md-12 col-sm-12 no-padding" style="overflow-x:auto !important" ;">
+    <table class="table table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">SSM ID</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Company Address</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Contact Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" asp-for="@item.selected" />
+                        @*<div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chkdt1" checked="">
+                                <label class="custom-control-label" for="customCheck1"></label>
+                            </div>*@
+                    </td>
+                    <td>@item.categoryId</td>
+                    <td>@item.categoryName</td>
+                    <td>@item.categoryNameMs</td>
+                    <td>@item.categoryNameZh</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
