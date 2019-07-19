@@ -7,12 +7,12 @@ using JomMalaysia.Core.Interfaces.Repositories;
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 {
-    public class UpdateCategoryUseCase : IUpdateCategoryUseCase
+    public class UpdateSubcategoryUseCase :  IUpdateSubcategoryUseCase
     {
         private readonly ICategoryRepository _CategoryRepository;
         private readonly IMongoDbContext _transaction;
 
-        public UpdateCategoryUseCase(ICategoryRepository CategoryRepository, IMongoDbContext transaction)
+        public UpdateSubcategoryUseCase(ICategoryRepository CategoryRepository, IMongoDbContext transaction)
         {
             _CategoryRepository = CategoryRepository;
             _transaction = transaction;
@@ -21,22 +21,21 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         {
             //TODO
             //check if any listing has this category
-            var category = _CategoryRepository.FindByName(message.CategoryName).Category;
-            var subcategories = _CategoryRepository.GetAllCategories(message.CategoryName).Categories;
-            if (category != null) //if category found
+            var subcategory = _CategoryRepository.FindByName(message.ParentCategory,message.CategoryName).Category;
+            //var listings = _Listing.FindListingsWithCategory()
+            if (subcategory != null) //if category found
             {
                 //find all subcategories with same name
-                if (category.UpdateCategoryIsSuccess(message.Updated,true))
+                if (subcategory.UpdateCategoryIsSuccess(message.Updated,false))
                 {
-                    var Errors = TransactionHasNoError(category, subcategories);
-                    if (Errors.Count == 0)
+                    if (TransactionHasNoError(subcategory))
                     { 
                         _transaction.Session.CommitTransaction();
-                        outputPort.Handle(new UpdateCategoryResponse(category.CategoryId, true,"update category committed successfully"));
+                        outputPort.Handle(new UpdateCategoryResponse(subcategory.CategoryId, true,"update transaction committed successfully"));
                         return true;
                     }
                     _transaction.Session.AbortTransaction();
-                    outputPort.Handle(new UpdateCategoryResponse(Errors, false));
+                    outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Update category transaction failed" }, false));
                     return false;
                 }
             }
@@ -44,22 +43,18 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             return false;
         }
 
-        private List<string> TransactionHasNoError(Category category, List<Category> subcategories)
+        private bool TransactionHasNoError(Category category)
         {
             _transaction.StartSession();
             _transaction.Session.StartTransaction();
 
-            var updatedSubcategories = category.UpdateSubcategories(subcategories, category);
+            //TODO Change to listing
+            //var updatedSubcategories = category.UpdateSubcategories(subcategories, category);
 
-            List<string> Errors = new List<string>();
-
-            var update1 = _CategoryRepository.UpdateManyWithSession(updatedSubcategories, _transaction.Session);
-            if(update1.Errors!=null) Errors.AddRange(update1.Errors);
-
+            //var update1 = _CategoryRepository.UpdateManyWithSession(updatedSubcategories, _transaction.Session);
             var update2 = _CategoryRepository.UpdateCategoryWithSession(category.CategoryId, category, _transaction.Session);
-            if (update2.Errors != null) Errors.AddRange(update2.Errors);
             //var update3 = _ListingRepository.UpdateListingWithSession
-            return Errors;
+            return  update2.Success;
         }
     }
 }

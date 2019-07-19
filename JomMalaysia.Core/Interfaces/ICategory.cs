@@ -6,6 +6,6 @@ namespace JomMalaysia.Core.Interfaces
 {
    public interface ICategory
     {
-        void UpdateName(string eng, string malay, string chinese);
+        bool UpdateNameIsSuccess(ICategory cat);
     }
 }

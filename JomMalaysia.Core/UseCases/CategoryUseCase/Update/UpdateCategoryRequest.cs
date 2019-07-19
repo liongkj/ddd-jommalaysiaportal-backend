@@ -8,12 +8,21 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 {
     public class UpdateCategoryRequest : IUseCaseRequest<UpdateCategoryResponse>
     {
-        public UpdateCategoryRequest(string CategoryId, Category Updated)
+        public UpdateCategoryRequest(string CategoryName, Category Updated)
         {
-            this.CategoryId = CategoryId;
+            this.CategoryName = CategoryName;
             this.Updated = Updated;
         }
-        public string CategoryId { get; }
+
+        public UpdateCategoryRequest(string ParentCategory ,string CategoryName, Category Updated)
+        {
+            this.ParentCategory = ParentCategory;
+            this.CategoryName = CategoryName;
+            this.Updated = Updated;
+        }
+
+        public string ParentCategory { get; }
+        public string CategoryName { get; }
         public Category Updated { get; }
 
 

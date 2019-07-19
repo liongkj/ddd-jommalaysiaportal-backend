@@ -24,7 +24,6 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             }
             else
             {
-
                 //fetch subcategories
                 var Subcategories = _Category.GetAllCategories(message.Name).Categories;
                 if (category.HasSubcategories(Subcategories))

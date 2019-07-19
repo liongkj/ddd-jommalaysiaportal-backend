@@ -7,7 +7,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
-    public class Category : ICategory
+    public class Category
     {
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
@@ -32,7 +32,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public bool HasSubcategories(List<Category> subcategories)
         {
-            if (subcategories 
+            if (subcategories
                 != null)
             {
                 return subcategories.Count > 0;
@@ -58,48 +58,97 @@ namespace JomMalaysia.Core.Domain.Entities
 
 
 
-        public void CreateCategoryPath(string parent
-            )
+        public void CreateCategoryPath(string category, string sub = null, bool IsUpdateCategoryOperation = false)
         {
-            if (parent == null)
+            //if is category
+            //create new path
+            if (category == null)
             { //if is parent
-                CreateParentPath();
+                CreateParentPath(sub);
             }
+            //if is subcategory, create new subpath with changed category
             else //is subcategory
             {
-                CreateSubPath(parent);
+                CreateSubPath(category, sub);
             }
+
+
         }
 
-
-
-        private void CreateParentPath()
+        public bool UpdateCategoryIsSuccess(Category updated, bool IsUpdateCategoryOperation = true)
         {
-            CategoryPath = new CategoryPath(CategoryName, null);
+            if (updated == null)
+            {
+                throw new ArgumentNullException(nameof(updated));
+            }
+            var oldCategoryName = CategoryName;
+            //1. update to new name
+            UpdateName(updated);
+
+            //2. create new category path
+            if (IsUpdateCategoryOperation)//if update category operation
+            {
+                if (CategoryPath.Subcategory == null)
+                    //update category path
+                    CreateCategoryPath(updated.CategoryName);
+                //update subcategory path
+                else CreateCategoryPath(updated.CategoryName, CategoryPath.Subcategory);
+            }
+            else //IsupdateSubcategoryOperation
+            {
+                CreateCategoryPath(CategoryPath.Category, updated.CategoryName);
+            }
+
+
+            return true;
+
+
+            //TODO update name logic
         }
 
-        private void CreateSubPath(string parent)
+        //update name
+        //update category path
+
+
+        public List<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
         {
-            CategoryPath = new CategoryPath(parent, CategoryName);
+            if (subcategories.Count > 0)
+            {
+                List<Category> UpdatedSubs = new List<Category>();
+                foreach (var sub in subcategories)
+                {
+                    sub.CreateCategoryPath(Updated.CategoryPath.Category, sub.CategoryPath.Subcategory, false);
+                    UpdatedSubs.Add(sub);
 
+                }
+                return UpdatedSubs;
+            }
+            return subcategories;
         }
 
-        public void UpdateName(string eng, string malay, string chinese)
+        #region private methods
+        private void CreateParentPath(string category)
         {
-            if (string.IsNullOrWhiteSpace(eng))
-            {
-                throw new ArgumentException("message", nameof(eng));
-            }
-
-            if (string.IsNullOrWhiteSpace(malay))
-            {
-                throw new ArgumentException("message", nameof(malay));
-            }
-
-            if (string.IsNullOrWhiteSpace(chinese))
-            {
-                throw new ArgumentException("message", nameof(chinese));
-            }
+            CategoryPath = new CategoryPath(category, null);
         }
+
+        private void CreateSubPath(string category, string sub)
+        {
+
+            CategoryPath = new CategoryPath(category, sub);
+
+
+        }
+
+
+
+        private void UpdateName(Category updated)
+        {
+            CategoryName = updated.CategoryName;
+            CategoryNameMs = updated.CategoryNameMs;
+            CategoryNameZh = updated.CategoryNameZh;
+        }
+        #endregion
+
     }
 }

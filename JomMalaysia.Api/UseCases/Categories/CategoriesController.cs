@@ -25,7 +25,10 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
         private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
+        
         private readonly IGetAllSubcategoryUseCase _getAllSubcategoryUseCase;
+        private readonly IDeleteSubcategoryUseCase _deleteSubcategoryUseCase;
+        private readonly IUpdateSubcategoryUseCase _updateSubcategoryUseCase;
 
         public CategoriesController(IMapper mapper,
         ICreateCategoryUseCase createCategoryUseCase,
@@ -35,7 +38,9 @@ namespace JomMalaysia.Api.UseCases.Categories
             IDeleteCategoryUseCase deleteCategoryUseCase,
             IUpdateCategoryUseCase updateCategoryUseCase,
             CategoryPresenter categoryPresenter,
-            IGetAllSubcategoryUseCase getAllSubcategoryUseCase
+            IGetAllSubcategoryUseCase getAllSubcategoryUseCase,
+            IDeleteSubcategoryUseCase deleteSubcategoryUseCase,
+            IUpdateSubcategoryUseCase updateSubcategoryUseCase
             )
         {
             _mapper = mapper;
@@ -47,6 +52,8 @@ namespace JomMalaysia.Api.UseCases.Categories
             _getCategoryByNameUseCase = getCategoryByNameUseCase;
             _categoryPresenter = categoryPresenter;
             _getAllSubcategoryUseCase = getAllSubcategoryUseCase;
+            _deleteSubcategoryUseCase = deleteSubcategoryUseCase;
+            _updateSubcategoryUseCase = updateSubcategoryUseCase;
         }
 
         #region category
@@ -57,7 +64,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult Get()
         {
             var req = new GetAllCategoryRequest();
-             _getAllCategoryUseCase.Handle(req, _categoryPresenter);
+            _getAllCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
@@ -77,7 +84,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh,request.ParentCategory);
+            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.ParentCategory);
 
             _createCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
@@ -95,7 +102,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         //TODO
         //PUT api/categories/{slug}
         [HttpPut("{slug}")]
-        public IActionResult Put(string slug, CategoryDto Updated)
+        public IActionResult UpdateCategory(string slug, CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
             var req = new UpdateCategoryRequest(slug, updated);
@@ -107,7 +114,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         #region subcategory
         //GET api/categories/{slug}/subcategories
-        
+
         [HttpGet("{slug}/subcategories")]
         public IActionResult GetSubcategories([FromRoute]string slug)
         {
@@ -116,10 +123,21 @@ namespace JomMalaysia.Api.UseCases.Categories
             _getAllSubcategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
+
+
         //GET api/categories/{slug}/subcategories/{slug}
+        [HttpGet("{cat}/subcategories/{slug}")]
+        public IActionResult GetSubcategory([FromRoute]string cat, [FromRoute]string slug)
+        {
+            var req = new GetCategoryByNameRequest(cat, slug);
+            _getCategoryByNameUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
+        }
+
+
         //POST api/categories/{slug}
         [HttpPost("{slug}/subcategories")]
-        public IActionResult CreateSubcategory([FromRoute] string slug,[FromBody] CategoryDto request)
+        public IActionResult CreateSubcategory([FromRoute] string slug, [FromBody] CategoryDto request)
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
@@ -129,7 +147,23 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
         //DELETE api/categories/{slug}/subcategories/{slug}
-        //PUT api/categories/{slug}//subcategories/{slug}
+        [HttpDelete("{cat}/subcategories/{slug}")]
+        public IActionResult Delete([FromRoute] string cat, [FromRoute]string slug)
+        {
+            var req = new DeleteSubcategoryRequest(cat, slug);
+            _deleteSubcategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
+        }
+
+        //PUT api/categories/{slug}/subcategories/{slug}
+        [HttpPut("{cat}/subcategories/{slug}")]
+        public IActionResult UpdateSubcategory([FromRoute]string cat, [FromRoute]string slug, [FromBody]CategoryDto Updated)
+        {
+            Category updated = _mapper.Map<Category>(Updated);
+            var req = new UpdateCategoryRequest(cat,slug, updated);
+            _updateSubcategoryUseCase.Handle(req, _categoryPresenter);
+            return _categoryPresenter.ContentResult;
+        }
 
         #endregion
     }
