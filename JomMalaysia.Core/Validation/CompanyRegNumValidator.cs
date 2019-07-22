@@ -1,10 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentValidation;
+using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Validation.Extension;
 
 namespace JomMalaysia.Core.Validation
 {
-    class CompanyRegNumValidator
+    public class CompanyRegNumValidator: AbstractValidator<CompanyRegistrationNumber>
     {
+        public CompanyRegNumValidator()
+        {
+            RuleFor(x => x.RegistrationNumber)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NoStartWithWhiteSpace();
+                
+            
+        }
     }
 }
