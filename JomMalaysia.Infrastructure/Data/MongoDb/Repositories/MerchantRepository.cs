@@ -31,6 +31,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public DeleteMerchantResponse DeleteMerchant(string merchantId)
         {
+
+           
+
+
             //mongodb driver api
             var result = _db.DeleteOne(filter: m => m.Id == merchantId);
             //todo TBC soft delete or hard delete

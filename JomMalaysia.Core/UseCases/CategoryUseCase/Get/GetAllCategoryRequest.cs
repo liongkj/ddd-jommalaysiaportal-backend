@@ -7,13 +7,6 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
 {
     public class GetAllCategoryRequest:IUseCaseRequest<GetAllCategoryResponse>
     {
-       public ICollection<Category> Categories { get; set; }
-        
-        public string Id { get; set; }
-        public GetAllCategoryRequest()
-        {
-            Categories = new Collection<Category>();
-           
-        }
+      
     }
 }

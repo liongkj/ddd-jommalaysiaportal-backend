@@ -73,10 +73,6 @@ namespace JomMalaysia.Api.UseCases.Merchants
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MerchantDto request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             Merchant m = _mapper.Map<MerchantDto, Merchant>(request);
 
             var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
@@ -100,10 +96,6 @@ namespace JomMalaysia.Api.UseCases.Merchants
         [HttpPut("{id}")]
         public IActionResult Update(string id, [FromBody] MerchantDto updatedMerchant)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var req = new UpdateMerchantRequest(id, _mapper.Map<MerchantDto, Merchant>(updatedMerchant));
             _updateMerchantUseCase.Handle(req, _updateMerchantPresenter);
             return _updateMerchantPresenter.ContentResult;

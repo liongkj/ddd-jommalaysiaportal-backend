@@ -15,25 +15,31 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
 
         public bool Handle(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
         {
-            Category category = (_Category.FindById(message.CategoryId)).Category;
-            if (category == null)
+            Category category = (_Category.FindByName(message.Name)).Category;
+
+            if (category == null)//null check
             {
-                outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, false, "Category Not Found"));
+                outputPort.Handle(new DeleteCategoryResponse(message.Name, false, "Category Not Found"));
                 return false;
             }
             else
             {
-                //if (message.Subcategories.Count < 1) //if no subcategories
-                //{
-                //    var response = _Category.Delete(message.CategoryId);
-                //    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, true, category.CategoryId + " deleted"));
-                //    return response.Success;
-                //}
-                //else
-                //{
-                //    outputPort.Handle(new DeleteCategoryResponse(message.CategoryId, false, category.CategoryName + " still has subcategories"));
+                //fetch subcategories
+                var Subcategories = _Category.GetAllCategories(message.Name).Categories;
+                if (category.HasSubcategories(Subcategories))
+                {
+                    outputPort.Handle(new DeleteCategoryResponse(category.CategoryName, false, category.CategoryName + " still has subcategories associated."));
                     return false;
-                //}
+                }
+                else //no subcategories
+                {
+                    var response = _Category.Delete(category.CategoryId);
+                    outputPort.Handle(new DeleteCategoryResponse(response.Id, response.Success, category.CategoryName + " Deleted"));
+                    return response.Success;
+
+
+                }
+
             }
         }
     }

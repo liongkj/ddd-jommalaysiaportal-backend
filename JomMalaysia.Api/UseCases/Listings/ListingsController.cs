@@ -49,10 +49,6 @@ namespace JomMalaysia.Api.UseCases.Listings
         [HttpPost]
         public IActionResult Post([FromBody] ListingDto request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             Listing l = _mapper.Map<ListingDto, Listing>(request);
 
             var req = l;
