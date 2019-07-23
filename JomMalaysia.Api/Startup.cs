@@ -64,7 +64,13 @@ namespace JomMalaysia.Api
 
             services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
-            //services.AddSingleton<MerchantRepository>();
+            //add workflow core
+            services.AddWorkflow(
+                cfg =>
+                {
+                    cfg.UseMongoDB(Configuration.GetConnectionString(nameof(MongoDbContext)),"workflow");
+                }
+                );
             //Add Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //add swagger
