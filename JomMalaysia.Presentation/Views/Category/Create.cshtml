@@ -1,0 +1,86 @@
+﻿@model JomMalaysia.Presentation.Gateways.Category.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+<!--HEADER-->
+<div class="form-group col-md-12 no-padding d-none d-md-block">
+    <button type="button" class="btn btn-success col-md-2" onclick="window.location.href = '@Url.Action("Create","Category")'">New</button>
+    <button type="button" class="btn btn-primary col-md-2" onclick="window.location.href = '@Url.Action("Edit","Category")'">Edit</button>
+    <button type="button" class="btn btn-danger col-md-2" onclick="window.location.href = '@Url.Action("Delete","Category")'">Delete</button>
+    <button type="button" class="btn btn-secondary col-md-2" onclick="window.location.href = '@Url.Action("Publish","Category")'">Publish</button>
+</div>
+<div class="form-group col-md-12 no-padding d-sm-block d-md-none">
+    <div class="btn-group col-sm-12 no-padding" role="group">
+        <button type="button" class="btn btn-primary">Action</button>
+        <div id="dropdown-action-button" class="dropdown-menu col-sm-12" aria-labelledby="btnGroupDrop1" x-placement="bottom-start" style="display:none; position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
+            <a class="dropdown-item" onclick="$('#btnSubmit').trigger( " click" )">Save</a>
+            <a class="dropdown-item" onclick="window.location.href = '@Url.Action("Delete","Category")'">Cancel</a>
+        </div>
+        <div id="action-button" class="btn-group" role="group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        </div>
+    </div>
+</div>
+<!--END OF HEADER-->
+
+<form asp-action="Create" class="form-m-gap-top">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryId)</div>
+        <div class="col-sm-10 col-md-6">
+            @Html.TextBoxFor(m => m.CategoryId, new { @class = "form-control" })
+            @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryName)</div>
+        <div class="col-sm-10 col-md-6">
+            @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })
+            @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryNameMs)</div>
+        <div class="col-sm-10 col-md-6">
+            @Html.TextBoxFor(m => m.CategoryNameMs, new { @class = "form-control" })
+            @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
+        </div>
+    </div>
+
+    <div class="input-group form-group row">
+        <div class="col-sm-2 col-md-3 col-form-label">Sub Category</div>
+        <div class="col-sm-10 col-md-6">
+            @Html.TextBoxFor(m => m.CategoryId, new { @class = "form-control", placeholder = "Sub Category ID" })
+            @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control", placeholder = "Sub Category Name" })
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Button</button>
+                <button class="btn btn-outline-secondary" type="button">Button</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group form-group row">
+        <div class="col-sm-2 col-md-3 col-form-label">Sub Category</div>
+        <div class="col-sm-10 col-md-6">
+            @Html.TextBoxFor(m => m.CategoryId, new { @class = "form-control", placeholder = "Sub Category ID" })
+            @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control", placeholder = "Sub Category Name" })
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Button</button>
+                <button class="btn btn-outline-secondary" type="button">Button</button>
+            </div>
+        </div>
+    </div>
+    <button id="btnSubmit" type="submit" class="d-none">Submit Form</button>
+</form>
+
+<div>
+    <a class="d-flex justify-content-end" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

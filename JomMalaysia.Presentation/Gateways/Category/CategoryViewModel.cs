@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace JomMalaysia.Presentation.Gateways.Category
 {
-    [JsonObject]
+
     public class CategoryViewModel
     {
         
@@ -22,6 +22,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
 
         [Display(Name = "名称")]
         public string CategoryNameZh { get; set; }
+        public CategoryPath CategoryPath { get; set; }
         
     }
 }

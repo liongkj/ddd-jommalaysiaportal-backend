@@ -12,7 +12,6 @@ namespace JomMalaysia.Presentation.Gateways.Category
         private readonly ICategoryGateway _gateway;
 
 
-
         public CategoryControllerTest(ICategoryGateway gateway)
         {
             _gateway = gateway;

@@ -47,8 +47,13 @@ namespace JomMalaysia.Presentation.Gateways.Category
             }
             if (response.StatusCode == HttpStatusCode.OK)
             {
-
-                result = response.Data.Categories;
+                var categories = response.Data.Categories;
+                foreach(var cat in categories)
+                {
+                    if (cat.CategoryPath.Subcategory == null)
+                        result.Add(cat);
+                }
+                 
                 
             }
             //handle exception
