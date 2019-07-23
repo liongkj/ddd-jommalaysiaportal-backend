@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Presentation.Gateways.Category
 {
-    public class CategoryController : Controller
+    public class CategoryControllerTest : Controller
     {
         private readonly ICategoryGateway _gateway;
 
-        public CategoryController(ICategoryGateway gateway)
+
+
+        public CategoryControllerTest(ICategoryGateway gateway)
         {
             _gateway = gateway;
         }

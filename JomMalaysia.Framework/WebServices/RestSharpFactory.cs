@@ -8,12 +8,13 @@ namespace JomMalaysia.Framework.WebServices
 {
     public class RestSharpFactory
     {
-        public static JsonDotNetDeserializer Instance => new JsonDotNetDeserializer();
+        //public static JsonDotNetDeserializer Instance => new JsonDotNetDeserializer();
 
         public static IRestRequest ConstructRequest(string path, Method method, object[] objects)
         {
             IRestRequest request = new RestRequest(path, method, DataFormat.Json)
             {
+                JsonSerializer = NewtonsoftJsonSerializer.Default,
                 Timeout = TimeSpan.FromMinutes(60).Milliseconds
             };
             foreach (var obj in objects)
@@ -33,11 +34,12 @@ namespace JomMalaysia.Framework.WebServices
             var client = new RestClient(baseUrl);
             client.ClearHandlers();
 
-            var handler = JsonDotNetDeserializer.Instance;
-            client.AddHandler("application/json",()=> { return handler; }) ; // Use custom deserializer.
-            client.AddHandler("text/json", () => { return handler; });
-            client.AddHandler("text/x-json", () => { return handler; });
-            client.AddHandler("*+json", () => { return handler; });
+            var handler = NewtonsoftJsonSerializer.Default;
+            client.AddHandler("application/json",()=> handler) ; // Use custom deserializer.
+            client.AddHandler("text/json", () => handler);
+            client.AddHandler("text/x-json", () => handler);
+            client.AddHandler("text/javascript", () => handler);
+            client.AddHandler("*+json", () => handler);
             client.Timeout = 300000; // 5 minutes
             return client;
         }
