@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JomMalaysia.Presentation.Gateways.Category;
 using JomMalaysia.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,25 +12,27 @@ namespace JomMalaysia.Presentation.Controllers
 {
     public class CategoryController : Controller
     {
+        private readonly ICategoryGateway _gateway;
+
+        public CategoryController(ICategoryGateway gateway)
+        {
+            _gateway = gateway;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Category> categoryList = new List<Category>();
-            Category cat;
-            for (int i = 0; i < 5; i++)
+            List<CategoryViewModel> CategoryList = new List<CategoryViewModel>();
+
+            try
             {
-                cat = new Category();
-                cat.categoryId = "" + i;
-                cat.categoryName = "Test NAME";
-                cat.categoryNameMs = " Test Category MS NAME";
-                cat.categoryNameZh = " test category ZH name";
-
-                categoryList.Add(cat);
-
+                CategoryList = _gateway.GetCategories();
             }
+            catch (Exception e)
+            { }
+            return View(CategoryList);
 
-        
-            return View(categoryList);
+           
         }
         public ActionResult Create(Category category)
         {

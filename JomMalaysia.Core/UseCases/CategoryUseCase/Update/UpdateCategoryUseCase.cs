@@ -21,6 +21,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         {
             //TODO
             //check if any listing has this category
+            
             var category = _CategoryRepository.FindByName(message.CategoryName).Category;
             var subcategories = _CategoryRepository.GetAllCategories(message.CategoryName).Categories;
             if (category != null) //if category found

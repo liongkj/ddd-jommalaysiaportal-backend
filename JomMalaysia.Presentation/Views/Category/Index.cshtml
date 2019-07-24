@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JomMalaysia.Presentation.Models.Category>
+﻿@model IEnumerable<JomMalaysia.Presentation.Gateways.Category.CategoryViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -45,16 +45,16 @@
             {
                 <tr>
                     <td>
-                        <input type="checkbox" asp-for="@item.selected" />
+                        @*<input type="checkbox" asp-for="@item.selected" />*@
                         @*<div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="chkdt1" checked="">
                                 <label class="custom-control-label" for="customCheck1"></label>
                             </div>*@
                     </td>
-                    <td>@item.categoryId</td>
-                    <td>@item.categoryName</td>
-                    <td>@item.categoryNameMs</td>
-                    <td>@item.categoryNameZh</td>
+                    <td>@item.CategoryId</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.CategoryNameMs</td>
+                    <td>@item.CategoryNameZh</td>
                 </tr>
             }
         </tbody>
