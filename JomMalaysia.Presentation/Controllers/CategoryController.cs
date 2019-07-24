@@ -35,6 +35,9 @@ namespace JomMalaysia.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
+                // remove subcategory if category.lstCategory[i].isDeleted = true
+
+
             }
 
             // update student to the database
