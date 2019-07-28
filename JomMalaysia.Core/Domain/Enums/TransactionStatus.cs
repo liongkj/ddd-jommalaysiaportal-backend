@@ -1,4 +1,4 @@
-namespace JomMalaysia.Core.Domain.ValueObjects
+namespace JomMalaysia.Core.Domain.Enums
 {
     public enum TransactionStatus
     {

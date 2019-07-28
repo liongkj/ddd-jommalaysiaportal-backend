@@ -33,8 +33,9 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
             ;
 
-           
-                
+            CreateMap<Workflow, WorkflowDto>()
+                .ForMember(wd=>wd.Status,opt=>opt.MapFrom(c=>c.Status.ToString()))
+                ;
             //dto --> domain
 
             CreateMap<MerchantDto, Merchant>()

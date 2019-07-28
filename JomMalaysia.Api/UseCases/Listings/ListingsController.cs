@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using JomMalaysia.Api.UseCases.Listings.CreateListing;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
@@ -14,8 +13,10 @@ namespace JomMalaysia.Api.UseCases.Listings
     {
         private readonly IMapper _mapper;
         private readonly ICreateListingUseCase _createListingUseCase;
-        private readonly CreateListingPresenter _createListingPresenter;
+
         private readonly IGetAllListingUseCase _getAllListingUseCase;
+        private readonly ListingPresenter _listingPresenter;
+       
         //private readonly GetAllListingPresenter _getAllListingPresenter;
         //private readonly IGetListingUseCase _getListingUseCase;
         //private readonly GetListingPresenter _getListingPresenter;
@@ -25,25 +26,43 @@ namespace JomMalaysia.Api.UseCases.Listings
         //private readonly UpdateListingPresenter _updateListingPresenter;
 
 
-        public ListingsController(IMapper mapper, ICreateListingUseCase createListingUseCase, CreateListingPresenter ListingPresenter
-            //IGetAllListingUseCase getAllListingUseCase, GetAllListingPresenter getAllListingPresenter, IGetListingUseCase getListingUseCase, GetListingPresenter getListingPresenter,
-            //IDeleteListingUseCase deleteListingUseCase, DeleteListingPresenter deleteListingPresenter,
-            //IUpdateListingUseCase updateListingUseCase, UpdateListingPresenter updateListingPresenter
+        public ListingsController(IMapper mapper, ICreateListingUseCase createListingUseCase,
+            
+            ListingPresenter ListingPresenter
+            //IGetAllListingUseCase getAllListingUseCase, IGetListingUseCase getListingUseCase, 
+            //IDeleteListingUseCase deleteListingUseCase, 
+            //IUpdateListingUseCase updateListingUseCase, 
             )
         {
             _mapper = mapper;
             _createListingUseCase = createListingUseCase;
-            _createListingPresenter = ListingPresenter;
+            _listingPresenter = ListingPresenter;
+            
             //_getAllListingUseCase = getAllListingUseCase;
-            //_getAllListingPresenter = getAllListingPresenter;
+
             //_getListingUseCase = getListingUseCase;
-            //_getListingPresenter = getListingPresenter;
+
             //_deleteListingUseCase = deleteListingUseCase;
-            //_deleteListingPresenter = deleteListingPresenter;
+
             //_updateListingUseCase = updateListingUseCase;
-            //_updateListingPresenter = updateListingPresenter;
+
 
         }
+        /// <summary>
+        /// Get list of listings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Array of listing</returns>
+        //GET api/listings
+
+        ///Get details of listing
+        //GET api/listings/{id}
+
+
+        ///edit a listing
+        //PUT api/listings/{id}
+
+       
 
         // POST api/listings
         [HttpPost]
@@ -55,7 +74,7 @@ namespace JomMalaysia.Api.UseCases.Listings
             //new CreateListingRequest(request.MerchantId,l);
 
             //_createListingUseCase.Handle(req, _createListingPresenter);
-            return _createListingPresenter.ContentResult;
+            return _listingPresenter.ContentResult;
         }
     }
 }

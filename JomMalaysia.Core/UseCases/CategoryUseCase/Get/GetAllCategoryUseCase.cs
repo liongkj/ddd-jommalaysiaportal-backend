@@ -14,7 +14,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         }
         public bool Handle(GetAllCategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
         {
-            var response = _CategoryRepository.GetAllCategories();
+            var response = _CategoryRepository.GetAllCategories(message.PageSize,message.PageNumber);
             //foreach(var c in response.Categories){
             //    foreach(var sub in message.Subcategories)
             //    c.Subcategories.Add(sub);

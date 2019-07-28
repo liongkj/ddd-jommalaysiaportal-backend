@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace JomMalaysia.Core.Domain.ValueObjects {
+namespace JomMalaysia.Core.Domain.Enums
+{
     public class ListingTypeEnum : EnumerationBase {
         public static ListingTypeEnum Private = new ListingTypeEnum (1, "Private".ToLowerInvariant ());
         public static ListingTypeEnum Government = new ListingTypeEnum (2, "Government".ToLowerInvariant ());
