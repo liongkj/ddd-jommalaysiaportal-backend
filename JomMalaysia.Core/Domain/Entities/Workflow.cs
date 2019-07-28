@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.Entities
@@ -9,7 +10,7 @@ namespace JomMalaysia.Core.Domain.Entities
     public class Workflow
     {
         public string WorkflowId { get; set; }
-        public string Type { get; set; }
+        public WorkflowTypeEnum Type { get; set; }
         public int Lvl { get; set; }
 
         public string ListingId { get; set; }
@@ -26,18 +27,6 @@ namespace JomMalaysia.Core.Domain.Entities
         }
 
 
-        public List<Workflow> CreateNewWorkflowRequest(List<string> listingIds, User requester)
-        {
-            List<Workflow> Workflows = new List<Workflow>();
-            foreach (var listing in listingIds)
-            {
-                if(listing!=null)
-                Workflows.Add(NewWorkflowInit(requester, listing));
-            };
-
-            return Workflows;
-        }
-
         public void Approve()
         {
             Status = WorkflowStatusEnum.Level1;
@@ -48,21 +37,9 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        #region helper
-        private Workflow NewWorkflowInit(User requester, string listing)
-        {
-            Workflow NewWorkflow = new Workflow
-            {
-                ListingId = listing,
-                Requester = requester,
-                Status = WorkflowStatusEnum.Pending,
-                Lvl = 0,
-                Type = "New Publish Request",
-                Created = DateTime.Now
-            };
-            return NewWorkflow;
-        }
+       
+       
     }
-    #endregion
+   
 }
 
