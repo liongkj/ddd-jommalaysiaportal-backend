@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     {
         Task<CreateCategoryResponse> CreateCategory(Category Category);
         //Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory);
-        GetAllCategoryResponse GetAllCategories();
+        GetAllCategoryResponse GetAllCategories(int ? PageSize, int ? PageNumber);
         GetAllCategoryResponse GetAllCategories(string categoryName);
         GetCategoryResponse GetCategory(string name);
         DeleteCategoryResponse Delete(string id);
