@@ -133,7 +133,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public GetAllCategoryResponse GetAllCategories(int ? pageSize,int ? pageNumber)
+        public GetAllCategoryResponse GetAllCategories(int PageSize = 20, int PageNumber = 1)
         {
             //TODO pagination
             var query =

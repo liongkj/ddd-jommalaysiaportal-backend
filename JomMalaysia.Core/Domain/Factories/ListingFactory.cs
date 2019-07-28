@@ -1,4 +1,5 @@
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.Factories

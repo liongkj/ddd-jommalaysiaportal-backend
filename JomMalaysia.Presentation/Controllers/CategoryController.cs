@@ -23,7 +23,7 @@ namespace JomMalaysia.Presentation.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            if (CategoryList == null)
+            if (CategoryList.Count<1)
             {
 
                 try
