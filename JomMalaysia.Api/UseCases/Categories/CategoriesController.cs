@@ -61,9 +61,13 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories
         //get whole category collection
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int pageSize = 20, int pageNumber = 0)
         {
-            var req = new GetAllCategoryRequest();
+            var req = new GetAllCategoryRequest
+            {
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            };
             _getAllCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }

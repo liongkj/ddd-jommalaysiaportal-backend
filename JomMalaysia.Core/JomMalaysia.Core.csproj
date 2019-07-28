@@ -12,7 +12,6 @@
     <PackageReference Include="Google.LibPhoneNumber" Version="1.0.0" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
-    <PackageReference Include="WorkflowCore" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

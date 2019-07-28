@@ -13,6 +13,7 @@ namespace JomMalaysia.Presentation.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryGateway _gateway;
+        List<CategoryViewModel> CategoryList = new List<CategoryViewModel>();
 
         public CategoryController(ICategoryGateway gateway)
         {
@@ -22,17 +23,19 @@ namespace JomMalaysia.Presentation.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<CategoryViewModel> CategoryList = new List<CategoryViewModel>();
-
-            try
+            if (CategoryList == null)
             {
-                CategoryList = _gateway.GetCategories();
+
+                try
+                {
+                    CategoryList = _gateway.GetCategories();
+                }
+                catch (Exception e)
+                { }
             }
-            catch (Exception e)
-            { }
             return View(CategoryList);
 
-           
+
         }
         public ActionResult Create(Category category)
         {

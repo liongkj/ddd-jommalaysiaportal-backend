@@ -13,6 +13,12 @@ namespace JomMalaysia.Core.Domain.Entities
             this.Name = name;
 
         }
+
+        public User(string userId)
+        {
+            UserId = userId;
+        }
+
         public string UserId { get; set; }
         public string Username { get; set; }
         public Email Email { get; set; }

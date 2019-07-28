@@ -133,11 +133,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public GetAllCategoryResponse GetAllCategories()
+        public GetAllCategoryResponse GetAllCategories(int ? pageSize,int ? pageNumber)
         {
+            //TODO pagination
             var query =
                  _db.AsQueryable()
                  .ToList()
+                 
                  .OrderBy(c => c.CategoryPath)
                  ;
 
