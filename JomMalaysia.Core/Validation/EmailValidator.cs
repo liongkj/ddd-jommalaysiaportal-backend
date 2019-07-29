@@ -2,7 +2,7 @@
 using System.Linq;
 using FluentValidation;
 using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Domain.FluentValidation;
+using JomMalaysia.Core.Validation.Extension;
 
 
 namespace JomMalaysia.Core.Validation

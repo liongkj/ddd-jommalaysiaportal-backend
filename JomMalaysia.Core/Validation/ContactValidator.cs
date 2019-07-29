@@ -3,9 +3,9 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Validation
 {
-    public class ContactValidatorcs: AbstractValidator<Contact>
+    public class ContactValidator: AbstractValidator<Contact>
     {
-        public ContactValidatorcs()
+        public ContactValidator()
         {
             RuleFor(x => x.Email).SetValidator(new EmailValidator()); //check from EmailValidator
             RuleFor(x => x.Phone).SetValidator(new PhoneValidator()); //check from PhoneValidator
