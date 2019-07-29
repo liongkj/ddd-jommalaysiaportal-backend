@@ -5,8 +5,11 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Framework.Constant;
+using JomMalaysia.Framework.Helper;
 using JomMalaysia.Framework.WebServices;
 using JomMalaysia.Presentation.Manager;
+using JomMalaysia.Presentation.Models;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace JomMalaysia.Presentation.Gateways.Category
@@ -28,14 +31,15 @@ namespace JomMalaysia.Presentation.Gateways.Category
 
         public List<CategoryViewModel> GetCategories()
         {
-            List<CategoryViewModel> result = new List<CategoryViewModel>(); 
-            IWebServiceResponse<CategoryViewModel> response = default;
+            List<CategoryViewModel> result = new List<CategoryViewModel>();
+            IWebServiceResponse<CategoryListViewModel> response = default;
 
             try
             {
                 var req = _apiBuilder.GetApi((APIConstant.API.Path.GetAllCategory));
                 var method = Method.GET;
-                _webServiceExecutor.ExecuteRequest<CategoryViewModel>(req, method);
+                response = _webServiceExecutor.ExecuteRequest<CategoryListViewModel> (req, method);
+                
             }
             catch (GatewayException ex)
             {
@@ -43,7 +47,14 @@ namespace JomMalaysia.Presentation.Gateways.Category
             }
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                result = Mapper.Map<List<CategoryViewModel>>(response.Data);
+                var categories = response.Data.Categories;
+                foreach(var cat in categories)
+                {
+                    if (cat.CategoryPath.Subcategory == null)
+                        result.Add(cat);
+                }
+                 
+                
             }
             //handle exception
             return result;

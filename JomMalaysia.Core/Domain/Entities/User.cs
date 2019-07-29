@@ -1,4 +1,6 @@
+using System;
 using System.Reflection.Metadata.Ecma335;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.Entities
@@ -13,6 +15,12 @@ namespace JomMalaysia.Core.Domain.Entities
             this.Name = name;
 
         }
+
+        public User(string userId)
+        {
+            UserId = userId;
+        }
+
         public string UserId { get; set; }
         public string Username { get; set; }
         public Email Email { get; set; }
@@ -28,10 +36,30 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-
-        public void PublishListing(Listing l)
+        /// <summary>
+        /// Create a new workflow object 
+        /// </summary>
+        /// <param name="listing"></param>
+        /// <param name="details-optional"></param>
+        /// <returns>Workflow object</returns>
+        public Workflow PublishListing(Listing l, string details = null)
         {
+            if (!l.isPublish.IsPublished)
+            {
+                Workflow PublishRequestInit = new Workflow
+                {
+                    Requester = this,
+                    Created = DateTime.Now,
+                    ListingId = l.ListingId,
+                    Lvl = 0, //get role,
+                    Type = WorkflowTypeEnum.Publish,
+                    Status = WorkflowStatusEnum.Pending,
+                    Details = details
 
+                };
+                return PublishRequestInit;
+            }
+            return null;
         }
 
         public void UnpublishListing()

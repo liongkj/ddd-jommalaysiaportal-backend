@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Autofac" Version="4.9.3" />
     <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Google.LibPhoneNumber" Version="1.0.0" />

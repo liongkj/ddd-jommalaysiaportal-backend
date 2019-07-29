@@ -8,7 +8,7 @@
 <h2>Create</h2>
 <!--HEADER-->
 <div class="form-group col-md-12 no-padding d-none d-md-block">
-    <button type="button" class="btn btn-success col-md-2" onclick="window.location.href = '@Url.Action("Create","Category")'">New</button>
+    <button type="button" class="btn btn-success col-md-2" onclick="$('#btnSubmit').click()">New</button>
     <button type="button" class="btn btn-primary col-md-2" onclick="window.location.href = '@Url.Action("Edit","Category")'">Edit</button>
     <button type="button" class="btn btn-danger col-md-2" onclick="window.location.href = '@Url.Action("Delete","Category")'">Delete</button>
     <button type="button" class="btn btn-secondary col-md-2" onclick="window.location.href = '@Url.Action("Publish","Category")'">Publish</button>
@@ -50,31 +50,43 @@
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
-
-    <div class="input-group form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">Sub Category</div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryNameZh)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryId, new { @class = "form-control", placeholder = "Sub Category ID" })
-            @Html.TextBoxFor(m => m.categoryName, new { @class = "form-control", placeholder = "Sub Category Name" })
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Button</button>
-                <button class="btn btn-outline-secondary" type="button">Button</button>
-            </div>
+            @Html.TextBoxFor(m => m.categoryNameZh, new { @class = "form-control" })
+            @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
-
-    <div class="input-group form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">Sub Category</div>
-        <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryId, new { @class = "form-control", placeholder = "Sub Category ID" })
-            @Html.TextBoxFor(m => m.categoryName, new { @class = "form-control", placeholder = "Sub Category Name" })
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Button</button>
-                <button class="btn btn-outline-secondary" type="button">Button</button>
-            </div>
-        </div>
+    <button id="new-subcategory" type="button" class="btn btn-success col-md-2">New SubCategory</button>
+    <div class="col-md-12 col-sm-12 no-padding" style="overflow-x:auto !important" ;">
+        <table class="table table-hover tb-subcategory">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Sub Category ID</th>
+                    <th scope="col">Sub Category Name</th>
+                    <th scope="col">Sub Category Name Ms</th>
+                    <th scope="col">Sub Category Name Zh</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="subcategory-0">
+                    @*https://stackoverflow.com/questions/38929009/how-to-bind-an-array-in-mvc-core
+                        https://fildev.net/2017/05/14/send-array-from-view-to-controller-as-class-asp-net-core/*@
+                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryId, new { @class = "form-control" })</td>
+                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryName, new { @class = "form-control" })</td>
+                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameMs, new { @class = "form-control" })</td>
+                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameZh, new { @class = "form-control" })</td>
+                    <td>@Html.HiddenFor(m => m.lstSubCategory[0].isDeleted, new { @class = "form-control" })</td>
+                    @*<td><input type="text" id="subcategoryID-0" class="form-control" /></td>
+                        <td><input type="text" id="subcategoryName-0" class="form-control" /></td>
+                        <td><input type="text" id="subcategoryNameMs-0" class="form-control" /></td>*@
+                    <td><button id="delete-subcategory" type="button" class="btn btn-danger invisible isDelete">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <button id="btnSubmit" type="submit" class="d-none">Submit Form</button>
+    <button id="btnSubmit" type="submit" class="d-none"></button>
 </form>
 
 <div>

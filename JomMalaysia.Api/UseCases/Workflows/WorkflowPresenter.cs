@@ -4,19 +4,19 @@ using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 
-namespace JomMalaysia.Api.UseCases.Listings.CreateListing
+namespace JomMalaysia.Api.UseCases.Workflows
 {
-    public sealed class CreateListingPresenter : IOutputPort<CreateListingResponse>
+    public sealed class WorkflowPresenter : IOutputPort<UseCaseResponseMessage>
     {
         public JsonContentResult ContentResult { get; }
 
-        public CreateListingPresenter()
+        public WorkflowPresenter()
         {
             ContentResult = new JsonContentResult();
         }
  
 
-        public void Handle(CreateListingResponse response)
+        public void Handle(UseCaseResponseMessage response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
             ContentResult.Content = JsonSerializer.SerializeObject(response);

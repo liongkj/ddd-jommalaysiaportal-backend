@@ -39,7 +39,7 @@ namespace JomMalaysia.Presentation.Controllers
         {
             if(ModelState.IsValid)
             {
-                Console.WriteLine(merchant.ssmID);
+                
             }
 
             // update student to the database

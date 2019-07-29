@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace JomMalaysia.Core.Domain.ValueObjects
+namespace JomMalaysia.Core.Domain.Enums
 {
     public abstract class EnumerationBase : IComparable
     {
