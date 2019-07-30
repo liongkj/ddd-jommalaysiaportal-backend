@@ -23,9 +23,14 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public string UserId { get; set; }
         public string Username { get; set; }
+        public string Nickname { get; set; }
+        public string StringEmail { get; set; }
+        public string StringName { get; set; }
         public Email Email { get; set; }
         public Name Name { get; set; }
-
+        public bool VerifyEmail { get; set; }
+        public string Connection { get; set; }
+        public string Password { get; set; }
 
         public void AddListing()
         {

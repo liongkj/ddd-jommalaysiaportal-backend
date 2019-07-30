@@ -1,6 +1,9 @@
 ﻿
 using System.Reflection;
 using Autofac;
+using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.UserUseCase;
+using JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase;
 
 namespace JomMalaysia.Core
 {
