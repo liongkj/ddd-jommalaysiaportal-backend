@@ -7,6 +7,7 @@ using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 
 namespace JomMalaysia.Core.Interfaces.Repositories
 {
@@ -14,5 +15,6 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     {
         CreateWorkflowResponse CreateWorkflow(List<Workflow> workflows);
         GetAllWorkflowResponse FindByListing(List<string> listingIds, WorkflowStatusEnum workflowStatus);
+        GetAllWorkflowResponse GetAllWorkflowByStatus(WorkflowStatusEnum status, int counterpage = 10, int page = 0);
     }
 }

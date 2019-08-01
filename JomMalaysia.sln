@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test", "JomMalaysia.Test\JomMalaysia.Test.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
 EndProject
@@ -14,8 +14,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3E474E90-133A-464F-88A7-9B8054565B38}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B79FBDF1-D9D5-4B32-A714-C9637789911C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{480F83BB-A04C-4BAB-B928-FB861C8A79C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{A3BE860C-5899-4212-8BC0-758C9F827738}"
 EndProject

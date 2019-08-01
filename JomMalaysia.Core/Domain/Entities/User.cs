@@ -16,6 +16,11 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
+        public User()
+        {
+
+        }
+
         public User(string userId)
         {
             UserId = userId;

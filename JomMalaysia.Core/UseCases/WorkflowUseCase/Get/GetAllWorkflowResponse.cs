@@ -4,7 +4,7 @@ using System.Text;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 
-namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
+namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
 {
     public class GetAllWorkflowResponse : UseCaseResponseMessage
     {
