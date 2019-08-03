@@ -12,7 +12,7 @@ namespace JomMalaysia.Infrastructure
         {
             builder.RegisterType<MongoDbContext>()
                 .AsImplementedInterfaces()
-                .SingleInstance();
+                .InstancePerLifetimeScope();
 
 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())

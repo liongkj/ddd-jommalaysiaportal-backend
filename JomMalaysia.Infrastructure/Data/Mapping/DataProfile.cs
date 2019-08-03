@@ -35,6 +35,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             ;
 
             CreateMap<Workflow, WorkflowDto>()
+                .ForMember(w => w.Id, opt => opt.MapFrom(wd => wd.WorkflowId))
                 .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
                 .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                 ;
@@ -42,6 +43,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<WorkflowDto, Workflow>()
+                .ForMember(w=>w.WorkflowId,opt=> opt.MapFrom(wd=>wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
                 ;

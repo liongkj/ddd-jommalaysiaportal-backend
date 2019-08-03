@@ -13,8 +13,8 @@ namespace JomMalaysia.Infrastructure.Auth0.Mapping
         public Auth0DataProfile()
         {
             CreateMap<User, UserDto>(MemberList.None)
-            .ForMember(dest => dest.email, opt => opt.MapFrom(src => src.StringEmail))
-            .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.StringName))
+            //.ForMember(dest => dest.email, opt => opt.MapFrom(src => src.StringEmail))
+            //.ForMember(dest => dest.name, opt => opt.MapFrom(src => src.StringName))
             .ForMember(dest => dest.nickname, opt => opt.MapFrom(src => src.Nickname))
             .ForMember(dest => dest.username, opt => opt.MapFrom(src => src.Username))
             .ForMember(dest => dest.user_id, opt => opt.MapFrom(src => src.UserId))

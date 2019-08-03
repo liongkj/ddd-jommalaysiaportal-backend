@@ -15,5 +15,6 @@ namespace JomMalaysia.Core.Interfaces
         /// Returns <c>null</c> if the user is not authenticated.
         /// </value>
         LoginInfo GetLoginInfo();
+        User AuthenticatedUser();
     }
 }

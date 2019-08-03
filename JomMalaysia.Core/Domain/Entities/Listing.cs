@@ -20,6 +20,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string ListingLogo { get; set; }
         public string CoverPhoto { get; set; }
         public string ExteriorPhoto { get; set; }
+        public string Status { get; set; }
 
 
         public Contact Contact { get; set; }

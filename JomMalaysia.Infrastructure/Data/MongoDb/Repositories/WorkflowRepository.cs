@@ -27,20 +27,23 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             _db = context.Database.GetCollection<WorkflowDto>("Workflow");
             _mapper = mapper;
         }
-        public CreateWorkflowResponse CreateWorkflow(List<Workflow> workflows)
+        public CreateWorkflowResponse CreateWorkflow(Workflow workflow, IClientSessionHandle session)
         {
-            var WorkflowDtos = _mapper.Map<List<WorkflowDto>>(workflows);
+            var WorkflowDto = _mapper.Map<WorkflowDto>(workflow);
 
             try
             {
-                _db.InsertMany(WorkflowDtos);
+                _db.InsertOne(WorkflowDto);
+                
             }
             catch (Exception e)
             {
-                return new CreateWorkflowResponse(new List<string> { e.Message, "Workflow repository error" }, false);
+                return new CreateWorkflowResponse(new List<string> { e.Message, "Error saving workflow" }, false);
             }
-            return new CreateWorkflowResponse(workflows.Count + " inserted", true);
+            return new CreateWorkflowResponse(WorkflowDto.Id + " inserted", true);
         }
+
+
 
         public GetAllWorkflowResponse FindByListing(List<string> listingIds, WorkflowStatusEnum workflowStatus)
         {
@@ -56,6 +59,26 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 new GetAllWorkflowResponse(new List<string> { "No workflow found" }, false) :
                 new GetAllWorkflowResponse(Workflows, true);
             return response;
+        }
+
+        public GetWorkflowResponse GetWorkflowById(string workflowId)
+        {
+            var response = new GetWorkflowResponse(new List<string> { });
+            try
+            {
+                var query =
+                    _db.AsQueryable()
+                    .Where(W => W.Id == workflowId);
+                var workflow = _mapper.Map<Workflow>(query);
+                return new GetWorkflowResponse(workflow, true);
+            }
+            catch(Exception e)
+            {
+                var Errors = new List<string>();
+                Errors.Add(e.ToString());
+                return new GetWorkflowResponse(Errors);
+            }
+            
         }
 
         public GetAllWorkflowResponse GetAllWorkflowByStatus(WorkflowStatusEnum status, int counterpage = 10, int page = 0)

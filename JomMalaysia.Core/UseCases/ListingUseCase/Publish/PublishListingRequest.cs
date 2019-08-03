@@ -10,19 +10,11 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
 {
     public class PublishListingRequest : IUseCaseRequest<PublishListingResponse>
     {
-        public string UserId { get; set; }
-        public List<string> ListingIds { get; set; }
+        public string ListingId { get; set; }
 
-
-        public PublishListingRequest(List<string> listingIds, string UserId)
+        public PublishListingRequest(string listingId)
         {
-            ListingIds = listingIds;
-            this.UserId = UserId;
-        }
-
-        public PublishListingRequest(List<string> listingId)
-        {
-            ListingIds = listingId;
+            ListingId = listingId;
         }
     }
 }

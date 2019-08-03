@@ -1,5 +1,6 @@
 ﻿using Auth0.AuthenticationApi;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Framework.Constant;
@@ -22,16 +23,33 @@ namespace JomMalaysia.Api.Providers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public User AuthenticatedUser()
+        {
+            var loginInfo = GetLoginInfo();
+            User logged = new User
+            {
+                UserId = loginInfo.userId,
+                Name = (Name)(loginInfo.name),
+                
+                
+                
+            };
+            return logged;
+        }
+
         public LoginInfo GetLoginInfo()
         {
             IEnumerable<Claim> claims = _httpContextAccessor.HttpContext.User.Claims;
-            LoginInfo userInfo = new LoginInfo();
-
-            userInfo.userId = claims.Where(c => c.Type == ConstantHelper.Claims.userId).Select(c => c.Value).FirstOrDefault();
-            userInfo.name = claims.Where(c => c.Type == ConstantHelper.Claims.name).Select(c => c.Value).FirstOrDefault();
-            userInfo.scope = claims.Where(c => c.Type == ConstantHelper.Claims.permission).Select(c => c.Value).ToList();
+            LoginInfo userInfo = new LoginInfo
+            {
+                userId = claims.Where(c => c.Type == ConstantHelper.Claims.userId).Select(c => c.Value).FirstOrDefault(),
+                name = claims.Where(c => c.Type == ConstantHelper.Claims.name).Select(c => c.Value).FirstOrDefault(),
+                scope = claims.Where(c => c.Type == ConstantHelper.Claims.permission).Select(c => c.Value).ToList()
+            };
 
             return userInfo;
         }
+
+
     }
 }
