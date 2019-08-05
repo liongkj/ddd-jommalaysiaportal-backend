@@ -121,30 +121,7 @@ namespace JomMalaysia.Core.Domain.Entities
             
         }
 
-        public void DeleteListing(string name)
-        {
-            
-            bool IsListingExist (string listing_name)
-            {
-                //TODO: Check the Id existed
-                return true;
-            }
-
-            if (IsListingExist(name))
-            {
-                //TODO: Remove from the db
-            }
-            else
-            {
-                throw new ArgumentException("Listing doesn not exist.");
-            }
-             
-        }
-
-        public void GetTotalListingNumber()
-        {
-            
-        }
+        
 
 
 
