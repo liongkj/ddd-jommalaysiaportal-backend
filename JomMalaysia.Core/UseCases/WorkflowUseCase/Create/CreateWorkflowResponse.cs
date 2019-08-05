@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Create
 {
     public class CreateWorkflowResponse: UseCaseResponseMessage
     {
-        public string Count { get; }
+        public string Id { get; }
         public IEnumerable<string> Errors { get; }
 
         public CreateWorkflowResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
@@ -15,9 +15,9 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Create
             Errors = errors;
         }
 
-        public CreateWorkflowResponse(string count, bool success = false, string message = null) : base(success, message)
+        public CreateWorkflowResponse(string id, bool success = false, string message = null) : base(success, message)
         {
-            Count = count;
+            Id = id;
         }
     }
 }

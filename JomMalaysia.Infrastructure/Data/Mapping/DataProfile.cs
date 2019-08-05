@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
@@ -25,18 +26,27 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
                 //.ForMember(ld => ld.Category.Subcategories, opt => opt.MapFrom(l => l.Category.Subcategories))
                 ;
-            
+
             CreateMap<Category, CategoryDto>()
                 .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
                 .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
-                //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
+            //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
             //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
             ;
 
             CreateMap<Workflow, WorkflowDto>()
-                .ForMember(wd=>wd.Status,opt=>opt.MapFrom(c=>c.Status.ToString()))
+                .ForMember(w => w.Id, opt => opt.MapFrom(wd => wd.WorkflowId))
+                .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
+                .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                 ;
             //dto --> domain
+
+
+            CreateMap<WorkflowDto, Workflow>()
+                .ForMember(w=>w.WorkflowId,opt=> opt.MapFrom(wd=>wd.Id))
+                .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
+                .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
+                ;
 
             CreateMap<MerchantDto, Merchant>()
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
@@ -53,7 +63,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
 
                 ;
-
 
 
 

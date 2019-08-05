@@ -15,6 +15,7 @@ namespace JomMalaysia.Framework.Constant
             public static string name = "name";
             public static string scope = "scope";
             public static string role = "role";
+            public static string permission = "permissions";
         }
     }
 }

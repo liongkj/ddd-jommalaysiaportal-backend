@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Auth0.AuthenticationApi" Version="6.4.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
     <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
@@ -35,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JomMalaysia.Core\JomMalaysia.Core.csproj" />
+    <ProjectReference Include="..\JomMalaysia.Framework\JomMalaysia.Framework.csproj" />
     <ProjectReference Include="..\JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>

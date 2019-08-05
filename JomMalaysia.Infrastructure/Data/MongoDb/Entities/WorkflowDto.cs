@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Infrastructure.Auth0.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -17,11 +18,12 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string Type { get; set; }
         public int Lvl { get; set; }
 
-        public string ListingId { get; set; }
-        public User Requester { get; set; }
-        public User Responder { get; set; }
+        public ListingDto Listing { get; set; }
+        public UserDto Requester { get; set; }
+        public UserDto Responder { get; set; }
         public string Status { get; set; }
         public string Details { get; set; }
+        [BsonRepresentation(BsonType.DateTime)]
         public DateTime Created { get; set; }
         [BsonIgnoreIfNull]
         public ICollection<WorkflowDto> PreviousWorkflows { get; private set; }

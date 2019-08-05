@@ -63,12 +63,6 @@ namespace JomMalaysia.Presentation
 
             services.AddSingleton<IConfiguration>(Configuration);
 
-
-            //moved to presentationmodule
-            //services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-            //services.AddSingleton<IAppSetting, AppSetting>();
-            //services.AddScoped<IAuthorizationManagers, AuthorizationManagers>();
-
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
