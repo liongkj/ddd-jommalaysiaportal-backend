@@ -83,7 +83,7 @@ namespace JomMalaysia.Core.Domain.Entities
             else { throw new ArgumentException("Tag/keyword has already existed"); }
         }
 
-        public void UpdateListing()
+        public void UpdateListing(Listing updated_listing)
         {
             string updateListingName(string new_name)
             {
@@ -110,12 +110,39 @@ namespace JomMalaysia.Core.Domain.Entities
                 return ListingType = new_ListingType;
             }
 
-            //update the database 
+            //TODO: update collection?
 
+            updateListingName(updated_listing.ListingName);
+            updateDescription(updated_listing.Description);
+            updateCategory(updated_listing.Category);
+            updateLocation(updated_listing.ListingLocation);
+            updateListingType(updated_listing.ListingType);
+            
         }
 
         public void DeleteListing(string name)
         {
+            
+            bool IsListingExist (string listing_name)
+            {
+                //TODO: Check the Id existed
+                return true;
+            }
+
+            if (IsListingExist(name))
+            {
+                //TODO: Remove from the db
+            }
+            else
+            {
+                throw new ArgumentException("Listing doesn not exist.");
+            }
+             
+        }
+
+        public void GetTotalListingNumber()
+        {
+            
         }
 
 
