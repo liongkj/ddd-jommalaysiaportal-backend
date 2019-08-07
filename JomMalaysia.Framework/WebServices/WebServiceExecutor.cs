@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using JomMalaysia.Framework.Helper;
 using Newtonsoft.Json;
 using RestSharp;
@@ -27,6 +28,7 @@ namespace JomMalaysia.Framework.WebServices
 
         }
 
+
         public IWebServiceResponse<T> ExecuteRequest<T>(string url, Method method, params object[] objects) where T : new()
         {
             //Create Client
@@ -47,5 +49,25 @@ namespace JomMalaysia.Framework.WebServices
             };
 
         }
+
+        public async Task<IWebServiceResponse<T>> ExecuteRequestAsync<T>(string url, Method method, params object[] objects) where T : new()
+        {
+            //Create Client
+            IRestClient client = RestSharpFactory.ConstructClient(NetHelper.GetBaseUrl(url));
+            //Create Request
+            IRestRequest request = RestSharpFactory.ConstructRequest(NetHelper.GetUrlPath(url), method, objects);
+            //wait response
+            IRestResponse<T> response = await client.ExecuteTaskAsync<T>(request);
+
+            return new WebServiceResponse<T>()
+            {
+                RawContent = response.Content,
+                StatusCode = response.StatusCode,
+                StatusDescription = response.StatusDescription,
+                Data = response.Data
+
+            };
+        }
     }
 }
+

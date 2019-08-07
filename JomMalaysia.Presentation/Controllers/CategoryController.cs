@@ -13,26 +13,26 @@ namespace JomMalaysia.Presentation.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryGateway _gateway;
-        List<CategoryViewModel> CategoryList = new List<CategoryViewModel>();
+       
 
         public CategoryController(ICategoryGateway gateway)
         {
             _gateway = gateway;
+
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            if (CategoryList.Count<1)
-            {
+            List<CategoryViewModel> CategoryList = new List<CategoryViewModel>();
 
-                try
-                {
-                    CategoryList = _gateway.GetCategories();
-                }
-                catch (Exception e)
-                { }
+            try
+            {
+                CategoryList = await _gateway.GetCategories();
             }
+            catch (Exception e)
+            { }
+
             return View(CategoryList);
 
 

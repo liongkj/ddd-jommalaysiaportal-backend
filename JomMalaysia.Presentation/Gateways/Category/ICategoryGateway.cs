@@ -7,6 +7,6 @@ namespace JomMalaysia.Presentation.Gateways.Category
 {
     public interface ICategoryGateway
     {
-        List<CategoryViewModel> GetCategories();
+        Task<List<CategoryViewModel>> GetCategories();
     }
 }
