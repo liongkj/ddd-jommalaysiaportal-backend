@@ -1,10 +1,11 @@
 using System;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Domain.ValueObjects;
 using Xunit;
 
-namespace JomMalaysia.Test.CoreTest
+namespace JomMalaysia.Test.Core
 
 {
     public class FactoryTest
