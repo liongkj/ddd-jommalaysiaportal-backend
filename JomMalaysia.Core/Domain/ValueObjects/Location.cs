@@ -27,6 +27,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             yield return Area;
         }
 
+        //Lat set between -90 ~ 90
+        //Long set between -180 ~ 180
+
         private void SetCoordinates(double lon, double lat)
         {
             Latitude = lat;

@@ -26,6 +26,8 @@ using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using JomMalaysia.Presentation.Scope;
 using Microsoft.AspNetCore.Authorization;
+using FluentValidation.AspNetCore;
+using JomMalaysia.Core.Validation;
 using JomMalaysia.Core.UseCases.UserUseCase;
 using JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase;
 using JomMalaysia.Api.Providers;
@@ -43,7 +45,7 @@ namespace JomMalaysia.Api
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -74,8 +76,15 @@ namespace JomMalaysia.Api
 
             //Add Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NameValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddressValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CompanyRegNumValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ContactValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmailValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PhoneValidator>());
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PublishStatusValidator>());
             services.AddHttpContextAccessor();
-
             //add swagger
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" }));
 

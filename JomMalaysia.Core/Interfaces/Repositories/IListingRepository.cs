@@ -16,5 +16,7 @@ namespace JomMalaysia.Core.Interfaces
         GetListingResponse FindById(string id);
         UpdateListingResponse Update(string id, Listing listing);
 
+        
+
     }
 }
