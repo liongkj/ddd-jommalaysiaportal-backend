@@ -66,11 +66,10 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         // POST api/listings
         [HttpPost]
-        public IActionResult Post([FromBody] ListingDto request)
+        public IActionResult Post([FromBody] Listing request,string merchantId)
         {
-            Listing l = _mapper.Map<ListingDto, Listing>(request);
-
-            var req = l;
+            var req = new CreateListingRequest(merchantId, request);
+            _createListingUseCase.Handle(req,_listingPresenter);
             //new CreateListingRequest(request.MerchantId,l);
 
             //_createListingUseCase.Handle(req, _createListingPresenter);

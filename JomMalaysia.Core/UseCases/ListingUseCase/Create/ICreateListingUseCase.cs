@@ -4,7 +4,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 {
-    public interface ICreateListingUseCase : IUseCaseHandlerAsync<CreateListingRequest, CreateListingResponse>
+    public interface ICreateListingUseCase : IUseCaseHandler<CreateListingRequest, CreateListingResponse>
     {
 
     }

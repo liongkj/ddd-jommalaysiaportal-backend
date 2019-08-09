@@ -10,29 +10,29 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 {
     public class CreateListingRequest : IUseCaseRequest<CreateListingResponse>
     {
-        public CreateListingRequest(string MerchantId, string ListingName, string Description, Category Category, Location Location, ListingTypeEnum listingType)
+        public CreateListingRequest(string MerchantId, Listing listing)
         {
-            Tags = new Collection<string>();
-            
+
             this.MerchantId = MerchantId;
-            this.ListingName = ListingName;
-            this.Description = Description;
-            this.Category = Category;
-            this.ListingLocation = Location;
-            ListingType = listingType;
+            this.ListingName = listing.ListingName;
+            this.Description = listing.Description;
+            this.Category = listing.Category;
+            this.ListingLocation = listing.ListingLocation;
+            ListingType = listing.ListingType;
+        }
+
+        private Listing ListingMapper(ListingTypeEnum type)
+        {
+            switch (type):
+            case    
         }
 
         public string MerchantId { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
 
-        public DateTime eventDate { get; set; }
         public ListingTypeEnum ListingType { get; set; }
-
         public Category Category { get; set; }
-      
-
-        public ICollection<string> Tags { get; private set; }
         public Location ListingLocation { get; set; }
         public string ListingLogo { get; set; }
         public string CoverPhoto { get; set; }
