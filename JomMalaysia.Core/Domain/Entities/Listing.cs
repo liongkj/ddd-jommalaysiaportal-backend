@@ -31,10 +31,10 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public Listing(string listingName, string description, Category category,  Location listingLocation, ListingTypeEnum listingType)
+        public Listing(string listingName, Category category,  Location listingLocation, ListingTypeEnum listingType)
         {
             ListingName = listingName;
-            Description = description;
+            //Description = description;
             Category = category;
             //Subcategory = subcategory;
             ListingLocation = listingLocation;

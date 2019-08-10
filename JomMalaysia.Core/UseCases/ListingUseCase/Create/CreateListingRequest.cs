@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
+using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 
@@ -10,17 +11,16 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 {
     public class CreateListingRequest : IUseCaseRequest<CreateListingResponse>
     {
-        public CreateListingRequest(string MerchantId, string ListingName, string Description, Category Category, Location Location, ListingTypeEnum listingType)
+        public CreateListingRequest(string MerchantId, string ListingName, Category Category, Location Location, ListingTypeEnum listingType)
         {
             Tags = new Collection<string>();
-            
             this.MerchantId = MerchantId;
-            this.ListingName = ListingName;
-            this.Description = Description;
-            this.Category = Category;
-            this.ListingLocation = Location;
-            ListingType = listingType;
+
+            NewListing = ListingFactory.Create(ListingName,Category,Location,listingType);
+            
         }
+
+        public Listing NewListing { get; private set; }
 
         public string MerchantId { get; set; }
         public string ListingName { get; set; }

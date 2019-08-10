@@ -7,13 +7,13 @@ namespace JomMalaysia.Core.Domain.Factories
 {
     public abstract class Factory
     {
-        private List<Property> _properties = new List<Property>();
+        
         
         public List<Property> Properties
         {
             get { return _properties; }
         }
-        public abstract Listing CreateListing(string listingName, string description, Category category,  Location listingLocation, ListingTypeEnum ListingType);
+        public abstract Listing CreateListing(string listingName, Category category,  Location listingLocation, ListingTypeEnum ListingType);
 
 
     }
