@@ -11,13 +11,19 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 {
     public class CreateListingRequest : IUseCaseRequest<CreateListingResponse>
     {
-        public CreateListingRequest(string MerchantId, string ListingName, Category Category, Location Location, ListingTypeEnum listingType)
+        public CreateListingRequest(string MerchantId, Listing Listing)
         {
+            //string ListingName, Category Category, Location Location, ListingTypeEnum listingType, string Description = ""
             Tags = new Collection<string>();
             this.MerchantId = MerchantId;
+            ListingName = Listing.ListingName;
+            Category = Listing.Category;
+            Location = Listing.ListingLocation;
+            Description = Listing.Description;
 
-            NewListing = ListingFactory.Create(ListingName,Category,Location,listingType);
-            
+            //put basic info
+            NewListing = ListingFactory.CreateListing(Listing.ListingType);
+
         }
 
         public Listing NewListing { get; private set; }
@@ -26,17 +32,15 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public string ListingName { get; set; }
         public string Description { get; set; }
 
-        public DateTime eventDate { get; set; }
-        public ListingTypeEnum ListingType { get; set; }
+        public DateTime EventDate { get; set; }
 
-        public Category Category { get; set; }
-      
+
+        public CategoryPath Category { get; set; }
+
 
         public ICollection<string> Tags { get; private set; }
-        public Location ListingLocation { get; set; }
-        public string ListingLogo { get; set; }
-        public string CoverPhoto { get; set; }
-        public string ExteriorPhoto { get; set; }
+        public Location Location { get; set; }
+
 
     }
 }

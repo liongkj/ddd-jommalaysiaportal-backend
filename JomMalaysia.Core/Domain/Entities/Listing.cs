@@ -5,33 +5,33 @@ using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 
+
 namespace JomMalaysia.Core.Domain.Entities
 {
+    
     public abstract class Listing
     {
         //TODO : Factory Patter? Create Event, Government, Social and Private
-        private string MerchantId;
+        private string MerchantId { get; set; }
         public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
         public ICollection<string> Tags { get; private set; }
         public Location ListingLocation { get; set; }
-        public string ListingLogo { get; set; }
-        public string CoverPhoto { get; set; }
-        public string ExteriorPhoto { get; set; }
+        public ListingImages ListingImages { get; set; }
         public string Status { get; set; }
 
         public Contact Contact { get; set; }
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
-        public Category Category { get; set; }
+        public CategoryPath Category { get; set; }
 
         public Listing()
         {
 
         }
-        public Listing(string listingName, Category category,  Location listingLocation, ListingTypeEnum listingType)
+        public Listing(string listingName, CategoryPath category,  Location listingLocation, ListingTypeEnum listingType)
         {
             ListingName = listingName;
             //Description = description;
@@ -96,7 +96,7 @@ namespace JomMalaysia.Core.Domain.Entities
                 return Description = new_description;
             }
 
-            Category updateCategory(Category new_category)
+            CategoryPath updateCategory(CategoryPath new_category)
             {
                 return Category = new_category;
             }

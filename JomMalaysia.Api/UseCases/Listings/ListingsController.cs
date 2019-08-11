@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
+using JomMalaysia.Api.Serialization;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
+using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace JomMalaysia.Api.UseCases.Listings
 {
@@ -16,7 +22,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         private readonly IGetAllListingUseCase _getAllListingUseCase;
         private readonly ListingPresenter _listingPresenter;
-       
+
         //private readonly GetAllListingPresenter _getAllListingPresenter;
         //private readonly IGetListingUseCase _getListingUseCase;
         //private readonly GetListingPresenter _getListingPresenter;
@@ -27,7 +33,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
 
         public ListingsController(IMapper mapper, ICreateListingUseCase createListingUseCase,
-            
+
             ListingPresenter ListingPresenter
             //IGetAllListingUseCase getAllListingUseCase, IGetListingUseCase getListingUseCase, 
             //IDeleteListingUseCase deleteListingUseCase, 
@@ -37,7 +43,7 @@ namespace JomMalaysia.Api.UseCases.Listings
             _mapper = mapper;
             _createListingUseCase = createListingUseCase;
             _listingPresenter = ListingPresenter;
-            
+
             //_getAllListingUseCase = getAllListingUseCase;
 
             //_getListingUseCase = getListingUseCase;
@@ -62,18 +68,29 @@ namespace JomMalaysia.Api.UseCases.Listings
         ///edit a listing
         //PUT api/listings/{id}
 
-       
+
 
         // POST api/listings
-        [HttpPost]
-        public IActionResult Post([FromBody] ListingDto request)
+        [HttpPost("{MerchantId}")]
+        public IActionResult Create([FromRoute] string MerchantId, [FromBody] JObject ListingObject)
         {
-            Listing l = _mapper.Map<ListingDto, Listing>(request);
+        https://stackoverflow.com/questions/22537233/json-net-how-to-deserialize-interface-property-based-on-parent-holder-object/22539730#22539730
+            var listing = JsonConvert.DeserializeObject<ListingHolder>(ListingObject.ToString(), new ListingConverter()).ConvertedListing;
+            var list = _mapper.Map<EventListing>(listing);
+            //Listing converted = ListingFactory.CreateListing(ListingTypeEnum.For(listing.ListingType));
 
-            var req = l;
-            //new CreateListingRequest(request.MerchantId,l);
+            //converted.ListingName = listing.ListingName;
+            //converted.Category = listing.Category;
+            //converted.Contact = listing.Contact;
+            //converted.ListingLocation = listing.ListingL;
 
-            //_createListingUseCase.Handle(req, _createListingPresenter);
+            //CreateListingRequest req = new CreateListingRequest
+            //{
+            //    MerchantId = MerchantId,
+            //    Category = listing.Category
+            //}
+            var req = new CreateListingRequest(MerchantId, list);
+            _createListingUseCase.Handle(req, _listingPresenter);
             return _listingPresenter.ContentResult;
         }
     }
