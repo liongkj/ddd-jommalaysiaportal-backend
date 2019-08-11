@@ -17,16 +17,17 @@ namespace JomMalaysia.Core.Domain.Entities
         public CompanyRegistrationNumber CompanyRegistrationNumber { get; private set; }
         public Address Address { get; private set; }
 
-        private readonly Collection<Listing> _listingItems;
+        public Collection<Listing> Listings;
 
 
-        private readonly Collection<Contact> _contactItems;
+        public Collection<Contact> Contacts;
 
+        
 
         public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
         {
-            _listingItems = new Collection<Listing>();
-            _contactItems = new Collection<Contact>();
+            Listings = new Collection<Listing>();
+            Contacts = new Collection<Contact>();
 
             this.CompanyName = CompanyName ?? throw new Exception("Company Name is required");
             this.CompanyRegistrationNumber = CompanyRegistrationNumber ?? throw new Exception("Company Registration Number is required");
@@ -35,7 +36,7 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         public bool IsSafeToDelete()
         {
-            if (_listingItems.Count > 0)
+            if (Listings.Count > 0)
             {
                 return false;
             }
@@ -53,8 +54,8 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 throw new ArgumentException("Listing is still published");
             }
-            _listingItems.Remove(removeListing);
-            return _listingItems;
+            Listings.Remove(removeListing);
+            return Listings;
         }
 
         public void AddContact(Contact c)
@@ -62,7 +63,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
             if (c != null)
             {
-                _contactItems.Add(c);
+                Contacts.Add(c);
             }
         }
 
@@ -71,9 +72,9 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             Contact UpdateContact = Contact.For(name, email, phone);
 
-            if (_contactItems.Contains(UpdateContact))
+            if (Contacts.Contains(UpdateContact))
             {
-                _contactItems.Remove(UpdateContact);
+                Contacts.Remove(UpdateContact);
             }
         }
     }
