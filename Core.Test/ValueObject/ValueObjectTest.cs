@@ -4,7 +4,7 @@ using System.Text;
 using JomMalaysia.Core.Domain.ValueObjects;
 using Xunit;
 
-namespace JomMalaysia.Test.CoreTest
+namespace JomMalaysia.Test.Core.ValueObject
 {
     public class ValueObjectTest
     {

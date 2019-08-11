@@ -9,7 +9,7 @@ namespace JomMalaysia.Core.Interfaces
 {
     public interface IListingRepository
     {
-        Task<CreateListingResponse> CreateListing(Listing listing);
+        CreateListingResponse CreateListing(Listing listing);
         Task<GetAllListingResponse> GetAllListings();
         DeleteListingResponse Delete(string id);
         GetListingResponse FindByName(string name);

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentValidation;
+using JomMalaysia.Core.Validation;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
@@ -15,41 +17,12 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         public static Address For(string add1, string add2, string city, string state, string postalCode, string country="malaysia")
         {
-            if (string.IsNullOrWhiteSpace(add1))
-            {
-                throw new ArgumentException("message", nameof(add1));
-            }
-
-            if (string.IsNullOrEmpty(add2))
-            {
-                throw new ArgumentException("message", nameof(add2));
-            }
-
-            if (string.IsNullOrEmpty(city))
-            {
-                throw new ArgumentException("message", nameof(city));
-            }
-
-            if (string.IsNullOrWhiteSpace(state))
-            {
-                throw new ArgumentException("message", nameof(state));
-            }
-
-            if (string.IsNullOrWhiteSpace(postalCode))
-            {
-                throw new ArgumentException("message", nameof(postalCode));
-            }
-
-            if (string.IsNullOrWhiteSpace(country))
-            {
-                throw new ArgumentException("message", nameof(country));
-            }
-
-            var add = new Address();
+            var add = new Address(add1,add2,city,state,postalCode,country);
 
             try
             {
-                //format address 
+                AddressValidator validator = new AddressValidator();
+                validator.ValidateAndThrow(add);
 
             }
             catch (Exception e) { }

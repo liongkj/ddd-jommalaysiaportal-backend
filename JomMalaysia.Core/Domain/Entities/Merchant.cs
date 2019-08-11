@@ -18,10 +18,10 @@ namespace JomMalaysia.Core.Domain.Entities
         public Address Address { get; private set; }
 
         private readonly Collection<Listing> _listingItems;
-        public IReadOnlyCollection<Listing> Listings => _listingItems;
+
 
         private readonly Collection<Contact> _contactItems;
-        public IReadOnlyCollection<Contact> Contacts => _contactItems;
+
 
         public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
         {
@@ -41,25 +41,10 @@ namespace JomMalaysia.Core.Domain.Entities
             }
             return true;
         }
-        public Collection<Listing> AddListing(Listing newListing)
+        public bool AddNewListingIsSuccess(Listing newListing)
         {
-            //if (newListing is null)
-            //{
-            //    throw new ArgumentNullException(nameof(newListing));
-            //}
 
-            //newListing.Merchant = this;
-            //_listingItems.Add(newListing);
-            //if (newListing.SetCategory(newListing.Category, newListing.Subcategory))
-            //{
-            //    return _listingItems;
-            //}
-            //else
-            //{
-            //    throw new ArgumentException("Listing category is not valid");
-            //}
-            //throw new ArgumentException("Listing is not valid");
-            throw new NotImplementedException();
+            return false;
         }
 
         public Collection<Listing> RemoveListing(Listing removeListing)

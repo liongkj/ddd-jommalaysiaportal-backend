@@ -16,13 +16,13 @@ namespace JomMalaysia.Presentation.Gateways.Category
         {
             _gateway = gateway;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<CategoryViewModel> vm = new List<CategoryViewModel>();
 
             try
             {
-                vm = _gateway.GetCategories();
+                vm = await _gateway.GetCategories();
             }catch(Exception e)
             { }
             return View(vm);
