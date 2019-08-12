@@ -15,17 +15,7 @@ namespace JomMalaysia.Api.Mapping
     {
         public DataProfile()
         {
-            CreateMap<BaseListingHolder, Listing>()
-                .ConstructUsing(m => ListingFactory.CreateListing(ListingTypeEnum.For(m.ListingType)))
-                .ForMember(m=>m.ListingType,opt=>opt.MapFrom(l=>ListingTypeEnum.For(l.ListingType)))
-                .ForMember(m=>m.Category,opt=>opt.MapFrom(l=>new CategoryPath(l.Category,l.Subcategory)))
-                ;
-
-            CreateMap<EventListingHolder, EventListing>()
-               .IncludeBase<BaseListingHolder,Listing>()
-               ;
-
-            CreateMap<ListingHolder, PrivateListing>();
+            
 
         }
     }

@@ -8,7 +8,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
-    
+
     public abstract class Listing
     {
         //TODO : Factory Patter? Create Event, Government, Social and Private
@@ -31,14 +31,14 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public Listing(string listingName, CategoryPath category,  Location listingLocation, ListingTypeEnum listingType)
+        public Listing(string listingName, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, Tuple<double, double> Coordinates = null)
         {
             ListingName = listingName;
-            //Description = description;
+            Description = description;
             Category = category;
-            //Subcategory = subcategory;
-            ListingLocation = listingLocation;
-            Tags = new Collection<string>();
+            ListingImages = images;
+            ListingLocation = new Location(add, Coordinates);
+            Tags = tags;
             ListingType = listingType;
 
         }
@@ -79,7 +79,7 @@ namespace JomMalaysia.Core.Domain.Entities
         //
         public void AddTags(string newTag)
         {
-            
+
             if (Tags.Contains(newTag)) { Tags.Add(newTag); }
             else { throw new ArgumentException("Tag/keyword has already existed"); }
         }
@@ -118,10 +118,10 @@ namespace JomMalaysia.Core.Domain.Entities
             updateCategory(updated_listing.Category);
             updateLocation(updated_listing.ListingLocation);
             updateListingType(updated_listing.ListingType);
-            
+
         }
 
-        
+
 
 
 

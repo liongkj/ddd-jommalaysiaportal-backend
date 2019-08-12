@@ -34,6 +34,10 @@ using JomMalaysia.Api.Providers;
 using System.Security.Claims;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Framework.Configuration;
+using FluentValidation.WebApi;
+using System.Web.Http;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
+using FluentValidation;
 
 namespace JomMalaysia.Api
 {
@@ -45,7 +49,7 @@ namespace JomMalaysia.Api
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -75,17 +79,11 @@ namespace JomMalaysia.Api
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //moved to core module
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NameValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddressValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CompanyRegNumValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ContactValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmailValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PhoneValidator>());
-            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PublishStatusValidator>());
-            //services.AddHttpContextAccessor();
+            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateListingRequestValidator>());
+            //fluent validation service moved to core module
+
             //add swagger
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" }));
 
@@ -93,6 +91,7 @@ namespace JomMalaysia.Api
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new DataProfile());
+                mc.AddProfile(new Mapping.DataProfile());
                 mc.AddProfile(new Auth0DataProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();
@@ -118,10 +117,14 @@ namespace JomMalaysia.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

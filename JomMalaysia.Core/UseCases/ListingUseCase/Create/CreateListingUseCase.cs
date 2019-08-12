@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -29,7 +30,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 
             // Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
 
-            var NewListing = message.NewListing;
+            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message);
+            
             try
             {
                 if (NewListing is EventListing)

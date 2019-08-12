@@ -19,14 +19,18 @@ namespace JomMalaysia.Core
             //builder.RegisterType<GetMerchantUseCase>().As<IGetMerchantUseCase>().InstancePerLifetimeScope();
             //builder.RegisterType<GetAllMerchantUseCase>().As<IGetAllMerchantUseCase>().InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                  .Where(t => t.Name.EndsWith("Validator"))
-                  .AsImplementedInterfaces()
-                  .InstancePerLifetimeScope();
+            //builder.RegisterAssemblyTypes(ThisAssembly)
+            //      .Where(t => t.Name.EndsWith("Validator"))
+            //      .AsImplementedInterfaces()
+            //      .InstancePerLifetimeScope();
 
-            builder.RegisterType<FluentValidationModelValidatorProvider>().As<ModelValidatorProvider>();
+            //builder.RegisterType<FluentValidationModelValidatorProvider>().As<ModelValidatorProvider>();
 
-            builder.RegisterType<AutofacValidatorFactory>().As<IValidatorFactory>().SingleInstance();
+            //builder.RegisterType<AutofacValidatorFactory>().As<IValidatorFactory>().SingleInstance();
+
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+         .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+         .AsImplementedInterfaces();
 
 
             var dataAccess = Assembly.GetExecutingAssembly();

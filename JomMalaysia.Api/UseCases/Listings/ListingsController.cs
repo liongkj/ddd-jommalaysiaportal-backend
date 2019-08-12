@@ -70,27 +70,31 @@ namespace JomMalaysia.Api.UseCases.Listings
 
 
 
+        //// POST api/listings
+        //[HttpPost("{MerchantId}")]
+        //public IActionResult Create([FromRoute] string MerchantId, [FromBody] JObject ListingObject)
+        //{
+
+        //    var listing = JsonConvert.DeserializeObject<ListingHolder>(ListingObject.ToString(), new ListingConverter()).ConvertedListing;
+        //    var list = _mapper.Map<Listing>(listing);
+        //    //var validator = new CreateListingRequestValidator();
+        //    var req = new CreateListingRequest(MerchantId, list);
+        //    //var results = validator.Validate(req);
+
+        //    _createListingUseCase.Handle(req, _listingPresenter);
+
+        //    return _listingPresenter.ContentResult;
+        //}
+
         // POST api/listings
-        [HttpPost("{MerchantId}")]
-        public IActionResult Create([FromRoute] string MerchantId, [FromBody] JObject ListingObject)
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateListingRequest ListingObject)
         {
-        https://stackoverflow.com/questions/22537233/json-net-how-to-deserialize-interface-property-based-on-parent-holder-object/22539730#22539730
-            var listing = JsonConvert.DeserializeObject<ListingHolder>(ListingObject.ToString(), new ListingConverter()).ConvertedListing;
-            var list = _mapper.Map<EventListing>(listing);
-            //Listing converted = ListingFactory.CreateListing(ListingTypeEnum.For(listing.ListingType));
 
-            //converted.ListingName = listing.ListingName;
-            //converted.Category = listing.Category;
-            //converted.Contact = listing.Contact;
-            //converted.ListingLocation = listing.ListingL;
+            //var results = validator.Validate(req);
 
-            //CreateListingRequest req = new CreateListingRequest
-            //{
-            //    MerchantId = MerchantId,
-            //    Category = listing.Category
-            //}
-            var req = new CreateListingRequest(MerchantId, list);
-            _createListingUseCase.Handle(req, _listingPresenter);
+            _createListingUseCase.Handle(ListingObject, _listingPresenter);
+
             return _listingPresenter.ContentResult;
         }
     }

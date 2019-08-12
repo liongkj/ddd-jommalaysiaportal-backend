@@ -10,7 +10,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
     {
         public CreateListingRequestValidator()
         {
-            RuleFor(CreateListingRequest => CreateListingRequest.Location).SetValidator(new LocationValidator());
+            RuleFor(CreateListingRequest => CreateListingRequest.Address).SetValidator(new AddressValidator());
+            
+
+            RuleFor(p => p.MerchantId).NotEmpty().NotNull();
         }
     }
 }

@@ -12,6 +12,10 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public Tuple<double, double> Coordinates { get; private set; }
         public ICollection<List<Tuple<double, double>>> Area { get; private set; }
 
+        public Location(Address add, Tuple<double, double> Coordinates)
+        {
+
+        }
 
         public void SetArea(List<Tuple<double, double>> Area)
         {

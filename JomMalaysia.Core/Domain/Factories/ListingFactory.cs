@@ -1,6 +1,7 @@
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 
 namespace JomMalaysia.Core.Domain.Factories
 {
@@ -10,15 +11,17 @@ namespace JomMalaysia.Core.Domain.Factories
         private const int PRI = 2;
         private const int EVE = 3;
 
-        public static Listing CreateListing(ListingTypeEnum ListingType)
+        public static Listing CreateListing(ListingTypeEnum ListingType, CreateListingRequest listing)
         {
             int listingTypeId = ListingType.Id;
+            
             switch (listingTypeId)
             {
                 case EVE:
-                    return new EventListing();
+                    
+                    return new EventListing(listing);
                 default:
-                    return new PrivateListing();
+                    return new PrivateListing(listing);
             }
         }
     }
