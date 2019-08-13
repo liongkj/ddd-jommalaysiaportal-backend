@@ -39,9 +39,24 @@ public class ListingRepository : IListingRepository
         return new CreateListingResponse(listing.ListingId, true);
     }
 
+    public async Task<CreateListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session)
+    {
+        var ListingDto = _mapper.Map<ListingDto>(listing);
+        try
+        {
+            await _db.InsertOneAsync(session, ListingDto).ConfigureAwait(false);
+            return new CreateListingResponse(ListingDto.Id, true);
+        }
+        catch (Exception e)
+        {
+            return new CreateListingResponse(new List<string> { e.ToString() }, false, e.Message);
+        }
+        
+    }
+
     public DeleteListingResponse Delete(string id)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public GetListingResponse FindById(string id)

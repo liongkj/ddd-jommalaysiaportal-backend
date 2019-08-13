@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Domain.Enums;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
@@ -22,7 +23,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Collection<Contact> Contacts;
 
-        
+
 
         public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
         {
@@ -42,10 +43,22 @@ namespace JomMalaysia.Core.Domain.Entities
             }
             return true;
         }
-        public bool AddNewListingIsSuccess(Listing newListing)
+        public Listing AddNewListing(Listing newListing)
         {
+            //get public contact from merchant list of contacts
+            foreach (var c in Contacts)
+            {
+                if (c.IsPrimary)
+                {
+                    newListing.Contact = c;
+                    break;
+                }
+            }
+            newListing.Merchant = this;
+            newListing.Status = ListingStatusEnum.New;
+            Listings.Add(newListing);
+            return newListing;
 
-            return false;
         }
 
         public Collection<Listing> RemoveListing(Listing removeListing)
@@ -58,24 +71,44 @@ namespace JomMalaysia.Core.Domain.Entities
             return Listings;
         }
 
-        public void AddContact(Contact c)
+        public void AddContact(Contact c, List<Listing> listings = null)
         {
-
-            if (c != null)
+            if (c != null) //nullcheck
             {
-                Contacts.Add(c);
+                if (Contacts.Count < 1)//if no contacts, set as primary
+                {
+                    var PrimaryContact = c.SetAsPrimary();
+                    Contacts.Add(PrimaryContact);
+
+                    if (listings != null) //if merchant has listings
+                    {
+                        foreach (var list in listings)
+                        {
+                            list.UpdateContact(PrimaryContact);
+                        }
+                    }
+                }
+                else //add to back of list
+                {
+                    Contacts.Add(c);
+                }
+
+
             }
         }
 
 
-        public void DeleteContact(string name, string email, string phone)
-        {
-            Contact UpdateContact = Contact.For(name, email, phone);
 
-            if (Contacts.Contains(UpdateContact))
-            {
-                Contacts.Remove(UpdateContact);
-            }
-        }
+        //public void SetPrimaryContact(List<Contact> contacts, Contact c)
+        //{
+        //    //generate primary contact
+        //    //change other contact to not primary
+        //    //update lising contact
+        //}
+
+
+        #region helper
+
+        #endregion
     }
 }

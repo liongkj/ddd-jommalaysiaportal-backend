@@ -19,12 +19,12 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string ListingType { get; set; }
         public Address ListingAddress { get; set; }
 
-        public CategoryPath Category { get; set; }
+        public string Category { get; set; }
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
 
-        public bool Status { get; set; }
+        public string Status { get; set; }
         [BsonIgnoreIfNull]
         public BsonDateTime EventStartDateTime { get; set; }
         [BsonIgnoreIfNull]

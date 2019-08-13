@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.Domain.Entities
     public abstract class Listing
     {
         //TODO : Factory Patter? Create Event, Government, Social and Private
-        private string MerchantId { get; set; }
+
         public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public ICollection<string> Tags { get; private set; }
         public Location ListingLocation { get; set; }
         public ListingImages ListingImages { get; set; }
-        public string Status { get; set; }
+        public ListingStatusEnum Status { get; set; }
 
         public Contact Contact { get; set; }
         public PublishStatus isPublish { get; set; }
@@ -31,8 +31,9 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public Listing(string listingName, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, Tuple<double, double> Coordinates = null)
+        public Listing(string listingName, Merchant merchant, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, Tuple<double, double> Coordinates = null)
         {
+            Merchant = merchant;
             ListingName = listingName;
             Description = description;
             Category = category;
@@ -58,10 +59,15 @@ namespace JomMalaysia.Core.Domain.Entities
         //    }
         //    return true;
         //}
+
+        public bool HasPrimaryContact()
+        {
+            return Contact != null;
+        }
         public void UpdatePhoto() { }
         public void UpdateContact(Contact contact)
         {
-            Contact = Contact.For(contact.Name.ToString(), contact.Email.ToString(), contact.Phone.ToString());
+            Contact = Contact.For(contact.Name, contact.Email, contact.Phone);
         }
         public void RemovePhoto() { }
         public void UpdateDescription() { }
@@ -79,7 +85,6 @@ namespace JomMalaysia.Core.Domain.Entities
         //
         public void AddTags(string newTag)
         {
-
             if (Tags.Contains(newTag)) { Tags.Add(newTag); }
             else { throw new ArgumentException("Tag/keyword has already existed"); }
         }

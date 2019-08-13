@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace JomMalaysia.Api.UseCases.Listings
 {
@@ -88,12 +89,12 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         // POST api/listings
         [HttpPost]
-        public IActionResult Create([FromBody] CreateListingRequest ListingObject)
+        public async Task<IActionResult> Create([FromBody] CreateListingRequest ListingObject)
         {
 
             //var results = validator.Validate(req);
 
-            _createListingUseCase.Handle(ListingObject, _listingPresenter);
+            await _createListingUseCase.Handle(ListingObject, _listingPresenter);
 
             return _listingPresenter.ContentResult;
         }

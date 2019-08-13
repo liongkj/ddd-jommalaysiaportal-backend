@@ -17,8 +17,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public Name Name { get; private set; }
         public Email Email { get; private set; }
         public Phone Phone { get; private set; }
+        public bool IsPrimary { get; private set; }
 
-        public Contact(string name, string email = null, string phone = null)
+        public Contact(string name, string email = null, string phone = null, bool IsPrimary = false)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -38,22 +39,24 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             {
                 Phone = (Phone)phone;
             }
-
-
-
-
-
+            this.IsPrimary = IsPrimary;
         }
 
-        public static Contact For(string name, string email, string phone)
+        public static Contact For(Name name, Email email, Phone phone)
         {
             var contact = new Contact
             {
-                Name = (Name)name,
-                Email = (Email)email,
-                Phone = (Phone)phone
+                Name = name,
+                Email = email,
+                Phone = phone
             };
             return contact;
+        }
+
+        public Contact SetAsPrimary()
+        {
+            Contact Primary = new Contact(Name.ToString(), Email.ToString(), Phone.ToString(), true);
+            return Primary;
         }
         protected override IEnumerable<object> GetAtomicValues()
         {

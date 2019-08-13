@@ -11,17 +11,16 @@ namespace JomMalaysia.Core.Domain.Factories
         private const int PRI = 2;
         private const int EVE = 3;
 
-        public static Listing CreateListing(ListingTypeEnum ListingType, CreateListingRequest listing)
+        public static Listing CreateListing(ListingTypeEnum ListingType, CreateListingRequest listing, Merchant merchant)
         {
             int listingTypeId = ListingType.Id;
-            
+
             switch (listingTypeId)
             {
                 case EVE:
-                    
-                    return new EventListing(listing);
+                    return new EventListing(listing, merchant);
                 default:
-                    return new PrivateListing(listing);
+                    return new PrivateListing(listing, merchant);
             }
         }
     }

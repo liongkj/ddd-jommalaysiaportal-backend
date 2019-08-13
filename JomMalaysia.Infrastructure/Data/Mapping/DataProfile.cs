@@ -19,11 +19,17 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(md => md.Id, opt => opt.MapFrom(m => m.MerchantId))
                 .ForMember(md => md.Contacts, opt => opt.MapFrom(m => m.Contacts))
                 .ForMember(md => md.ListingIds, opt => opt.MapFrom(m =>
-                     m.Listings.Select(l => l.ListingId)));
+                     m.Listings.Select(l => l.ListingId)))
+                .ForMember(md=>md.CompanyRegistrationNumber,opt=>opt.MapFrom(m=>m.CompanyRegistrationNumber.ToString()))
+                
+                ;
 
 
             CreateMap<Listing, ListingDto>()
                 .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
+                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
+                .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                .ForMember(ld => ld.MerchantId, opt => opt.MapFrom(l => l.Merchant.MerchantId))
                 //.ForMember(ld => ld.Category.Subcategories, opt => opt.MapFrom(l => l.Category.Subcategories))
                 ;
 
@@ -43,7 +49,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<WorkflowDto, Workflow>()
-                .ForMember(w=>w.WorkflowId,opt=> opt.MapFrom(wd=>wd.Id))
+                .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
                 ;
@@ -59,6 +65,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                 .ForPath(l => l.Merchant.MerchantId, opt => opt.MapFrom(ld => ld.MerchantId))
                 ;
+
             CreateMap<CategoryDto, Category>()
                .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
 

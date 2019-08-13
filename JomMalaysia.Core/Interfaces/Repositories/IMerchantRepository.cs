@@ -5,6 +5,7 @@ using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Update;
+using MongoDB.Driver;
 
 namespace JomMalaysia.Core.Interfaces
 {
@@ -16,6 +17,7 @@ namespace JomMalaysia.Core.Interfaces
         GetMerchantResponse FindByName(string name);
         GetMerchantResponse FindById(string merchantId);
         UpdateMerchantResponse UpdateMerchant(string id, Merchant updatedMerchant);
+        Task<UpdateMerchantResponse> UpdateMerchant(string id, Merchant updatedMerchant, IClientSessionHandle session);
 
     }
 }
