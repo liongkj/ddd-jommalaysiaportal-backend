@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
 <!--HEADER-->
 <div class="form-group col-md-12 no-padding d-none d-md-block">
     <button type="button" class="btn btn-success col-md-2" onclick="$('#btnSubmit').click()">New</button>
@@ -17,7 +16,7 @@
     <div class="btn-group col-sm-12 no-padding" role="group">
         <button type="button" class="btn btn-primary">Action</button>
         <div id="dropdown-action-button" class="dropdown-menu col-sm-12" aria-labelledby="btnGroupDrop1" x-placement="bottom-start" style="display:none; position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
-            <a class="dropdown-item" onclick="$('#btnSubmit').trigger( " click" )">Save</a>
+            <a class="dropdown-item" onclick="$('#btnSubmit').click()">Save</a>
             <a class="dropdown-item" onclick="window.location.href = '@Url.Action("Delete","Category")'">Cancel</a>
         </div>
         <div id="action-button" class="btn-group" role="group">
@@ -27,26 +26,29 @@
 </div>
 <!--END OF HEADER-->
 
-<form asp-action="Create" class="form-m-gap-top">
+<form asp-action="Create" id="CreateCategoryForm" class="form-m-gap-top">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryId)</div>
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryCode)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryId, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.categoryCode, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.categoryCode)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryName)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryName, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.categoryName, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.categoryName)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryNameMs)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryNameMs, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.categoryNameMs, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.categoryNameMs)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
@@ -54,6 +56,7 @@
         <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryNameZh)</div>
         <div class="col-sm-10 col-md-6">
             @Html.TextBoxFor(m => m.categoryNameZh, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.categoryNameZh)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
@@ -73,11 +76,25 @@
                 <tr id="subcategory-0">
                     @*https://stackoverflow.com/questions/38929009/how-to-bind-an-array-in-mvc-core
                         https://fildev.net/2017/05/14/send-array-from-view-to-controller-as-class-asp-net-core/*@
-                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryId, new { @class = "form-control" })</td>
-                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryName, new { @class = "form-control" })</td>
-                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameMs, new { @class = "form-control" })</td>
-                    <td>@Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameZh, new { @class = "form-control" })</td>
-                    <td>@Html.HiddenFor(m => m.lstSubCategory[0].isDeleted, new { @class = "form-control" })</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryCode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryCode)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryName)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameMs, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryNameMs)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameZh, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryNameZh)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(m => m.lstSubCategory[0].isDeleted, new { @class = "form-control" })
+                    </td>
                     @*<td><input type="text" id="subcategoryID-0" class="form-control" /></td>
                         <td><input type="text" id="subcategoryName-0" class="form-control" /></td>
                         <td><input type="text" id="subcategoryNameMs-0" class="form-control" /></td>*@
@@ -86,7 +103,7 @@
             </tbody>
         </table>
     </div>
-    <button id="btnSubmit" type="submit" class="d-none"></button>
+    <button id="btnSubmit" type="button" class="d-none"></button>
 </form>
 
 <div>
@@ -95,4 +112,59 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="js/form-validation.js"></script>
+    <script type="text/javascript">
+        //------------------------ Add Subcategory ----------------------
+        $(document).ready(function () {
+
+            var counter = 1;
+
+            $("#new-subcategory").on("click", function () {
+                var newRow = $("<tr>");
+                var cols = "";
+
+                cols += '<td> <input class="form-control" id="lstSubCategory_' + counter + '__categoryId" name="lstSubCategory[' + counter + '].categoryId" type="text" value=""></td>'
+                cols += '<td> <input class="form-control" id="lstSubCategory_' + counter + '__categoryName" name="lstSubCategory[' + counter + '].categoryName" type="text" value=""></td>'
+                cols += '<td> <input class="form-control" id="lstSubCategory_' + counter + '__categoryNameMs" name="lstSubCategory[' + counter + '].categoryNameMs" type="text" value=""></td>'
+                cols += '<td> <input class="form-control" id="lstSubCategory_' + counter + '__categoryNameZh" name="lstSubCategory[' + counter + '].categoryNameZh" type="text" value=""></td>'
+                cols += '<td> <input class="isDelete form-control" data-val="true" id="lstSubCategory_' + counter + '__isDeleted" name="lstSubCategory[' + counter + '].isDeleted" type="hidden" value=""></td>'
+                cols += '<td> <button type="button" class="btn btn-danger btnDelete">Delete</button></td> ';
+
+                newRow.append(cols);
+                $(".tb-subcategory").append(newRow);
+                counter++;
+            });
+
+            $(".tb-subcategory").on("click", ".btnDelete", function (event) {
+                $(this).closest("tr").addClass("d-none");
+                $(this).closest("tr").find('.isDelete').val("true");
+                //lstSubCategory_0__categoryId
+                //$(this).closest('tr').find('#isDeleted').prop('checked', true);
+            });
+
+            //------------------------ Validate ----------------------
+            $('#btnSubmit').click(function () {
+                debugger;
+                $("#CreateCategoryForm").valid();
+            });
+
+            $("#CreateCategoryForm").validate({
+                rules: {
+                    categoryName: {
+                        required: true
+                    }
+                },
+                messages: {
+                    categoryName: {
+                        required: "We need your email address to contact you"
+                    }
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        });
+       
+
+    </script>
 }

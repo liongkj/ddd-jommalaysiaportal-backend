@@ -71,36 +71,3 @@ $(document).ready(function () {
     });
 });
 
-
-//------------------------ Add Subcategory ----------------------
-$(document).ready(function () {
-    var counter = 1;
-
-    $("#new-subcategory").on("click", function () {
-        var newRow = $("<tr>");
-        var cols = "";
-
-        cols += '<td><input class="form-control" id="lstSubCategory_' + counter + '__categoryId" name="lstSubCategory[' + counter + '].categoryId" type="text" value=""></td>'
-        cols += '<td><input class="form-control" id="lstSubCategory_' + counter + '__categoryName" name="lstSubCategory[' + counter + '].categoryName" type="text" value=""></td>'
-        cols += '<td><input class="form-control" id="lstSubCategory_' + counter + '__categoryNameMs" name="lstSubCategory[' + counter + '].categoryNameMs" type="text" value=""></td>'
-        cols += '<td><input class="form-control" id="lstSubCategory_' + counter + '__categoryNameZh" name="lstSubCategory[' + counter + '].categoryNameZh" type="text" value=""></td>'
-        cols += '<td><input class="isDelete form-control" data-val="true" id="lstSubCategory_' + counter + '__isDeleted" name="lstSubCategory[' + counter + '].isDeleted" type="hidden" value=""></td>'
-        cols += '<td><button type="button" class="btn btn-danger btnDelete">Delete</button></td>';
-        newRow.append(cols);
-        $(".tb-subcategory").append(newRow);
-        counter++;
-    });
-
-
-
-    $(".tb-subcategory").on("click", ".btnDelete", function (event) {
-        $(this).closest("tr").addClass("d-none");
-        $(this).closest("tr").find('.isDelete').val("true");
-        //lstSubCategory_0__categoryId
-        //$(this).closest('tr').find('#isDeleted').prop('checked', true);
-    });
-
-
-});
-
-//------------------------ END Add Subcategory ----------------------

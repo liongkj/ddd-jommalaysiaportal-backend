@@ -23,9 +23,11 @@ namespace JomMalaysia.Presentation.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+
+            Category cat = new Category();
+
             if (CategoryList.Count<1)
             {
-
                 try
                 {
                     CategoryList = _gateway.GetCategories();
@@ -37,7 +39,15 @@ namespace JomMalaysia.Presentation.Controllers
 
 
         }
-        public ActionResult Create(Category category)
+
+        [HttpGet]
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create (Category category)
         {
             if (ModelState.IsValid)
             {
@@ -46,11 +56,10 @@ namespace JomMalaysia.Presentation.Controllers
 
             }
 
-            // update student to the database
-
             return View();
-        }
 
+            // update student to the database
+        }
         public ActionResult Edit(Category std)
         {
 
