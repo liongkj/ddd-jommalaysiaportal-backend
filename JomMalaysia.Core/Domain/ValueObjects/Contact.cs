@@ -13,6 +13,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         }
 
+        public Name Name { get; private set; }
+        public Email Email { get; private set; }
+        public Phone Phone { get; private set; }
 
         public Contact(string name, string email, string phone)
         {
@@ -38,8 +41,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             throw new NotImplementedException();
         }
 
-        public Name Name { get; private set; }
-        public Email Email { get; private set; }
-        public Phone Phone { get; private set; }
+        
     }
 }

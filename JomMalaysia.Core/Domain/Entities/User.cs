@@ -16,6 +16,11 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
+        public User()
+        {
+
+        }
+
         public User(string userId)
         {
             UserId = userId;
@@ -23,9 +28,14 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public string UserId { get; set; }
         public string Username { get; set; }
+        public string Nickname { get; set; }
+        //public string StringEmail { get; set; }
+        //public string StringName { get; set; }
         public Email Email { get; set; }
         public Name Name { get; set; }
-
+        public bool VerifyEmail { get; set; }
+        public string Connection { get; set; }
+        public string Password { get; set; }
 
         public void AddListing()
         {
@@ -44,20 +54,12 @@ namespace JomMalaysia.Core.Domain.Entities
         /// <returns>Workflow object</returns>
         public Workflow PublishListing(Listing l, string details = null)
         {
-            if (!l.isPublish.IsPublished)
+            //check wheter listing is published
+            //check listing is pending
+            if (l.isPublish == null)
             {
-                Workflow PublishRequestInit = new Workflow
-                {
-                    Requester = this,
-                    Created = DateTime.Now,
-                    ListingId = l.ListingId,
-                    Lvl = 0, //get role,
-                    Type = WorkflowTypeEnum.Publish,
-                    Status = WorkflowStatusEnum.Pending,
-                    Details = details
-
-                };
-                return PublishRequestInit;
+                Workflow PublishRequestWorkflow = new Workflow(this, l,WorkflowTypeEnum.Publish);
+                return PublishRequestWorkflow;
             }
             return null;
         }

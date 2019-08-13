@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
@@ -11,9 +12,9 @@ namespace JomMalaysia.Core.Domain.Entities
     {
         public string WorkflowId { get; set; }
         public WorkflowTypeEnum Type { get; set; }
-        public int Lvl { get; set; }
+        public int Lvl { get; set; } = 1;
 
-        public string ListingId { get; set; }
+        public Listing Listing { get; set; }
         public User Requester { get; set; }
         public User Responder { get; set; }
         public WorkflowStatusEnum Status { get; set; }
@@ -21,8 +22,14 @@ namespace JomMalaysia.Core.Domain.Entities
         public string Details { get; set; }
         public ICollection<Workflow> PreviousWorkflows { get; private set; }
 
-        public Workflow()
+        public Workflow(User user, Listing listing, WorkflowTypeEnum type)
         {
+            Requester = user;
+            Listing = listing;
+            Created = DateTime.Now;
+            Type = type;
+            Status = WorkflowStatusEnum.Pending;
+
             PreviousWorkflows = new Collection<Workflow>();
         }
 
@@ -37,9 +44,30 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-       
-       
+        public void Start()
+        {
+            switch (this.Type.ToString())
+            {
+                case "publish":
+                    PublishListingOperation();
+                    break;
+                case "update":
+                    EditLiveListingOperation();
+                    break;
+            }
+            
+        }
+
+        private void EditLiveListingOperation()
+        { 
+        }
+
+        private void PublishListingOperation()
+        {
+            //Type = WorkflowTypeEnum.Publish;
+
+        }
     }
-   
+
 }
 

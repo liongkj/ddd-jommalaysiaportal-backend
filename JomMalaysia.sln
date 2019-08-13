@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test", "JomMalaysia.Test\JomMalaysia.Test.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test.Api", "JomMalaysia.Test\JomMalaysia.Test.Api.csproj", "{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Presentation", "JomMalaysia.Presentation\JomMalaysia.Presentation.csproj", "{744C0751-2A30-4DD1-9DDC-03896CD13CE2}"
 EndProject
@@ -15,15 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B79FBDF1-D9D5-4B32-A714-C9637789911C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{480F83BB-A04C-4BAB-B928-FB861C8A79C1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Core", "JomMalaysia.Core\JomMalaysia.Core.csproj", "{A3BE860C-5899-4212-8BC0-758C9F827738}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Infrastructure", "JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj", "{50EC0915-059C-49B2-9017-1BCD930EB6A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5318BDB4-D930-495B-8D67-F41E5BF6575C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JomMalaysia.Framework", "JomMalaysia.Framework\JomMalaysia.Framework.csproj", "{B48AE61E-300F-49F0-A140-60A43447F894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Framework", "JomMalaysia.Framework\JomMalaysia.Framework.csproj", "{B48AE61E-300F-49F0-A140-60A43447F894}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JomMalaysia.Test.Core", "Core.Test\JomMalaysia.Test.Core.csproj", "{764E16B2-6279-4AF9-8FE7-6D150D185344}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{7ED1F8AD-3326-4943-8458-9CEC4661F0E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{9C46E4C5-44F0-4ECB-8447-08E9CD78D51A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,15 +59,22 @@ Global
 		{B48AE61E-300F-49F0-A140-60A43447F894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48AE61E-300F-49F0-A140-60A43447F894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48AE61E-300F-49F0-A140-60A43447F894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{764E16B2-6279-4AF9-8FE7-6D150D185344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1C38776E-18C9-4FCE-B5AE-45E52B56FAC7} = {9C46E4C5-44F0-4ECB-8447-08E9CD78D51A}
 		{744C0751-2A30-4DD1-9DDC-03896CD13CE2} = {B79FBDF1-D9D5-4B32-A714-C9637789911C}
+		{E14D4EA0-BDA4-4D37-8574-F07B9EAAFB98} = {7ED1F8AD-3326-4943-8458-9CEC4661F0E8}
 		{A3BE860C-5899-4212-8BC0-758C9F827738} = {3900F1A2-E1D8-4125-9590-CC6B4DB73133}
 		{50EC0915-059C-49B2-9017-1BCD930EB6A4} = {3E474E90-133A-464F-88A7-9B8054565B38}
 		{B48AE61E-300F-49F0-A140-60A43447F894} = {5318BDB4-D930-495B-8D67-F41E5BF6575C}
+		{764E16B2-6279-4AF9-8FE7-6D150D185344} = {9C46E4C5-44F0-4ECB-8447-08E9CD78D51A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9BC760D7-D948-4463-97B1-F13710A5B29B}

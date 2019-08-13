@@ -29,7 +29,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
             _mapper = mapper;
         }
 
-        public List<CategoryViewModel> GetCategories()
+        public async Task<List<CategoryViewModel>> GetCategories()
         {
             List<CategoryViewModel> result = new List<CategoryViewModel>();
             IWebServiceResponse<CategoryListViewModel> response = default;
@@ -38,7 +38,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
             {
                 var req = _apiBuilder.GetApi((APIConstant.API.Path.GetAllCategory));
                 var method = Method.GET;
-                response = _webServiceExecutor.ExecuteRequest<CategoryListViewModel> (req, method);
+                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryListViewModel> (req, method);
                 
             }
             catch (GatewayException ex)

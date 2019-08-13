@@ -1,7 +1,7 @@
 ﻿
 using Xunit;
 
-namespace JomMalaysia.Test.UseCases
+namespace JomMalaysia.Test.Api.Controller
 {
 
     public class MerchantsControllerUnitTest

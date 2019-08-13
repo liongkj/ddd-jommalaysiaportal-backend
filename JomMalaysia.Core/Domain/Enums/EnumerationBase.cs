@@ -20,6 +20,17 @@ namespace JomMalaysia.Core.Domain.Enums
 
         public override string ToString() => Name;
 
+        public static T Parse<T>(string name) where T : EnumerationBase
+        {
+            var enums = GetAll<T>();
+            foreach (var e in enums)
+            {
+                if (e.Name == name)
+                    return e;
+            }
+            return null;
+        }
+
         public static IEnumerable<T> GetAll<T>() where T : EnumerationBase
         {
             var fields = typeof(T).GetFields(BindingFlags.Public |

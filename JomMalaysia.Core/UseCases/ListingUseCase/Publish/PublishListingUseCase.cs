@@ -7,6 +7,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 {
@@ -15,70 +16,74 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         private readonly IListingRepository _listingRepository;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IMongoDbContext _transaction;
-
-        public PublishListingUseCase(IListingRepository listingRepository,
+        private readonly ILoginInfoProvider _loginInfo;
+        public PublishListingUseCase(
+            IListingRepository listingRepository,
             IWorkflowRepository workflowRepository,
+            ILoginInfoProvider loginInfoProvider,
             IMongoDbContext transaction
         )
         {
             _listingRepository = listingRepository;
             _workflowRepository = workflowRepository;
             _transaction = transaction;
+            _loginInfo = loginInfoProvider;
         }
-        public bool Handle(PublishListingRequest message, IOutputPort<PublishListingResponse> outputPort)
+        public async Task<bool> Handle(PublishListingRequest message, IOutputPort<PublishListingResponse> outputPort)
         {
-            var requester = new User(message.UserId);
+            var requester = _loginInfo.AuthenticatedUser();
+            var Errors = new List<string>();
+
             //find user by id/token
             //check user level and assign workflow level
 
             //validate listingsid are real
-            var ListingIds = message.ListingIds;
-
+            var ListingId = message.ListingId;
+            Listing ListingRequest = new EventListing
+            {
+                ListingId = ListingId
+            };
+            //_listingRepository.FindById(ListingId).Listing;
             //check is there any request related to the listing
-
-
-            //create new workflow objects
+            //if(PublishRequest.status workflow) //stop workflow
             if (message != null)
             {
-                List<Workflow> NewWorkflows = new List<Workflow>();
-
-                foreach (var id in ListingIds)
+                //create new workflow objects
+                Workflow PublishListingWorkflow = requester.PublishListing(ListingRequest);
+                if (PublishListingWorkflow != null)//if not published
                 {
-                    List<string> ListingErrors = new List<string>();
-                    //get listing
-                    Listing PublishRequest = _listingRepository.FindById(id).Listing;
-                    Workflow workflow = requester.PublishListing(PublishRequest);
-                    //filter published listing
-                    if (workflow != null)
-                        NewWorkflows.Add(workflow);
-                    else
-                    {
-                        ListingErrors.Add($"Listing {PublishRequest.ListingName} is already published");
-                    }
+                    PublishListingWorkflow.Start();
+                }
+                else
+                {
+                    Errors.Add($"Listing {ListingRequest.ListingName} is already published");
+                }
 
-                    //filter workflow with same type and same listing
+                //filter workflow with same type and same listing
 
-                    //save into workflow database
-                    _transaction.StartSession();
-                    _transaction.Session.StartTransaction();
-                    var result = _workflowRepository.CreateWorkflow(NewWorkflows);
+                //save into workflow database
+                var result = new CreateWorkflowResponse(Errors);
+                using (var session = await _transaction.StartSession())
+                {
+                    session.StartTransaction();
+                    result = _workflowRepository.CreateWorkflow(PublishListingWorkflow, session);
                     //listing status set to pending
 
                     _transaction.Session.CommitTransaction();
-                    if(result.Success)
-                    {
-                        if (ListingErrors.Count > 0)
-                            outputPort.Handle(new PublishListingResponse(ListingErrors, true, "failed to publish"));
-                        outputPort.Handle(new PublishListingResponse(result.Count, true, "are sent to publish"));
-                    }
-                    else //transaction failed
-                    {
-                        outputPort.Handle(new PublishListingResponse(result.Message, result.Success));
-                    }
-                    return result.Success;
                 }
+               
+                if (result.Success) //transaction commited
+                {
+                    outputPort.Handle(new PublishListingResponse(result.Id, true,"Workflow Started Successfully"));
+                }
+                else //transaction failed
+                {
+                    outputPort.Handle(new PublishListingResponse(result.Errors));
+                }
+                return result.Success;
             }
-            outputPort.Handle(new PublishListingResponse($"{nameof(message)} cannot be null", false));
+
+            outputPort.Handle(new PublishListingResponse($"{nameof(message)} cannot be null"));
             return false;
         }
 

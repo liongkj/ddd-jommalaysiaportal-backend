@@ -15,7 +15,6 @@ namespace JomMalaysia.Api.UseCases.Workflows
             ContentResult = new JsonContentResult();
         }
  
-
         public void Handle(UseCaseResponseMessage response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);

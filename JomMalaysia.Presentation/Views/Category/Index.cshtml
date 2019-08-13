@@ -2,17 +2,12 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
 
 <!--HEADER-->
-<div class="form-group col-md-12 no-padding d-none d-md-block">
-    <button type="button" class="btn btn-success col-md-2" onclick="window.location.href = '@Url.Action("Create","Category")'">New</button>
-    <button type="button" class="btn btn-primary col-md-2" onclick="window.location.href = '@Url.Action("Edit","Category")'">Edit</button>
-    <button type="button" class="btn btn-danger col-md-2" onclick="window.location.href = '@Url.Action("Delete","Category")'">Delete</button>
-    <button type="button" class="btn btn-secondary col-md-2" onclick="window.location.href = '@Url.Action("Publish","Category")'">Publish</button>
-</div>
-<div class="form-group col-md-12 no-padding d-sm-block d-md-none">
+
+@*<div class="form-group col-md-12 no-padding d-sm-block d-md-none">
     <div class="btn-group col-sm-12 no-padding" role="group">
         <button type="button" class="btn btn-primary">Action</button>
         <div id="dropdown-action-button" class="dropdown-menu col-sm-12" aria-labelledby="btnGroupDrop1" x-placement="bottom-start" style="display:none; position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
@@ -25,7 +20,7 @@
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
         </div>
     </div>
-</div>
+</div>*@
 <!--END OF HEADER-->
 
 <div class="col-md-12 col-sm-12 no-padding" style="overflow-x:auto !important" ;">

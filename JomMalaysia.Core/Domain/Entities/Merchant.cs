@@ -41,7 +41,7 @@ namespace JomMalaysia.Core.Domain.Entities
             }
             return true;
         }
-        public Collection<Listing> AddListing(Listing newListing)
+        public Collection<Listing> AddNewListing(Listing newListing)
         {
             //if (newListing is null)
             //{

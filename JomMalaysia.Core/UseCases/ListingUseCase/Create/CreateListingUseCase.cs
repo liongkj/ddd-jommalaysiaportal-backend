@@ -34,7 +34,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 
             //find merchant and add to merchant
             var merchant = _merchantRepository.FindById(message.MerchantId).Merchant;
-            var verified = merchant.AddListing(NewListing);
+            var verified = merchant.AddNewListing(NewListing);
             //find subcategory and add listing
             //var subcategories = _categoryRepository.GetAllSubcategory(NewListing.Category.CategoryId);
            // var subcategory = getSubcategory(subcategories.Subcategories, message.Subcategory.SubcategoryId, NewListing.ListingId);
@@ -57,6 +57,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 
             //validate listing
 
+            
 
 
 

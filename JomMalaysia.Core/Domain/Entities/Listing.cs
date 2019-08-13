@@ -20,8 +20,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string ListingLogo { get; set; }
         public string CoverPhoto { get; set; }
         public string ExteriorPhoto { get; set; }
-
-
+        
         public Contact Contact { get; set; }
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
@@ -75,6 +74,51 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
+
+        //
+        public void AddTags(string newTag)
+        {
+            
+            if (Tags.Contains(newTag)) { Tags.Add(newTag); }
+            else { throw new ArgumentException("Tag/keyword has already existed"); }
+        }
+
+        public void UpdateListing()
+        {
+            string updateListingName(string new_name)
+            {
+                return ListingName = new_name;
+            }
+
+            string updateDescription(string new_description)
+            {
+                return Description = new_description;
+            }
+
+            Category updateCategory(Category new_category)
+            {
+                return Category = new_category;
+            }
+
+            Location updateLocation(Location new_location)
+            {
+                return ListingLocation = new_location;
+            }
+
+            ListingTypeEnum updateListingType(ListingTypeEnum new_ListingType)
+            {
+                return ListingType = new_ListingType;
+            }
+
+            //update the database 
+
+        }
+
+        public void DeleteListing(string name)
+        {
+        }
+
+
 
     }
 }

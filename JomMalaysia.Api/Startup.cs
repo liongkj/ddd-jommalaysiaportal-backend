@@ -26,6 +26,14 @@ using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using JomMalaysia.Presentation.Scope;
 using Microsoft.AspNetCore.Authorization;
+using FluentValidation.AspNetCore;
+using JomMalaysia.Core.Validation;
+using JomMalaysia.Core.UseCases.UserUseCase;
+using JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase;
+using JomMalaysia.Api.Providers;
+using System.Security.Claims;
+using JomMalaysia.Infrastructure.Auth0.Mapping;
+using JomMalaysia.Framework.Configuration;
 
 namespace JomMalaysia.Api
 {
@@ -37,7 +45,7 @@ namespace JomMalaysia.Api
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -64,26 +72,44 @@ namespace JomMalaysia.Api
 
             services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
-            
+            //services.AddSingleton<MerchantRepository>();
+
             //Add Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //moved to core module
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NameValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddressValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CompanyRegNumValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ContactValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmailValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PhoneValidator>());
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PublishStatusValidator>());
+            //services.AddHttpContextAccessor();
             //add swagger
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" }));
+
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new DataProfile());
+                mc.AddProfile(new Auth0DataProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
             // Now register our services with Autofac container.
             var builder = new ContainerBuilder();
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
+            builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();
+            builder.RegisterType<AppSetting>().As<IAppSetting>().InstancePerLifetimeScope();
+
             // Presenters
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
             builder.Populate(services);
             var container = builder.Build();
+
             // Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(container);
 

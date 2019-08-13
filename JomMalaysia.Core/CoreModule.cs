@@ -1,6 +1,13 @@
 ﻿
 using System.Reflection;
+using System.Web.Http.Validation;
 using Autofac;
+using FluentValidation;
+using FluentValidation.WebApi;
+using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.UserUseCase;
+using JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase;
+using JomMalaysia.Core.Validation;
 
 namespace JomMalaysia.Core
 {
@@ -11,6 +18,16 @@ namespace JomMalaysia.Core
             //builder.RegisterType<CreateMerchantUseCase>().As<ICreateMerchantUseCase>().InstancePerLifetimeScope();
             //builder.RegisterType<GetMerchantUseCase>().As<IGetMerchantUseCase>().InstancePerLifetimeScope();
             //builder.RegisterType<GetAllMerchantUseCase>().As<IGetAllMerchantUseCase>().InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                  .Where(t => t.Name.EndsWith("Validator"))
+                  .AsImplementedInterfaces()
+                  .InstancePerLifetimeScope();
+
+            builder.RegisterType<FluentValidationModelValidatorProvider>().As<ModelValidatorProvider>();
+
+            builder.RegisterType<AutofacValidatorFactory>().As<IValidatorFactory>().SingleInstance();
+
 
             var dataAccess = Assembly.GetExecutingAssembly();
 
