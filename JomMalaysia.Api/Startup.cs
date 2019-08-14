@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -20,22 +16,13 @@ using JomMalaysia.Infrastructure.Data.MongoDb;
 using JomMalaysia.Core.Interfaces;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
-using JomMalaysia.Api.UseCases.Merchants;
-using JomMalaysia.Api.UseCases.Merchants.GetMerchant;
-using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using JomMalaysia.Presentation.Scope;
 using Microsoft.AspNetCore.Authorization;
 using FluentValidation.AspNetCore;
-using JomMalaysia.Core.Validation;
-using JomMalaysia.Core.UseCases.UserUseCase;
-using JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase;
 using JomMalaysia.Api.Providers;
-using System.Security.Claims;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Framework.Configuration;
-using FluentValidation.WebApi;
-using System.Web.Http;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using FluentValidation;
 
@@ -82,7 +69,6 @@ namespace JomMalaysia.Api
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateListingRequestValidator>());
-            //fluent validation service moved to core module
 
             //add swagger
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" }));
@@ -91,7 +77,7 @@ namespace JomMalaysia.Api
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new DataProfile());
-                mc.AddProfile(new Mapping.DataProfile());
+                
                 mc.AddProfile(new Auth0DataProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();

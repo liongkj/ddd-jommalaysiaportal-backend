@@ -11,6 +11,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public CreateListingRequestValidator()
         {
             RuleFor(CreateListingRequest => CreateListingRequest.Address).SetValidator(new AddressValidator());
+            //if listing type is event must have eventdate
             
 
             RuleFor(p => p.MerchantId).NotEmpty().NotNull();

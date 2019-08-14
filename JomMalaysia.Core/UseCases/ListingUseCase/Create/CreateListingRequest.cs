@@ -17,7 +17,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public string Description { get; set; }
         public string ListingType { get; set; }
 
-        public DateTime EventDate { get; set; }
+
         public string Category { get; set; }
         public string Subcategory { get; set; }
 
@@ -25,5 +25,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public Address Address { get; set; }
         public Tuple<double, double> Coordinates { get; set; } = null;
         public ListingImages ImageUris { get; set; }
+        public DateTime EventStartDateTime { get; set; }
+        public DateTime EventEndDateTime { get; set; }
     }
 }

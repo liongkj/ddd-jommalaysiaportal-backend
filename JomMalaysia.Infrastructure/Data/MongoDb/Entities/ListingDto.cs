@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Infrastructure.Data.MongoDb.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
 {
-    public class ListingDto
+    public class ListingDto : IEntityDateTime
     {
         [BsonId]
         [BsonIgnoreIfDefault]
@@ -29,6 +31,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public BsonDateTime EventStartDateTime { get; set; }
         [BsonIgnoreIfNull]
         public BsonDateTime EventEndDateTime { get; set; }
-
+        public BsonDateTime CreatedAt { get; set; }
+        [BsonIgnoreIfNull]
+        public BsonDateTime ModifiedAt { get; set; }
     }
 }

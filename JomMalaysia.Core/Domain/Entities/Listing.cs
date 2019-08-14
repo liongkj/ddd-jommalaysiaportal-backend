@@ -26,7 +26,8 @@ namespace JomMalaysia.Core.Domain.Entities
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public CategoryPath Category { get; set; }
-
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
         public Listing()
         {
 
@@ -41,7 +42,7 @@ namespace JomMalaysia.Core.Domain.Entities
             ListingLocation = new Location(add, Coordinates);
             Tags = tags;
             ListingType = listingType;
-
+            Status = ListingStatusEnum.New;
         }
 
 

@@ -1,7 +1,4 @@
-﻿
-
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
@@ -61,6 +58,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories
         //get whole category collection
         [HttpGet]
+
         public IActionResult Get(int pageSize = 20, int pageNumber = 0)
         {
             var req = new GetAllCategoryRequest

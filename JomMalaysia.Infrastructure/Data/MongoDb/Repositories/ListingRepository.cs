@@ -1,9 +1,10 @@
-//ToDO
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
@@ -25,11 +26,15 @@ public class ListingRepository : IListingRepository
     }
     public CreateListingResponse CreateListing(Listing listing)
     {
-        var ListingDto = _mapper.Map<Listing, ListingDto>(listing);
+        var Dto = _mapper.Map(
+            listing,
+            listing.GetType(),
+            new ListingDto().GetType()
+            );
 
         try
         {
-            _db.InsertOne(ListingDto);
+            _db.InsertOne((ListingDto)Dto);
         }
         catch (Exception e)
         {
@@ -41,17 +46,23 @@ public class ListingRepository : IListingRepository
 
     public async Task<CreateListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session)
     {
-        var ListingDto = _mapper.Map<ListingDto>(listing);
+        //var ListingDto = _mapper.Map<ListingDto>(listing);
+        var Dto = (ListingDto)_mapper.Map(
+           listing,
+           listing.GetType(),
+           new ListingDto().GetType()
+           );
+        Dto.CreatedAt = DateTime.UtcNow;
         try
         {
-            await _db.InsertOneAsync(session, ListingDto).ConfigureAwait(false);
-            return new CreateListingResponse(ListingDto.Id, true);
+            await _db.InsertOneAsync(session, Dto).ConfigureAwait(false);
+            return new CreateListingResponse(Dto.Id, true);
         }
         catch (Exception e)
         {
             return new CreateListingResponse(new List<string> { e.ToString() }, false, e.Message);
         }
-        
+
     }
 
     public DeleteListingResponse Delete(string id)
@@ -69,13 +80,68 @@ public class ListingRepository : IListingRepository
         throw new System.NotImplementedException();
     }
 
-    public Task<GetAllListingResponse> GetAllListings()
+    public async Task<GetAllListingResponse> GetAllListings()
     {
-        throw new System.NotImplementedException();
+        GetAllListingResponse res;
+        List<Listing> Mapped = new List<Listing>();
+        try
+        {
+            var query =
+                    await _db.AsQueryable()
+                    //.OrderBy(c => c.ListingType)
+                    .ToListAsync()
+                    ;
+            //var Listings = _mapper.Map<List<Listing>>(query);
+            foreach (ListingDto list in query)
+            {
+
+                var sourcetype = list.GetType();
+                var destype = GetListingTypeHelper(list);
+
+                var item = _mapper.Map(list, sourcetype, destype);
+
+                if (destype.Equals(typeof(EventListing)))
+                {
+                    EventListing i = (EventListing)item;
+                    Mapped.Add(i);
+                }
+
+                if (destype.Equals(typeof(PrivateListing)))
+                {
+                    PrivateListing i = (PrivateListing)item;
+                    Mapped.Add(i);
+                }
+            }
+
+            res = new GetAllListingResponse(Mapped, true);
+        }
+        catch (Exception e)
+        {
+            res = new GetAllListingResponse(new List<string> { "GetAllListingRepo" }, false, e.ToString() + e.Message);
+        }
+
+        return res;
     }
+
+
 
     public UpdateListingResponse Update(string id, Listing listing)
     {
         throw new System.NotImplementedException();
+    }
+    #region private helper method
+    private Type GetListingTypeHelper(ListingDto list)
+    {
+        if (list.ListingType == ListingTypeEnum.Event.ToString())
+        {
+            return typeof(EventListing);
+        }
+        if (list.ListingType == ListingTypeEnum.Private.ToString())
+        {
+            return typeof(PrivateListing);
+        }
+        throw new ArgumentException("Error taking listing info from database ");
+        #endregion
+
     }
 }

@@ -1,15 +1,7 @@
 ﻿using AutoMapper;
-using JomMalaysia.Api.Serialization;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.Enums;
-using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
-using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Threading.Tasks;
 
 namespace JomMalaysia.Api.UseCases.Listings
@@ -18,14 +10,10 @@ namespace JomMalaysia.Api.UseCases.Listings
     [ApiController]
     public class ListingsController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly ICreateListingUseCase _createListingUseCase;
-
         private readonly IGetAllListingUseCase _getAllListingUseCase;
         private readonly ListingPresenter _listingPresenter;
-
-        //private readonly GetAllListingPresenter _getAllListingPresenter;
-        //private readonly IGetListingUseCase _getListingUseCase;
+        private readonly IGetListingUseCase _getListingUseCase;
         //private readonly GetListingPresenter _getListingPresenter;
         //private readonly IDeleteListingUseCase _deleteListingUseCase;
         //private readonly DeleteListingPresenter _deleteListingPresenter;
@@ -33,21 +21,19 @@ namespace JomMalaysia.Api.UseCases.Listings
         //private readonly UpdateListingPresenter _updateListingPresenter;
 
 
-        public ListingsController(IMapper mapper, ICreateListingUseCase createListingUseCase,
+        public ListingsController(ICreateListingUseCase createListingUseCase,
 
-            ListingPresenter ListingPresenter
-            //IGetAllListingUseCase getAllListingUseCase, IGetListingUseCase getListingUseCase, 
+            ListingPresenter ListingPresenter,
+            IGetAllListingUseCase getAllListingUseCase,
+            IGetListingUseCase getListingUseCase
             //IDeleteListingUseCase deleteListingUseCase, 
             //IUpdateListingUseCase updateListingUseCase, 
             )
         {
-            _mapper = mapper;
             _createListingUseCase = createListingUseCase;
             _listingPresenter = ListingPresenter;
-
-            //_getAllListingUseCase = getAllListingUseCase;
-
-            //_getListingUseCase = getListingUseCase;
+            _getAllListingUseCase = getAllListingUseCase;
+            _getListingUseCase = getListingUseCase;
 
             //_deleteListingUseCase = deleteListingUseCase;
 
@@ -61,6 +47,12 @@ namespace JomMalaysia.Api.UseCases.Listings
         /// <param name="request"></param>
         /// <returns>Array of listing</returns>
         //GET api/listings
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            await _getAllListingUseCase.Handle(new GetAllListingRequest(), _listingPresenter);
+            return _listingPresenter.ContentResult;
+        }
 
         ///Get details of listing
         //GET api/listings/{id}
