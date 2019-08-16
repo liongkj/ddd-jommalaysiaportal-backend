@@ -38,23 +38,22 @@ namespace JomMalaysia.Presentation.Gateways.Category
             {
                 var req = _apiBuilder.GetApi((APIConstant.API.Path.GetAllCategory));
                 var method = Method.GET;
-                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryListViewModel> (req, method);
-                
+                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryListViewModel>(req, method);
+
             }
             catch (GatewayException ex)
             {
-
+                throw ex;
             }
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var categories = response.Data.Categories;
-                foreach(var cat in categories)
+                foreach (var cat in categories)
                 {
-                    if (cat.CategoryPath.Subcategory == null)
-                        result.Add(cat);
+                    result.Add(cat);
                 }
-                 
-                
+
+
             }
             //handle exception
             return result;

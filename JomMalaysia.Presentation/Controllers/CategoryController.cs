@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using JomMalaysia.Presentation.Gateways.Category;
@@ -13,31 +14,49 @@ namespace JomMalaysia.Presentation.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryGateway _gateway;
-        List<CategoryViewModel> CategoryList = new List<CategoryViewModel>();
 
+        private List<CategoryViewModel> CategoryList { get; set; }
         public CategoryController(ICategoryGateway gateway)
         {
             _gateway = gateway;
+
+            Refresh();
         }
 
-        // GET: /<controller>/
-        public IActionResult Index()
+        async void Refresh()
         {
-
-            Category cat = new Category();
-
-            if (CategoryList.Count<1)
+            if (CategoryList != null)
+                CategoryList = await GetCategories();
+            else
             {
-                try
-                {
-                    CategoryList = _gateway.GetCategories();
-                }
-                catch (Exception e)
-                { }
+                CategoryList = new List<CategoryViewModel>();
             }
-            return View(CategoryList);
+        }
 
 
+        async Task<List<CategoryViewModel>> GetCategories()
+        {
+            if (CategoryList.Count > 0)
+            {
+                return CategoryList;
+            }
+            try
+            {
+                CategoryList = await _gateway.GetCategories().ConfigureAwait(false);
+                return CategoryList;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return null;
+            }
+        }
+
+
+        // GET: /<controller>/
+        public async Task<IActionResult> Index()
+        {
+            return View(await GetCategories());
         }
 
         [HttpGet]
@@ -47,7 +66,7 @@ namespace JomMalaysia.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create (Category category)
+        public IActionResult Create(CategoryViewModel category)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +79,7 @@ namespace JomMalaysia.Presentation.Controllers
 
             // update student to the database
         }
-        public ActionResult Edit(Category std)
+        public ActionResult Edit(CategoryViewModel std)
         {
 
             // update student to the database
@@ -69,7 +88,7 @@ namespace JomMalaysia.Presentation.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(Category category)
+        public ActionResult Delete(CategoryViewModel category)
         {
 
             // delete student from the database whose id matches with specified id

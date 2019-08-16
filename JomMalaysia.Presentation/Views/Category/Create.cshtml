@@ -1,4 +1,4 @@
-﻿@model JomMalaysia.Presentation.Models.Category
+﻿@model JomMalaysia.Presentation.Models.CategoryViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -29,34 +29,34 @@
 <form asp-action="Create" id="CreateCategoryForm" class="form-m-gap-top">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryCode)</div>
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryCode)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryCode, new { @class = "form-control"})
-            @Html.ValidationMessageFor(m => m.categoryCode)
+            @Html.TextBoxFor(m => m.CategoryCode, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.CategoryCode)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryName)</div>
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryName)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryName, new { @class = "form-control"})
-            @Html.ValidationMessageFor(m => m.categoryName)
+            @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.CategoryName)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryNameMs)</div>
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryNameMs)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryNameMs, new { @class = "form-control"})
-            @Html.ValidationMessageFor(m => m.categoryNameMs)
+            @Html.TextBoxFor(m => m.CategoryNameMs, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.CategoryNameMs)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.categoryNameZh)</div>
+        <div class="col-sm-2 col-md-3 col-form-label">@Html.DisplayNameFor(m => m.CategoryNameZh)</div>
         <div class="col-sm-10 col-md-6">
-            @Html.TextBoxFor(m => m.categoryNameZh, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.categoryNameZh)
+            @Html.TextBoxFor(m => m.CategoryNameZh, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CategoryNameZh)
             @*<input type="text" class="form-control" id="txtSSMID" placeholder="Enter SSM ID">*@
         </div>
     </div>
@@ -77,23 +77,23 @@
                     @*https://stackoverflow.com/questions/38929009/how-to-bind-an-array-in-mvc-core
                         https://fildev.net/2017/05/14/send-array-from-view-to-controller-as-class-asp-net-core/*@
                     <td>
-                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryCode, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryCode)
+                        @Html.TextBoxFor(m => m.LstSubCategory[0].CategoryCode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LstSubCategory[0].CategoryCode)
                     </td>
                     <td>
-                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryName)
+                        @Html.TextBoxFor(m => m.LstSubCategory[0].CategoryName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LstSubCategory[0].CategoryName)
                     </td>
                     <td>
-                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameMs, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryNameMs)
+                        @Html.TextBoxFor(m => m.LstSubCategory[0].CategoryNameMs, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LstSubCategory[0].CategoryNameMs)
                     </td>
                     <td>
-                        @Html.TextBoxFor(m => m.lstSubCategory[0].categoryNameZh, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.lstSubCategory[0].categoryNameZh)
+                        @Html.TextBoxFor(m => m.LstSubCategory[0].CategoryNameZh, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LstSubCategory[0].CategoryNameZh)
                     </td>
                     <td>
-                        @Html.HiddenFor(m => m.lstSubCategory[0].isDeleted, new { @class = "form-control" })
+                        @Html.HiddenFor(m => m.LstSubCategory[0].IsDeleted, new { @class = "form-control" })
                     </td>
                     @*<td><input type="text" id="subcategoryID-0" class="form-control" /></td>
                         <td><input type="text" id="subcategoryName-0" class="form-control" /></td>
