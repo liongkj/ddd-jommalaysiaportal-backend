@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
@@ -12,6 +11,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 public class ListingRepository : IListingRepository
 {
@@ -70,9 +70,26 @@ public class ListingRepository : IListingRepository
         throw new NotImplementedException();
     }
 
-    public GetListingResponse FindById(string id)
+    public async Task<GetListingResponse> FindById(string id)
     {
-        throw new System.NotImplementedException();
+
+        try
+        {
+            var query =
+                      _db.AsQueryable()
+                  .Where(M => M.Id == id)
+                  .Select(M => M)
+                  .FirstOrDefault();
+
+            ;
+
+            var item = _mapper.Map<ListingDto>(query);
+            return new GetListingResponse(Converted(item), true);
+        }
+        catch (Exception e)
+        {
+            return new GetListingResponse(new List<string> { "Get Listing Failed" }, false, e.Message);
+        }
     }
 
     public GetListingResponse FindByName(string name)
@@ -94,22 +111,10 @@ public class ListingRepository : IListingRepository
             //var Listings = _mapper.Map<List<Listing>>(query);
             foreach (ListingDto list in query)
             {
-
-                var sourcetype = list.GetType();
-                var destype = GetListingTypeHelper(list);
-
-                var item = _mapper.Map(list, sourcetype, destype);
-
-                if (destype.Equals(typeof(EventListing)))
+                var temp = Converted(list);
+                if (temp != null)
                 {
-                    EventListing i = (EventListing)item;
-                    Mapped.Add(i);
-                }
-
-                if (destype.Equals(typeof(PrivateListing)))
-                {
-                    PrivateListing i = (PrivateListing)item;
-                    Mapped.Add(i);
+                    Mapped.Add(temp);
                 }
             }
 
@@ -130,11 +135,30 @@ public class ListingRepository : IListingRepository
         throw new System.NotImplementedException();
     }
     #region private helper method
+    private Listing Converted(ListingDto list)
+    {
+
+        if (GetListingTypeHelper(list).Equals(typeof(EventListing)))
+        {
+            var i = _mapper.Map<EventListing>(list);
+
+            return i;
+        }
+
+        if (GetListingTypeHelper(list).Equals(typeof(PrivateListing)))
+        {
+            var i = _mapper.Map<PrivateListing>(list);
+            return i;
+        }
+        return null;
+    }
+
     private Type GetListingTypeHelper(ListingDto list)
     {
         if (list.ListingType == ListingTypeEnum.Event.ToString())
         {
             return typeof(EventListing);
+
         }
         if (list.ListingType == ListingTypeEnum.Private.ToString())
         {

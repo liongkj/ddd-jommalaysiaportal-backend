@@ -2,6 +2,7 @@
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace JomMalaysia.Api.UseCases.Listings
@@ -56,6 +57,14 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         ///Get details of listing
         //GET api/listings/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute] string id)
+        {
+
+            await _getListingUseCase.Handle(new GetListingRequest(id), _listingPresenter);
+    
+            return _listingPresenter.ContentResult;
+        }
 
 
         ///edit a listing

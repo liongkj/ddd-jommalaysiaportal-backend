@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Interfaces
         Task<GetAllListingResponse> GetAllListings();
         DeleteListingResponse Delete(string id);
         GetListingResponse FindByName(string name);
-        GetListingResponse FindById(string id);
+        Task<GetListingResponse> FindById(string id);
         UpdateListingResponse Update(string id, Listing listing);
 
         

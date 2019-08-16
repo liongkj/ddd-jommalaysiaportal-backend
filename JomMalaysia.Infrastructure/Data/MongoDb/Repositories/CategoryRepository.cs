@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -135,10 +134,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public GetAllCategoryResponse GetAllCategories(int PageSize = 20, int PageNumber = 1)
         {
+            //async method
             //TODO pagination
             var query =
                  _db.AsQueryable()
-                 .ToList()
                  
                  .OrderBy(c => c.CategoryPath)
                  ;
