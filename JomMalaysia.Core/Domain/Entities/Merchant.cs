@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Domain.Enums;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
@@ -17,16 +18,17 @@ namespace JomMalaysia.Core.Domain.Entities
         public CompanyRegistrationNumber CompanyRegistrationNumber { get; private set; }
         public Address Address { get; private set; }
 
-        private readonly Collection<Listing> _listingItems;
-        public IReadOnlyCollection<Listing> Listings => _listingItems;
+        public Collection<Listing> Listings;
 
-        private readonly Collection<Contact> _contactItems;
-        public IReadOnlyCollection<Contact> Contacts => _contactItems;
+
+        public Collection<Contact> Contacts;
+
+
 
         public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
         {
-            _listingItems = new Collection<Listing>();
-            _contactItems = new Collection<Contact>();
+            Listings = new Collection<Listing>();
+            Contacts = new Collection<Contact>();
 
             this.CompanyName = CompanyName ?? throw new Exception("Company Name is required");
             this.CompanyRegistrationNumber = CompanyRegistrationNumber ?? throw new Exception("Company Registration Number is required");
@@ -35,31 +37,28 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         public bool IsSafeToDelete()
         {
-            if (_listingItems.Count > 0)
+            if (Listings.Count > 0)
             {
                 return false;
             }
             return true;
         }
-        public Collection<Listing> AddNewListing(Listing newListing)
+        public Listing AddNewListing(Listing newListing)
         {
-            //if (newListing is null)
-            //{
-            //    throw new ArgumentNullException(nameof(newListing));
-            //}
+            //get public contact from merchant list of contacts
+            foreach (var c in Contacts)
+            {
+                if (c.IsPrimary)
+                {
+                    newListing.Contact = c;
+                    break;
+                }
+            }
+            newListing.Merchant = this;
+            newListing.Status = ListingStatusEnum.New;
+            Listings.Add(newListing);
+            return newListing;
 
-            //newListing.Merchant = this;
-            //_listingItems.Add(newListing);
-            //if (newListing.SetCategory(newListing.Category, newListing.Subcategory))
-            //{
-            //    return _listingItems;
-            //}
-            //else
-            //{
-            //    throw new ArgumentException("Listing category is not valid");
-            //}
-            //throw new ArgumentException("Listing is not valid");
-            throw new NotImplementedException();
         }
 
         public Collection<Listing> RemoveListing(Listing removeListing)
@@ -68,28 +67,48 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 throw new ArgumentException("Listing is still published");
             }
-            _listingItems.Remove(removeListing);
-            return _listingItems;
+            Listings.Remove(removeListing);
+            return Listings;
         }
 
-        public void AddContact(Contact c)
+        public void AddContact(Contact c, List<Listing> listings = null)
         {
-
-            if (c != null)
+            if (c != null) //nullcheck
             {
-                _contactItems.Add(c);
+                if (Contacts.Count < 1)//if no contacts, set as primary
+                {
+                    var PrimaryContact = c.SetAsPrimary();
+                    Contacts.Add(PrimaryContact);
+
+                    if (listings != null) //if merchant has listings
+                    {
+                        foreach (var list in listings)
+                        {
+                            list.UpdateContact(PrimaryContact);
+                        }
+                    }
+                }
+                else //add to back of list
+                {
+                    Contacts.Add(c);
+                }
+
+
             }
         }
 
 
-        public void DeleteContact(string name, string email, string phone)
-        {
-            Contact UpdateContact = Contact.For(name, email, phone);
 
-            if (_contactItems.Contains(UpdateContact))
-            {
-                _contactItems.Remove(UpdateContact);
-            }
-        }
+        //public void SetPrimaryContact(List<Contact> contacts, Contact c)
+        //{
+        //    //generate primary contact
+        //    //change other contact to not primary
+        //    //update lising contact
+        //}
+
+
+        #region helper
+
+        #endregion
     }
 }

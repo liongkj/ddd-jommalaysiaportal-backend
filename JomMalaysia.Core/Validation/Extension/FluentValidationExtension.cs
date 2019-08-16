@@ -12,6 +12,6 @@ namespace JomMalaysia.Core.Validation.Extension
             return ruleBuilder.Must(x => x != null && !x.StartsWith(" ")).WithMessage("{PropertyName} should not start with white space");
         }
 
-       
+
     }
 }

@@ -1,3 +1,4 @@
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 
@@ -11,15 +12,24 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public string Domain { get; private set; }
         public static Email For(string emailstring)
         {
+            if (string.IsNullOrEmpty(emailstring))
+            {
+                throw new ArgumentException("message", nameof(emailstring));
+            }
+
             var email = new Email();
             if (!emailstring.Contains("@")) throw new Exception("Email is invalid");
             try
             {
                 var index = emailstring.IndexOf("@", StringComparison.Ordinal);
-                email.User= emailstring.Substring(0, index);
+                email.User = emailstring.Substring(0, index);
                 email.Domain = emailstring.Substring(index + 1);
-                
-            }catch(Exception e) { }
+
+            }
+            catch (Exception e)
+            {
+                throw new ValidationException(e.ToString());
+            }
             return email;
         }
 

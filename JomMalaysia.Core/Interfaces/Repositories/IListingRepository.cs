@@ -4,16 +4,18 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
+using MongoDB.Driver;
 
 namespace JomMalaysia.Core.Interfaces
 {
     public interface IListingRepository
     {
-        Task<CreateListingResponse> CreateListing(Listing listing);
+        CreateListingResponse CreateListing(Listing listing);
+        Task<CreateListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
         Task<GetAllListingResponse> GetAllListings();
         DeleteListingResponse Delete(string id);
         GetListingResponse FindByName(string name);
-        GetListingResponse FindById(string id);
+        Task<GetListingResponse> FindById(string id);
         UpdateListingResponse Update(string id, Listing listing);
 
         

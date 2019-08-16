@@ -5,41 +5,44 @@ using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 
+
 namespace JomMalaysia.Core.Domain.Entities
 {
+
     public abstract class Listing
     {
         //TODO : Factory Patter? Create Event, Government, Social and Private
-        private string MerchantId;
+
         public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
         public ICollection<string> Tags { get; private set; }
         public Location ListingLocation { get; set; }
-        public string ListingLogo { get; set; }
-        public string CoverPhoto { get; set; }
-        public string ExteriorPhoto { get; set; }
-        
+        public ListingImages ListingImages { get; set; }
+        public ListingStatusEnum Status { get; set; }
+
         public Contact Contact { get; set; }
         public PublishStatus isPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
-        public Category Category { get; set; }
-
+        public CategoryPath Category { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
         public Listing()
         {
 
         }
-        public Listing(string listingName, string description, Category category,  Location listingLocation, ListingTypeEnum listingType)
+        public Listing(string listingName, Merchant merchant, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, Tuple<double, double> Coordinates = null)
         {
+            Merchant = merchant;
             ListingName = listingName;
             Description = description;
             Category = category;
-            //Subcategory = subcategory;
-            ListingLocation = listingLocation;
-            Tags = new Collection<string>();
+            ListingImages = images;
+            ListingLocation = new Location(add, Coordinates);
+            Tags = tags;
             ListingType = listingType;
-
+            Status = ListingStatusEnum.New;
         }
 
 
@@ -57,10 +60,15 @@ namespace JomMalaysia.Core.Domain.Entities
         //    }
         //    return true;
         //}
+
+        public bool HasPrimaryContact()
+        {
+            return Contact != null;
+        }
         public void UpdatePhoto() { }
         public void UpdateContact(Contact contact)
         {
-            Contact = Contact.For(contact.Name.ToString(), contact.Email.ToString(), contact.Phone.ToString());
+            Contact = Contact.For(contact.Name, contact.Email, contact.Phone);
         }
         public void RemovePhoto() { }
         public void UpdateDescription() { }
@@ -78,12 +86,11 @@ namespace JomMalaysia.Core.Domain.Entities
         //
         public void AddTags(string newTag)
         {
-            
             if (Tags.Contains(newTag)) { Tags.Add(newTag); }
             else { throw new ArgumentException("Tag/keyword has already existed"); }
         }
 
-        public void UpdateListing()
+        public void UpdateListing(Listing updated_listing)
         {
             string updateListingName(string new_name)
             {
@@ -95,7 +102,7 @@ namespace JomMalaysia.Core.Domain.Entities
                 return Description = new_description;
             }
 
-            Category updateCategory(Category new_category)
+            CategoryPath updateCategory(CategoryPath new_category)
             {
                 return Category = new_category;
             }
@@ -110,13 +117,17 @@ namespace JomMalaysia.Core.Domain.Entities
                 return ListingType = new_ListingType;
             }
 
-            //update the database 
+            //TODO: update collection?
+
+            updateListingName(updated_listing.ListingName);
+            updateDescription(updated_listing.Description);
+            updateCategory(updated_listing.Category);
+            updateLocation(updated_listing.ListingLocation);
+            updateListingType(updated_listing.ListingType);
 
         }
 
-        public void DeleteListing(string name)
-        {
-        }
+
 
 
 

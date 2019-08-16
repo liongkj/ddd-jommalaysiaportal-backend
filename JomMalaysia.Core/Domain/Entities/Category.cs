@@ -15,6 +15,11 @@ namespace JomMalaysia.Core.Domain.Entities
         public string CategoryNameZh { get; set; }
         public CategoryPath CategoryPath { get; set; }
 
+        public Category()
+        {
+
+        }
+
         public Category(string categoryName, string categoryNameMs, string categoryNameZh, CategoryPath CategoryPath)
         {
             CategoryName = categoryName;

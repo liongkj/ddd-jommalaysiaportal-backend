@@ -2,7 +2,7 @@
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {
-    public interface IGetListingUseCase : IUseCaseHandler<GetListingRequest, GetListingResponse>
+    public interface IGetListingUseCase : IUseCaseHandlerAsync<GetListingRequest, GetListingResponse>
     {
        
     }

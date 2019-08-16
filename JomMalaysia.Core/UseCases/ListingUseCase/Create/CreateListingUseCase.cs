@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -12,59 +14,81 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         private readonly IListingRepository _listingRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMerchantRepository _merchantRepository;
-        private readonly IMongoDbContext _db;
+        private readonly IMongoDbContext _transaction;
 
         public CreateListingUseCase(IListingRepository listingRepository, ICategoryRepository categoryRepository,
-        IMerchantRepository merchantRepository)
+        IMerchantRepository merchantRepository,
+        IMongoDbContext transaction)
         {
             _merchantRepository = merchantRepository;
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
+            _transaction = transaction;
         }
         public async Task<bool> Handle(CreateListingRequest message, IOutputPort<CreateListingResponse> outputPort)
         {
-            //create listing
-
-            // Listing NewListing = new EventListing(message.ListingName, message.Description, message.Category, message.Subcategory, message.ListingLocation, message.eventDate);
-
-
-            Listing NewListing = ListingFactory.Create(message.ListingName, message.Description, message.Category, message.ListingLocation, message.ListingType);
-            EventListing el = (EventListing)NewListing;
+            List<string> Errors = new List<string>();
+            var response = new CreateListingResponse(Errors);
 
 
             //find merchant and add to merchant
-            var merchant = _merchantRepository.FindById(message.MerchantId).Merchant;
-            var verified = merchant.AddNewListing(NewListing);
-            //find subcategory and add listing
-            //var subcategories = _categoryRepository.GetAllSubcategory(NewListing.Category.CategoryId);
-           // var subcategory = getSubcategory(subcategories.Subcategories, message.Subcategory.SubcategoryId, NewListing.ListingId);
-            //if (subcategory == null)
-            //{
+            var merchant = _merchantRepository.FindById(message.MerchantId);
+            if (merchant.Merchant == null)
+            {
+                outputPort.Handle(new CreateListingResponse(message.MerchantId, false, $"{merchant.Errors}"));
+                return false;
+            }
 
-            //}
-            //else
-            //{
+            //verify is there this category
+            var category = _categoryRepository.FindByName(message.Category, message.Subcategory);
+            if (category.Category == null)
+            {
+                outputPort.Handle(new CreateListingResponse($"{message.Category} / {message.Subcategory} ", false, $"{category.Errors}"));
+                return false;
+            }
+
+            //create listing factory pattern
+            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, merchant.Merchant);
+            if (NewListing is Listing)
+            {
                 //start transaction
-                await _db.StartSession();
-                //add to listing collection
-                await _listingRepository.CreateListing(NewListing);
-                //update category collection
-                //_categoryRepository.UpdateSubcategoryListing(subcategory, NewListing, true);
-                //update merchant collection
-                //commit
-                _db.Session.CommitTransaction();
-           // }
+                using (var session = await _transaction.StartSession())
+                {
 
-            //validate listing
+                    try
+                    {
+                        session.StartTransaction();
+                        var listing = await _listingRepository.CreateListingAsync(NewListing, session).ConfigureAwait(false);
+                        NewListing.ListingId = listing.Id;
+                        merchant.Merchant.AddNewListing(NewListing);
+                        await _merchantRepository.UpdateMerchant(merchant.Merchant.MerchantId, merchant.Merchant, session).ConfigureAwait(false);
+                        if (Task.WhenAll().IsCompletedSuccessfully)
+                        {
+                            await session.CommitTransactionAsync();
+                            response = new CreateListingResponse(listing.Id, true, $"{ GetType().Name } successful");
+                        }
 
-            
+                    }
+                    catch (Exception e)
+                    {
+                        response = new CreateListingResponse(
+                            $"{GetType().Name} Transaction Error",
+                            false,
+                             e.ToString());
+                        return false;
+                    }
 
+                    outputPort.Handle(response);
+                    return true;
+                }
 
-
-            var response = _listingRepository.CreateListing(NewListing).Result;
-            outputPort.Handle(response.Success ? new CreateListingResponse(response.Id, true) : new CreateListingResponse(response.Errors));
-            return response.Success;
+            }
+            else
+            {
+                outputPort.Handle(response);
+                return false;
+            }
         }
-        
+
     }
 }

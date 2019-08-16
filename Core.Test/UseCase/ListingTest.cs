@@ -17,9 +17,7 @@ namespace JomMalaysia.Test.Core.UseCase
         {
             var location = new Location();
             CreateListingRequest req = new CreateListingRequest("", "", "", new Category("haha","",""), location, ListingTypeEnum.Event);
-            CreateListingRequestValidator validater = new CreateListingRequestValidator();
-            validater.ValidateAndThrow(req);
-            Exception ex = Assert.Throws<ArgumentException>(() => req);
+
         }
     }
 }

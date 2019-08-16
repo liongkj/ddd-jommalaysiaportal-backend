@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
@@ -13,16 +16,20 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         }
         public async Task<bool> Handle(GetAllListingRequest message, IOutputPort<GetAllListingResponse> outputPort)
         {
-            var response = await _listingRepository.GetAllListings();
-            if (!response.Success)
+            GetAllListingResponse response;
+            try
             {
-                outputPort.Handle(new GetAllListingResponse(response.Errors));
+                response = await _listingRepository.GetAllListings();
             }
-            outputPort.Handle(new GetAllListingResponse(response.Listings, true));
+
+            catch (Exception e)
+            {
+                response = new GetAllListingResponse(new List<string> { e.ToString() });
+                
+            }
+            outputPort.Handle(response);
 
             return response.Success;
-            //throw new NotImplementedException();
-            //TODO 
 
         }
     }

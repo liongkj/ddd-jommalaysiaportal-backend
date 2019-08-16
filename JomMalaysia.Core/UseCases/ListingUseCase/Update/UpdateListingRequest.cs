@@ -1,6 +1,6 @@
 
 using JomMalaysia.Core.Domain.Entities;
-
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
@@ -14,6 +14,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         }
         public string ListingId { get; }
         public Listing Updated { get; }
+        public ListingImages Images { get; set; }
 
 
     }

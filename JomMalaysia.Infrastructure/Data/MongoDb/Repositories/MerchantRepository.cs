@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -25,14 +26,21 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public async Task<CreateMerchantResponse> CreateMerchant(Merchant merchant)
         {
             var merchantDto = _mapper.Map<Merchant, MerchantDto>(merchant);
-            await _db.InsertOneAsync(merchantDto);
+            try
+            {
+                await _db.InsertOneAsync(merchantDto);
+            }
+            catch (Exception e)
+            {
+                return new CreateMerchantResponse(new List<string> { e.ToString() }, false, e.Message);
+            }
             return new CreateMerchantResponse(merchant.MerchantId, true);
         }
 
         public DeleteMerchantResponse DeleteMerchant(string merchantId)
         {
 
-           
+
 
 
             //mongodb driver api
@@ -77,6 +85,21 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             var response = result.ModifiedCount != 0 ? new UpdateMerchantResponse(id, true)
                 : new UpdateMerchantResponse(new List<string>() { "update merchant failed" }, false);
             return response;
+        }
+
+        public async Task<UpdateMerchantResponse> UpdateMerchant(string id, Merchant updatedMerchant, IClientSessionHandle session)
+        {
+            var merchantDto = _mapper.Map<MerchantDto>(updatedMerchant);
+            FilterDefinition<MerchantDto> filter = Builders<MerchantDto>.Filter.Eq(m => m.Id, id);
+            try
+            {
+                var result = await _db.ReplaceOneAsync(session, filter, merchantDto);
+            }
+            catch (Exception e)
+            {
+                return new UpdateMerchantResponse(new List<string> { e.ToString() }, false, e.Message);
+            }
+            return new UpdateMerchantResponse(id, true, "update success");
         }
     }
 }

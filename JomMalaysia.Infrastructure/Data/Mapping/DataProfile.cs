@@ -19,12 +19,25 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(md => md.Id, opt => opt.MapFrom(m => m.MerchantId))
                 .ForMember(md => md.Contacts, opt => opt.MapFrom(m => m.Contacts))
                 .ForMember(md => md.ListingIds, opt => opt.MapFrom(m =>
-                     m.Listings.Select(l => l.ListingId)));
+                     m.Listings.Select(l => l.ListingId)))
+                .ForMember(md => md.CompanyRegistrationNumber, opt => opt.MapFrom(m => m.CompanyRegistrationNumber.ToString()))
+
+                ;
 
 
             CreateMap<Listing, ListingDto>()
                 .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
+                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
+                .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                .ForMember(ld => ld.MerchantId, opt => opt.MapFrom(l => l.Merchant.MerchantId))
+                .IncludeAllDerived()
                 //.ForMember(ld => ld.Category.Subcategories, opt => opt.MapFrom(l => l.Category.Subcategories))
+                ;
+
+            CreateMap<EventListing, ListingDto>()
+                ;
+
+            CreateMap<PrivateListing, ListingDto>()
                 ;
 
             CreateMap<Category, CategoryDto>()
@@ -43,7 +56,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<WorkflowDto, Workflow>()
-                .ForMember(w=>w.WorkflowId,opt=> opt.MapFrom(wd=>wd.Id))
+                .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
                 ;
@@ -55,17 +68,33 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<ListingDto, Listing>()
+                .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
                 .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
                 .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                 .ForPath(l => l.Merchant.MerchantId, opt => opt.MapFrom(ld => ld.MerchantId))
+                .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
+                .ForMember(l => l.Status, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
+
+                .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
+                .ForMember(l => l.ModifiedAt, opt => opt.MapFrom(ld => ld.ModifiedAt.ToLocalTime()))
+                .IncludeAllDerived()
                 ;
+
+            CreateMap<ListingDto, EventListing>()
+                .ForMember(e => e.EventStartDateTime, opt => opt.MapFrom(ld => ld.EventStartDateTime.ToLocalTime()))
+                .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
+                ;
+
+            CreateMap<ListingDto, PrivateListing>()
+                ;
+
             CreateMap<CategoryDto, Category>()
                .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
 
                 ;
 
 
-
+            //api to domain
 
         }
     }

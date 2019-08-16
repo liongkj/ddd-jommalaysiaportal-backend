@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
@@ -11,9 +12,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         {
             _listingRepository = listingRepository;
         }
-        public bool Handle(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
+        public async Task<bool> Handle(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
         {
-            var response = _listingRepository.FindById(message.Id);
+            if (message is null)
+            {
+                throw new System.ArgumentNullException(nameof(message));
+            }
+
+            var response = await _listingRepository.FindById(message.Id).ConfigureAwait(false);
             if (!response.Success)
             {
                 outputPort.Handle(new GetListingResponse(response.Errors));
@@ -25,7 +31,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             }
             else
             {
-                outputPort.Handle(new GetListingResponse(response.Errors,false,"Listing Deleted or Not Found"));
+                outputPort.Handle(new GetListingResponse(response.Errors, false, "Listing Deleted or Not Found"));
                 return false;
             }
         }

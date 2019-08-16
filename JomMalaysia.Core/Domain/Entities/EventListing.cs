@@ -3,32 +3,30 @@ using System.Collections.Generic;
 using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
     //https://www.dofactory.com/net/factory-method-design-pattern
     public sealed class EventListing : Listing
     {
-        public EventListing(string listingName, string description, Category category, Location listingLocation, ListingTypeEnum listingType) : base(listingName, description, category, listingLocation, listingType)
-        {
-        }
 
         public EventListing()
         {
 
         }
-        public DateTime EventDateTime { get; private set; }
-
-
-        public EventListing(string eventName, string description, Category category, Location listingLocation, DateTime eventDateTime) : base(eventName, description, category, listingLocation, ListingTypeEnum.Event)
+        public EventListing(CreateListingRequest listing, Merchant merchant) : base(listing.ListingName, merchant, new CategoryPath(listing.Category, listing.Subcategory), ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, listing.Address, listing.Coordinates)
         {
-            EventDateTime = eventDateTime;
-
+            EventStartDateTime = listing.EventStartDateTime;
+            EventEndDateTime = listing.EventEndDateTime;
         }
+        public DateTime EventStartDateTime { get; set; }
+        public DateTime EventEndDateTime { get; set; }
 
-        public void updateEventDate(DateTime eventDateTime)
+        public void UpdateEventDate(DateTime EventStartDateTime, DateTime EventEndDateTime)
         {
-            EventDateTime = eventDateTime;
+            this.EventStartDateTime = EventStartDateTime;
+            this.EventEndDateTime = EventEndDateTime;
         }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentValidation;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Validation;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
@@ -10,7 +11,15 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
     {
         public CreateListingRequestValidator()
         {
-            RuleFor(CreateListingRequest => CreateListingRequest.ListingLocation).SetValidator(new LocationValidator());
+            RuleFor(CreateListingRequest => CreateListingRequest.Address).SetValidator(new AddressValidator());
+
+
+            //if listing type is event must have eventdate
+            RuleFor(req => req.EventStartDateTime).NotEmpty().NotEmpty().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
+            RuleFor(req => req.EventEndDateTime).NotEmpty().NotEmpty().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
+
+
+            RuleFor(p => p.MerchantId).NotEmpty().NotNull().WithMessage("Please select a valid merchant");
         }
     }
 }
