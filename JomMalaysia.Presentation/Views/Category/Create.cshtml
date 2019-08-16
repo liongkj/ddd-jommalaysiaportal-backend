@@ -10,7 +10,7 @@
     <button type="button" class="btn btn-success col-md-2" onclick="$('#btnSubmit').click()">New</button>
     <button type="button" class="btn btn-primary col-md-2" onclick="window.location.href = '@Url.Action("Edit","Category")'">Edit</button>
     <button type="button" class="btn btn-danger col-md-2" onclick="window.location.href = '@Url.Action("Delete","Category")'">Delete</button>
-    <button type="button" class="btn btn-secondary col-md-2" onclick="window.location.href = '@Url.Action("Publish","Category")'">Publish</button>
+    <button type="button" class="btn btn-secondary col-md-2" onclick="window.location.href = '@Url.Action("Create","Category")'">Publish</button>
 </div>
 <div class="form-group col-md-12 no-padding d-sm-block d-md-none">
     <div class="btn-group col-sm-12 no-padding" role="group">
@@ -112,7 +112,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="js/form-validation.js"></script>
+    <script src="~/js/form-validation.js"></script>
     <script type="text/javascript">
         //------------------------ Add Subcategory ----------------------
         $(document).ready(function () {

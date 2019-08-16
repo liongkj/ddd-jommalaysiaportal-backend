@@ -9,6 +9,7 @@ using JomMalaysia.Framework.Helper;
 using JomMalaysia.Framework.WebServices;
 using JomMalaysia.Presentation.Manager;
 using JomMalaysia.Presentation.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -29,6 +30,26 @@ namespace JomMalaysia.Presentation.Gateways.Category
             _mapper = mapper;
         }
 
+        public async Task<IWebServiceResponse> CreateCategory(CategoryViewModel vm)
+        {
+            IWebServiceResponse<CategoryViewModel> response;
+            try
+            {
+                var req = _apiBuilder.GetApi((APIConstant.API.Path.Category));
+                var method = Method.GET;
+                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryViewModel>(req, method);
+            }
+            catch (GatewayException ex)
+            {
+                throw ex;
+            }
+            return response;
+
+
+            //handle exception
+
+        }
+
         public async Task<List<CategoryViewModel>> GetCategories()
         {
             List<CategoryViewModel> result = new List<CategoryViewModel>();
@@ -36,7 +57,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
 
             try
             {
-                var req = _apiBuilder.GetApi((APIConstant.API.Path.GetAllCategory));
+                var req = _apiBuilder.GetApi((APIConstant.API.Path.Category));
                 var method = Method.GET;
                 response = await _webServiceExecutor.ExecuteRequestAsync<CategoryListViewModel>(req, method);
 

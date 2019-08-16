@@ -10,9 +10,11 @@ namespace JomMalaysia.Framework.Constant
         {
             public class Path
             {
-                public const string GetAllCategory = "api/Categories";
+                public const string Category = "api/Categories";
 
-                public const string GetSubcategory = "api/Categories/{catName}";
+                public const string Subcategory = "api/Categories/{catName}";
+
+                
             }
         }
     }

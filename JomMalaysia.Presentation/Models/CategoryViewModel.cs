@@ -33,8 +33,8 @@ namespace JomMalaysia.Presentation.Models
         //[Required(ErrorMessage = "An Album Title is required")]
         //[DisplayFormat(ConvertEmptyStringToNull = false)]
         //[StringLength(160, MinimumLength = 2)]
-        public string ParentCategory { get; set; }
-        public string Subcategory { get; set; }
+        
+        public CategoryPathViewModel CategoryPath{ get; set; }
         public List<CategoryViewModel> LstSubCategory { get; set; }
 
         public bool IsDeleted { get; set; }

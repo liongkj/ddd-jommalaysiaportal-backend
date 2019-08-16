@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using JomMalaysia.Framework.WebServices;
 using JomMalaysia.Presentation.Gateways.Category;
 using JomMalaysia.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +58,10 @@ namespace JomMalaysia.Presentation.Controllers
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
-            return View(await GetCategories());
+            var cat = await GetCategories();
+            var filtered = cat.AsQueryable().Where(c => c.CategoryPath.Subcategory == null);
+
+            return View(filtered);
         }
 
         [HttpGet]
@@ -66,16 +71,27 @@ namespace JomMalaysia.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CategoryViewModel category)
+        public async Task<IActionResult> Create(CategoryViewModel vm)
         {
+            IWebServiceResponse response;
             if (ModelState.IsValid)
             {
-                // remove subcategory if category.lstCategory[i].isDeleted = true
-
-
+                try
+                {
+                    // remove subcategory if category.lstCategory[i].isDeleted = true
+                    response = await _gateway.CreateCategory(vm).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    RedirectToAction("Index");
+                }
             }
-
-            return View();
+            
+                return View();
 
             // update student to the database
         }
