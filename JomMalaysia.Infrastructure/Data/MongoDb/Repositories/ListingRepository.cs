@@ -76,10 +76,10 @@ public class ListingRepository : IListingRepository
         try
         {
             var query =
-                      _db.AsQueryable()
+                     await _db.AsQueryable()
                   .Where(M => M.Id == id)
                   .Select(M => M)
-                  .FirstOrDefault();
+                  .FirstOrDefaultAsync();
 
             ;
 
