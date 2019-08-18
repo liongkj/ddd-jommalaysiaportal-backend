@@ -65,9 +65,18 @@ public class ListingRepository : IListingRepository
 
     }
 
-    public DeleteListingResponse Delete(string id)
+    public async Task<DeleteListingResponse> Delete(string id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var query = await _db.DeleteOneAsync(l => l.Id == id).ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            return new DeleteListingResponse(id, false, e.Message);
+        }
+        return new DeleteListingResponse(id, true);
+
     }
 
     public async Task<GetListingResponse> FindById(string id)

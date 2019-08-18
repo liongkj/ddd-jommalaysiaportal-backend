@@ -8,5 +8,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
     public class DeleteListingRequest : IUseCaseRequest<DeleteListingResponse>
     {
         public string ListingId { get; set; }
+        public DeleteListingRequest(string ListingId)
+        {
+            this.ListingId = ListingId;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             GetAllListingResponse response;
             try
             {
-                response = await _listingRepository.GetAllListings();
+                response = await _listingRepository.GetAllListings().ConfigureAwait(false);
             }
 
             catch (Exception e)

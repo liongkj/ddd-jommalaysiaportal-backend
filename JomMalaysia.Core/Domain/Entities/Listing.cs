@@ -23,7 +23,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public ListingStatusEnum Status { get; set; }
 
         public Contact Contact { get; set; }
-        public PublishStatus isPublish { get; set; }
+        public PublishStatus IsPublish { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public CategoryPath Category { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -45,7 +45,10 @@ namespace JomMalaysia.Core.Domain.Entities
             Status = ListingStatusEnum.New;
         }
 
-
+        public bool IsSafeToDelete()
+        {
+            return !IsPublish.IsPublished;
+        }
 
         //public bool SetCategory(Category category, Subcategory Subcategory)
         //{
