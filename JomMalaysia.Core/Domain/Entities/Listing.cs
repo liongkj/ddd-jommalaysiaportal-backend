@@ -50,6 +50,11 @@ namespace JomMalaysia.Core.Domain.Entities
             return !IsPublish.IsPublished;
         }
 
+        public bool IsEligibleToPublish()
+        {
+            return !IsPublish.IsPublished;
+        }
+
         //public bool SetCategory(Category category, Subcategory Subcategory)
         //{
         //    this.Category = category;

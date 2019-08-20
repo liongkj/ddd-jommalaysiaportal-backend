@@ -21,6 +21,7 @@ namespace JomMalaysia.Presentation.Manager
             {
                 var claims = _httpContextAccessor.HttpContext.User.Claims;
                 return claims.Where(c => c.Type == ConstantHelper.Claims.accessToken).Select(c => c.Value).FirstOrDefault();
+
             }
         }
 

@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using JomMalaysia.Framework.Helper;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace JomMalaysia.Framework.WebServices
 {
     public class WebServiceExecutor : IWebServiceExecutor
     {
-        public virtual IWebServiceResponse ExecuteRequest(string url, Method method, params object[] objects)
+
+        public virtual IWebServiceResponse ExecuteRequest(string url, Method method, string auth, params object[] objects)
         {
             //Create Client
             IRestClient client = RestSharpFactory.ConstructClient(NetHelper.GetBaseUrl(url));
+            client.AddDefaultHeader($"Authorization", $"Bearer {auth}");
             //Create Request
             IRestRequest request = RestSharpFactory.ConstructRequest(NetHelper.GetUrlPath(url), method, objects);
             //wait response
@@ -29,10 +27,11 @@ namespace JomMalaysia.Framework.WebServices
         }
 
 
-        public IWebServiceResponse<T> ExecuteRequest<T>(string url, Method method, params object[] objects) where T : new()
+        public IWebServiceResponse<T> ExecuteRequest<T>(string url, Method method, string auth, params object[] objects) where T : new()
         {
             //Create Client
             IRestClient client = RestSharpFactory.ConstructClient(NetHelper.GetBaseUrl(url));
+            client.AddDefaultHeader($"Authorization", $"Bearer {auth}");
             //Create Request
             IRestRequest request = RestSharpFactory.ConstructRequest(NetHelper.GetUrlPath(url), method, objects);
             //wait response
@@ -50,12 +49,16 @@ namespace JomMalaysia.Framework.WebServices
 
         }
 
-        public async Task<IWebServiceResponse<T>> ExecuteRequestAsync<T>(string url, Method method, params object[] objects) where T : new()
+      
+
+        public async Task<IWebServiceResponse<T>> ExecuteRequestAsync<T>(string url, Method method, string auth, params object[] objects) where T : new()
         {
             //Create Client
             IRestClient client = RestSharpFactory.ConstructClient(NetHelper.GetBaseUrl(url));
+            client.AddDefaultHeader($"Authorization", $"Bearer {auth}");
             //Create Request
             IRestRequest request = RestSharpFactory.ConstructRequest(NetHelper.GetUrlPath(url), method, objects);
+            
             //wait response
             IRestResponse<T> response = await client.ExecuteTaskAsync<T>(request);
 

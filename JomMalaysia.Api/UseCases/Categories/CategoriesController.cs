@@ -6,10 +6,12 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Categories
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

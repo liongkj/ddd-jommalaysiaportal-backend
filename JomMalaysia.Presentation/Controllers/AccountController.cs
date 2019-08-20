@@ -81,11 +81,11 @@ namespace JomMalaysia.Presentation.Controllers
                         new Claim(ConstantHelper.Claims.userId, user.UserId),
                         new Claim(ConstantHelper.Claims.name, user.FullName),
                         new Claim(ConstantHelper.Claims.scope, permissionClaim, "string", tokenS.Issuer),
-                        new Claim(ConstantHelper.Claims.role, role[0])
+                        
                     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
+                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role[0]));
                     // Sign user into cookie middleware
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 

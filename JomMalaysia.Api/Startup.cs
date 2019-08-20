@@ -25,6 +25,8 @@ using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using FluentValidation;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JomMalaysia.Api
 {
@@ -48,15 +50,21 @@ namespace JomMalaysia.Api
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = "https://jomn9.auth0.com/";
-                options.Audience = "https://localhost:44368/";
+
+                options.Authority =
+                //"https://jomn9.auth0.com/";
+                Configuration["Auth0:Authority"];
+                options.Audience =
+                //"https://localhost:44368/";
+                Configuration["Auth0:Audience"];
+
             });
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("read:merchant", policy => policy.Requirements.Add(new HasScopeRequirement("read:merchant", "https://jomn9.auth0.com/")));
             });
-
+            //services.AddHttpContextAccessor();
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             //Add mongodb
@@ -77,7 +85,7 @@ namespace JomMalaysia.Api
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new DataProfile());
-                
+
                 mc.AddProfile(new Auth0DataProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();

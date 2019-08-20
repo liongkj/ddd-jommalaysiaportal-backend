@@ -19,13 +19,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         {
             var add = new Address(add1,add2,city,state,postalCode,country);
 
-            try
-            {
-                AddressValidator validator = new AddressValidator();
-                validator.ValidateAndThrow(add);
-
-            }
-            catch (Exception e) { }
             return add;
         }
 
@@ -39,7 +32,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             this.State = state;
             this.PostalCode = postalCode;
             this.Country = country;
-
         }
        
 

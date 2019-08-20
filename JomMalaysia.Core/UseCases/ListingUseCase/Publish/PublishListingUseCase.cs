@@ -38,25 +38,22 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             //check user level and assign workflow level
 
             //validate listingsid are real
-            var ListingId = message.ListingId;
-            Listing ListingRequest = new EventListing
-            {
-                ListingId = ListingId
-            };
-            //_listingRepository.FindById(ListingId).Listing;
+            var ToBePublishListing = (await _listingRepository.FindById(message.ListingId)).Listing;
+            
             //check is there any request related to the listing
             //if(PublishRequest.status workflow) //stop workflow
-            if (message != null)
+            if (ToBePublishListing != null)
             {
-                //create new workflow objects
-                Workflow PublishListingWorkflow = requester.PublishListing(ListingRequest);
+                
+                    //create new workflow objects
+                    Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
                 if (PublishListingWorkflow != null)//if not published
                 {
                     PublishListingWorkflow.Start();
                 }
                 else
                 {
-                    Errors.Add($"Listing {ListingRequest.ListingName} is already published");
+                    Errors.Add($"Listing {ToBePublishListing.ListingName} is already published");
                 }
 
                 //filter workflow with same type and same listing

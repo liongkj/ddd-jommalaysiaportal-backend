@@ -63,7 +63,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Collection<Listing> RemoveListing(Listing removeListing)
         {
-            if (removeListing.isPublish.IsPublished)
+            if (removeListing.IsSafeToDelete())
             {
                 throw new ArgumentException("Listing is still published");
             }

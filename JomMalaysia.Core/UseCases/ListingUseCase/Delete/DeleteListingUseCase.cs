@@ -41,7 +41,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
                     return false;
                 }
             }
-            //isPublish -> stop
+            //if listing is still published -> stop
             else
             {
                 outputPort.Handle(new DeleteListingResponse(message.ListingId, false, "Listing is still published."));

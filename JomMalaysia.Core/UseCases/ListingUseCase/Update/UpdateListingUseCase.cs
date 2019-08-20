@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         public bool Handle(UpdateListingRequest message, IOutputPort<UpdateListingResponse> outputPort)
         {
             //TODO
-            //verify update??
+            //update listing
             var response = _listingRepository.Update(message.ListingId,message.Updated);
 
             outputPort.Handle(response.Success ? new UpdateListingResponse(response.Id, true) : new UpdateListingResponse(response.Errors));

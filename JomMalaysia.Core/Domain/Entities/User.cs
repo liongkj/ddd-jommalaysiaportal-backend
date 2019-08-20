@@ -56,9 +56,9 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             //check wheter listing is published
             //check listing is pending
-            if (l.isPublish == null)
+            if (l.IsEligibleToPublish())
             {
-                Workflow PublishRequestWorkflow = new Workflow(this, l,WorkflowTypeEnum.Publish);
+                Workflow PublishRequestWorkflow = new Workflow(this, l, WorkflowTypeEnum.Publish);
                 return PublishRequestWorkflow;
             }
             return null;

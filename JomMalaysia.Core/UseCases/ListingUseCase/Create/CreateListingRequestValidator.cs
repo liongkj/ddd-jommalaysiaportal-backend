@@ -12,7 +12,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         public CreateListingRequestValidator()
         {
             RuleFor(CreateListingRequest => CreateListingRequest.Address).SetValidator(new AddressValidator());
-
+            RuleFor(l => l.ListingType).NotEmpty();
+            RuleFor(l => l.Category).NotEmpty().NotNull();
+            RuleFor(l => l.Subcategory).NotEmpty().NotNull();
 
             //if listing type is event must have eventdate
             RuleFor(req => req.EventStartDateTime).NotEmpty().NotEmpty().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");

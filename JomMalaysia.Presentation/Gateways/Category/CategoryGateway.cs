@@ -21,6 +21,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
         private readonly IAuthorizationManagers _authorizationManagers;
         private readonly IApiBuilder _apiBuilder;
         private readonly IMapper _mapper;
+        private readonly string auth;
 
         public CategoryGateway(IWebServiceExecutor webServiceExecutor, IAuthorizationManagers authorizationManagers, IApiBuilder apiBuilder, IMapper mapper)
         {
@@ -28,6 +29,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
             _authorizationManagers = authorizationManagers;
             _apiBuilder = apiBuilder;
             _mapper = mapper;
+            auth = _authorizationManagers.accessToken;
         }
 
         public async Task<IWebServiceResponse> CreateCategory(CategoryViewModel vm)
@@ -36,8 +38,9 @@ namespace JomMalaysia.Presentation.Gateways.Category
             try
             {
                 var req = _apiBuilder.GetApi((APIConstant.API.Path.Category));
+
                 var method = Method.GET;
-                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryViewModel>(req, method);
+                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryViewModel>(req, method, auth);
             }
             catch (GatewayException ex)
             {
@@ -59,7 +62,7 @@ namespace JomMalaysia.Presentation.Gateways.Category
             {
                 var req = _apiBuilder.GetApi((APIConstant.API.Path.Category));
                 var method = Method.GET;
-                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryListViewModel>(req, method);
+                response = await _webServiceExecutor.ExecuteRequestAsync<CategoryListViewModel>(req, method, auth);
 
             }
             catch (GatewayException ex)

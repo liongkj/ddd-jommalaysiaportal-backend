@@ -77,7 +77,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         ///edit a listing
         //PUT api/listings/{id}
-
+        //TODO update listing api
 
         // POST api/listings
         

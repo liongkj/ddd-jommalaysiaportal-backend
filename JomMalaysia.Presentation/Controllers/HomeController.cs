@@ -28,7 +28,9 @@ namespace JomMalaysia.Presentation.Controllers
 
         public IActionResult Index()
         {
+            ViewData["AT"] = _authorizationManagers.accessToken;
             return View();
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -9,11 +9,11 @@ namespace JomMalaysia.Framework.WebServices
 {
     public interface IWebServiceExecutor
     {
-        IWebServiceResponse<T> ExecuteRequest<T>(string url, Method method, params object[] objects) where T : new();
+        IWebServiceResponse<T> ExecuteRequest<T>(string url, Method method,string auth, params object[] objects) where T : new();
 
-        IWebServiceResponse ExecuteRequest(string url, Method method, params object[] objects);
+        IWebServiceResponse ExecuteRequest(string url, Method method, string auth, params object[] objects);
 
-        Task<IWebServiceResponse<T>> ExecuteRequestAsync<T>(string url, Method method, params object[] objects) where T : new();
+        Task<IWebServiceResponse<T>> ExecuteRequestAsync<T>(string url, Method method,string auth, params object[] objects) where T : new();
 
 
 

@@ -27,7 +27,7 @@ namespace JomMalaysia.Presentation.Controllers
             request.AddHeader("content-type", "application/json");
             request.AddHeader("authorization", "Bearer " + _authorizationManagers.accessToken);
             IRestResponse response = client.Execute(request);
-
+            
             return View();
         }
     }

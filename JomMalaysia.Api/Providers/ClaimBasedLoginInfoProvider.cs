@@ -5,6 +5,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Framework.Constant;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace JomMalaysia.Api.Providers
         public LoginInfo GetLoginInfo()
         {
             IEnumerable<Claim> claims = _httpContextAccessor.HttpContext.User.Claims;
+            
             LoginInfo userInfo = new LoginInfo
             {
                 userId = claims.Where(c => c.Type == ConstantHelper.Claims.userId).Select(c => c.Value).FirstOrDefault(),
