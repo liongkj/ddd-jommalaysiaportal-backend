@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JomMalaysia.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,11 @@ namespace JomMalaysia.Api.UseCases
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        // GET: api/Images
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IImageProcessor _imageProcessor;
+
+        public ImagesController(IImageProcessor imageProcessor)
         {
-            return new string[] { "value1", "value2" };
+            _imageProcessor = imageProcessor;
         }
 
         // GET: api/Images/5
@@ -25,10 +26,12 @@ namespace JomMalaysia.Api.UseCases
             return "value";
         }
 
-        // POST: api/Images
+        // POST: api/Images/{type}
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<int> UploadImage([FromForm] IFormFile image)
         {
+            await _imageProcessor.ProcessImage(image);
+            return 1;
         }
 
         // PUT: api/Images/5

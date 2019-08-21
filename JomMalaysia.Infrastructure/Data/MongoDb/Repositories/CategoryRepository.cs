@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -15,6 +16,7 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
@@ -138,7 +140,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             //TODO pagination
             var query =
                  _db.AsQueryable()
-                 
+                 .ToList()
                  .OrderBy(c => c.CategoryPath)
                  ;
 
