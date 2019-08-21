@@ -24,4 +24,8 @@
     <ProjectReference Include="..\JomMalaysia.Core\JomMalaysia.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HereApi\" />
+  </ItemGroup>
+
 </Project>

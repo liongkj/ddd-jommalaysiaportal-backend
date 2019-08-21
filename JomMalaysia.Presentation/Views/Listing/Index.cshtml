@@ -1,0 +1,39 @@
+﻿@model  IEnumerable<JomMalaysia.Presentation.Models.ListingViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-12 col-sm-12 no-padding" style="overflow-x:auto !important" ;">
+    <table class="table table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Listing Name</th>
+                <th scope="col">Merchant</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*<input type="checkbox" asp-for="@item.selected" />*@
+                        @*<div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chkdt1" checked="">
+                                <label class="custom-control-label" for="customCheck1"></label>
+                            </div>*@
+                    </td>
+                    <td>@item.ListingName</td>
+                    <td>@item.Merchant.companyName</td>
+                    <td>@item.ListingType.Name</td>
+                    <td>@item.Status.Name</td>
+                    <td>check box</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

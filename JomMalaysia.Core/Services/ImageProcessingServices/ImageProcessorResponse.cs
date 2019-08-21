@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JomMalaysia.Core.Interfaces;
 
-namespace JomMalaysia.Core.Services.ImageProcessingService
+namespace JomMalaysia.Core.Services.ImageProcessingServices
 {
     public class ImageProcessorResponse : UseCaseResponseMessage
     {

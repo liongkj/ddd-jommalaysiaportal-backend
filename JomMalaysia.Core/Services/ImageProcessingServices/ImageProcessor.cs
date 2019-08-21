@@ -10,7 +10,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace JomMalaysia.Core.Services.ImageProcessingService
+namespace JomMalaysia.Core.Services.ImageProcessingServices
 {
     public class ImageProcessor : IImageProcessor
     {

@@ -15,6 +15,7 @@ namespace JomMalaysia.Infrastructure.Helpers
       {
         public const string ApiAccess = "api_access";
       }
+
     }
   }
 }

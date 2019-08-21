@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using JomMalaysia.Core.Services.ImageProcessingService;
+using JomMalaysia.Core.Services.ImageProcessingServices;
 
 namespace JomMalaysia.Core.Interfaces.Repositories
 {

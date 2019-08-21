@@ -18,7 +18,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 
         public CreateListingUseCase(IListingRepository listingRepository, ICategoryRepository categoryRepository,
         IMerchantRepository merchantRepository,
-        IMongoDbContext transaction)
+        IMongoDbContext transaction
+       )
         {
             _merchantRepository = merchantRepository;
             _listingRepository = listingRepository;

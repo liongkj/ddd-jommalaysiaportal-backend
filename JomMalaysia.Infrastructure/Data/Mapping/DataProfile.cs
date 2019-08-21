@@ -29,7 +29,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
                 .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
                 .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
-                .ForMember(ld => ld.MerchantId, opt => opt.MapFrom(l => l.Merchant.MerchantId))
+                .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .IncludeAllDerived()
                 //.ForMember(ld => ld.Category.Subcategories, opt => opt.MapFrom(l => l.Category.Subcategories))
                 ;
@@ -71,7 +71,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
                 .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
                 .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
-                .ForPath(l => l.Merchant.MerchantId, opt => opt.MapFrom(ld => ld.MerchantId))
+                .ForPath(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                 .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
                 .ForMember(l => l.Status, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
 

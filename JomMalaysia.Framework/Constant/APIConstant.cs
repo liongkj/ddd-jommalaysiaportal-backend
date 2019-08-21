@@ -14,6 +14,7 @@ namespace JomMalaysia.Framework.Constant
 
                 public const string Subcategory = "api/Categories/{catName}";
 
+                public const string Listing = "api/Listings";
                 
             }
         }

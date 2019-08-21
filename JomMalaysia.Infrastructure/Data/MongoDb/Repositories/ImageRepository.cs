@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.Services.ImageProcessingService;
+using JomMalaysia.Core.Services.ImageProcessingServices;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using MongoDB.Driver;
 
