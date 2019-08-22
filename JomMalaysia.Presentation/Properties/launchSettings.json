@@ -17,8 +17,7 @@
     },
     "JomMalaysia.Presentation": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "category",
+      "launchUrl": "listing",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -16,6 +16,7 @@ namespace JomMalaysia.Presentation.Controllers
 
         private List<ListingViewModel> ListingList { get; set; }
 
+        #region gateway helper
         public ListingController(IListingGateway gateway)
         {
             _gateway = gateway;
@@ -32,6 +33,9 @@ namespace JomMalaysia.Presentation.Controllers
                 ListingList = new List<ListingViewModel>();
             }
         }
+
+       
+        
         // GET: Listing
         async Task<List<ListingViewModel>> GetListings()
         {
@@ -51,7 +55,7 @@ namespace JomMalaysia.Presentation.Controllers
             }
         }
 
-
+        #endregion
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
@@ -67,15 +71,15 @@ namespace JomMalaysia.Presentation.Controllers
         }
 
         // GET: Listing/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
-            return View();
+            return PartialView(new CreateListingViewModel());
         }
 
         // POST: Listing/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CreateListingViewModel collection)
         {
             try
             {
