@@ -206,7 +206,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             var response = _db.BulkWrite(session, bulkOps);
 
             return new UpdateCategoryResponse("update many operation",
-                response.IsAcknowledged, 
+                response.IsAcknowledged,
                 response.ModifiedCount + " updated");
         }
     }

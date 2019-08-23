@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using JomMalaysia.Core.Services.ImageProcessingServices;
 using Microsoft.AspNetCore.Http;
 
 namespace JomMalaysia.Core.Interfaces
 {
-    public interface IImageProcessor
+    public interface IImageProcessor : IUseCaseHandlerAsync<RawImageRequest, ImageProcessorResponse>
     {
-        Task<string> ProcessImage(IFormFile File);
+        Task<ImageLoadedResponse> LoadImage(string imageId, IOutputPort<ImageLoadedResponse> outputPort);
     }
 }

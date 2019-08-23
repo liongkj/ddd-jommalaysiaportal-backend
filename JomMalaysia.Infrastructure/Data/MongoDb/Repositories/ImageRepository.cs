@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.Services.ImageProcessingServices;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
     public class ImageRepository : IImageRepository
     {
         private readonly IMongoCollection<ImageDto> _db;
-        public ImageRepository(IMongoDbContext context)
+        private readonly IMapper _mapper;
+        public ImageRepository(IMongoDbContext context, IMapper mapper)
         {
             _db = context.Database.GetCollection<ImageDto>("Image");
+            _mapper = mapper;
         }
         public async Task<ImageProcessorResponse> SaveImageAsync(byte[] stream)
         {
@@ -24,18 +28,40 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 BinaryData = stream
             };
-            await _db.InsertOneAsync(dto).ConfigureAwait(false);
-            return new ImageProcessorResponse("1", true);
+            try
+            {
+                await _db.InsertOneAsync(dto).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                return new ImageProcessorResponse("Image repo", false, e.Message);
+            }
+            return new ImageProcessorResponse(dto.Id, true);
         }
 
-        public async Task<ImageProcessorResponse> GetImageAsync(string ListingId)
+        public async Task<ImageLoadedResponse> LoadImageAsync(string id)
         {
-            ImageDto dto = new ImageDto()
+            FilterDefinition<ImageDto> filter = Builders<ImageDto>.Filter.Eq(i => i.Id, id);
+            try
             {
+                var result = await
+                     _db.AsQueryable()
+                  .Where(M => M.Id == id)
+                  .FirstOrDefaultAsync()
+                  .ConfigureAwait(false);
+                if (result != null)
+                {
+                    var binary = result.BinaryData;
+                    return new ImageLoadedResponse(binary, true);
+                }
+                return new ImageLoadedResponse(new List<string> { $"Image {id}" }, false, "not found");
+            }
+            catch (Exception e)
+            {
+                return new ImageLoadedResponse(new List<string> { "Repository Fetch failed" }, false, $"Error message = {e.Message}");
+            }
 
-            };
-            await _db.InsertOneAsync(dto).ConfigureAwait(false);
-            return new ImageProcessorResponse("1", true);
+
         }
     }
 }

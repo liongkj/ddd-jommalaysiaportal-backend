@@ -10,6 +10,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     public interface IImageRepository
     {
         Task<ImageProcessorResponse> SaveImageAsync(byte[] stream);
-        
+        Task<ImageLoadedResponse> LoadImageAsync(string id);
+
     }
 }

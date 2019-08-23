@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JomMalaysia.Framework.Helper;
+using Newtonsoft.Json;
 
 namespace JomMalaysia.Presentation.Models
 {
@@ -29,6 +31,8 @@ namespace JomMalaysia.Presentation.Models
         public CategoryViewModel Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+
+
     }
 }
 

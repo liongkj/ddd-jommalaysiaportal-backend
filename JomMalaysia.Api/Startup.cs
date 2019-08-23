@@ -27,6 +27,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using FluentValidation;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using JomMalaysia.Core.Services.ImageProcessingServices;
 
 namespace JomMalaysia.Api
 {
@@ -71,6 +72,7 @@ namespace JomMalaysia.Api
 
             services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
+            services.Configure<ImageOptions>(Configuration.GetSection("ImageOptions"));
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc

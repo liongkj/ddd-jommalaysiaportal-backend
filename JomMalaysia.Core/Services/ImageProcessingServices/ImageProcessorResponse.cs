@@ -17,6 +17,15 @@ namespace JomMalaysia.Core.Services.ImageProcessingServices
             ImageId = id;
         }
         public string ImageId { get; }
+        public string ImageUrl
+        {
+            get
+            {
+                return $"{ Framework.Constant.APIConstant.API.Path.Image}/{ImageId}";
+            }
+
+
+        }
         public IEnumerable<string> Errors { get; }
 
     }
