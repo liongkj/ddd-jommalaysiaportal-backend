@@ -11,6 +11,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
 {
     public class ListingDto : IEntityDateTime
     {
+        //add all possible properties here, etc. event listing has start date and end date
         [BsonId]
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -19,7 +20,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string ListingName { get; set; }
         public string Description { get; set; }
         public string ListingType { get; set; }
-        public Address ListingAddress { get; set; }
+        public AddressDto ListingAddress { get; set; }
 
         public string Category { get; set; }
 

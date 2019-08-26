@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -17,8 +20,9 @@ namespace JomMalaysia.Api.UseCases.Listings
         private readonly ListingPresenter _listingPresenter;
         private readonly IGetListingUseCase _getListingUseCase;
         private readonly IDeleteListingUseCase _deleteListingUseCase;
+        private readonly IMapper _mapper;
         //private readonly IUpdateListingUseCase _updateListingUseCase;
-        
+
 
 
         public ListingsController(ICreateListingUseCase createListingUseCase,
@@ -26,7 +30,8 @@ namespace JomMalaysia.Api.UseCases.Listings
             ListingPresenter ListingPresenter,
             IGetAllListingUseCase getAllListingUseCase,
             IGetListingUseCase getListingUseCase,
-            IDeleteListingUseCase deleteListingUseCase
+            IDeleteListingUseCase deleteListingUseCase,
+            IMapper mapper
             //IUpdateListingUseCase updateListingUseCase, 
             )
         {
@@ -36,7 +41,7 @@ namespace JomMalaysia.Api.UseCases.Listings
             _getListingUseCase = getListingUseCase;
 
             _deleteListingUseCase = deleteListingUseCase;
-
+            _mapper = mapper;
             //_updateListingUseCase = updateListingUseCase;
 
 
@@ -80,13 +85,13 @@ namespace JomMalaysia.Api.UseCases.Listings
         //TODO update listing api
 
         // POST api/listings
-        
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateListingRequest ListingObject)
         {
 
             //var results = validator.Validate(req);
-
+            // var mapped = _mapper.Map<CreateListingRequest>(ListingObject);
             await _createListingUseCase.Handle(ListingObject, _listingPresenter);
 
             return _listingPresenter.ContentResult;

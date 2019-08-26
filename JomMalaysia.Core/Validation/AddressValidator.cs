@@ -3,10 +3,12 @@ using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.Validation
 {
-    public class AddressValidator: AbstractValidator<Address>
+    public class AddressValidator : AbstractValidator<Address>
     {
         public AddressValidator()
         {
+            //RuleFor(x => x.Location).SetValidator(new LocationValidator());
+
             RuleFor(x => x.Add1).NotEmpty();
             RuleFor(x => x.Add2); //optional
             RuleFor(x => x.City)
@@ -31,7 +33,7 @@ namespace JomMalaysia.Core.Validation
                 //@"^\d{5}$")
                 .When(c => c.Country == "Malaysia")
                 .WithMessage("Malaysian Postcodes have 5 digits");
-            
+
         }
     }
 }

@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
             return name;
         }

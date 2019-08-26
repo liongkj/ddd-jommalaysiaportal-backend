@@ -76,6 +76,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                             $"{GetType().Name} Transaction Error",
                             false,
                              e.ToString());
+                        outputPort.Handle(response);
                         return false;
                     }
 

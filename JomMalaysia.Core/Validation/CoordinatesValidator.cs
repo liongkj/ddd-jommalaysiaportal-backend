@@ -1,20 +1,22 @@
-﻿using System;
 using FluentValidation;
 using JomMalaysia.Core.Domain.ValueObjects;
+
 namespace JomMalaysia.Core.Validation
 {
-    public class LocationValidator: AbstractValidator<Location>
+    public class CoordinatesValidator : AbstractValidator<Coordinates>
     {
-        public LocationValidator()
+        public CoordinatesValidator()
         {
-            RuleFor(x => x.Address).SetValidator(new AddressValidator());
+
             RuleFor(x => x.Latitude)
                 .Cascade(CascadeMode.StopOnFirstFailure)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("{PropertyName} is not valid. -90 > x > 90");
             RuleFor(x => x.Longitude)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
-                .Must(BeAValidLongitude);
+                .Must(BeAValidLongitude)
+                .WithMessage("{PropertyName} is not valid. -180 > x > 180");
         }
 
         protected bool BeAValidLatitude(double latitude)

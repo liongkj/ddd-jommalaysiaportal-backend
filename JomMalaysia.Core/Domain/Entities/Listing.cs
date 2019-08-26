@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string ListingName { get; set; }
         public string Description { get; set; }
         public ICollection<string> Tags { get; private set; }
-        public Location ListingLocation { get; set; }
+        public Address Address { get; set; }
         public ListingImages ListingImages { get; set; }
         public ListingStatusEnum Status { get; set; }
 
@@ -32,14 +32,14 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public Listing(string listingName, Merchant merchant, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, Tuple<double, double> Coordinates = null)
+        public Listing(string listingName, Merchant merchant, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add)
         {
             Merchant = merchant;
             ListingName = listingName;
             Description = description;
             Category = category;
             ListingImages = images;
-            ListingLocation = new Location(add, Coordinates);
+            Address = add;
             Tags = tags;
             ListingType = listingType;
             Status = ListingStatusEnum.New;
@@ -115,9 +115,9 @@ namespace JomMalaysia.Core.Domain.Entities
                 return Category = new_category;
             }
 
-            Location updateLocation(Location new_location)
+            Address UpdateAddress(Address new_location)
             {
-                return ListingLocation = new_location;
+                return Address = new_location;
             }
 
             ListingTypeEnum updateListingType(ListingTypeEnum new_ListingType)
@@ -130,7 +130,7 @@ namespace JomMalaysia.Core.Domain.Entities
             updateListingName(updated_listing.ListingName);
             updateDescription(updated_listing.Description);
             updateCategory(updated_listing.Category);
-            updateLocation(updated_listing.ListingLocation);
+            UpdateAddress(updated_listing.Address);
             updateListingType(updated_listing.ListingType);
 
         }

@@ -8,20 +8,21 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Address : ValueObjectBase
     {
-        public string Add1 { get; private set; }
-        public string Add2 { get; private set; }
-        public string City { get; private set; }
-        public string State { get; private set; }
-        public string PostalCode { get; private set; }
-        public string Country { get; private set; }
+        public string Add1 { get; set; }
+        public string Add2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
+        public Location Location { get; private set; }
 
-        public static Address For(string add1, string add2, string city, string state, string postalCode, string country="malaysia")
+        private Address() { }
+        public static Address For(string add1, string add2, string city, string state, string postalCode, string country = "malaysia")
         {
-            var add = new Address(add1,add2,city,state,postalCode,country);
+            var add = new Address(add1, add2, city, state, postalCode, country);
 
             return add;
         }
-
 
 
         public Address(string add1, string add2, string city, string state, string postalCode, string country)
@@ -33,12 +34,22 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             this.PostalCode = postalCode;
             this.Country = country;
         }
-       
-
-        private Address()
+        public Address(string add1, string add2, string city, string state, string postalCode, string country, List<Coordinates> coordinates)
         {
-
+            this.Add1 = add1;
+            this.Add2 = add2;
+            this.City = city;
+            this.State = state;
+            this.PostalCode = postalCode;
+            this.Country = country;
+            Location = new Location(coordinates);
         }
+
+
+        // private Address()
+        // {
+
+        // }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

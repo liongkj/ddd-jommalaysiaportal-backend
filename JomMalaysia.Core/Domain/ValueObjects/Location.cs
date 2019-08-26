@@ -1,46 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Location : ValueObjectBase
     {
-        public Address Address { get; private set; }
-        public double Latitude { get; private set; }
-        public double Longitude { get; private set; }
-        public Tuple<double, double> Coordinates { get; private set; }
-        public ICollection<List<Tuple<double, double>>> Area { get; private set; }
+        public List<Coordinates> Coordinates { get; private set; }
 
-        public Location(Address add, Tuple<double, double> Coordinates)
+
+        public Location(List<Coordinates> Coordinates)
         {
+            this.Coordinates = Coordinates;
+        }
+
+        public GeoJsonGeometry<GeoJson2DGeographicCoordinates> ToGeoJsonPoint()
+        {
+            if (Coordinates.Count == 1)
+                return new GeoJsonPoint<GeoJson2DGeographicCoordinates>(Coordinates[0].ToGeoJsonCoordinates());
+            return null;
+            // else return new GeoJsonPoint<GeoJson2DGeographicCoordinates>(new GeoJson2DGeographicCoordinates(Coordinates[0].Longitude, Coordinates[0].Latitude));
 
         }
 
         public void SetArea(List<Tuple<double, double>> Area)
         {
-
+            throw new NotImplementedException();
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Address;
-            yield return Latitude;
-            yield return Longitude;
+
             yield return Coordinates;
-            yield return Area;
-        }
-
-        //Lat set between -90 ~ 90
-        //Long set between -180 ~ 180
-
-        private void SetCoordinates(double lon, double lat)
-        {
-            Latitude = lat;
-            Longitude = lon;
-            Coordinates = new Tuple<double, double>(lon, lat);
 
         }
+
 
     }
 

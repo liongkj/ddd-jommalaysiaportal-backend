@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.Validation
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
                 .NoStartWithWhiteSpace()
-                .Length(2,30)
+                .Length(2, 30)
                 .Must(BeAValidName).WithMessage("{PropertyName} is invalid.");
 
         }
