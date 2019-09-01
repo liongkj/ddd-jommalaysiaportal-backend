@@ -11,9 +11,8 @@ namespace JomMalaysia.Core.Domain.Entities
 
     public abstract class Listing
     {
-        //TODO : Factory Patter? Create Event, Government, Social and Private
 
-        public string ListingId { get; set; }
+       public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }

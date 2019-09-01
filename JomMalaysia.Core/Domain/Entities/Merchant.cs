@@ -18,17 +18,17 @@ namespace JomMalaysia.Core.Domain.Entities
         public CompanyRegistrationNumber CompanyRegistrationNumber { get; private set; }
         public Address Address { get; private set; }
 
-        public Collection<Listing> Listings;
+        public List<Listing> Listings;
 
 
-        public Collection<Contact> Contacts;
+        public List<Contact> Contacts;
 
 
 
         public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
         {
-            Listings = new Collection<Listing>();
-            Contacts = new Collection<Contact>();
+            Listings = new List<Listing>();
+            Contacts = new List<Contact>();
 
             this.CompanyName = CompanyName ?? throw new Exception("Company Name is required");
             this.CompanyRegistrationNumber = CompanyRegistrationNumber ?? throw new Exception("Company Registration Number is required");
@@ -61,7 +61,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public Collection<Listing> RemoveListing(Listing removeListing)
+        public List<Listing> RemoveListing(Listing removeListing)
         {
             if (removeListing.IsSafeToDelete())
             {

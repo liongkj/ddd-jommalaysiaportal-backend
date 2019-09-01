@@ -27,11 +27,25 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
                 ;
 
-
+            //dto to domain 
             CreateMap<MerchantDto, Merchant>()
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
                 .ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
                 ;
+            #endregion
+
+            #region contacts mapping
+            CreateMap<Contact, ContactsDto>()
+            .ForMember(c => c.Name, opt => opt.MapFrom(c => c.Name.ToString()))
+            .ForMember(c => c.Email, opt => opt.MapFrom(c => c.Email.ToString()))
+            .ForMember(c => c.Phone, opt => opt.MapFrom(c => c.Phone.ToString()))
+            ;
+
+            CreateMap<ContactsDto, Contact>()
+            .ForMember(cd => cd.Name, opt => opt.MapFrom(c => (Name)c.Name))
+            .ForMember(cd => cd.Phone, opt => opt.MapFrom(c => (Phone)c.Phone))
+            .ForMember(cd => cd.Email, opt => opt.MapFrom(c => (Email)c.Email))
+            ;
             #endregion
 
             #region listing mapping
@@ -88,8 +102,12 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region map address
 
             CreateMap<Address, AddressDto>()
-            .ForMember(ld => ld.Location, opt => opt.MapFrom(l => l.Location.ToGeoJsonPoint()))
+            .ForMember(ad => ad.Location, opt => opt.MapFrom(a => a.Location.ToGeoJsonPoint()))
             ;
+
+            CreateMap<AddressDto, Address>()
+                .ForMember(a => a.Location, opt => opt.Ignore())
+                ;
 
             // CreateMap<Address, AddressDto>()
             //     .ForMember(a => a.Location, opt => opt.MapFrom(ad => ad.Location))

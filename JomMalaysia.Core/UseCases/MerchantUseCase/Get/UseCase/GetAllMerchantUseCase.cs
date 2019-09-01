@@ -14,7 +14,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         {
             _merchantRepository = merchantRepository;
         }
-        public  bool Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
+        public bool Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
         {
 
             //validate request
@@ -23,7 +23,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
                 throw new ArgumentNullException(nameof(message));
             }
 
-            var response =  _merchantRepository.GetAllMerchants();
+            var response = _merchantRepository.GetAllMerchants();
             if (!response.Success)
             {
                 outputPort.Handle(new GetAllMerchantResponse(response.Errors));
@@ -31,7 +31,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
             outputPort.Handle(new GetAllMerchantResponse(response.Merchants, true));
 
             return response.Success;
-            //throw new NotImplementedException();
+
             //TODO 
 
         }

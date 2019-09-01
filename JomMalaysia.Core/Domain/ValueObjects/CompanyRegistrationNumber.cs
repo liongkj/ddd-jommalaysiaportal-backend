@@ -22,11 +22,14 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             //todo Validation
             return regNo;
         }
-
+        public override string ToString()
+        {
+            return RegistrationNumber;
+        }
         public CompanyRegistrationNumber(string regNo)
         {
             if (string.IsNullOrWhiteSpace(regNo)) throw new Exception("Company registration number is invalid");
-            
+
 
             this.RegistrationNumber = regNo;
 

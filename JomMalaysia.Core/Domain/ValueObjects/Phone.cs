@@ -31,9 +31,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                 else
                 {
                     phone.isMobile = false;
-                    //TODO get area based on phone 
-                    //06 = Seremban
-                    //03 = KL
+
                 }
 
                 phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);

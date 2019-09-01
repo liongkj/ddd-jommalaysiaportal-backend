@@ -103,7 +103,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
 
-        //TODO
+        
         //PUT api/categories/{slug}
         [HttpPut("{slug}")]
         public IActionResult UpdateCategory(string slug, CategoryDto Updated)

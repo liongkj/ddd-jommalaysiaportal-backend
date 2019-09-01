@@ -6,7 +6,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
     public class PublishStatus : ValueObjectBase
     {
 
-        //TODO
+        //TODO published workflow
         public bool IsPublished { get; set; }
         public DateTime ValidityStart { get; set; }
         public DateTime ValidityEnd { get; set; }
@@ -26,7 +26,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         }
 
-       
+
 
         public void Extend()
         {

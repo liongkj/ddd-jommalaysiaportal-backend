@@ -15,11 +15,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
         }
         public async Task<bool> Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
         {
-            //dto validation
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
+
             //create new merchant
             Merchant merchant = new Merchant(message.CompanyName, message.CompanyRegistrationNumber, message.Address);
 

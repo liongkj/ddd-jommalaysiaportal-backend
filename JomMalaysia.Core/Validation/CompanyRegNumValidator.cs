@@ -7,15 +7,15 @@ using JomMalaysia.Core.Validation.Extension;
 
 namespace JomMalaysia.Core.Validation
 {
-    public class CompanyRegNumValidator: AbstractValidator<CompanyRegistrationNumber>
+    public class CompanyRegNumValidator : AbstractValidator<CompanyRegistrationNumber>
     {
         public CompanyRegNumValidator()
         {
             RuleFor(x => x.RegistrationNumber)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NoStartWithWhiteSpace();
-                
-            
+            //TODO find malaysia company reg pattern
+
         }
     }
 }

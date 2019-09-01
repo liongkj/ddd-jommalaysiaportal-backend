@@ -12,11 +12,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public string Domain { get; private set; }
         public static Email For(string emailstring)
         {
-            if (string.IsNullOrEmpty(emailstring))
-            {
-                throw new ArgumentException("message", nameof(emailstring));
-            }
-
             var email = new Email();
             if (!emailstring.Contains("@")) throw new Exception("Email is invalid");
             try
