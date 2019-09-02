@@ -77,7 +77,7 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 if (Contacts.Count < 1)//if no contacts, set as primary
                 {
-                    var PrimaryContact = c.SetAsPrimary();
+                    var PrimaryContact = c.SetAsPrimary(c);
                     Contacts.Add(PrimaryContact);
 
                     if (listings != null) //if merchant has listings

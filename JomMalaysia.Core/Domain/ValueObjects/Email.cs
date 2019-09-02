@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public static Email For(string emailstring)
         {
             var email = new Email();
-            if (!emailstring.Contains("@")) throw new Exception("Email is invalid");
+
             try
             {
                 var index = emailstring.IndexOf("@", StringComparison.Ordinal);
@@ -31,6 +31,11 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public static explicit operator Email(string emailString)
         {
             return For(emailString);
+        }
+
+        public override string ToString()
+        {
+            return $"{User}@{Domain}";
         }
 
         protected override IEnumerable<object> GetAtomicValues()

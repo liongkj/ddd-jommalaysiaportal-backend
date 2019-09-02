@@ -16,16 +16,19 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
              .NotEmpty()
              .SetValidator(new AddressValidator());
 
-            RuleFor(x => x.CompanyName).NotEmpty();
+            RuleFor(x => x.CompanyName).NotEmpty().WithMessage("{PropertyName} should not be empty");
 
-            RuleFor(x => x.CompanyRegistrationNumber).NotEmpty().SetValidator(new CompanyRegNumValidator());
+            RuleFor(x => x.CompanyRegistrationNumber).NotEmpty().Must(BeValidCompanyReqNo);
 
-            RuleFor(x => x.Contacts.Count).GreaterThan(0);
-            // public string CompanyName { get; }
-            //         public CompanyRegistrationNumber CompanyRegistrationNumber { get; }
-            //         public Address Address { get; }
-            //         public IReadOnlyCollection<Contact> Contacts { get; }
-            //         public ICollection<Listing> Listings { get; }
+            RuleFor(x => x.Contacts.Count).GreaterThan(0).WithMessage("{PropertyName} shuould have at least one primary contact");
+
+            RuleForEach(x => x.Contacts).SetValidator(new ContactValidator());
         }
+        protected bool BeValidCompanyReqNo(string regNo)
+        {
+            return true;
+            //TODO Check malaysia company reg pattern
+        }
+
     }
 }

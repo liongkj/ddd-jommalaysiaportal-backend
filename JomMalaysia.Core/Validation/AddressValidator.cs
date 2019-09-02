@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.UseCases.SharedRequest;
 
 namespace JomMalaysia.Core.Validation
 {
-    public class AddressValidator : AbstractValidator<Address>
+    public class AddressValidator : AbstractValidator<AddressRequest>
     {
         public AddressValidator()
         {

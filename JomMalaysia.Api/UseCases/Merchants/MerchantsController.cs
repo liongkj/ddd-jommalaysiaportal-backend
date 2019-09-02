@@ -71,13 +71,13 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         // POST api/merchants
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] MerchantDto request)
+        public async Task<IActionResult> Post([FromBody] CreateMerchantRequest request)
         {
-            Merchant m = _mapper.Map<MerchantDto, Merchant>(request);
+            // Merchant m = _mapper.Map<MerchantDto, Merchant>(request);
 
-            var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
+            //var req = new CreateMerchantRequest(m.CompanyName, m.CompanyRegistrationNumber, m.Contacts, m.Address);
 
-            await _createMerchantUseCase.Handle(req, _createMerchantPresenter);
+            await _createMerchantUseCase.Handle(request, _createMerchantPresenter);
             return _createMerchantPresenter.ContentResult;
         }
 

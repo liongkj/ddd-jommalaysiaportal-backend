@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.Interfaces
 {
     public interface IMerchantRepository
     {
-        Task<CreateMerchantResponse> CreateMerchant(Merchant merchant);
+        Task<CreateMerchantResponse> CreateMerchantAsync(Merchant merchant);
         GetAllMerchantResponse GetAllMerchants();
         DeleteMerchantResponse DeleteMerchant(string merchantId);
         GetMerchantResponse FindByName(string name);

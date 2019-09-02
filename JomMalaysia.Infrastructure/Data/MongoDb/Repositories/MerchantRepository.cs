@@ -23,7 +23,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             _db = context.Database.GetCollection<MerchantDto>("Merchant");
             _mapper = mapper;
         }
-        public async Task<CreateMerchantResponse> CreateMerchant(Merchant merchant)
+        public async Task<CreateMerchantResponse> CreateMerchantAsync(Merchant merchant)
         {
             var merchantDto = _mapper.Map<Merchant, MerchantDto>(merchant);
             try

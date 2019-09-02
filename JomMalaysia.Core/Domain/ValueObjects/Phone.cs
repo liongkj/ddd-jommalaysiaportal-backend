@@ -22,17 +22,14 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             try
             {
                 string countryCode = "MY";
+                phone.isMobile = false;
                 PhoneNumber parsedPhone = phoneUtil.Parse(phoneString, countryCode);
                 if (parsedPhone.NumberType.Equals(PhoneNumberUtil.PhoneNumberType.MOBILE))
                 {
                     phone.isMobile = true;
 
                 }
-                else
-                {
-                    phone.isMobile = false;
 
-                }
 
                 phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
 
@@ -43,6 +40,11 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             }
 
             return phone;
+        }
+
+        public override string ToString()
+        {
+            return Number;
         }
         public static explicit operator Phone(string phoneString)
         {

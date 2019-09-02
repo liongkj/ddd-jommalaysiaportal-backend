@@ -21,24 +21,15 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         public Contact(string name, string email = null, string phone = null, bool IsPrimary = false)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ValidationException($"Contact {nameof(name)} should not be blank");
-            }
-            else
-            {
-                Name = (Name)name;
-            }
+
+            Name = (Name)name;
+            Phone = (Phone)phone;
 
             if (!string.IsNullOrEmpty(email))
             {
                 Email = (Email)email;
             }
 
-            if (!string.IsNullOrEmpty(phone))
-            {
-                Phone = (Phone)phone;
-            }
             this.IsPrimary = IsPrimary;
         }
 
@@ -53,10 +44,10 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return contact;
         }
 
-        public Contact SetAsPrimary()
+        public Contact SetAsPrimary(Contact c)
         {
-            Contact Primary = new Contact(Name.ToString(), Email.ToString(), Phone.ToString(), true);
-            return Primary;
+            c.IsPrimary = true;
+            return c;
         }
         protected override IEnumerable<object> GetAtomicValues()
         {
