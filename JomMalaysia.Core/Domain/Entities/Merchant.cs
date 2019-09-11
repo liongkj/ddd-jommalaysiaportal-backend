@@ -18,10 +18,10 @@ namespace JomMalaysia.Core.Domain.Entities
         public CompanyRegistrationNumber CompanyRegistrationNumber { get; private set; }
         public Address Address { get; private set; }
 
-        public List<Listing> Listings;
+        public List<Listing> Listings { get; set; }
 
 
-        public List<Contact> Contacts;
+        public List<Contact> Contacts { get; set; }
 
 
 

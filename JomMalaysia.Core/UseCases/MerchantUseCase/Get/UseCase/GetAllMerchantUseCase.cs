@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request;
@@ -14,25 +15,25 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         {
             _merchantRepository = merchantRepository;
         }
-        public bool Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
+        public async Task<bool> Handle(GetAllMerchantRequest message, IOutputPort<GetAllMerchantResponse> outputPort)
         {
-
-            //validate request
-            if (message == null)
+            try
             {
-                throw new ArgumentNullException(nameof(message));
+                var response = await _merchantRepository.GetAllMerchantAsync().ConfigureAwait(false);
+                if (!response.Success)
+                {
+                    outputPort.Handle(new GetAllMerchantResponse(response.Errors));
+                    return response.Success;
+                }
+                outputPort.Handle(new GetAllMerchantResponse(response.Merchants, true));
+                return response.Success;
             }
-
-            var response = _merchantRepository.GetAllMerchants();
-            if (!response.Success)
+            catch (Exception e)
             {
-                outputPort.Handle(new GetAllMerchantResponse(response.Errors));
+                outputPort.Handle(new GetAllMerchantResponse(new List<string> { e.ToString() }));
+
+                return false;
             }
-            outputPort.Handle(new GetAllMerchantResponse(response.Merchants, true));
-
-            return response.Success;
-
-            //TODO 
 
         }
     }

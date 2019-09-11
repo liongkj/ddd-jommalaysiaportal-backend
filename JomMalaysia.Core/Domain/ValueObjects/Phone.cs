@@ -11,8 +11,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         private Phone() { }
 
         public string Number { get; set; }
-        public string Area { get; set; }
-        public bool isMobile { get; set; }
+
 
         public static Phone For(string phoneString)
         {
@@ -22,16 +21,10 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             try
             {
                 string countryCode = "MY";
-                phone.isMobile = false;
+
                 PhoneNumber parsedPhone = phoneUtil.Parse(phoneString, countryCode);
-                if (parsedPhone.NumberType.Equals(PhoneNumberUtil.PhoneNumberType.MOBILE))
-                {
-                    phone.isMobile = true;
 
-                }
-
-
-                phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.RFC3966);
 
             }
             catch (Exception ex)
@@ -48,15 +41,16 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         }
         public static explicit operator Phone(string phoneString)
         {
+
             return For(phoneString);
+
         }
 
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Number;
-            yield return Area;
-            yield return isMobile;
+
         }
 
 

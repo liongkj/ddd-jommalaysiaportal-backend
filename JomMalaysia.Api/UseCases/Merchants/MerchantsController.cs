@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Api.UseCases.Merchants.CreateMerchant;
 using JomMalaysia.Api.UseCases.Merchants.DeleteMerchant;
@@ -53,19 +55,20 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         //GET api/merchants
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            _getAllMerchantUseCase.Handle(new GetAllMerchantRequest(), _getAllMerchantPresenter);
+            await _getAllMerchantUseCase.Handle(new GetAllMerchantRequest(), _getAllMerchantPresenter).ConfigureAwait(false);
 
             return _getAllMerchantPresenter.ContentResult;
         }
 
         //GET api/merchants/{id}
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
+            if (id == null) return StatusCode((int)HttpStatusCode.BadRequest);
             var req = new GetMerchantRequest(id);
-            _getMerchantUseCase.Handle(req, _getMerchantPresenter);
+            await _getMerchantUseCase.Handle(req, _getMerchantPresenter).ConfigureAwait(false);
             return _getMerchantPresenter.ContentResult;
         }
 

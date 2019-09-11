@@ -1,6 +1,7 @@
 using System;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
 {
@@ -12,14 +13,14 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
             _merchant = merchant;
         }
 
-        public bool Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
+        public async Task<bool> Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
         {
             if (message.MerchantId == null)
             {
                 throw new ArgumentNullException(nameof(message));
             }
 
-            Merchant merchant = (_merchant.FindById(message.MerchantId)).Merchant;
+            Merchant merchant = (await _merchant.FindByIdAsync(message.MerchantId)).Merchant;
             if (merchant == null)
             {
                 outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant Not Found"));

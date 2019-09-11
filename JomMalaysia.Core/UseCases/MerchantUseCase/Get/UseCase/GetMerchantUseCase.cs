@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request;
@@ -14,31 +16,20 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         {
             _merchantRepository = merchantRepository;
         }
-        public bool Handle(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
+        public async Task<bool> Handle(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
         {
-            if (message is null)
+            try
             {
-                throw new System.ArgumentNullException(nameof(message));
-            }
-
-            var response =  _merchantRepository.FindById(message.Id);
-            //if found
-            if (!response.Success)
-            {
-                outputPort.Handle(new GetMerchantResponse(response.Errors));
-            }
-            //if merchant is null
-            if (response.Merchant != null)
-            {
-                 outputPort.Handle(new GetMerchantResponse(response.Merchant, true));
+                var response = await _merchantRepository.FindByIdAsync(message.Id).ConfigureAwait(false);
+                outputPort.Handle(response);
                 return response.Success;
             }
-            else
-            //handle not found
+            catch (Exception e)
             {
-                outputPort.Handle(new GetMerchantResponse(response.Errors, false, "Merchant Deleted or Not Found"));
+                outputPort.Handle(new GetMerchantResponse(new List<string> { e.ToString() }));
                 return false;
             }
+            //if found
         }
     }
 }

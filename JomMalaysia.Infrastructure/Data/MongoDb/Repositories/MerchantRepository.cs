@@ -39,27 +39,33 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public DeleteMerchantResponse DeleteMerchant(string merchantId)
         {
-
-
-
-
             //mongodb driver api
             var result = _db.DeleteOne(filter: m => m.Id == merchantId);
             //todo TBC soft delete or hard delete
             return new DeleteMerchantResponse(merchantId, true);
         }
 
-        public GetMerchantResponse FindById(string merchantId)
+        public async Task<GetMerchantResponse> FindByIdAsync(string merchantId)
         {
+            Merchant m;
             //linq to search with criteria
-            var query =
-                  _db.AsQueryable()
-                  .Where(M => M.Id == merchantId)
-                  .Select(M => M)
-                  .FirstOrDefault();
-            Merchant m = _mapper.Map<Merchant>(query);
-            var response = m == null ? new GetMerchantResponse(new List<string> { "Merchant Not Found" }, false) : new GetMerchantResponse(m, true);
-            return response;
+            try
+            {
+                var query = await
+                      _db.AsQueryable()
+                      .Where(M => M.Id == merchantId)
+                      .Select(M => M)
+                      .FirstOrDefaultAsync();
+                m = _mapper.Map<Merchant>(query);
+            }
+            catch (Exception e)
+            {
+                return new GetMerchantResponse(new List<string> { e.ToString() }, false, "repository error");
+            }
+            if (m != null)
+                return new GetMerchantResponse(m, true);
+            return new GetMerchantResponse(new List<string> { " Merchant not found" });
+
         }
 
         public GetMerchantResponse FindByName(string name)
@@ -67,15 +73,25 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             throw new System.NotImplementedException();
         }
 
-        public GetAllMerchantResponse GetAllMerchants()
+        public async Task<GetAllMerchantResponse> GetAllMerchantAsync()
         {
-            var query =
-                  _db.AsQueryable()
-                  .ToList();
-            List<Merchant> merchants = _mapper.Map<List<Merchant>>(query);
+            List<Merchant> merchants;
+            try
+            {
+                var query = await
+                      _db.AsQueryable()
+                      .ToListAsync().ConfigureAwait(false);
+                merchants = _mapper.Map<List<Merchant>>(query);
+
+                //TODO fix mapping profile
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
             var response = merchants.Count < 1 ?
                 new GetAllMerchantResponse(new List<string> { "No Merchants" }, false) :
-                new GetAllMerchantResponse(merchants, true);
+                new GetAllMerchantResponse(merchants, true, $"{merchants.Count} result found");
             return response;
         }
 

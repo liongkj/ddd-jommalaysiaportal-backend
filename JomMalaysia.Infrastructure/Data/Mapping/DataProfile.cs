@@ -31,21 +31,26 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<MerchantDto, Merchant>()
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
                 .ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
+                .ForMember(m => m.CompanyRegistrationNumber, opt => opt.MapFrom(md => (CompanyRegistrationNumber)md.CompanyRegistrationNumber))
                 ;
             #endregion
 
             #region contacts mapping
+
+            //domain to dto
             CreateMap<Contact, ContactsDto>()
-            .ForMember(c => c.Name, opt => opt.MapFrom(c => c.Name.ToString()))
-            .ForMember(c => c.Email, opt => opt.MapFrom(c => c.Email.ToString()))
-            .ForMember(c => c.Phone, opt => opt.MapFrom(c => c.Phone.ToString()))
+            .ForMember(cd => cd.Name, opt => opt.MapFrom(c => c.Name.ToString()))
+            .ForMember(cd => cd.Email, opt => opt.MapFrom(c => c.Email.ToString()))
+            .ForMember(cd => cd.Phone, opt => opt.MapFrom(c => c.Phone.ToString()))
             ;
 
             CreateMap<ContactsDto, Contact>()
-            .ForMember(cd => cd.Name, opt => opt.MapFrom(c => (Name)c.Name))
-            .ForMember(cd => cd.Phone, opt => opt.MapFrom(c => (Phone)c.Phone))
-            .ForMember(cd => cd.Email, opt => opt.MapFrom(c => (Email)c.Email))
             ;
+
+            // Domain to dto
+
+
+
             #endregion
 
             #region listing mapping
@@ -118,10 +123,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<Category, CategoryDto>()
                             .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
                             .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
-                        //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
-                        //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
-                        ;
-
+//.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
+//.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
+//.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
+;
             #endregion
 
 

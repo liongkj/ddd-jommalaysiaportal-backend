@@ -33,7 +33,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 
 
             //find merchant and add to merchant
-            var merchant = _merchantRepository.FindById(message.MerchantId);
+            var merchant = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
             if (merchant.Merchant == null)
             {
                 outputPort.Handle(new CreateListingResponse(message.MerchantId, false, $"{merchant.Errors}"));
