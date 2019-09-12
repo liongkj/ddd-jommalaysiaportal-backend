@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.Interfaces
     {
         Task<CreateMerchantResponse> CreateMerchantAsync(Merchant merchant);
         Task<GetAllMerchantResponse> GetAllMerchantAsync();
-        DeleteMerchantResponse DeleteMerchant(string merchantId);
+        Task<DeleteMerchantResponse> DeleteMerchantAsync(string merchantId);
         GetMerchantResponse FindByName(string name);
         Task<GetMerchantResponse> FindByIdAsync(string merchantId);
         UpdateMerchantResponse UpdateMerchant(string id, Merchant updatedMerchant);

@@ -86,10 +86,10 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         //DELETE api/merchants/{id}
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             var req = new DeleteMerchantRequest(id);
-            _deleteMerchantUseCase.Handle(req, _deleteMerchantPresenter);
+            await _deleteMerchantUseCase.Handle(req, _deleteMerchantPresenter);
             return _deleteMerchantPresenter.ContentResult;
 
         }

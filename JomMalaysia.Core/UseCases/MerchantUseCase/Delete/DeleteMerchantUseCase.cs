@@ -2,6 +2,8 @@ using System;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Domain.Entities;
 using System.Threading.Tasks;
+using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
+using System.Collections.Generic;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
 {
@@ -15,28 +17,38 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
 
         public async Task<bool> Handle(DeleteMerchantRequest message, IOutputPort<DeleteMerchantResponse> outputPort)
         {
-            if (message.MerchantId == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
 
-            Merchant merchant = (await _merchant.FindByIdAsync(message.MerchantId)).Merchant;
-            if (merchant == null)
+            GetMerchantResponse query;
+            DeleteMerchantResponse response;
+            try
             {
-                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant Not Found"));
-                return false;
-            }
-            else
-            {
-                if (!merchant.IsSafeToDelete())
+                query = await _merchant.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
+
+                if (query.Success)
+                {//found
+                    if (!query.Merchant.IsSafeToDelete())
+                    {//still have listing, cannot delete
+                        outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant still has listing associated"));
+                        return false;
+                    }
+                    else
+                    {
+                        response = await _merchant.DeleteMerchantAsync(message.MerchantId).ConfigureAwait(false);
+                        outputPort.Handle(response);
+                        return response.Success;
+                    }
+                }
+                else
                 {
-                    //still have listing, cannot delete
-                    outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant still has listing associated"));
+                    //merchant not found
+                    outputPort.Handle(new DeleteMerchantResponse(query.Errors, false, "Merchant Not Found"));
                     return false;
                 }
-                var response = _merchant.DeleteMerchant(message.MerchantId);
-                outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, true, merchant.MerchantId + " deleted"));
-                return response.Success;
+            }
+            catch (Exception e)
+            {
+                outputPort.Handle(new DeleteMerchantResponse(new List<string> { e.ToString() }));
+                return false;
             }
         }
     }

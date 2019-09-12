@@ -37,12 +37,19 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return new CreateMerchantResponse(merchant.MerchantId, true);
         }
 
-        public DeleteMerchantResponse DeleteMerchant(string merchantId)
+        public async Task<DeleteMerchantResponse> DeleteMerchantAsync(string merchantId)
         {
             //mongodb driver api
-            var result = _db.DeleteOne(filter: m => m.Id == merchantId);
+            try
+            {
+                await _db.DeleteOneAsync(filter: m => m.Id == merchantId).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                return new DeleteMerchantResponse(new List<string> { e.ToString() }, false, "delete merchant repo error");
+            }
             //todo TBC soft delete or hard delete
-            return new DeleteMerchantResponse(merchantId, true);
+            return new DeleteMerchantResponse(merchantId, true, "Merchant deleted successfully");
         }
 
         public async Task<GetMerchantResponse> FindByIdAsync(string merchantId)
@@ -60,7 +67,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception e)
             {
-                return new GetMerchantResponse(new List<string> { e.ToString() }, false, "repository error");
+                return new GetMerchantResponse(new List<string> { e.ToString() }, false, "fetch merchant error");
             }
             if (m != null)
                 return new GetMerchantResponse(m, true);
