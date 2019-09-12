@@ -30,7 +30,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             //dto to domain 
             CreateMap<MerchantDto, Merchant>()
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
-                .ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
+                //.ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
                 .ForMember(m => m.CompanyRegistrationNumber, opt => opt.MapFrom(md => (CompanyRegistrationNumber)md.CompanyRegistrationNumber))
                 ;
             #endregion
@@ -45,6 +45,9 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             ;
 
             CreateMap<ContactsDto, Contact>()
+            .ForMember(c => c.Phone, opt => opt.MapFrom(cd => (Phone)cd.Phone))
+            .ForMember(c => c.Email, opt => opt.MapFrom(cd => (Email)cd.Email))
+            .ForMember(c => c.Name, opt => opt.MapFrom(cd => (Name)cd.Name))
             ;
 
             // Domain to dto

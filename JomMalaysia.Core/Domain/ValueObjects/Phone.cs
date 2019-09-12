@@ -41,9 +41,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         }
         public static explicit operator Phone(string phoneString)
         {
-
-            return For(phoneString);
-
+            if (phoneString != null)
+                return For(phoneString);
+            return null;
         }
 
 
