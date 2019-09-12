@@ -14,12 +14,12 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<CreateCategoryResponse> CreateCategoryAsync(Category Category);
         //Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory);
         Task<GetAllCategoryResponse> GetAllCategoriesAsync(int PageSize = 20, int PageNumber = 1);
-        GetAllCategoryResponse GetAllCategories(string categoryName);
-        GetCategoryResponse GetCategory(string name);
-        DeleteCategoryResponse Delete(string id);
+        Task<GetAllCategoryResponse> GetAllCategoriesAsync(string categoryName);
+        Task<GetCategoryResponse> GetCategoryAsync(string name);
+        Task<DeleteCategoryResponse> DeleteAsync(string id);
 
-        GetCategoryResponse FindByName(string name);
-        GetCategoryResponse FindByName(string cat, string sub);
+        Task<GetCategoryResponse> FindByNameAsync(string name);
+        Task<GetCategoryResponse> FindByNameAsync(string cat, string sub);
         GetCategoryResponse FindById(string id);
 
         UpdateCategoryResponse UpdateManyWithSession(List<Category> categories, IClientSessionHandle session);

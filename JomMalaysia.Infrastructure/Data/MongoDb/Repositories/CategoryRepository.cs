@@ -50,21 +50,20 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return new CreateCategoryResponse(Category.CategoryId, true, "Category Created");
         }
 
-        public DeleteCategoryResponse Delete(string id)
+        public async Task<DeleteCategoryResponse> DeleteAsync(string id)
         {
-            //TODO Profile speed
-            //FilterDefinition<PlaceDto> filter = Builders<PlaceDto>.Filter.Eq(m => m.Id, id);
-            //DeleteResult deleteResult = await _db
-            //                                  .DeleteOneAsync(filter);
-            //var query = _db.AsQueryable()
-            //.Select(p => p.Id);
-            //return deleteResult.IsAcknowledged
-            //    && deleteResult.DeletedCount > 0;
-
+            DeleteResult result;
             //mongodb driver api
-            var result = _db.DeleteOne(filter: c => c.Id == id);
+            try
+            {
+                result = await _db.DeleteOneAsync(filter: c => c.Id == id);
+            }
+            catch (Exception e)
+            {
+                return new DeleteCategoryResponse(new List<string> { "delete repo error" }, false, e.ToString());
+            }
             //todo TBC soft delete or hard delete
-            return new DeleteCategoryResponse(id, result.IsAcknowledged);
+            return new DeleteCategoryResponse(id, result.DeletedCount == 1);
         }
 
 
@@ -82,17 +81,29 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public GetCategoryResponse GetCategory(string name)
+        public async Task<GetCategoryResponse> GetCategoryAsync(string name)
         {
-            CategoryPath cp = new CategoryPath(name, null);
-            //convert to slug
-            var querystring = cp.ToString();
-            //linq query
-            var query =
-                _db.AsQueryable()
-                .Where(M => M.CategoryPath.StartsWith(querystring))
-                .ToList();
-            List<Category> c = _mapper.Map<List<Category>>(query);
+            List<Category> c;
+            try
+            {
+                CategoryPath cp = new CategoryPath(name, null);
+                //convert to slug
+                var querystring = cp.ToString();
+                //linq query
+                var query = await
+                    _db.AsQueryable()
+                    .Where(M => M.CategoryPath.StartsWith(querystring))
+                    .ToListAsync().ConfigureAwait(false);
+                c = _mapper.Map<List<Category>>(query);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                return new GetCategoryResponse(new List<string> { "Category Repo Error" }, false, e.ToString());
+            }
             var response = c == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(c, true);
             return response;
         }
@@ -103,17 +114,29 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public GetCategoryResponse FindByName(string name)
+        public async Task<GetCategoryResponse> FindByNameAsync(string name)
         {
-            CategoryPath cp = new CategoryPath(name, null);
-            //convert to slug
-            var querystring = cp.ToString();
-            //linq query
-            var query =
-                _db.AsQueryable()
-                .Where(M => M.CategoryPath.Equals(querystring))
-                .FirstOrDefault();
-            Category m = _mapper.Map<Category>(query);
+            Category m;
+            try
+            {
+                CategoryPath cp = new CategoryPath(name, null);
+                //convert to slug
+                var querystring = cp.ToString();
+                //linq query
+                var query = await
+                    _db.AsQueryable()
+                    .Where(M => M.CategoryPath.Equals(querystring))
+                    .FirstOrDefaultAsync();
+                m = _mapper.Map<Category>(query);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                return new GetCategoryResponse(new List<string> { "FindByNameAsync repo error" }, false, e.ToString());
+            }
             var response = m == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(m, true);
             return response;
         }
@@ -123,17 +146,31 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public GetCategoryResponse FindByName(string cat, string sub)
+        public async Task<GetCategoryResponse> FindByNameAsync(string cat, string sub)
         {
-            CategoryPath cp = new CategoryPath(cat, sub);
-            //convert to slug
-            var querystring = cp.ToString();
-            //linq query
-            var query =
-                _db.AsQueryable()
-                .Where(M => M.CategoryPath.Equals(querystring))
-                .FirstOrDefault();
-            Category m = _mapper.Map<Category>(query);
+            Category m;
+            try
+            {
+                CategoryPath cp = new CategoryPath(cat, sub);
+                //convert to slug
+                var querystring = cp.ToString();
+                //linq query
+                var query = await
+                    _db.AsQueryable()
+                    .Where(M => M.CategoryPath.Equals(querystring))
+                    .FirstOrDefaultAsync()
+                    .ConfigureAwait(false);
+                m = _mapper.Map<Category>(query);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                return new GetCategoryResponse(new List<string> { "FindByName Repo Error" }, false, e.ToString());
+            }
+
             var response = m == null ? new GetCategoryResponse(new List<string> { "Subcategory Not Found" }, false) : new GetCategoryResponse(m, true);
             return response;
         }
@@ -172,21 +209,29 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         /// <param name="CategoryName"></param>
         /// <returns></returns>
         //overload to get subcategories
-        public GetAllCategoryResponse GetAllCategories(string CategoryName)
+        public async Task<GetAllCategoryResponse> GetAllCategoriesAsync(string CategoryName)
         {
-            CategoryPath cp = new CategoryPath(CategoryName, null);
-            //convert to slug
-            var querystring = cp.ToString();
+            List<Category> Categories;
+            try
+            {
+                CategoryPath cp = new CategoryPath(CategoryName, null);
+                //convert to slug
+                var querystring = cp.ToString();
 
-            var query =
-                    _db.AsQueryable()
-                .Where(M => M.CategoryPath.StartsWith(querystring))
-                .Where(M => !M.CategoryPath.Equals(querystring))
-                //.Where(m=>!(m.CategoryPath.str).Equals(querystring.Length))
-                .OrderBy(c => c.CategoryName)
-                .ToList();
+                var query = await
+                        _db.AsQueryable()
+                    .Where(M => M.CategoryPath.StartsWith(querystring))
+                    .Where(M => !M.CategoryPath.Equals(querystring))
+                    //.Where(m=>!(m.CategoryPath.str).Equals(querystring.Length))
+                    .OrderBy(c => c.CategoryName)
+                    .ToListAsync();
 
-            List<Category> Categories = _mapper.Map<List<Category>>(query);
+                Categories = _mapper.Map<List<Category>>(query);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
             var response = Categories.Count < 1 ?
                 new GetAllCategoryResponse(new List<string> { "No Subcategories" }, false) :
                 new GetAllCategoryResponse(Categories, true);

@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -13,29 +15,29 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(GetCategoryByNameRequest message, IOutputPort<GetCategoryResponse> outputPort)
+        public async Task<bool> Handle(GetCategoryByNameRequest message, IOutputPort<GetCategoryResponse> outputPort)
         {
-            if (message.ParentCategory == null)//is parent
+            try
             {
-                if (message.Name != null)//null check
+                if (message.ParentCategory == null)//is parent
                 {
-                    //option 1:return one category
-                    //var response = _CategoryRepository.FindByName(message.Name);
-
-                    //option 2: return category object with all sub
-                    var response = _CategoryRepository.GetCategory(message.Name);
-                    return HandleResponseIsSuccess(response, outputPort);
+                    var response = await _CategoryRepository.GetCategoryAsync(message.Name).ConfigureAwait(false);
+                    //return HandleResponseIsSuccess(response, outputPort);
+                    outputPort.Handle(response);
+                    return response.Success;
+                }
+                else //is subcategory
+                {
+                    var response = await _CategoryRepository.FindByNameAsync(message.ParentCategory, message.Name).ConfigureAwait(false);
+                    //return HandleResponseIsSuccess(response, outputPort);
+                    outputPort.Handle(response);
+                    return response.Success;
                 }
             }
-            else //is subcategory
+            catch (Exception e)
             {
-                if (message.Name != null)//null check
-                {
-                    var response = _CategoryRepository.FindByName(message.ParentCategory,message.Name);
-                    return HandleResponseIsSuccess(response, outputPort);
-                }
+                throw e;
             }
-            return false;
         }
 
         private bool HandleResponseIsSuccess(GetCategoryResponse response, IOutputPort<GetCategoryResponse> outputPort)

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -9,25 +10,25 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
     {
         private readonly ICategoryRepository _Category;
         private readonly IListingRepository _Listing;
-        public DeleteSubcategoryUseCase(ICategoryRepository category,IListingRepository listing)
+        public DeleteSubcategoryUseCase(ICategoryRepository category, IListingRepository listing)
         {
             _Category = category;
             _Listing = listing;
         }
 
-        public bool Handle(DeleteSubcategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
+        public async Task<bool> Handle(DeleteSubcategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
         {
 
             //generate subcategory object
-            var Subcategory = _Category.FindByName(message.Category, message.Subcategory).Category;
+            var Subcategory = await _Category.FindByNameAsync(message.Category, message.Subcategory);
 
-            if (Subcategory != null)
+            if (Subcategory.Category != null)
             {
                 //check whether listing have this category
                 //TODO wait vinnie listing done
                 //if no then initiate delete subcategory repo
-                var response = _Category.Delete(Subcategory.CategoryId);
-                outputPort.Handle(new DeleteCategoryResponse(response.Id, response.Success));
+                var response = await _Category.DeleteAsync(Subcategory.Category.CategoryId);
+                outputPort.Handle(response);
                 return response.Success;
             }
             else //subcategory not found

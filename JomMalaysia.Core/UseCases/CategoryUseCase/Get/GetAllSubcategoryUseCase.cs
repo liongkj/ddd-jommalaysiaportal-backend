@@ -12,23 +12,17 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(GetAllSubcategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
+        public async Task<bool> Handle(GetAllSubcategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
         {
             if (message == null)
             {
                 throw new System.ArgumentNullException(nameof(message));
             }
 
-            var response = _CategoryRepository.GetAllCategories(message.CategoryName);
-            if (!response.Success)
-            {
-                outputPort.Handle(new GetAllCategoryResponse(response.Errors));
-            }
-            outputPort.Handle(new GetAllCategoryResponse(response.Categories, true));
+            var response = await _CategoryRepository.GetAllCategoriesAsync(message.CategoryName);
 
+            outputPort.Handle(response);
             return response.Success;
-            //throw new NotImplementedException();
-            //TODO 
 
         }
     }

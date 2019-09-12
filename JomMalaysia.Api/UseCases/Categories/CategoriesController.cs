@@ -18,6 +18,7 @@ namespace JomMalaysia.Api.UseCases.Categories
     [ApiController]
     public class CategoriesController : ControllerBase
     {
+        #region dependencies
         private readonly IMapper _mapper;
         private readonly ICreateCategoryUseCase _createCategoryUseCase;
         private readonly IGetAllCategoryUseCase _getAllCategoryUseCase;
@@ -56,7 +57,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             _deleteSubcategoryUseCase = deleteSubcategoryUseCase;
             _updateSubcategoryUseCase = updateSubcategoryUseCase;
         }
-
+        #endregion
         #region category
 
         //GET api/categories
@@ -76,10 +77,11 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //Get api/categories/{slug}
         [HttpGet("{slug}")]
-        public IActionResult Get(string slug)
+        public async Task<IActionResult> Get(string slug)
         {
             var req = new GetCategoryByNameRequest(slug);
-            _getCategoryByNameUseCase.Handle(req, _categoryPresenter);
+            try { await _getCategoryByNameUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false); }
+            catch (Exception e) { throw e; }
             return _categoryPresenter.ContentResult;
         }
 
@@ -98,21 +100,21 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //DELETE api/categories/{slug}
         [HttpDelete("{slug}")]
-        public IActionResult Delete(string slug)
+        public async Task<IActionResult> Delete(string slug)
         {
             var req = new DeleteCategoryRequest(slug);
-            _deleteCategoryUseCase.Handle(req, _categoryPresenter);
+            await _deleteCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
 
         //PUT api/categories/{slug}
         [HttpPut("{slug}")]
-        public IActionResult UpdateCategory(string slug, CategoryDto Updated)
+        public async Task<IActionResult> UpdateCategory(string slug, CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
             var req = new UpdateCategoryRequest(slug, updated);
-            _updateCategoryUseCase.Handle(req, _categoryPresenter);
+            await _updateCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
@@ -122,21 +124,22 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories/{slug}/subcategories
 
         [HttpGet("{slug}/subcategories")]
-        public IActionResult GetSubcategories([FromRoute]string slug)
+        public async Task<IActionResult> GetSubcategories([FromRoute]string slug)
         {
             var req = new GetAllSubcategoryRequest(slug);
 
-            _getAllSubcategoryUseCase.Handle(req, _categoryPresenter);
+            await _getAllSubcategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
         }
 
 
         //GET api/categories/{slug}/subcategories/{slug}
+        //TODO Return with all listings
         [HttpGet("{cat}/subcategories/{slug}")]
-        public IActionResult GetSubcategory([FromRoute]string cat, [FromRoute]string slug)
+        public async Task<IActionResult> GetSubcategory([FromRoute]string cat, [FromRoute]string slug)
         {
             var req = new GetCategoryByNameRequest(cat, slug);
-            _getCategoryByNameUseCase.Handle(req, _categoryPresenter);
+            await _getCategoryByNameUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
         }
 
@@ -161,10 +164,10 @@ namespace JomMalaysia.Api.UseCases.Categories
         }
         //DELETE api/categories/{slug}/subcategories/{slug}
         [HttpDelete("{cat}/subcategories/{slug}")]
-        public IActionResult Delete([FromRoute] string cat, [FromRoute]string slug)
+        public async Task<IActionResult> Delete([FromRoute] string cat, [FromRoute]string slug)
         {
             var req = new DeleteSubcategoryRequest(cat, slug);
-            _deleteSubcategoryUseCase.Handle(req, _categoryPresenter);
+            await _deleteSubcategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 

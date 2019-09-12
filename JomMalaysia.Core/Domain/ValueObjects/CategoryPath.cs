@@ -8,11 +8,11 @@ namespace JomMalaysia.Core.Domain.ValueObjects
     public class CategoryPath : ValueObjectBase
     {
         const char DLM = ',';
-        
+
         public string Category { get; private set; }
         public string Subcategory { get; private set; }
 
-        
+
         public CategoryPath(string category, string sub)
         {
             if (string.IsNullOrEmpty(category))
@@ -24,9 +24,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             {
                 Subcategory = sub.ToLower();
             }
-
-            
-            
         }
 
         private CategoryPath() { }
@@ -61,7 +58,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(DLM);
-            if (!string.IsNullOrEmpty(Category) )
+            if (!string.IsNullOrEmpty(Category))
             {
                 var cat = GenerateSlug(Category);
 
@@ -72,7 +69,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                     var sub = GenerateSlug(Subcategory);
                     builder.Append(sub);
                 }
-                
+
             }
             builder.Append(DLM);
 
@@ -97,9 +94,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         {
             string str = slug;
             str = Regex.Replace(str, "-", " "); // hyphens -> space
-            // cut and trim 
-            
-            
+                                                // cut and trim 
+
+
             return str;
         }
 
@@ -109,6 +106,14 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             yield return Subcategory;
         }
 
-       
+        public override bool Equals(object obj)
+        {
+            return this.ToString().Equals(obj.ToString());
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

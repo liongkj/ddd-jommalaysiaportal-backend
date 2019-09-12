@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -7,39 +8,44 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
 {
     public class DeleteCategoryUseCase : IDeleteCategoryUseCase
     {
-        private readonly ICategoryRepository _Category;
+        private readonly ICategoryRepository _CategoryRepo;
         public DeleteCategoryUseCase(ICategoryRepository Category)
         {
-            _Category = Category;
+            _CategoryRepo = Category;
         }
 
-        public bool Handle(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
+        public async Task<bool> Handle(DeleteCategoryRequest message, IOutputPort<DeleteCategoryResponse> outputPort)
         {
-            Category category = (_Category.FindByName(message.Name)).Category;
-
-            if (category == null)//null check
+            try
             {
-                outputPort.Handle(new DeleteCategoryResponse(message.Name, false, "Category Not Found"));
-                return false;
-            }
-            else
-            {
-                //fetch subcategories
-                var Subcategories = _Category.GetAllCategories(message.Name).Categories;
-                if (category.HasSubcategories(Subcategories))
+                var query = await _CategoryRepo.FindByNameAsync(message.Name);
+                var category = query.Category;
+                if (!query.Success)//found category
                 {
-                    outputPort.Handle(new DeleteCategoryResponse(category.CategoryName, false, category.CategoryName + " still has subcategories associated."));
+                    outputPort.Handle(new DeleteCategoryResponse(message.Name, false, "Category Not Found"));
                     return false;
                 }
-                else //no subcategories
+                else
                 {
-                    var response = _Category.Delete(category.CategoryId);
-                    outputPort.Handle(new DeleteCategoryResponse(response.Id, response.Success, category.CategoryName + " Deleted"));
-                    return response.Success;
-
+                    //fetch subcategories
+                    var Subcategories = await _CategoryRepo.GetAllCategoriesAsync(message.Name);
+                    if (category.HasSubcategories(Subcategories.Categories))
+                    {
+                        outputPort.Handle(new DeleteCategoryResponse(category.CategoryName, false, category.CategoryName + " still has subcategories associated."));
+                        return false;
+                    }
+                    else //no subcategories
+                    {
+                        var response = await _CategoryRepo.DeleteAsync(category.CategoryId);
+                        outputPort.Handle(response);
+                        return response.Success;
+                    }
 
                 }
-
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

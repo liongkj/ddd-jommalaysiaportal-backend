@@ -7,15 +7,15 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
     public class DeleteCategoryRequest : IUseCaseRequest<DeleteCategoryResponse>
     {
         public string Name { get; set; }
-       
+
 
         public DeleteCategoryRequest(string Name)
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                throw new System.ArgumentException("Delete Category: Category Id null", nameof(Name));
+                throw new System.ArgumentException("Delete Category: Category name null", nameof(Name));
             }
-           
+
 
             this.Name = Name;
         }

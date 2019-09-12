@@ -41,7 +41,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             }
 
             //verify is there this category
-            var category = _categoryRepository.FindByName(message.Category, message.Subcategory);
+            var category = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
             if (category.Category == null)
             {
                 outputPort.Handle(new CreateListingResponse($"{message.Category} / {message.Subcategory} ", false, $"{category.Errors}"));
