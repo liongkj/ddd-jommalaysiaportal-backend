@@ -9,7 +9,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
     public class CreateCategoryRequest : IUseCaseRequest<CreateCategoryResponse>
     {
         public string CategoryName { get; set; }
-        
+
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
         public string ParentCategory { get; set; }

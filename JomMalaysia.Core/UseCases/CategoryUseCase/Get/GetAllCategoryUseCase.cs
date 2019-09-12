@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 
@@ -12,22 +13,19 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(GetAllCategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
+        public async Task<bool> Handle(GetAllCategoryRequest message, IOutputPort<GetAllCategoryResponse> outputPort)
         {
-            var response = _CategoryRepository.GetAllCategories(message.PageSize,message.PageNumber);
-            //foreach(var c in response.Categories){
-            //    foreach(var sub in message.Subcategories)
-            //    c.Subcategories.Add(sub);
-            //}
-            if (!response.Success)
-            {
-                outputPort.Handle(new GetAllCategoryResponse(response.Errors));
-            }
-            outputPort.Handle(new GetAllCategoryResponse(response.Categories, true));
 
-            return response.Success;
-            //throw new NotImplementedException();
-            //TODO 
+            try
+            {
+                var response = await _CategoryRepository.GetAllCategoriesAsync(message.PageSize, message.PageNumber);
+                outputPort.Handle(response);
+                return response.Success;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
         }
     }

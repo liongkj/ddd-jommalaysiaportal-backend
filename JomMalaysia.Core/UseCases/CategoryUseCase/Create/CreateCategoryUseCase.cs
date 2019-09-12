@@ -1,4 +1,7 @@
-﻿using JomMalaysia.Core.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -13,26 +16,34 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
+        public async Task<bool> Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
             Category NewCategory = new Category(message.CategoryName, message.CategoryNameMs, message.CategoryNameZh);
-            NewCategory.CreateCategoryPath(message.ParentCategory,message.CategoryName);
+            NewCategory.CreateCategoryPath(message.ParentCategory, message.CategoryName);
             //Get all check unique
-            var categories = _CategoryRepository.GetAllCategories().Categories;
-            if (NewCategory.HasDuplicate(categories))
+            try
             {
-                //throw
-                outputPort.Handle(new CreateCategoryResponse(message.CategoryName, false, "this category exists"));
-                return false;
+                //find existing category name
+                var queries = await _CategoryRepository.GetAllCategoriesAsync().ConfigureAwait(false);
+
+
+                if (NewCategory.HasDuplicate(queries.Categories))
+                {//has duplicates
+                    outputPort.Handle(new CreateCategoryResponse(new List<string> { "Duplicated Category Name" }));
+                    return false;
+                }
+                else
+                {//no duplicate, proceed to add to database
+                    var response = await _CategoryRepository.CreateCategoryAsync(NewCategory);
+                    outputPort.Handle(response);
+                    return response.Success;
+                }
             }
-            else
+            catch (Exception e)
             {
-                var response = (_CategoryRepository.CreateCategory(NewCategory)).Result;
-                outputPort.Handle(response.Success ? new CreateCategoryResponse(response.Id, true) : new CreateCategoryResponse(response.Errors));
-                return response.Success;
+                throw e;
             }
-        
-            
+
         }
     }
 }

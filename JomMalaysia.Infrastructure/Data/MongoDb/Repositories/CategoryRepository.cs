@@ -30,21 +30,25 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
             _mapper = mapper;
         }
-        public async Task<CreateCategoryResponse> CreateCategory(Category Category)
+        public async Task<CreateCategoryResponse> CreateCategoryAsync(Category Category)
         {
-            var CategoryDto = _mapper.Map<Category, CategoryDto>(Category);
 
-            await _db.InsertOneAsync(CategoryDto);
-            return new CreateCategoryResponse(Category.CategoryId, true);
+            try
+            {
+                var CategoryDto = _mapper.Map<Category, CategoryDto>(Category);
+                await _db.InsertOneAsync(CategoryDto).ConfigureAwait(false);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                return new CreateCategoryResponse(new List<string> { "Automapper Error" }, false, e.ToString());
+            }
+            catch (Exception e)
+            {
+                return new CreateCategoryResponse(new List<string> { "Other Errors" }, false, e.ToString());
+            }
+
+            return new CreateCategoryResponse(Category.CategoryId, true, "Category Created");
         }
-
-        //public async Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory)
-        //{
-        //    var CategoryDto = _mapper.Map<Category, CategoryDto>(Category);
-        //    //todo
-        //    await _db.InsertOneAsync(CategoryDto);
-        //    return new CreateCategoryResponse(Category.CategoryId, true);
-        //}
 
         public DeleteCategoryResponse Delete(string id)
         {
@@ -134,19 +138,31 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public GetAllCategoryResponse GetAllCategories(int PageSize = 20, int PageNumber = 1)
+        public async Task<GetAllCategoryResponse> GetAllCategoriesAsync(int PageSize = 20, int PageNumber = 1)
         {
-            //async method
             //TODO pagination
-            var query =
+            List<Category> Categories;
+            try
+            {
+                var query = await
                  _db.AsQueryable()
-                 .ToList()
-                 .OrderBy(c => c.CategoryPath)
+                 .ToListAsync()
+                 .ConfigureAwait(false)
                  ;
+                Categories = _mapper.Map<List<Category>>(query);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                return new GetAllCategoryResponse(new List<string> { e.ToString() });
+            }
+            if (Categories.Count > 0)
+                return new GetAllCategoryResponse(Categories, true);
+            return new GetAllCategoryResponse(new List<string> { "No Categories Found" });
 
-            List<Category> Categories = _mapper.Map<List<Category>>(query);
-            var response = new GetAllCategoryResponse(Categories, true);
-            return response;
         }
 
 

@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
 
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
@@ -11,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Categories
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -24,7 +26,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
         private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
-        
+
         private readonly IGetAllSubcategoryUseCase _getAllSubcategoryUseCase;
         private readonly IDeleteSubcategoryUseCase _deleteSubcategoryUseCase;
         private readonly IUpdateSubcategoryUseCase _updateSubcategoryUseCase;
@@ -61,14 +63,14 @@ namespace JomMalaysia.Api.UseCases.Categories
         //get whole category collection
         [HttpGet]
 
-        public IActionResult Get(int pageSize = 20, int pageNumber = 0)
+        public async Task<IActionResult> Get(int pageSize = 20, int pageNumber = 0)
         {
             var req = new GetAllCategoryRequest
             {
                 PageSize = pageSize,
                 PageNumber = pageNumber
             };
-            _getAllCategoryUseCase.Handle(req, _categoryPresenter);
+            await _getAllCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
@@ -84,13 +86,13 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         // POST api/Categories
         [HttpPost]
-        public IActionResult Create([FromBody] CategoryDto request)
+        public async Task<IActionResult> Create([FromBody] CategoryDto request)
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
             var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.ParentCategory);
 
-            _createCategoryUseCase.Handle(req, _categoryPresenter);
+            await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
         }
 
@@ -103,7 +105,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
 
-        
+
         //PUT api/categories/{slug}
         [HttpPut("{slug}")]
         public IActionResult UpdateCategory(string slug, CategoryDto Updated)
@@ -139,15 +141,22 @@ namespace JomMalaysia.Api.UseCases.Categories
         }
 
 
-        //POST api/categories/{slug}
+        //POST api/categories/{slug}/subcategories
         [HttpPost("{slug}/subcategories")]
-        public IActionResult CreateSubcategory([FromRoute] string slug, [FromBody] CategoryDto request)
+        public async Task<IActionResult> CreateSubcategory([FromRoute] string slug, [FromBody] CategoryDto request)
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
             var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
 
-            _createCategoryUseCase.Handle(req, _categoryPresenter);
+            try
+            {
+                await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
             return _categoryPresenter.ContentResult;
         }
         //DELETE api/categories/{slug}/subcategories/{slug}
@@ -164,7 +173,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public IActionResult UpdateSubcategory([FromRoute]string cat, [FromRoute]string slug, [FromBody]CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
-            var req = new UpdateCategoryRequest(cat,slug, updated);
+            var req = new UpdateCategoryRequest(cat, slug, updated);
             _updateSubcategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
