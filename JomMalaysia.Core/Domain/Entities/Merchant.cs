@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public CompanyRegistrationNumber CompanyRegistrationNumber { get; private set; }
         public Address Address { get; private set; }
 
-        public List<Listing> Listings { get; set; }
+        public List<string> Listings { get; set; }
 
 
         public List<Contact> Contacts { get; set; }
@@ -27,7 +27,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
         {
-            Listings = new List<Listing>();
+            Listings = new List<string>();
             Contacts = new List<Contact>();
 
             this.CompanyName = CompanyName ?? throw new Exception("Company Name is required");
@@ -43,7 +43,7 @@ namespace JomMalaysia.Core.Domain.Entities
             }
             return true;
         }
-        public Listing AddNewListing(Listing newListing)
+        public void AddNewListing(Listing newListing)
         {
             //get public contact from merchant list of contacts
             foreach (var c in Contacts)
@@ -56,19 +56,17 @@ namespace JomMalaysia.Core.Domain.Entities
             }
             newListing.Merchant = this;
             newListing.Status = ListingStatusEnum.New;
-            Listings.Add(newListing);
-            return newListing;
-
+            Listings.Add(newListing.ListingId);
         }
 
-        public List<Listing> RemoveListing(Listing removeListing)
+        public void RemoveListing(Listing removeListing)
         {
             if (removeListing.IsSafeToDelete())
             {
                 throw new ArgumentException("Listing is still published");
             }
-            Listings.Remove(removeListing);
-            return Listings;
+            Listings.Remove(removeListing.ListingId);
+
         }
 
         public void AddContact(Contact c, List<Listing> listings = null)

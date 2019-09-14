@@ -19,6 +19,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         public string CompanyRegistrationNumber { get; set; }
         public Address Address { get; set; }
         public List<ContactsDto> Contacts { get; set; }
+        [BsonIgnoreIfNull]
         public List<string> ListingIds { get; set; }
         public MerchantDto()
         {

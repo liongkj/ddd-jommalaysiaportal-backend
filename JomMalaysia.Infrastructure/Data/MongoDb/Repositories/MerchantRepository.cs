@@ -112,17 +112,18 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public async Task<UpdateMerchantResponse> UpdateMerchant(string id, Merchant updatedMerchant, IClientSessionHandle session)
         {
+            ReplaceOneResult result;
             var merchantDto = _mapper.Map<MerchantDto>(updatedMerchant);
             FilterDefinition<MerchantDto> filter = Builders<MerchantDto>.Filter.Eq(m => m.Id, id);
             try
             {
-                var result = await _db.ReplaceOneAsync(session, filter, merchantDto);
+                result = await _db.ReplaceOneAsync(session, filter, merchantDto);
             }
             catch (Exception e)
             {
                 return new UpdateMerchantResponse(new List<string> { e.ToString() }, false, e.Message);
             }
-            return new UpdateMerchantResponse(id, true, "update success");
+            return new UpdateMerchantResponse(id, result.IsModifiedCountAvailable, "update success");
         }
     }
 }

@@ -21,18 +21,19 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<Merchant, MerchantDto>()
                 .ForMember(md => md.Id, opt => opt.MapFrom(m => m.MerchantId))
                 .ForMember(md => md.Contacts, opt => opt.MapFrom(m => m.Contacts))
-                .ForMember(md => md.ListingIds, opt => opt.MapFrom(m =>
-                     m.Listings.Select(l => l.ListingId)))
+                .ForMember(md => md.ListingIds, opt => opt.MapFrom(m => m.Listings))
                 .ForMember(md => md.CompanyRegistrationNumber, opt => opt.MapFrom(m => m.CompanyRegistrationNumber.ToString()))
-
+                .ReverseMap()
                 ;
 
             //dto to domain 
             CreateMap<MerchantDto, Merchant>()
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
                 //.ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
+                .ForMember(m => m.Listings, opt => opt.MapFrom(m => m.ListingIds))
                 .ForMember(m => m.CompanyRegistrationNumber, opt => opt.MapFrom(md => (CompanyRegistrationNumber)md.CompanyRegistrationNumber))
-                ;
+
+                 ;
             #endregion
 
             #region contacts mapping
@@ -71,7 +72,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<EventListing, ListingDto>()
-                ;
+                    ;
 
             CreateMap<PrivateListing, ListingDto>()
                 ;
@@ -93,9 +94,9 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                            ;
             //map to derived class, need to add new mapping with child properties here
             CreateMap<ListingDto, EventListing>()
-                .ForMember(e => e.EventStartDateTime, opt => opt.MapFrom(ld => ld.EventStartDateTime.ToLocalTime()))
-                .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
-                ;
+                    .ForMember(e => e.EventStartDateTime, opt => opt.MapFrom(ld => ld.EventStartDateTime.ToLocalTime()))
+                    .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
+                    ;
 
             CreateMap<ListingDto, PrivateListing>()
                 ;
@@ -124,22 +125,22 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             #region category
             CreateMap<Category, CategoryDto>()
-                            .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
-                            .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
-//.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
-//.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
-//.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
-;
+                                .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
+                                .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
+    //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
+    //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
+    //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
+    ;
             #endregion
 
 
             #region workflow mapping
 
             CreateMap<Workflow, WorkflowDto>()
-                .ForMember(w => w.Id, opt => opt.MapFrom(wd => wd.WorkflowId))
-                .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
-                .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
-                ;
+                    .ForMember(w => w.Id, opt => opt.MapFrom(wd => wd.WorkflowId))
+                    .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
+                    .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
+                    ;
             //dto --> domain
 
 

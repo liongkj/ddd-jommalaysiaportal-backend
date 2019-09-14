@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.Domain.Entities
     public abstract class Listing
     {
 
-       public string ListingId { get; set; }
+        public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
