@@ -23,14 +23,14 @@ namespace JomMalaysia.Core.Domain.Factories
                 {
                     cor.Add(new Coordinates(b[0], b[1]));
                 }
-            listing.Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City, listing.Address.State, listing.Address.PostalCode, listing.Address.Country, cor);
+            var Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City, listing.Address.State, listing.Address.PostalCode, listing.Address.Country, cor);
 
             switch (listingTypeId)
             {
                 case EVE:
-                    return new EventListing(listing, merchant);
+                    return new EventListing(listing, Address, merchant);
                 case PRI:
-                    return new PrivateListing(listing, merchant);
+                    return new PrivateListing(listing, Address, merchant);
                 default:
                     return null;
             }

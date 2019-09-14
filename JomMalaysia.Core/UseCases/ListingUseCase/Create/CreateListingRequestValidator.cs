@@ -11,7 +11,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
     {
         public CreateListingRequestValidator()
         {
-            RuleFor(x => x.MerchantId);
+            RuleFor(x => x.MerchantId).Length(24).WithMessage("Merchant ID is not valid");
+            //TODO regex for validate mongodb object id
             RuleFor(x => x.Address);
             // .NotEmpty()
             // .SetValidator(new AddressValidator());
@@ -21,11 +22,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             RuleFor(l => l.Subcategory).NotEmpty().NotNull();
 
             //if listing type is event must have eventdate
-            RuleFor(req => req.EventStartDateTime).NotEmpty().NotEmpty().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
-            RuleFor(req => req.EventEndDateTime).NotEmpty().NotEmpty().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
+            RuleFor(req => req.EventStartDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
+            RuleFor(req => req.EventEndDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
 
 
             RuleFor(p => p.MerchantId).NotEmpty().NotNull().WithMessage("Please select a valid merchant");
         }
+
+
     }
 }

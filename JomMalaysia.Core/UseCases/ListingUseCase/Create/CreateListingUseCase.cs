@@ -34,7 +34,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             var FindMerchantResponse = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
             if (!FindMerchantResponse.Success) //merchant not found
             {
-                outputPort.Handle(new CreateListingResponse($"{FindMerchantResponse.Message}", false, $"{FindMerchantResponse.Errors.ToString()}"));
+                outputPort.Handle(new CreateListingResponse(FindMerchantResponse.Errors, false, FindMerchantResponse.Message));
                 return false;
             }
 
@@ -42,7 +42,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             var FindCategoryResponse = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
             if (!FindCategoryResponse.Success)
             {
-                outputPort.Handle(new CreateListingResponse($"{FindCategoryResponse.Errors}", false, $"{FindCategoryResponse.Message}"));
+                outputPort.Handle(new CreateListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
                 return false;
             }
 
@@ -63,15 +63,20 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                         NewListing.ListingId = listing.Id;//retrieve the created listing Id and add into merchant
                         MerchantUser.AddNewListing(NewListing);
                         //update merchant command
-                        await _merchantRepository.UpdateMerchant(MerchantUser.MerchantId, MerchantUser, session).ConfigureAwait(false);
-                        if (Task.WhenAll().IsCompletedSuccessfully)
+                        var UpdateMerchantCommand = await _merchantRepository.UpdateMerchant(MerchantUser.MerchantId, MerchantUser, session).ConfigureAwait(false);
+                        if (UpdateMerchantCommand.Success)
                         {
                             await session.CommitTransactionAsync();
-                            outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } successful"));
+                            outputPort.Handle(new CreateListingResponse("Listing Created Successfully", true));
                             return true;
                         }
-                        outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } failed"));
-                        return false;
+                        else
+                        {
+                            outputPort.Handle(new CreateListingResponse(UpdateMerchantCommand.Errors, UpdateMerchantCommand.Success, UpdateMerchantCommand.Message));
+                            return false;
+                        }
+                        // outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } failed"));
+                        // return false;
                     }
                     catch (Exception e)
                     {
