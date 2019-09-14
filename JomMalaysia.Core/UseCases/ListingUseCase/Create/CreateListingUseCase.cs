@@ -28,66 +28,68 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         }
         public async Task<bool> Handle(CreateListingRequest message, IOutputPort<CreateListingResponse> outputPort)
         {
-            List<string> Errors = new List<string>();
-            var response = new CreateListingResponse(Errors);
 
 
             //find merchant and add to merchant
-            var merchant = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
-            if (merchant.Merchant == null)
+            var FindMerchantResponse = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
+            if (!FindMerchantResponse.Success) //merchant not found
             {
-                outputPort.Handle(new CreateListingResponse(message.MerchantId, false, $"{merchant.Errors}"));
+                outputPort.Handle(new CreateListingResponse($"{FindMerchantResponse.Message}", false, $"{FindMerchantResponse.Errors.ToString()}"));
                 return false;
             }
 
             //verify is there this category
-            var category = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
-            if (category.Category == null)
+            var FindCategoryResponse = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
+            if (!FindCategoryResponse.Success)
             {
-                outputPort.Handle(new CreateListingResponse($"{message.Category} / {message.Subcategory} ", false, $"{category.Errors}"));
+                outputPort.Handle(new CreateListingResponse($"{FindCategoryResponse.Errors}", false, $"{FindCategoryResponse.Message}"));
                 return false;
             }
 
             //create listing factory pattern
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, merchant.Merchant);
-            if (NewListing is Listing)
+            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindMerchantResponse.Merchant);
+            if (NewListing is Listing && NewListing != null) //validate is Listing Type
             {
                 //start transaction
                 using (var session = await _transaction.StartSession())
                 {
-
                     try
                     {
+                        var MerchantUser = FindMerchantResponse.Merchant;
                         session.StartTransaction();
+
+                        //create Listing command
                         var listing = await _listingRepository.CreateListingAsync(NewListing, session).ConfigureAwait(false);
-                        NewListing.ListingId = listing.Id;
-                        merchant.Merchant.AddNewListing(NewListing);
-                        await _merchantRepository.UpdateMerchant(merchant.Merchant.MerchantId, merchant.Merchant, session).ConfigureAwait(false);
+                        NewListing.ListingId = listing.Id;//retrieve the created listing Id and add into merchant
+                        MerchantUser.AddNewListing(NewListing);
+                        //update merchant command
+                        await _merchantRepository.UpdateMerchant(MerchantUser.MerchantId, MerchantUser, session).ConfigureAwait(false);
                         if (Task.WhenAll().IsCompletedSuccessfully)
                         {
                             await session.CommitTransactionAsync();
-                            response = new CreateListingResponse(listing.Id, true, $"{ GetType().Name } successful");
+                            outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } successful"));
+                            return true;
                         }
-
+                        outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } failed"));
+                        return false;
                     }
                     catch (Exception e)
                     {
-                        response = new CreateListingResponse(
+                        outputPort.Handle(new CreateListingResponse(
                             $"{GetType().Name} Transaction Error",
                             false,
-                             e.ToString());
-                        outputPort.Handle(response);
+                             e.ToString()));
                         return false;
                     }
 
-                    outputPort.Handle(response);
-                    return true;
+
                 }
 
             }
             else
             {
-                outputPort.Handle(response);
+
+                outputPort.Handle(new CreateListingResponse(new List<string> { "Listing Factory Exception" }, false, "Create Listing Operation Failed"));
                 return false;
             }
         }

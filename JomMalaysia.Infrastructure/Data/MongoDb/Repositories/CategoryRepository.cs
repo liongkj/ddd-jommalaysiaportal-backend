@@ -171,7 +171,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 return new GetCategoryResponse(new List<string> { "FindByName Repo Error" }, false, e.ToString());
             }
 
-            var response = m == null ? new GetCategoryResponse(new List<string> { "Subcategory Not Found" }, false) : new GetCategoryResponse(m, true);
+            var response = m == null ?
+                new GetCategoryResponse(new List<string> { "Subcategory Not Found" }, false, "Subcategory Not Found")
+                : new GetCategoryResponse(m, true);
             return response;
         }
 

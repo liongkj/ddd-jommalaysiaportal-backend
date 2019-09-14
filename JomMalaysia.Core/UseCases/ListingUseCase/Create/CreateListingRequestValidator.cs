@@ -11,6 +11,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
     {
         public CreateListingRequestValidator()
         {
+            RuleFor(x => x.MerchantId);
             RuleFor(x => x.Address);
             // .NotEmpty()
             // .SetValidator(new AddressValidator());

@@ -71,7 +71,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             if (m != null)
                 return new GetMerchantResponse(m, true);
-            return new GetMerchantResponse(new List<string> { " Merchant not found" });
+            return new GetMerchantResponse(new List<string> { merchantId + " Not Found" }, false, "Merchant not found");
 
         }
 

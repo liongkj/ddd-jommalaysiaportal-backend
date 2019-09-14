@@ -8,9 +8,11 @@ namespace JomMalaysia.Core.Domain.Factories
 {
     public static class ListingFactory
     {
-        private const int GOV = 1;
-        private const int PRI = 2;
+        // Refer ListingTypeEnum
+        private const int GOV = 2;
+        private const int PRI = 1;
         private const int EVE = 3;
+        private const int SOC = 4;
 
         public static Listing CreateListing(ListingTypeEnum ListingType, CreateListingRequest listing, Merchant merchant)
         {
@@ -21,14 +23,16 @@ namespace JomMalaysia.Core.Domain.Factories
                 {
                     cor.Add(new Coordinates(b[0], b[1]));
                 }
-            listing.Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City,         listing.Address.State, listing.Address.PostalCode, listing.Address.Country, cor);
+            listing.Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City, listing.Address.State, listing.Address.PostalCode, listing.Address.Country, cor);
 
             switch (listingTypeId)
             {
                 case EVE:
                     return new EventListing(listing, merchant);
-                default:
+                case PRI:
                     return new PrivateListing(listing, merchant);
+                default:
+                    return null;
             }
         }
     }

@@ -15,6 +15,7 @@ namespace JomMalaysia.Api.UseCases.Listings
     [ApiController]
     public class ListingsController : ControllerBase
     {
+        #region Dependencies
         private readonly ICreateListingUseCase _createListingUseCase;
         private readonly IGetAllListingUseCase _getAllListingUseCase;
         private readonly ListingPresenter _listingPresenter;
@@ -46,6 +47,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
 
         }
+        #endregion
         /// <summary>
         /// Get list of listings
         /// </summary>
