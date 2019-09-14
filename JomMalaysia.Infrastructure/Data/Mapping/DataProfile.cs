@@ -34,6 +34,12 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(m => m.CompanyRegistrationNumber, opt => opt.MapFrom(md => (CompanyRegistrationNumber)md.CompanyRegistrationNumber))
 
                  ;
+
+            CreateMap<Merchant, MerchantSummaryDto>()
+            .ForMember(msd => msd.CompanyName, opt => opt.MapFrom(m => m.CompanyName))
+            .ForMember(msd => msd.Id, opt => opt.MapFrom(m => m.MerchantId))
+            .ReverseMap()
+            ;
             #endregion
 
             #region contacts mapping
@@ -64,6 +70,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
                 .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
+
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
 
                 .IncludeAllDerived()

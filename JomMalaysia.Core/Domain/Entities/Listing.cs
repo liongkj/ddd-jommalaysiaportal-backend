@@ -46,7 +46,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public bool IsSafeToDelete()
         {
-            return !IsPublish.IsPublished;
+            return IsPublish == null || !IsPublish.IsPublished;
         }
 
         public bool IsEligibleToPublish()

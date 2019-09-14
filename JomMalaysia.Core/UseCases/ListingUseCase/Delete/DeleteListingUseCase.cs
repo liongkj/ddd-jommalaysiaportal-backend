@@ -15,39 +15,28 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
 
         public async Task<bool> Handle(DeleteListingRequest message, IOutputPort<DeleteListingResponse> outputPort)
         {
-            if (message is null)
+            //check if is publish
+            var getListingResponse = await _listingRepository.FindById(message.ListingId).ConfigureAwait(false);
+            if (!getListingResponse.Success) //try to fetch listing 
             {
-                throw new ArgumentNullException(nameof(message));
+                outputPort.Handle(new DeleteListingResponse(getListingResponse.Errors, false, getListingResponse.Message));
+                return false;
+            }
+            var ToBeDeleted = getListingResponse.Listing;
+            if (ToBeDeleted.IsSafeToDelete()) //check if it is safe to delete
+            {
+                var deleteListingResponse = await _listingRepository.Delete(message.ListingId).ConfigureAwait(false);
+                outputPort.Handle(deleteListingResponse);
+                return deleteListingResponse.Success;
             }
 
-            //check if is publish
-            var listing = (await _listingRepository.FindById(message.ListingId).ConfigureAwait(false)).Listing;
-            //is safe to delete
-            if (listing != null && listing.IsSafeToDelete())
-            {
-                var response = await _listingRepository.Delete(message.ListingId).ConfigureAwait(false);
-                if (!response.Success)
-                {
-                    outputPort.Handle(new DeleteListingResponse(response.Errors));
-                }
-                if (response.Success)
-                {
-                    outputPort.Handle(new DeleteListingResponse(message.ListingId, true, "deleted successfully"));
-                    return response.Success;
-                }
-                else
-                {
-                    outputPort.Handle(new DeleteListingResponse(response.Errors, false, "Listing Not Found"));
-                    return false;
-                }
-            }
-            //if listing is still published -> stop
-            else
+            else //NOT SAFE TO DELETE 
             {
                 outputPort.Handle(new DeleteListingResponse(message.ListingId, false, "Listing is still published."));
                 return false;
             }
-            
+
+
         }
     }
 }

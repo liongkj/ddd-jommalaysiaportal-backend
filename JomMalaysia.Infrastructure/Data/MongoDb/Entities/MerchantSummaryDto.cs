@@ -8,23 +8,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
 {
-    public class MerchantDto
+    public class MerchantSummaryDto
     {
-
+        //this class is to show the summary of listing, usable when detailed listing info is not needed.
         [BsonId]
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string CompanyName { get; set; }
-        public string CompanyRegistrationNumber { get; set; }
-        public AddressDto Address { get; set; }
-        public List<ContactsDto> Contacts { get; set; }
-        [BsonIgnoreIfNull]
-        public List<string> ListingIds { get; set; }
-        public MerchantDto()
-        {
-            ListingIds = new List<string>();
-            Contacts = new List<ContactsDto>();
-        }
+
     }
 }

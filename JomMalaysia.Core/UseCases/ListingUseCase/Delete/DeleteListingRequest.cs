@@ -10,6 +10,11 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
         public string ListingId { get; set; }
         public DeleteListingRequest(string ListingId)
         {
+            if (string.IsNullOrEmpty(ListingId))
+            {
+                throw new System.ArgumentException("message", nameof(ListingId));
+            }
+
             this.ListingId = ListingId;
         }
     }

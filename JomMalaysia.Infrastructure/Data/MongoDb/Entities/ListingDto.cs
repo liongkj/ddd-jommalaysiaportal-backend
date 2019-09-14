@@ -16,7 +16,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public MerchantDto Merchant { get; set; }
+        public MerchantSummaryDto Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
         public string ListingType { get; set; }

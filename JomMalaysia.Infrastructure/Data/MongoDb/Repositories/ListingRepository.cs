@@ -68,21 +68,22 @@ public class ListingRepository : IListingRepository
 
     public async Task<DeleteListingResponse> Delete(string id)
     {
+        DeleteResult result;
         try
         {
-            var query = await _db.DeleteOneAsync(l => l.Id == id).ConfigureAwait(false);
+            result = await _db.DeleteOneAsync(l => l.Id == id).ConfigureAwait(false);
         }
         catch (Exception e)
         {
             return new DeleteListingResponse(id, false, e.Message);
         }
-        return new DeleteListingResponse(id, true);
+        return new DeleteListingResponse(id, result.IsAcknowledged, "Repo delete operation");
 
     }
 
     public async Task<GetListingResponse> FindById(string id)
     {
-
+        ListingDto item;
         try
         {
             var query =
@@ -90,16 +91,17 @@ public class ListingRepository : IListingRepository
                   .Where(M => M.Id == id)
                   .Select(M => M)
                   .FirstOrDefaultAsync();
-
             ;
 
-            var item = _mapper.Map<ListingDto>(query);
-            return new GetListingResponse(Converted(item), true);
+            item = _mapper.Map<ListingDto>(query);
+
         }
         catch (Exception e)
         {
-            return new GetListingResponse(new List<string> { "Get Listing Failed" }, false, e.Message);
+            return new GetListingResponse(new List<string> { "Get Listing Error" }, false, e.Message);
         }
+        if (item != null) return new GetListingResponse(Converted(item), true);
+        else return new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
     }
 
     public GetListingResponse FindByName(string name)
@@ -147,18 +149,20 @@ public class ListingRepository : IListingRepository
     #region private helper method
     private Listing Converted(ListingDto list)
     {
-
-        if (GetListingTypeHelper(list).Equals(typeof(EventListing)))
+        if (list != null)
         {
-            var i = _mapper.Map<EventListing>(list);
+            if (GetListingTypeHelper(list).Equals(typeof(EventListing)))
+            {
+                var i = _mapper.Map<EventListing>(list);
 
-            return i;
-        }
+                return i;
+            }
 
-        if (GetListingTypeHelper(list).Equals(typeof(PrivateListing)))
-        {
-            var i = _mapper.Map<PrivateListing>(list);
-            return i;
+            if (GetListingTypeHelper(list).Equals(typeof(PrivateListing)))
+            {
+                var i = _mapper.Map<PrivateListing>(list);
+                return i;
+            }
         }
         return null;
     }
