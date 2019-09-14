@@ -173,11 +173,12 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //PUT api/categories/{slug}/subcategories/{slug}
         [HttpPut("{cat}/subcategories/{slug}")]
-        public IActionResult UpdateSubcategory([FromRoute]string cat, [FromRoute]string slug, [FromBody]CategoryDto Updated)
+        public async Task<IActionResult> UpdateSubcategory([FromRoute]string cat, [FromRoute]string slug, [FromBody]CategoryDto Updated)
         {
+            //TODO Test update subcategory
             Category updated = _mapper.Map<Category>(Updated);
             var req = new UpdateCategoryRequest(cat, slug, updated);
-            _updateSubcategoryUseCase.Handle(req, _categoryPresenter);
+            await _updateSubcategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 

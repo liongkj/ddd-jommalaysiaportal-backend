@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -18,31 +19,30 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             _CategoryRepository = CategoryRepository;
             _transaction = transaction;
         }
-        public bool Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
+        public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
-            throw new NotImplementedException();
-            // //TODO
-            // //check if any listing has this category
-            // var subcategory = await _CategoryRepository.FindByNameAsync(message.ParentCategory, message.CategoryName).Category;
-            // //var listings = _Listing.FindListingsWithCategory()
-            // if (subcategory != null) //if category found
-            // {
-            //     //find all subcategories with same name
-            //     if (subcategory.UpdateCategoryIsSuccess(message.Updated, false))
-            //     {
-            //         if (TransactionHasNoError(subcategory))
-            //         {
-            //             _transaction.Session.CommitTransaction();
-            //             outputPort.Handle(new UpdateCategoryResponse(subcategory.CategoryId, true, "update transaction committed successfully"));
-            //             return true;
-            //         }
-            //         _transaction.Session.AbortTransaction();
-            //         outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Update category transaction failed" }, false));
-            //         return false;
-            //     }
-            // }
-            // outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Category Not Found" }, false));
-            // return false;
+
+            //check if any listing has this category -currently no need
+            var subcategory = (await _CategoryRepository.FindByNameAsync(message.ParentCategory, message.CategoryName)).Category;
+
+            if (subcategory != null) //if category found
+            {
+                //find all subcategories with same name
+                if (subcategory.UpdateCategoryIsSuccess(message.Updated, false))
+                {
+                    if (TransactionHasNoError(subcategory))
+                    {
+                        _transaction.Session.CommitTransaction();
+                        outputPort.Handle(new UpdateCategoryResponse(subcategory.CategoryId, true, "update transaction committed successfully"));
+                        return true;
+                    }
+                    _transaction.Session.AbortTransaction();
+                    outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Update category transaction failed" }, false));
+                    return false;
+                }
+            }
+            outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Category Not Found" }, false));
+            return false;
         }
 
         private bool TransactionHasNoError(Category category)

@@ -4,7 +4,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 {
-    public interface IUpdateSubcategoryUseCase : IUseCaseHandler<UpdateCategoryRequest, UpdateCategoryResponse>
+    public interface IUpdateSubcategoryUseCase : IUseCaseHandlerAsync<UpdateCategoryRequest, UpdateCategoryResponse>
     {
 
     }

@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Phone : ValueObjectBase
     {
-        //TODO Use google phone library
+    
         private Phone() { }
 
         public string Number { get; set; }
