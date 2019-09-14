@@ -13,12 +13,12 @@ namespace JomMalaysia.Core.Interfaces
         CreateListingResponse CreateListing(Listing listing);
         Task<CreateListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
         Task<GetAllListingResponse> GetAllListings();
-        Task<DeleteListingResponse> Delete(string id);
+        Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
         GetListingResponse FindByName(string name);
         Task<GetListingResponse> FindById(string id);
         UpdateListingResponse Update(string id, Listing listing);
 
-        
+
 
     }
 }

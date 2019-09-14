@@ -66,12 +66,12 @@ public class ListingRepository : IListingRepository
 
     }
 
-    public async Task<DeleteListingResponse> Delete(string id)
+    public async Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session)
     {
         DeleteResult result;
         try
         {
-            result = await _db.DeleteOneAsync(l => l.Id == id).ConfigureAwait(false);
+            result = await _db.DeleteOneAsync(session, l => l.Id == id).ConfigureAwait(false);
         }
         catch (Exception e)
         {
