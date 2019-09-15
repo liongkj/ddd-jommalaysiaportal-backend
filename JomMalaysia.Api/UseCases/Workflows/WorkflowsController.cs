@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
+using JomMalaysia.Core.UseCases.WorkflowUseCase;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Reject;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Workflows
@@ -18,12 +20,16 @@ namespace JomMalaysia.Api.UseCases.Workflows
         private readonly IPublishListingUseCase _publishListingUseCase;
         private readonly IGetAllWorkflowUseCase _getAllWorkflowUseCase;
         private readonly IGetWorkflowUseCase _getWorkflowUseCase;
+        private readonly IApproveWorkflowUseCase _approveWorkflowUseCase;
+        private readonly IRejectWorkflowUseCase _rejectWorkflowUseCase;
 
         public WorkflowsController(IMapper mapper,
             IPublishListingUseCase PublishListingUseCase,
             IGetAllWorkflowUseCase getAllWorkflowUseCase,
             IGetWorkflowUseCase getWorkflowUseCase,
-            WorkflowPresenter workflowPresenter
+            WorkflowPresenter workflowPresenter,
+            IApproveWorkflowUseCase approveWorkflowUseCase,
+            IRejectWorkflowUseCase rejectWorkflowUseCase
             )
         {
             _mapper = mapper;
@@ -31,6 +37,8 @@ namespace JomMalaysia.Api.UseCases.Workflows
             _publishListingUseCase = PublishListingUseCase;
             _getAllWorkflowUseCase = getAllWorkflowUseCase;
             _workflowPresenter = workflowPresenter;
+            _approveWorkflowUseCase = approveWorkflowUseCase;
+            _rejectWorkflowUseCase = rejectWorkflowUseCase;
         }
         #endregion
         //publish a listing a start a approval workflow
@@ -67,9 +75,24 @@ namespace JomMalaysia.Api.UseCases.Workflows
             return _workflowPresenter.ContentResult;
         }
 
-        //PUT api/workflows/{id}/approve
         //PUT api/workflows/{id}/reject
+        //PUT api/workflows/{id}/approve
+        [HttpPut("{id}/approve")]
+        public async Task<IActionResult> Approve([FromRoute]string WorkflowId)
+        {
+            var req = new WorkflowActionRequest(WorkflowId, "approve");
+            await _approveWorkflowUseCase.Handle(req, _workflowPresenter);
+            return _workflowPresenter.ContentResult;
+        }
 
+        //PUT api/workflows/{id}/reject
+        [HttpPut("{id}/reject")]
+        public async Task<IActionResult> Reject([FromRoute]string WorkflowId)
+        {
+            var req = new WorkflowActionRequest(WorkflowId, "reject");
+            await _rejectWorkflowUseCase.Handle(req, _workflowPresenter);
+            return _workflowPresenter.ContentResult;
+        }
 
     }
 }

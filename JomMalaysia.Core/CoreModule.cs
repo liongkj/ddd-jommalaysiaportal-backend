@@ -26,7 +26,7 @@ namespace JomMalaysia.Core
             builder.RegisterType<ImageProcessor>()
                 .As<IImageProcessor>()
                 .InstancePerLifetimeScope();
-                ;
+            ;
 
             builder.RegisterAssemblyTypes(dataAccess)
                    .Where(t => t.Name.EndsWith("UseCase"))
