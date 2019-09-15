@@ -58,16 +58,21 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public GetWorkflowResponse GetWorkflowById(string workflowId)
+        public async Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId)
         {
-            var response = new GetWorkflowResponse(new List<string> { });
+            Workflow workflow;
             try
             {
-                var query =
+                var query = await
                     _db.AsQueryable()
-                    .Where(W => W.Id == workflowId);
-                var workflow = _mapper.Map<Workflow>(query);
-                return new GetWorkflowResponse(workflow, true);
+                    .Where(W => W.Id == workflowId)
+                    .FirstOrDefaultAsync();
+                workflow = _mapper.Map<Workflow>(query);
+                var temp = Converted(query.Listing);
+                if (temp != null)
+                {
+                    workflow.Listing = temp;
+                }
             }
             catch (Exception e)
             {
@@ -75,7 +80,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 Errors.Add(e.ToString());
                 return new GetWorkflowResponse(Errors);
             }
-
+            return workflow != null ? new GetWorkflowResponse(workflow, true) :
+                new GetWorkflowResponse(new List<string> { "workflow not found" });
         }
 
         public async Task<GetAllWorkflowResponse> GetAllWorkflowByStatusAsync(WorkflowStatusEnum status, int counterpage = 10, int page = 0)
@@ -85,6 +91,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             List<Workflow> Workflows;
             try
             {
+                if (status == null)
+                {
+                    return new GetAllWorkflowResponse(new List<string> { "Not a valid workflow status" }, false);
+                }
                 if (!status.Equals(WorkflowStatusEnum.All))
                 {
                     query = await

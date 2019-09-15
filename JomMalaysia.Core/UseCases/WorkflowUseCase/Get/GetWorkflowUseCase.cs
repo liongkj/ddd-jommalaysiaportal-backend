@@ -15,9 +15,9 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
             _workfowRepository = workflowRepository;
             _listingRepository = listingRepository;
         }
-        public bool Handle(GetWorkflowRequest message, IOutputPort<GetWorkflowResponse> outputPort)
+        public async Task<bool> Handle(GetWorkflowRequest message, IOutputPort<GetWorkflowResponse> outputPort)
         {
-            var workflowResponse = _workfowRepository.GetWorkflowById(message.WorkflowId);
+            var workflowResponse = await _workfowRepository.GetWorkflowByIdAsync(message.WorkflowId);
 
             //foreach(var c in response.Categories){
             //    foreach(var sub in message.Subcategories)

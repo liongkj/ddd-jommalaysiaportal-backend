@@ -145,9 +145,17 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                     .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                     .ForMember(wd => wd.Listing, opt => opt.MapFrom(w => w.Listing))
                     ;
+
+            CreateMap<Listing, ListingSummaryDto>()
+                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
+                .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                .IncludeAllDerived()
+            ;
+
+            CreateMap<EventListing, ListingSummaryDto>();
+            CreateMap<PrivateListing, ListingSummaryDto>();
+
             //dto --> domain
-
-
             CreateMap<WorkflowDto, Workflow>()
                 .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))

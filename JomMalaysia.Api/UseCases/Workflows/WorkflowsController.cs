@@ -8,7 +8,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkflowController : ControllerBase
+    public class WorkflowsController : ControllerBase
     {
         #region dependencies
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         private readonly IGetAllWorkflowUseCase _getAllWorkflowUseCase;
         private readonly IGetWorkflowUseCase _getWorkflowUseCase;
 
-        public WorkflowController(IMapper mapper,
+        public WorkflowsController(IMapper mapper,
             IPublishListingUseCase PublishListingUseCase,
             IGetAllWorkflowUseCase getAllWorkflowUseCase,
             IGetWorkflowUseCase getWorkflowUseCase,
@@ -47,12 +47,10 @@ namespace JomMalaysia.Api.UseCases.Workflows
         }
 
         //GET api/workflows
-        //GET api/workflows/pending
-        //GET api/workflows/{status}
+        //GET api/workflows/status/{pending}
         [Route("")]
-        [Route("{status}")]
-        [HttpGet]
-        public async Task<IActionResult> GetWorkflowByStatus(string status = "")
+        [Route("status/{status}")]
+        public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "")
         {
             var req = new GetAllWorkflowRequest(status.ToLower());
             await _getAllWorkflowUseCase.Handle(req, _workflowPresenter);
@@ -61,11 +59,10 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
 
         //GET api/workflows/{id}
-        [Route("{id}")]
-        [HttpGet]
-        public IActionResult GetWorkflowDetails([FromRoute]string workflowId)
+        [HttpGet("{id}")]
+        public IActionResult GetWorkflowById([FromRoute]string id)
         {
-            var req = new GetWorkflowRequest(workflowId);
+            var req = new GetWorkflowRequest(id);
             _getWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }

@@ -2,7 +2,7 @@
 
 namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
 {
-    public interface IGetWorkflowUseCase:IUseCaseHandler<GetWorkflowRequest, GetWorkflowResponse>
+    public interface IGetWorkflowUseCase : IUseCaseHandlerAsync<GetWorkflowRequest, GetWorkflowResponse>
     {
     }
 }

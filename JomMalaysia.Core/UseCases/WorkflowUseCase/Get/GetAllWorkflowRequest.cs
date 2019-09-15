@@ -16,8 +16,9 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
         {
             switch (status)
             {
+                case "":
                 case "pending":
-                    Status= WorkflowStatusEnum.Pending;
+                    Status = WorkflowStatusEnum.Pending;
                     break;
                 case "level1":
                     Status = WorkflowStatusEnum.Level1;
@@ -32,7 +33,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
                     Status = WorkflowStatusEnum.Rejected;
                     break;
                 default:
-                    Status = WorkflowStatusEnum.All;
+                    Status = null;
                     break;
             }
         }

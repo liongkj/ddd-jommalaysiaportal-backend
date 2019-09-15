@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     {
         Task<CreateWorkflowResponse> CreateWorkflowAsyncWithSession(Workflow workflows, IClientSessionHandle session);
         GetAllWorkflowResponse FindByListing(List<string> listingIds, WorkflowStatusEnum workflowStatus);
-        GetWorkflowResponse GetWorkflowById(string workflowId);
+        Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId);
         Task<GetAllWorkflowResponse> GetAllWorkflowByStatusAsync(WorkflowStatusEnum status, int counterpage = 10, int page = 0);
     }
 }
