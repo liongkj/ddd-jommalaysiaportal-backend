@@ -14,9 +14,9 @@ namespace JomMalaysia.Core.Interfaces.Repositories
 {
     public interface IWorkflowRepository
     {
-        CreateWorkflowResponse CreateWorkflow(Workflow workflows, IClientSessionHandle session);
+        Task<CreateWorkflowResponse> CreateWorkflowAsyncWithSession(Workflow workflows, IClientSessionHandle session);
         GetAllWorkflowResponse FindByListing(List<string> listingIds, WorkflowStatusEnum workflowStatus);
         GetWorkflowResponse GetWorkflowById(string workflowId);
-        GetAllWorkflowResponse GetAllWorkflowByStatus(WorkflowStatusEnum status, int counterpage = 10, int page = 0);
+        Task<GetAllWorkflowResponse> GetAllWorkflowByStatusAsync(WorkflowStatusEnum status, int counterpage = 10, int page = 0);
     }
 }

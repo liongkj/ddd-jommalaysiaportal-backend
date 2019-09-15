@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
@@ -13,7 +12,6 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

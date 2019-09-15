@@ -142,10 +142,32 @@ public class ListingRepository : IListingRepository
 
 
 
-    public UpdateListingResponse Update(string id, Listing listing)
+    public async Task<UpdateListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null)
     {
-        throw new System.NotImplementedException();
+        ReplaceOneResult result;
+
+        FilterDefinition<ListingDto> filter = Builders<ListingDto>.Filter.Eq(m => m.Id, listing.ListingId);
+        try
+        {
+            var ListingDto = _mapper.Map<ListingDto>(listing);
+            if (session != null)
+                result = await _db.ReplaceOneAsync(session, filter, ListingDto);
+            else result = await _db.ReplaceOneAsync(filter, ListingDto);
+        }
+        catch (AutoMapperMappingException e)
+        {
+            return new UpdateListingResponse(new List<string> { e.ToString() }, false, e.Message);
+        }
+        catch (Exception e)
+        {
+            return new UpdateListingResponse(new List<string> { e.ToString() }, false, e.Message);
+        }
+        return new UpdateListingResponse(listing.ListingId, result.IsAcknowledged, "update success");
     }
+
+
+
+
     #region private helper method
     private Listing Converted(ListingDto list)
     {

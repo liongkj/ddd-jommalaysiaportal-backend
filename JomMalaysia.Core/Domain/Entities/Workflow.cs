@@ -55,11 +55,11 @@ namespace JomMalaysia.Core.Domain.Entities
                     EditLiveListingOperation();
                     break;
             }
-            
+
         }
 
         private void EditLiveListingOperation()
-        { 
+        {
         }
 
         private void PublishListingOperation()
@@ -70,4 +70,3 @@ namespace JomMalaysia.Core.Domain.Entities
     }
 
 }
-

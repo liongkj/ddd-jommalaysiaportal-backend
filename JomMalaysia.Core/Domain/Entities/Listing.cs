@@ -51,7 +51,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public bool IsEligibleToPublish()
         {
-            return !IsPublish.IsPublished;
+            return IsPublish == null || !IsPublish.IsPublished;
         }
 
         //public bool SetCategory(Category category, Subcategory Subcategory)

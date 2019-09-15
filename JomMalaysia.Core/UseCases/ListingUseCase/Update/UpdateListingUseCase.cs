@@ -1,4 +1,5 @@
-﻿using JomMalaysia.Core.Interfaces;
+﻿using System.Threading.Tasks;
+using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
 {
@@ -10,16 +11,16 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         {
             _listingRepository = listingRepository;
         }
-        public bool Handle(UpdateListingRequest message, IOutputPort<UpdateListingResponse> outputPort)
+        public async Task<bool> Handle(UpdateListingRequest message, IOutputPort<UpdateListingResponse> outputPort)
         {
             //TODO
             //update listing
-            var response = _listingRepository.Update(message.ListingId,message.Updated);
+            var updateListingResponse = await _listingRepository.UpdateAsyncWithSession(message.Updated);
 
-            outputPort.Handle(response.Success ? new UpdateListingResponse(response.Id, true) : new UpdateListingResponse(response.Errors));
-            return response.Success;
+            outputPort.Handle(updateListingResponse);
+            return updateListingResponse.Success;
         }
 
-       
+
     }
 }

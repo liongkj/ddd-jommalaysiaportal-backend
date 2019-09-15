@@ -3,7 +3,7 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 
 namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
 {
-    public interface IGetAllWorkflowUseCase : IUseCaseHandler<GetAllWorkflowRequest, GetAllWorkflowResponse>
+    public interface IGetAllWorkflowUseCase : IUseCaseHandlerAsync<GetAllWorkflowRequest, GetAllWorkflowResponse>
     {
 
     }

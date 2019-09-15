@@ -33,6 +33,7 @@ namespace JomMalaysia.Core.Domain.Entities
         //public string StringName { get; set; }
         public Email Email { get; set; }
         public Name Name { get; set; }
+        public string Role { get; set; }
         public bool VerifyEmail { get; set; }
         public string Connection { get; set; }
         public string Password { get; set; }
@@ -58,8 +59,9 @@ namespace JomMalaysia.Core.Domain.Entities
             //check listing is pending
             if (l.IsEligibleToPublish())
             {
-                Workflow PublishRequestWorkflow = new Workflow(this, l, WorkflowTypeEnum.Publish);
-                return PublishRequestWorkflow;
+                //if eligible to publish, return new Workflow
+                return new Workflow(this, l, WorkflowTypeEnum.Publish);
+
             }
             return null;
         }
@@ -79,14 +81,5 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public void AddNewPackage()
-        {
-
-        }
-
-        public void DeletePackage()
-        {
-
-        }
     }
 }

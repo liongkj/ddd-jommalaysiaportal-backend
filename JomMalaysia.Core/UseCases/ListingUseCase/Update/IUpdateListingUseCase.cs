@@ -3,7 +3,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
 {
-    public interface IUpdateListingUseCase : IUseCaseHandler<UpdateListingRequest, UpdateListingResponse>
+    public interface IUpdateListingUseCase : IUseCaseHandlerAsync<UpdateListingRequest, UpdateListingResponse>
     {
 
     }

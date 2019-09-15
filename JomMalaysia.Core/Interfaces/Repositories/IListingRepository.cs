@@ -10,13 +10,15 @@ namespace JomMalaysia.Core.Interfaces
 {
     public interface IListingRepository
     {
-        CreateListingResponse CreateListing(Listing listing);
+
         Task<CreateListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
         Task<GetAllListingResponse> GetAllListings();
         Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
+
         GetListingResponse FindByName(string name);
         Task<GetListingResponse> FindById(string id);
-        UpdateListingResponse Update(string id, Listing listing);
+        Task<UpdateListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null);
+
 
 
 

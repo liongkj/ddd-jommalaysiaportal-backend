@@ -27,14 +27,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             _db = context.Database.GetCollection<WorkflowDto>("Workflow");
             _mapper = mapper;
         }
-        public CreateWorkflowResponse CreateWorkflow(Workflow workflow, IClientSessionHandle session)
+        public async Task<CreateWorkflowResponse> CreateWorkflowAsyncWithSession(Workflow workflow, IClientSessionHandle session)
         {
             var WorkflowDto = _mapper.Map<WorkflowDto>(workflow);
 
             try
             {
-                _db.InsertOne(WorkflowDto);
-                
+                await _db.InsertOneAsync(session, WorkflowDto);
+
             }
             catch (Exception e)
             {
@@ -72,35 +72,45 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 var workflow = _mapper.Map<Workflow>(query);
                 return new GetWorkflowResponse(workflow, true);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 var Errors = new List<string>();
                 Errors.Add(e.ToString());
                 return new GetWorkflowResponse(Errors);
             }
-            
+
         }
 
-        public GetAllWorkflowResponse GetAllWorkflowByStatus(WorkflowStatusEnum status, int counterpage = 10, int page = 0)
+        public async Task<GetAllWorkflowResponse> GetAllWorkflowByStatusAsync(WorkflowStatusEnum status, int counterpage = 10, int page = 0)
         {
             //todo add paging
             List<WorkflowDto> query = new List<WorkflowDto>();
-            if (!status.Equals(WorkflowStatusEnum.All))
+            List<Workflow> Workflows;
+            try
             {
-                query =
-                    _db.AsQueryable()
-                    .Where(W => W.Status.Equals(status.ToString()))
-                    .OrderBy(c => c.Created)
-                    .ToList();
+                if (!status.Equals(WorkflowStatusEnum.All))
+                {
+                    query = await
+                        _db.AsQueryable()
+                        .Where(W => W.Status.Equals(status.ToString()))
+                        .ToListAsync();
+                }
+                else
+                {
+                    query = await
+                        _db.AsQueryable()
+                        .ToListAsync();
+                }
+                Workflows = _mapper.Map<List<WorkflowDto>, List<Workflow>>(query);
             }
-            else
+            catch (AutoMapperMappingException e)
             {
-                query =
-                    _db.AsQueryable()
-                    .OrderBy(c => c.Created)
-                    .ToList();
+                return new GetAllWorkflowResponse(new List<string> { "Mapping error" }, false, e.ToString());
             }
-            List<Workflow> Workflows = _mapper.Map<List<WorkflowDto>,List<Workflow>>(query);
+            catch (Exception e)
+            {
+                return new GetAllWorkflowResponse(new List<string> { "Unknown error" }, false, e.ToString());
+            }
             var response = Workflows.Count < 1 ?
                 new GetAllWorkflowResponse(new List<string> { "No workflow found" }, false) :
                 new GetAllWorkflowResponse(Workflows, true);

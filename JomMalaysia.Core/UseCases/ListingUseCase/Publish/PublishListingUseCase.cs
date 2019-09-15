@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.Factories;
-using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
@@ -31,56 +29,79 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         }
         public async Task<bool> Handle(PublishListingRequest message, IOutputPort<PublishListingResponse> outputPort)
         {
-            var requester = _loginInfo.AuthenticatedUser();
-            var Errors = new List<string>();
+            var requester = new User
+            {
+                Role = "admin"
+            };
+            //_loginInfo.AuthenticatedUser();
 
-            //find user by id/token
-            //check user level and assign workflow level
+
+            //TODO find user by id/token
+            //TODO check user level and assign workflow level
 
             //validate listingsid are real
-            var ToBePublishListing = (await _listingRepository.FindById(message.ListingId)).Listing;
-            
-            //check is there any request related to the listing
-            //if(PublishRequest.status workflow) //stop workflow
-            if (ToBePublishListing != null)
+            var getListingResponse = await _listingRepository.FindById(message.ListingId);
+
+            //TODO check is there any request related to the listing
+
+            if (getListingResponse.Success) //found listing
             {
-                
-                    //create new workflow objects
-                    Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
-                if (PublishListingWorkflow != null)//if not published
+                var ToBePublishListing = getListingResponse.Listing;
+                //create new workflow objects
+                Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
+                if (PublishListingWorkflow == null)//if not published
                 {
-                    PublishListingWorkflow.Start();
-                }
-                else
-                {
-                    Errors.Add($"Listing {ToBePublishListing.ListingName} is already published");
+                    outputPort.Handle(new PublishListingResponse(new List<string> { $"{ToBePublishListing.ListingName } is already published" }));
+                    return false;
                 }
 
-                //filter workflow with same type and same listing
+                //TODO filter workflow with same type and same listing
 
                 //save into workflow database
-                var result = new CreateWorkflowResponse(Errors);
+
                 using (var session = await _transaction.StartSession())
                 {
-                    session.StartTransaction();
-                    result = _workflowRepository.CreateWorkflow(PublishListingWorkflow, session);
-                    //listing status set to pending
+                    try
+                    {
+                        session.StartTransaction();
+                        var createWorkflowResponse = await _workflowRepository.CreateWorkflowAsyncWithSession(PublishListingWorkflow, session);
+                        if (!createWorkflowResponse.Success)
+                        {
+                            await session.AbortTransactionAsync();
+                            outputPort.Handle(new PublishListingResponse(createWorkflowResponse.Errors, false, createWorkflowResponse.Message));
+                            return false;
+                        }
+                        // update listing status set to pending
+                        var updateListingStatusResponse = await _listingRepository.UpdateAsyncWithSession(ToBePublishListing, session);
 
-                    _transaction.Session.CommitTransaction();
+                        if (!updateListingStatusResponse.Success)
+                        {
+                            await session.AbortTransactionAsync();
+                            outputPort.Handle(new PublishListingResponse(updateListingStatusResponse.Errors, false, updateListingStatusResponse.Message));
+                            return false;
+                        }
+
+                        if (updateListingStatusResponse.Success && createWorkflowResponse.Success)
+                        {
+                            await session.CommitTransactionAsync();
+                            outputPort.Handle(new PublishListingResponse(ToBePublishListing.ListingId + " workflow created successfully", true));
+                            return true;
+                        }
+                        await session.AbortTransactionAsync();
+
+                        outputPort.Handle(new PublishListingResponse(ToBePublishListing.ListingId + " error creating workflow"));
+                        return false;
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+
                 }
-               
-                if (result.Success) //transaction commited
-                {
-                    outputPort.Handle(new PublishListingResponse(result.Id, true,"Workflow Started Successfully"));
-                }
-                else //transaction failed
-                {
-                    outputPort.Handle(new PublishListingResponse(result.Errors));
-                }
-                return result.Success;
+
+
             }
-
-            outputPort.Handle(new PublishListingResponse($"{nameof(message)} cannot be null"));
+            outputPort.Handle(new PublishListingResponse(getListingResponse.Errors, false, getListingResponse.Message));
             return false;
         }
 
