@@ -60,10 +60,10 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
         //GET api/workflows/{id}
         [HttpGet("{id}")]
-        public IActionResult GetWorkflowById([FromRoute]string id)
+        public async Task<IActionResult> GetWorkflowById([FromRoute]string id)
         {
             var req = new GetWorkflowRequest(id);
-            _getWorkflowUseCase.Handle(req, _workflowPresenter);
+            await _getWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }
 

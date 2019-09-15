@@ -7,6 +7,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Entities
     public class UserDto
     {
         public string email { get; set; }
+        public string role { get; set; }
 
         public string username { get; set; }
 
