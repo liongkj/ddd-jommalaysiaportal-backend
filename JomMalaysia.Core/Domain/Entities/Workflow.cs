@@ -22,6 +22,10 @@ namespace JomMalaysia.Core.Domain.Entities
         public string Details { get; set; }
         public ICollection<Workflow> PreviousWorkflows { get; private set; }
 
+        public Workflow()
+        {
+
+        }
         public Workflow(User user, Listing listing, WorkflowTypeEnum type)
         {
             Requester = user;

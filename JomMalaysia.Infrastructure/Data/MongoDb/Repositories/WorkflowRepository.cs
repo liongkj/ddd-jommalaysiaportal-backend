@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
-using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
-using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -101,7 +98,19 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                         _db.AsQueryable()
                         .ToListAsync();
                 }
-                Workflows = _mapper.Map<List<WorkflowDto>, List<Workflow>>(query);
+                Workflows = _mapper.Map<List<Workflow>>(query);
+                int i = 0;
+                foreach (WorkflowDto workflow in query)
+                {
+
+                    var temp = Converted(workflow.Listing);
+                    if (temp != null)
+                    {
+                        Workflows[i].Listing = temp;
+                    }
+                    i++;
+                }
+
             }
             catch (AutoMapperMappingException e)
             {
@@ -115,6 +124,44 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 new GetAllWorkflowResponse(new List<string> { "No workflow found" }, false) :
                 new GetAllWorkflowResponse(Workflows, true);
             return response;
+        }
+
+
+        #region private helper method
+        private Listing Converted(ListingSummaryDto list)
+        {
+            if (list != null)
+            {
+                if (GetListingTypeHelper(list).Equals(typeof(EventListing)))
+                {
+                    var i = _mapper.Map<EventListing>(list);
+
+                    return i;
+                }
+
+                if (GetListingTypeHelper(list).Equals(typeof(PrivateListing)))
+                {
+                    var i = _mapper.Map<PrivateListing>(list);
+                    return i;
+                }
+            }
+            return null;
+        }
+
+        private Type GetListingTypeHelper(ListingSummaryDto list)
+        {
+            if (list.ListingType == ListingTypeEnum.Event.ToString())
+            {
+                return typeof(EventListing);
+
+            }
+            if (list.ListingType == ListingTypeEnum.Private.ToString())
+            {
+                return typeof(PrivateListing);
+            }
+            throw new ArgumentException("Error taking listing info from database ");
+            #endregion
+
         }
     }
 }

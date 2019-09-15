@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.Enums;
+﻿using System.Collections.Generic;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Infrastructure.Data.MongoDb.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
+namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
 {
     public class ListingDto : IEntityDateTime
     {

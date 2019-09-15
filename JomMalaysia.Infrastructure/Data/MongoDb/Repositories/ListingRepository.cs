@@ -9,7 +9,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
-using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

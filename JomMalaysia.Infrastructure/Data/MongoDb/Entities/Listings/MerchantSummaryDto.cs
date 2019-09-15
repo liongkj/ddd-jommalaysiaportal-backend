@@ -6,7 +6,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
+namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
 {
     public class MerchantSummaryDto
     {

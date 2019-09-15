@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using MongoDB.Driver.GeoJsonObjectModel;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
+using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
 {
@@ -144,9 +140,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region workflow mapping
 
             CreateMap<Workflow, WorkflowDto>()
-                    .ForMember(w => w.Id, opt => opt.MapFrom(wd => wd.WorkflowId))
+                    .ForMember(wd => wd.Id, opt => opt.MapFrom(w => w.WorkflowId))
                     .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
                     .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
+                    .ForMember(wd => wd.Listing, opt => opt.MapFrom(w => w.Listing))
                     ;
             //dto --> domain
 
@@ -155,7 +152,28 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
+                .ForMember(w => w.Listing, opt => opt.Ignore())
+
                 ;
+
+            CreateMap<ListingSummaryDto, Listing>()
+                            .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
+                            .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
+                            .ForMember(l => l.Status, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
+                            .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
+                        .ForMember(l => l.ModifiedAt, opt => opt.MapFrom(ld => ld.ModifiedAt.ToLocalTime()))
+                            .IncludeAllDerived()
+
+                        ;
+
+            CreateMap<ListingSummaryDto, EventListing>()
+                        ;
+
+            CreateMap<ListingSummaryDto, PrivateListing>();
+
+
+
+
             #endregion
 
 
