@@ -67,10 +67,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        private WorkflowStatusEnum WorkflowIsRejected()
-        {
-            return WorkflowStatusEnum.Completed;
-        }
+
         private WorkflowStatusEnum WorkflowIsApproved()
         {
             if (!IsCompleted())
@@ -84,15 +81,21 @@ namespace JomMalaysia.Core.Domain.Entities
                 return WorkflowHasCompleted();
             }
         }
+        private WorkflowStatusEnum WorkflowIsRejected()
+        {
+            return WorkflowStatusEnum.Completed;
+        }
         private WorkflowStatusEnum WorkflowHasCompleted()
         {
             return WorkflowStatusEnum.Completed;
             //TODO initiate change update listing
         }
 
-        private bool IsCompleted()
+        public bool IsCompleted()
         {
-            return Lvl == WorkflowStatusEnum.Level2.Id || Lvl == WorkflowStatusEnum.Completed.Id;
+            if (Status != null)
+                return Status == WorkflowStatusEnum.Completed;
+            return Lvl == WorkflowStatusEnum.Completed.Id;
         }
 
 

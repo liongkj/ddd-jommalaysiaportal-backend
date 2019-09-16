@@ -5,6 +5,7 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
+using JomMalaysia.Core.Domain.Enums;
 
 namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
 {
@@ -38,11 +39,18 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
                 }
 
                 var ApprovedWorkflow = responder.ApproveRejectWorkflow(getWorkflowResponse.Workflow, message.Action, message.Comments);
+
                 if (ApprovedWorkflow == null)
                 {
                     outputPort.Handle(new WorkflowActionResponse(new List<string> { "Error Approving Workflow" }));
                     return false;
                 }
+                if (ApprovedWorkflow.Status.Equals(WorkflowStatusEnum.Completed))
+                {
+                    outputPort.Handle(new WorkflowActionResponse(new List<string> { "The selected workflow has been completed" }));
+                    return false;
+                }
+
                 var response = await _workfowRepository.UpdateAsync(ApprovedWorkflow);
                 //TODO update listing if published logic
                 outputPort.Handle(response);

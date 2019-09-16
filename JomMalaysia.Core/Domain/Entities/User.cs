@@ -73,16 +73,22 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Workflow ApproveRejectWorkflow(Workflow w, string action, string comments)
         {
-            var ChildWorkflow = new Workflow(this, w, comments);
-
-            if (UserHasAuthorityIn(ChildWorkflow))
+            if (!w.IsCompleted())
             {
-                var status = ChildWorkflow.IsApprovedOrRejected(action);
+                var ChildWorkflow = new Workflow(this, w, comments);
 
 
+                if (UserHasAuthorityIn(ChildWorkflow))
+                {
+                    var status = ChildWorkflow.IsApprovedOrRejected(action);
 
-                w.UpdateWorkflowStatus(status);
-                w.HistoryData.Add(ChildWorkflow);
+                    w.UpdateWorkflowStatus(status);
+                    w.HistoryData.Add(ChildWorkflow);
+                    return w;
+                }
+            }
+            else
+            {
                 return w;
             }
             return null;

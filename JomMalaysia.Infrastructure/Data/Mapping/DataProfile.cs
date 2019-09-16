@@ -164,6 +164,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<WorkflowDto, Workflow>()
                 .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
+                .ForMember(w => w.Lvl, opt => opt.Ignore())
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
                 .ForMember(w => w.Listing, opt => opt.Ignore())
 

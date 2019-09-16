@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.Domain.Enums
             var enums = GetAll<T>();
             foreach (var e in enums)
             {
-                if (e.Name == name)
+                if (e.Name == name.ToLower())
                     return e;
             }
             return null;
