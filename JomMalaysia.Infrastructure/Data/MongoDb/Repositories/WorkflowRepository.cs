@@ -140,7 +140,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 return new WorkflowActionResponse(new List<string> { e.ToString() }, false, e.Message);
             }
-            return new WorkflowActionResponse(updatedWorkflow, result.IsAcknowledged, "update success");
+            return new WorkflowActionResponse("Workflow " + updatedWorkflow.WorkflowId, result.IsAcknowledged, "update success");
         }
 
         #region private helper method

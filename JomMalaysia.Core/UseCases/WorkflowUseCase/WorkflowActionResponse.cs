@@ -6,7 +6,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase
 {
     public class WorkflowActionResponse : UseCaseResponseMessage
     {
-        public Workflow Workflow { get; }
+        public string WorkflowId { get; }
         public IEnumerable<string> Errors { get; }
 
         public WorkflowActionResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
@@ -14,9 +14,9 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase
             Errors = errors;
         }
 
-        public WorkflowActionResponse(Workflow Workflow, bool success = false, string message = null) : base(success, message)
+        public WorkflowActionResponse(string Workflowid, bool success = false, string message = null) : base(success, message)
         {
-            this.Workflow = Workflow;
+            this.WorkflowId = WorkflowId;
         }
     }
 }

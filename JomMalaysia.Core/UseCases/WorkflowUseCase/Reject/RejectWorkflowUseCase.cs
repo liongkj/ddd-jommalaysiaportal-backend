@@ -43,7 +43,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Reject
 
                 if (RejectedWorkflow.Status.Equals(WorkflowStatusEnum.Rejected))
                 {
-                    outputPort.Handle(new WorkflowActionResponse(new List<string> { "The selected workflow has been completed" }));
+                    outputPort.Handle(new WorkflowActionResponse(new List<string> { "The selected workflow has already been completed" }));
                     return false;
                 }
 
