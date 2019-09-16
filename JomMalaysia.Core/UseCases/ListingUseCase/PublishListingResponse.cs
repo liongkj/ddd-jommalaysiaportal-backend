@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JomMalaysia.Core.Interfaces;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
+namespace JomMalaysia.Core.UseCases.ListingUseCase
 {
     public class PublishListingResponse : UseCaseResponseMessage
     {

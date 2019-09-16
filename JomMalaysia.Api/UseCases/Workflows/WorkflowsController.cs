@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using JomMalaysia.Core.UseCases.ListingUseCase;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Approve;
@@ -49,7 +50,18 @@ namespace JomMalaysia.Api.UseCases.Workflows
         public async Task<IActionResult> Publish([FromRoute] string ListingId)
         {
 
-            var req = new PublishListingRequest(ListingId);
+            var req = new ListingWorkflowRequest(ListingId);
+
+            await _publishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
+            return _workflowPresenter.ContentResult;
+        }
+
+        [Route("~/api/listings/{ListingId}/unpublish")]
+        [HttpPost]
+        public async Task<IActionResult> Unpublish([FromRoute] string ListingId)
+        {
+
+            var req = new ListingWorkflowRequest(ListingId);
 
             await _publishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;

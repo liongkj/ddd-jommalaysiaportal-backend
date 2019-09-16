@@ -27,7 +27,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             _transaction = transaction;
             _loginInfo = loginInfoProvider;
         }
-        public async Task<bool> Handle(PublishListingRequest message, IOutputPort<PublishListingResponse> outputPort)
+        public async Task<bool> Handle(ListingWorkflowRequest message, IOutputPort<PublishListingResponse> outputPort)
         {
             var requester = new User
             {

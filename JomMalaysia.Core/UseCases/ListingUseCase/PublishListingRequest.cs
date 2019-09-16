@@ -6,13 +6,13 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
+namespace JomMalaysia.Core.UseCases.ListingUseCase
 {
-    public class PublishListingRequest : IUseCaseRequest<PublishListingResponse>
+    public class ListingWorkflowRequest : IUseCaseRequest<PublishListingResponse>
     {
         public string ListingId { get; set; }
 
-        public PublishListingRequest(string listingId)
+        public ListingWorkflowRequest(string listingId)
         {
             ListingId = listingId;
         }
