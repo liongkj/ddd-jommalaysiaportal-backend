@@ -58,9 +58,8 @@ namespace JomMalaysia.Api.UseCases.Workflows
         //GET api/workflows
         //GET api/workflows/status/{pending}
         [Route("")]
-
         [Route("status/{status}")]
-        public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "")
+        public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "pending")
         {
             var req = new GetAllWorkflowRequest(status.ToLower());
             await _getAllWorkflowUseCase.Handle(req, _workflowPresenter);
@@ -90,9 +89,10 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
         //PUT api/workflows/{id}/reject
         [HttpPut("{WorkflowId}/reject")]
-        public async Task<IActionResult> Reject([FromRoute]string WorkflowId, string Comments = null)
+        public async Task<IActionResult> Reject([FromRoute]string WorkflowId, [FromBody]WorkflowActionRequest req)
         {
-            var req = new WorkflowActionRequest(WorkflowId, "reject", Comments);
+            req.WorkflowId = WorkflowId;
+            req.Action = "reject";
             await _rejectWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }

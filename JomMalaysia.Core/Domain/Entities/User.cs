@@ -77,10 +77,9 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 var ChildWorkflow = new Workflow(this, w, comments);
 
-
                 if (UserHasAuthorityIn(ChildWorkflow))
                 {
-                    var status = ChildWorkflow.IsApprovedOrRejected(action);
+                    var status = ChildWorkflow.ApproveRejectOperation(action);
 
                     w.UpdateWorkflowStatus(status);
                     w.HistoryData.Add(ChildWorkflow);

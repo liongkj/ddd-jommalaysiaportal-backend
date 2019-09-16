@@ -52,7 +52,7 @@ namespace JomMalaysia.Core.Domain.Entities
         }
 
 
-        public WorkflowStatusEnum IsApprovedOrRejected(string action)
+        public WorkflowStatusEnum ApproveRejectOperation(string action)
         {
 
             if (action.ToLower().Equals("approve"))
@@ -81,9 +81,12 @@ namespace JomMalaysia.Core.Domain.Entities
                 return WorkflowHasCompleted();
             }
         }
+
+
+
         private WorkflowStatusEnum WorkflowIsRejected()
         {
-            return WorkflowStatusEnum.Completed;
+            return WorkflowStatusEnum.Rejected;
         }
         private WorkflowStatusEnum WorkflowHasCompleted()
         {
@@ -94,8 +97,8 @@ namespace JomMalaysia.Core.Domain.Entities
         public bool IsCompleted()
         {
             if (Status != null)
-                return Status == WorkflowStatusEnum.Completed;
-            return Lvl == WorkflowStatusEnum.Completed.Id;
+                return Status == WorkflowStatusEnum.Completed || Status == WorkflowStatusEnum.Rejected;
+            return Lvl == WorkflowStatusEnum.Completed.Id || Lvl == WorkflowStatusEnum.Rejected.Id;
         }
 
 
