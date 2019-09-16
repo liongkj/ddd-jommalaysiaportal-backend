@@ -30,7 +30,16 @@ namespace JomMalaysia.Core.Domain.Enums
             }
             return null;
         }
-
+        public static T Parse<T>(int id) where T : EnumerationBase
+        {
+            var enums = GetAll<T>();
+            foreach (var e in enums)
+            {
+                if (e.Id == id)
+                    return e;
+            }
+            return null;
+        }
         public static IEnumerable<T> GetAll<T>() where T : EnumerationBase
         {
             var fields = typeof(T).GetFields(BindingFlags.Public |

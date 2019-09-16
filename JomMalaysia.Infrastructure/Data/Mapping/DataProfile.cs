@@ -144,7 +144,12 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                     .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
                     .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                     .ForMember(wd => wd.Listing, opt => opt.MapFrom(w => w.Listing))
+                    .ForMember(wd => wd.Merchant, opt => opt.MapFrom(w => w.Listing.Merchant.CompanyName))
                     ;
+
+            CreateMap<Workflow, WorkflowSummaryDto>()
+            .ReverseMap()
+                ;
 
             CreateMap<Listing, ListingSummaryDto>()
                 .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))

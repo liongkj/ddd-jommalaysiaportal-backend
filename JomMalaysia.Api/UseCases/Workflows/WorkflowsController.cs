@@ -2,6 +2,7 @@
 using AutoMapper;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Approve;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Reject;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         //GET api/workflows
         //GET api/workflows/status/{pending}
         [Route("")]
+
         [Route("status/{status}")]
         public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "")
         {
@@ -75,21 +77,22 @@ namespace JomMalaysia.Api.UseCases.Workflows
             return _workflowPresenter.ContentResult;
         }
 
-        //PUT api/workflows/{id}/reject
+
         //PUT api/workflows/{id}/approve
-        [HttpPut("{id}/approve")]
-        public async Task<IActionResult> Approve([FromRoute]string WorkflowId)
+        [HttpPut("{WorkflowId}/approve")]
+        public async Task<IActionResult> Approve([FromRoute]string WorkflowId, [FromBody]WorkflowActionRequest req)
         {
-            var req = new WorkflowActionRequest(WorkflowId, "approve");
+            req.WorkflowId = WorkflowId;
+            req.Action = "approve";
             await _approveWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }
 
         //PUT api/workflows/{id}/reject
-        [HttpPut("{id}/reject")]
-        public async Task<IActionResult> Reject([FromRoute]string WorkflowId)
+        [HttpPut("{WorkflowId}/reject")]
+        public async Task<IActionResult> Reject([FromRoute]string WorkflowId, string Comments = null)
         {
-            var req = new WorkflowActionRequest(WorkflowId, "reject");
+            var req = new WorkflowActionRequest(WorkflowId, "reject", Comments);
             await _rejectWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }

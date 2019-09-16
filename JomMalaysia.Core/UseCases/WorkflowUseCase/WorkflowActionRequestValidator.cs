@@ -6,8 +6,8 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase
     {
         public WorkflowActionRequestValidator()
         {
-            RuleFor(x => x.Action).NotEmpty().NotNull();
-            RuleFor(x => x.WorkflowId).NotEmpty().NotNull().Length(24).WithMessage("Please enter a valid workflow Id");
+
+            // RuleFor(x => x.WorkflowId).NotEmpty().NotNull().Length(24).WithMessage("Please enter a valid workflow Id");
         }
     }
 }

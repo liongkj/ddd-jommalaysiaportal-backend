@@ -6,6 +6,7 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Core.UseCases.WorkflowUseCase;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
@@ -38,24 +39,6 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 return new CreateWorkflowResponse(new List<string> { e.Message, "Error saving workflow" }, false);
             }
             return new CreateWorkflowResponse(WorkflowDto.Id + " inserted", true);
-        }
-
-
-
-        public GetAllWorkflowResponse FindByListing(List<string> listingIds, WorkflowStatusEnum workflowStatus)
-        {
-            var query =
-                   _db.AsQueryable()
-               .Where(W => W.Status.Equals(workflowStatus.ToString()))
-
-               .OrderBy(c => c.Created)
-               .ToList();
-
-            List<Workflow> Workflows = _mapper.Map<List<Workflow>>(query);
-            var response = Workflows.Count < 1 ?
-                new GetAllWorkflowResponse(new List<string> { "No workflow found" }, false) :
-                new GetAllWorkflowResponse(Workflows, true);
-            return response;
         }
 
         public async Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId)
@@ -137,6 +120,29 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         }
 
 
+        public async Task<WorkflowActionResponse> UpdateAsync(Workflow updatedWorkflow, IClientSessionHandle session = null)
+        {
+            ReplaceOneResult result;
+
+            FilterDefinition<WorkflowDto> filter = Builders<WorkflowDto>.Filter.Eq(m => m.Id, updatedWorkflow.WorkflowId);
+            try
+            {
+                var workflowDto = _mapper.Map<WorkflowDto>(updatedWorkflow);
+                if (session != null)
+                    result = await _db.ReplaceOneAsync(session, filter, workflowDto);
+                else result = await _db.ReplaceOneAsync(filter, workflowDto);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                return new WorkflowActionResponse(new List<string> { e.ToString() }, false, e.Message);
+            }
+            catch (Exception e)
+            {
+                return new WorkflowActionResponse(new List<string> { e.ToString() }, false, e.Message);
+            }
+            return new WorkflowActionResponse(updatedWorkflow, result.IsAcknowledged, "update success");
+        }
+
         #region private helper method
         private Listing Converted(ListingSummaryDto list)
         {
@@ -173,5 +179,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             #endregion
 
         }
+
+
+
     }
 }

@@ -18,6 +18,15 @@ namespace JomMalaysia.Core.Domain.Enums
 
         }
 
+        public static WorkflowStatusEnum For(string enumstring)
+        {
 
+            return Parse<WorkflowStatusEnum>(enumstring);
+        }
+        public static WorkflowStatusEnum For(int enumid)
+        {
+
+            return Parse<WorkflowStatusEnum>(enumid);
+        }
     }
 }

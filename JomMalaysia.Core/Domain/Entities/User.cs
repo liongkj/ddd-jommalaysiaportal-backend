@@ -71,13 +71,42 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public void ApproveWorkflow(Workflow w)
+        public Workflow ApproveRejectWorkflow(Workflow w, string action, string comments)
         {
+            var ChildWorkflow = new Workflow(this, w, comments);
 
+            if (UserHasAuthorityIn(ChildWorkflow))
+            {
+                var status = ChildWorkflow.IsApprovedOrRejected(action);
+
+
+
+                w.UpdateWorkflowStatus(status);
+                w.HistoryData.Add(ChildWorkflow);
+                return w;
+            }
+            return null;
         }
 
-        public void RejectWorkflow(Workflow w)
+
+        private bool UserHasAuthorityIn(Workflow workflow)
         {
+            return UserWorkflowLevel() >= workflow.Lvl;
+        }
+        private int UserWorkflowLevel()
+        {
+            var assignedRole = Role.ToLower();
+            switch (assignedRole)
+            {
+                case "admin":
+                    return 2;
+                case "editor":
+                    return 1;
+                case "manager":
+                    return 3;
+                default:
+                    return 0;
+            }
 
         }
 

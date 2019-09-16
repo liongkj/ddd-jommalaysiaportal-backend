@@ -12,21 +12,21 @@ namespace JomMalaysia.Core.Domain.Entities
     {
         public string WorkflowId { get; set; }
         public WorkflowTypeEnum Type { get; set; }
-        public int Lvl { get; set; } = 1;
+        public int Lvl { get; set; }
 
         public Listing Listing { get; set; }
         public User Requester { get; set; }
         public User Responder { get; set; }
         public WorkflowStatusEnum Status { get; set; }
         public DateTime Created { get; set; }
-        public string Details { get; set; }
-        public ICollection<Workflow> PreviousWorkflows { get; private set; }
+        public string Comments { get; set; }
+        public ICollection<Workflow> HistoryData { get; private set; }
 
         public Workflow()
         {
 
         }
-        public Workflow(User user, Listing listing, WorkflowTypeEnum type)
+        public Workflow(User user, Listing listing, WorkflowTypeEnum type) //create new workflow
         {
             Requester = user;
             Listing = listing;
@@ -34,43 +34,68 @@ namespace JomMalaysia.Core.Domain.Entities
             Type = type;
             Status = WorkflowStatusEnum.Pending;
 
-            PreviousWorkflows = new Collection<Workflow>();
+            HistoryData = new Collection<Workflow>();
+        }
+
+        public Workflow(User responder, Workflow parentWorkflow, string comments)
+        {
+            Comments = comments;
+            Created = DateTime.Now;
+            Lvl = parentWorkflow.Status.Id;
+            Responder = responder;
+
+        }
+
+        public void UpdateWorkflowStatus(WorkflowStatusEnum action)
+        {
+            Status = action;
         }
 
 
-        public void Approve()
-        {
-            Status = WorkflowStatusEnum.Level1;
-        }
-
-        public void Reject()
+        public WorkflowStatusEnum IsApprovedOrRejected(string action)
         {
 
-        }
-
-        public void Start()
-        {
-            switch (this.Type.ToString())
+            if (action.ToLower().Equals("approve"))
             {
-                case "publish":
-                    PublishListingOperation();
-                    break;
-                case "update":
-                    EditLiveListingOperation();
-                    break;
+                return WorkflowIsApproved();
+            }
+            else
+            {
+                return WorkflowIsRejected();
             }
 
+
         }
 
-        private void EditLiveListingOperation()
+        private WorkflowStatusEnum WorkflowIsRejected()
         {
+            return WorkflowStatusEnum.Completed;
         }
-
-        private void PublishListingOperation()
+        private WorkflowStatusEnum WorkflowIsApproved()
         {
-            //Type = WorkflowTypeEnum.Publish;
-
+            if (!IsCompleted())
+            {
+                Lvl++;
+                return WorkflowStatusEnum.For(Lvl);
+            }
+            else
+            {
+                Lvl++;
+                return WorkflowHasCompleted();
+            }
         }
+        private WorkflowStatusEnum WorkflowHasCompleted()
+        {
+            return WorkflowStatusEnum.Completed;
+            //TODO initiate change update listing
+        }
+
+        private bool IsCompleted()
+        {
+            return Lvl == WorkflowStatusEnum.Level2.Id || Lvl == WorkflowStatusEnum.Completed.Id;
+        }
+
+
     }
 
 }
