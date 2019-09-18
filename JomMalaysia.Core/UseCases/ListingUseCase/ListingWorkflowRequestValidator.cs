@@ -3,9 +3,9 @@ using FluentValidation;
 namespace JomMalaysia.Core.UseCases.ListingUseCase
 
 {
-    public class PublishListingRequestValidator : AbstractValidator<ListingWorkflowRequest>
+    public class ListingWorkflowRequestValidator : AbstractValidator<ListingWorkflowRequest>
     {
-        public PublishListingRequestValidator()
+        public ListingWorkflowRequestValidator()
         {
             RuleFor(x => x.ListingId).NotNull().NotEmpty().Length(24).WithMessage("Please enter a valid {PropertyName}");
 

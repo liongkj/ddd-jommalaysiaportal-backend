@@ -10,8 +10,10 @@ using Xunit;
 
 namespace JomMalaysia.Test.Core.UseCase
 {
+
     public class WorkflowTest
     {
+
         [Fact]
         public void WorkflowStatusLevel1_IsComplete_ReturnFalse()
         {

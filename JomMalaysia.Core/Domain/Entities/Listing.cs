@@ -53,7 +53,10 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             return PublishStatus == null || !PublishStatus.IsPublished;
         }
-
+        public bool IsEligibleToUnpublish()
+        {
+            return PublishStatus == null || PublishStatus.IsPublished;
+        }
         //public bool SetCategory(Category category, Subcategory Subcategory)
         //{
         //    this.Category = category;

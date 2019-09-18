@@ -7,15 +7,15 @@ using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
+namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 {
-    public class PublishListingUseCase : IPublishListingUseCase
+    public class UnpublishListingUseCase : IUnpublishListingUseCase
     {
         private readonly IListingRepository _listingRepository;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IMongoDbContext _transaction;
         private readonly ILoginInfoProvider _loginInfo;
-        public PublishListingUseCase(
+        public UnpublishListingUseCase(
             IListingRepository listingRepository,
             IWorkflowRepository workflowRepository,
             ILoginInfoProvider loginInfoProvider,
@@ -49,53 +49,37 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 outputPort.Handle(new ListingWorkflowResponse(getListingResponse.Errors, false, getListingResponse.Message));
                 return false;
             }
-            var ToBePublishListing = getListingResponse.Listing;
-            //create new workflow objects
-            Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
-            if (PublishListingWorkflow == null)//if not published
+
+            var ToBeDeleted = getListingResponse.Listing;
+            //create new workflow
+            Workflow UnpublishListingWorkflow = requester.UnpublishListing(ToBeDeleted);
+
+            if (UnpublishListingWorkflow == null)
             {
-                outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } is already published" }));
+                outputPort.Handle(new ListingWorkflowResponse(new List<string> { "Listing is not published" }));
                 return false;
             }
 
-            //TODO filter workflow with same type and same listing
-
-            //save into workflow database
-
             using (var session = await _transaction.StartSession())
             {
+                session.StartTransaction();
+                ListingWorkflowResponse NewWorkflowResponse;
                 try
                 {
-                    session.StartTransaction();
-                    var createWorkflowResponse = await _workflowRepository.CreateWorkflowAsyncWithSession(PublishListingWorkflow, session);
-                    var updateListingStatusResponse = await _listingRepository.UpdateAsyncWithSession(ToBePublishListing, session);
-                    if (!createWorkflowResponse.Success)
-                    {
-                        outputPort.Handle(new ListingWorkflowResponse(createWorkflowResponse.Errors, false, createWorkflowResponse.Message));
-                        return false;
-                    }
-                    // update listing status set to pending
-
-
-                    if (!updateListingStatusResponse.Success)
-                    {
-                        outputPort.Handle(new ListingWorkflowResponse(updateListingStatusResponse.Errors, false, updateListingStatusResponse.Message));
-                        return false;
-                    }
+                    NewWorkflowResponse = await _workflowRepository.CreateWorkflowAsyncWithSession(UnpublishListingWorkflow, session);
                 }
                 catch
                 {
                     await session.AbortTransactionAsync();
-                    outputPort.Handle(new ListingWorkflowResponse(ToBePublishListing.ListingId + " error creating workflow"));
-                    return false;
+                    throw;
                 }
                 await session.CommitTransactionAsync();
-                outputPort.Handle(new ListingWorkflowResponse(ToBePublishListing.ListingId + " workflow created successfully", true));
-                return true;
+                outputPort.Handle(NewWorkflowResponse);
+                return NewWorkflowResponse.Success;
             }
+
+
         }
-
     }
-
 
 }

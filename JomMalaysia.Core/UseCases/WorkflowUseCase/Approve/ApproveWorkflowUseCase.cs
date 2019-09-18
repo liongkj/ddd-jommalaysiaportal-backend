@@ -37,17 +37,22 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
                     outputPort.Handle(new WorkflowActionResponse(getWorkflowResponse.Errors, false, getWorkflowResponse.Message));
                     return false;
                 }
+                var ApprovedWorkflow = getWorkflowResponse.Workflow;
+                var ApprovedWorkflowCanProceed = responder.ApproveRejectWorkflow(getWorkflowResponse.Workflow, message.Action, message.Comments);
 
-                var ApprovedWorkflow = responder.ApproveRejectWorkflow(getWorkflowResponse.Workflow, message.Action, message.Comments);
-
-                if (ApprovedWorkflow == null)
+                if (!ApprovedWorkflowCanProceed)
                 {
+                    if (ApprovedWorkflow.Responder != null) //not enought
+                    {
+                        outputPort.Handle(new WorkflowActionResponse(new List<string> { "User do not have enough authority" }));
+                        return false;
+                    }
+                    if (ApprovedWorkflow.Status.Equals(WorkflowStatusEnum.Completed))
+                    {
+                        outputPort.Handle(new WorkflowActionResponse(new List<string> { "Could not proceed" }, false, "The selected workflow has been already been completed and the changes will be live soon"));
+                        return false;
+                    }
                     outputPort.Handle(new WorkflowActionResponse(new List<string> { "Error Approving Workflow" }));
-                    return false;
-                }
-                if (ApprovedWorkflow.Status.Equals(WorkflowStatusEnum.Completed))
-                {
-                    outputPort.Handle(new WorkflowActionResponse(new List<string> { "The selected workflow has been already been completed" }));
                     return false;
                 }
 

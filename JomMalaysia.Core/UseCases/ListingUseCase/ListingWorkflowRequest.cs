@@ -8,7 +8,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase
 {
-    public class ListingWorkflowRequest : IUseCaseRequest<PublishListingResponse>
+    public class ListingWorkflowRequest : IUseCaseRequest<ListingWorkflowResponse>
     {
         public string ListingId { get; set; }
 

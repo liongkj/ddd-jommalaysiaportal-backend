@@ -66,37 +66,44 @@ namespace JomMalaysia.Core.Domain.Entities
             return null;
         }
 
-        public void UnpublishListing()
+        public Workflow UnpublishListing(Listing l, string details = null)
         {
-
+            if (l.IsEligibleToUnpublish())
+            {
+                return new Workflow(this, l, WorkflowTypeEnum.Unpublish);
+            }
+            return null;
         }
 
-        public Workflow ApproveRejectWorkflow(Workflow w, string action, string comments)
+        public bool ApproveRejectWorkflow(Workflow w, string action, string comments)
         {
+            bool CanProceed = false;
             if (!w.IsCompleted())
             {
                 var ChildWorkflow = new Workflow(this, w, comments);
 
-                if (UserHasAuthorityIn(ChildWorkflow))
+                if (!UserHasAuthorityIn(ChildWorkflow)) //not enough authority
+                {
+                    w.Responder = this;
+                }
+                else
                 {
                     var status = ChildWorkflow.ApproveRejectOperation(action);
 
                     w.UpdateWorkflowStatus(status);
                     w.HistoryData.Add(ChildWorkflow);
-                    return w;
+                    CanProceed = true;
                 }
             }
-            else
-            {
-                return w;
-            }
-            return null;
+
+            return CanProceed;
         }
 
 
         private bool UserHasAuthorityIn(Workflow workflow)
         {
             return UserWorkflowLevel() >= workflow.Lvl;
+            //TODO Auth0 role
         }
         private int UserWorkflowLevel()
         {

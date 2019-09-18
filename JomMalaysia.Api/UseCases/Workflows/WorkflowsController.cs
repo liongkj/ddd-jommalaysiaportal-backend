@@ -2,6 +2,7 @@
 using AutoMapper;
 using JomMalaysia.Core.UseCases.ListingUseCase;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
+using JomMalaysia.Core.UseCases.ListingUseCase.Unpublish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Approve;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
@@ -20,6 +21,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         private readonly WorkflowPresenter _workflowPresenter;
 
         private readonly IPublishListingUseCase _publishListingUseCase;
+        private readonly IUnpublishListingUseCase _unpublishListingUseCase;
         private readonly IGetAllWorkflowUseCase _getAllWorkflowUseCase;
         private readonly IGetWorkflowUseCase _getWorkflowUseCase;
         private readonly IApproveWorkflowUseCase _approveWorkflowUseCase;
@@ -31,7 +33,8 @@ namespace JomMalaysia.Api.UseCases.Workflows
             IGetWorkflowUseCase getWorkflowUseCase,
             WorkflowPresenter workflowPresenter,
             IApproveWorkflowUseCase approveWorkflowUseCase,
-            IRejectWorkflowUseCase rejectWorkflowUseCase
+            IRejectWorkflowUseCase rejectWorkflowUseCase,
+            IUnpublishListingUseCase unpublishListingUseCase
             )
         {
             _mapper = mapper;
@@ -41,6 +44,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
             _workflowPresenter = workflowPresenter;
             _approveWorkflowUseCase = approveWorkflowUseCase;
             _rejectWorkflowUseCase = rejectWorkflowUseCase;
+            _unpublishListingUseCase = unpublishListingUseCase;
         }
         #endregion
         //publish a listing a start a approval workflow
@@ -63,7 +67,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
             var req = new ListingWorkflowRequest(ListingId);
 
-            await _publishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
+            await _unpublishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;
         }
 

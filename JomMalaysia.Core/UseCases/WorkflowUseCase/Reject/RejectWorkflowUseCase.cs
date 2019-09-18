@@ -33,19 +33,28 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Reject
                     outputPort.Handle(new WorkflowActionResponse(getWorkflowResponse.Errors, false, getWorkflowResponse.Message));
                     return false;
                 }
-                var RejectedWorkflow = responder.ApproveRejectWorkflow(getWorkflowResponse.Workflow, message.Action, message.Comments);
+                Workflow RejectedWorkflow = getWorkflowResponse.Workflow;
+                var RejectedWorkflowCanProceed = responder.ApproveRejectWorkflow(RejectedWorkflow, message.Action, message.Comments);
 
-                if (RejectedWorkflow == null)
+                if (!RejectedWorkflowCanProceed)
                 {
+                    if (RejectedWorkflow.Responder != null) //not enought
+                    {
+                        outputPort.Handle(new WorkflowActionResponse(new List<string> { "User do not have enough authority" }));
+                        return false;
+                    }
+
+                    if (RejectedWorkflow.Status.Equals(WorkflowStatusEnum.Rejected))
+                    {
+                        outputPort.Handle(new WorkflowActionResponse(new List<string> { "Could not proceed" }, false, "The selected workflow is completed and has already been rejected"));
+                        return false;
+                    }
+
                     outputPort.Handle(new WorkflowActionResponse(new List<string> { "Error Rejecting Workflow" }));
                     return false;
                 }
 
-                if (RejectedWorkflow.Status.Equals(WorkflowStatusEnum.Rejected))
-                {
-                    outputPort.Handle(new WorkflowActionResponse(new List<string> { "The selected workflow has already been completed" }));
-                    return false;
-                }
+
 
                 var response = await _workfowRepository.UpdateAsync(RejectedWorkflow);
 
