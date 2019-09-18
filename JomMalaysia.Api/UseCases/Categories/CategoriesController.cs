@@ -175,7 +175,6 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpPut("{cat}/subcategories/{slug}")]
         public async Task<IActionResult> UpdateSubcategory([FromRoute]string cat, [FromRoute]string slug, [FromBody]CategoryDto Updated)
         {
-            //TODO Test update subcategory
             Category updated = _mapper.Map<Category>(Updated);
             var req = new UpdateCategoryRequest(cat, slug, updated);
             await _updateSubcategoryUseCase.Handle(req, _categoryPresenter);

@@ -8,6 +8,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using MongoDB.Driver;
@@ -24,28 +25,9 @@ public class ListingRepository : IListingRepository
 
         _mapper = mapper;
     }
-    public CreateListingResponse CreateListing(Listing listing)
-    {
-        //notusing
-        var Dto = _mapper.Map(
-            listing,
-            listing.GetType(),
-            new ListingDto().GetType()
-            );
 
-        try
-        {
-            _db.InsertOne((ListingDto)Dto);
-        }
-        catch (Exception e)
-        {
-            var errors = new List<string> { e.ToString() };
-            return new CreateListingResponse(errors);
-        }
-        return new CreateListingResponse(listing.ListingId, true);
-    }
 
-    public async Task<CreateListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session)
+    public async Task<CoreListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session)
     {
         //var ListingDto = _mapper.Map<ListingDto>(listing);
         var Dto = (ListingDto)_mapper.Map(
@@ -57,11 +39,11 @@ public class ListingRepository : IListingRepository
         try
         {
             await _db.InsertOneAsync(session, Dto).ConfigureAwait(false);
-            return new CreateListingResponse(Dto.Id, true);
+            return new CoreListingResponse(Dto.Id, true);
         }
         catch (Exception e)
         {
-            return new CreateListingResponse(new List<string> { e.ToString() }, false, e.Message);
+            return new CoreListingResponse(new List<string> { e.ToString() }, false, e.Message);
         }
 
     }
@@ -107,6 +89,7 @@ public class ListingRepository : IListingRepository
     public GetListingResponse FindByName(string name)
     {
         throw new System.NotImplementedException();
+        //TODO If need this function
     }
 
     public async Task<GetAllListingResponse> GetAllListings()
@@ -142,7 +125,7 @@ public class ListingRepository : IListingRepository
 
 
 
-    public async Task<UpdateListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null)
+    public async Task<CoreListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null)
     {
         ReplaceOneResult result;
 
@@ -156,13 +139,13 @@ public class ListingRepository : IListingRepository
         }
         catch (AutoMapperMappingException e)
         {
-            return new UpdateListingResponse(new List<string> { e.ToString() }, false, e.Message);
+            return new CoreListingResponse(new List<string> { e.ToString() }, false, e.Message);
         }
         catch (Exception e)
         {
-            return new UpdateListingResponse(new List<string> { e.ToString() }, false, e.Message);
+            return new CoreListingResponse(new List<string> { e.ToString() }, false, e.Message);
         }
-        return new UpdateListingResponse(listing.ListingId, result.IsAcknowledged, "update success");
+        return new CoreListingResponse(listing.ListingId, result.IsAcknowledged, "update success");
     }
 
 

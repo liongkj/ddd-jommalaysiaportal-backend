@@ -3,6 +3,7 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.Domain.Factories
 {
@@ -14,7 +15,7 @@ namespace JomMalaysia.Core.Domain.Factories
         private const int EVE = 3;
         private const int SOC = 4;
 
-        public static Listing CreateListing(ListingTypeEnum ListingType, CreateListingRequest listing, Merchant merchant)
+        public static Listing CreateListing(ListingTypeEnum ListingType, CoreListingRequest listing, Merchant merchant)
         {
             int listingTypeId = ListingType.Id;
             List<Coordinates> cor = new List<Coordinates>();

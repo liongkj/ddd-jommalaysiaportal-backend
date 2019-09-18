@@ -5,13 +5,22 @@ using FluentValidation;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Validation;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
+namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
 {
-    public class CreateListingRequestValidator : AbstractValidator<CreateListingRequest>
+    public class CoreListingRequestValidator : AbstractValidator<CoreListingRequest>
     {
-        public CreateListingRequestValidator()
+        public CoreListingRequestValidator()
         {
-            RuleFor(x => x.MerchantId).Length(24).WithMessage("Merchant ID is not valid");
+            RuleFor(x => x.ListingId)
+                .Length(24)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("ListingId is not valid");
+            RuleFor(x => x.MerchantId)
+                .Length(24)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Merchant ID is not valid");
             //TODO regex for validate mongodb object id
             RuleFor(x => x.Address);
             // .NotEmpty()

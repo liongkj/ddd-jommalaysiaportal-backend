@@ -6,6 +6,7 @@ using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 {
@@ -26,7 +27,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             _categoryRepository = categoryRepository;
             _transaction = transaction;
         }
-        public async Task<bool> Handle(CreateListingRequest message, IOutputPort<CreateListingResponse> outputPort)
+        public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
         {
 
 
@@ -34,7 +35,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             var FindMerchantResponse = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
             if (!FindMerchantResponse.Success) //merchant not found
             {
-                outputPort.Handle(new CreateListingResponse(FindMerchantResponse.Errors, false, FindMerchantResponse.Message));
+                outputPort.Handle(new CoreListingResponse(FindMerchantResponse.Errors, false, FindMerchantResponse.Message));
                 return false;
             }
 
@@ -42,7 +43,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             var FindCategoryResponse = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
             if (!FindCategoryResponse.Success)
             {
-                outputPort.Handle(new CreateListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
+                outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
                 return false;
             }
 
@@ -67,12 +68,12 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                         if (UpdateMerchantCommand.Success)
                         {
                             await session.CommitTransactionAsync();
-                            outputPort.Handle(new CreateListingResponse("Listing Created Successfully", true));
+                            outputPort.Handle(new CoreListingResponse("Listing Created Successfully", true));
                             return true;
                         }
                         else
                         {
-                            outputPort.Handle(new CreateListingResponse(UpdateMerchantCommand.Errors, UpdateMerchantCommand.Success, UpdateMerchantCommand.Message));
+                            outputPort.Handle(new CoreListingResponse(UpdateMerchantCommand.Errors, UpdateMerchantCommand.Success, UpdateMerchantCommand.Message));
                             return false;
                         }
                         // outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } failed"));
@@ -80,7 +81,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                     }
                     catch (Exception e)
                     {
-                        outputPort.Handle(new CreateListingResponse(
+                        outputPort.Handle(new CoreListingResponse(
                             $"{GetType().Name} Transaction Error",
                             false,
                              e.ToString()));
@@ -94,7 +95,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             else
             {
 
-                outputPort.Handle(new CreateListingResponse(new List<string> { "Listing Factory Exception" }, false, "Create Listing Operation Failed"));
+                outputPort.Handle(new CoreListingResponse(new List<string> { "Listing Factory Exception" }, false, "Create Listing Operation Failed"));
                 return false;
             }
         }

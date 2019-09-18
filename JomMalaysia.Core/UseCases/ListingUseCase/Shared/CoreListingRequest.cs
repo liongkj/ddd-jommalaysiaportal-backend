@@ -8,14 +8,15 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.SharedRequest;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
+namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
 {
-    public class CreateListingRequest : IUseCaseRequest<CreateListingResponse>
+    public class CoreListingRequest : IUseCaseRequest<CoreListingResponse>
     {
-        public CreateListingRequest()
+        public CoreListingRequest()
         {
 
         }
+        public string ListingId { get; set; }
         public string MerchantId { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }

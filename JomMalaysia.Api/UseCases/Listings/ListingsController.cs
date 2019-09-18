@@ -4,6 +4,8 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,8 +23,9 @@ namespace JomMalaysia.Api.UseCases.Listings
         private readonly ListingPresenter _listingPresenter;
         private readonly IGetListingUseCase _getListingUseCase;
         private readonly IDeleteListingUseCase _deleteListingUseCase;
+
         private readonly IMapper _mapper;
-        //private readonly IUpdateListingUseCase _updateListingUseCase;
+        private readonly IUpdateListingUseCase _updateListingUseCase;
 
 
 
@@ -32,8 +35,9 @@ namespace JomMalaysia.Api.UseCases.Listings
             IGetAllListingUseCase getAllListingUseCase,
             IGetListingUseCase getListingUseCase,
             IDeleteListingUseCase deleteListingUseCase,
+             IUpdateListingUseCase updateListingUseCase,
             IMapper mapper
-            //IUpdateListingUseCase updateListingUseCase, 
+
             )
         {
             _createListingUseCase = createListingUseCase;
@@ -43,7 +47,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
             _deleteListingUseCase = deleteListingUseCase;
             _mapper = mapper;
-            //_updateListingUseCase = updateListingUseCase;
+            _updateListingUseCase = updateListingUseCase;
 
 
         }
@@ -85,11 +89,17 @@ namespace JomMalaysia.Api.UseCases.Listings
         ///edit a listing
         //PUT api/listings/{id}
         //TODO update listing api
+        [HttpPut("/{id:length(24)}")]
+        public async Task<IActionResult> Update(string id, [FromBody] CoreListingRequest ListingObject)
+        {
+            ListingObject.ListingId = id;
+            await _updateListingUseCase.Handle(ListingObject, _listingPresenter);
+            return _listingPresenter.ContentResult;
+        }
 
         // POST api/listings
-
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateListingRequest ListingObject)
+        public async Task<IActionResult> Create([FromBody] CoreListingRequest ListingObject)
         {
 
             //var results = validator.Validate(req);

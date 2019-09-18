@@ -4,6 +4,7 @@ using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
@@ -15,7 +16,7 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public EventListing(CreateListingRequest listing, Address address, Merchant merchant) : base(listing.ListingName, merchant, new CategoryPath(listing.Category, listing.Subcategory), ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
+        public EventListing(CoreListingRequest listing, Address address, Merchant merchant) : base(listing.ListingName, merchant, new CategoryPath(listing.Category, listing.Subcategory), ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
         {
             EventStartDateTime = listing.EventStartDateTime;
             EventEndDateTime = listing.EventEndDateTime;

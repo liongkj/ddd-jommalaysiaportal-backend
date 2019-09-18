@@ -23,11 +23,9 @@ using FluentValidation.AspNetCore;
 using JomMalaysia.Api.Providers;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Framework.Configuration;
-using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using FluentValidation;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using JomMalaysia.Core.Services.ImageProcessingServices;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Api
 {
@@ -78,7 +76,7 @@ namespace JomMalaysia.Api
             //Add Mvc
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateListingRequestValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreListingRequestValidator>());
 
             //add swagger
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" }));
