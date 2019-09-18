@@ -75,6 +75,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         //GET api/workflows/status/{pending}
         [Route("")]
         [Route("status/{status}")]
+        [Route("status")]
         public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "pending")
         {
             var req = new GetAllWorkflowRequest(status.ToLower());
@@ -84,7 +85,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
 
         //GET api/workflows/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetWorkflowById([FromRoute]string id)
         {
             var req = new GetWorkflowRequest(id);
