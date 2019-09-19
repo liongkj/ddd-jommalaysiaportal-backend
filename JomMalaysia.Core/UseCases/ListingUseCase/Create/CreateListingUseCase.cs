@@ -66,7 +66,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                         if (UpdateMerchantCommand.Success)
                         {
                             await session.CommitTransactionAsync();
-                            outputPort.Handle(new CoreListingResponse("Listing Created Successfully", true));
+                            outputPort.Handle(new CoreListingResponse(listing.Id + " Listing Created Successfully", true));
                             return true;
                         }
                         else

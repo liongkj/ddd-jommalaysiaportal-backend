@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -88,12 +89,21 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         public List<string> ValidateTags(List<string> tags)
         {
-            //TODO check duplicate tags
-            return tags;
+            var Clean = tags.Distinct().Where(s => s != null).ToList();
+            List<string> CleanTags = new List<string>();
+
+            foreach (var t in Clean)
+            {
+                var tag = t.Trim();
+                tag = tag.ToLower();
+                CleanTags.Add(tag);
+            }
+            return CleanTags;
         }
-        //
 
-
-
+        internal void Updated()
+        {
+            ModifiedAt = DateTime.Now;
+        }
     }
 }
