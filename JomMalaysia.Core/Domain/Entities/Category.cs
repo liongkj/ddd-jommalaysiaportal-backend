@@ -106,14 +106,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
 
             return true;
-
-
-            //TODO update name logic
         }
-
-        //update name
-        //update category path
-
 
         public List<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
         {

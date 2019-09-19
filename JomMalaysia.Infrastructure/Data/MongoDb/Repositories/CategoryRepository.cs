@@ -197,7 +197,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 return new GetAllCategoryResponse(new List<string> { e.ToString() });
             }
             if (Categories.Count > 0)
-                return new GetAllCategoryResponse(Categories, true);
+                return new GetAllCategoryResponse(Categories, true, $"{Categories.Count} result found");
             return new GetAllCategoryResponse(new List<string> { "No Categories Found" });
 
         }
@@ -234,7 +234,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             var response = Categories.Count < 1 ?
                 new GetAllCategoryResponse(new List<string> { "No Subcategories" }, false) :
-                new GetAllCategoryResponse(Categories, true);
+                new GetAllCategoryResponse(Categories, true, $"{Categories.Count} result found");
             return response;
         }
 

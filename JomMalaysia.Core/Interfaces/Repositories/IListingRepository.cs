@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
@@ -13,7 +14,7 @@ namespace JomMalaysia.Core.Interfaces
     {
 
         Task<CoreListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
-        Task<GetAllListingResponse> GetAllListings();
+        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null);
         Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
 
         GetListingResponse FindByName(string name);

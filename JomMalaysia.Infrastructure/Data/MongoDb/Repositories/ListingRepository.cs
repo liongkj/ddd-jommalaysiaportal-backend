@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
@@ -92,17 +93,28 @@ public class ListingRepository : IListingRepository
         //TODO If need this function
     }
 
-    public async Task<GetAllListingResponse> GetAllListings()
+    public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp)
     {
         GetAllListingResponse res;
+        List<ListingDto> query;
         List<Listing> Mapped = new List<Listing>();
         try
         {
-            var query =
-                    await _db.AsQueryable()
-                    //.OrderBy(c => c.ListingType)
-                    .ToListAsync()
-                    ;
+            if (cp == null)
+            {
+                query =
+                        await _db.AsQueryable()
+
+                      .ToListAsync();
+
+            }
+            else
+            {
+                query = await _db.AsQueryable()
+                .Where(l => l.Category.Equals(cp.ToString()))
+                .ToListAsync();
+            }
+
             //var Listings = _mapper.Map<List<Listing>>(query);
             foreach (ListingDto list in query)
             {
@@ -113,7 +125,7 @@ public class ListingRepository : IListingRepository
                 }
             }
 
-            res = new GetAllListingResponse(Mapped, true);
+            res = new GetAllListingResponse(Mapped, true, $"Returned {Mapped.Count} results");
         }
         catch (Exception e)
         {
