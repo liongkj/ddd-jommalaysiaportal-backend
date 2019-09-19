@@ -16,8 +16,7 @@ namespace JomMalaysia.Core.Interfaces
         Task<DeleteMerchantResponse> DeleteMerchantAsync(string merchantId);
         GetMerchantResponse FindByName(string name);
         Task<GetMerchantResponse> FindByIdAsync(string merchantId);
-        UpdateMerchantResponse UpdateMerchant(string id, Merchant updatedMerchant);
-        Task<UpdateMerchantResponse> UpdateMerchant(string id, Merchant updatedMerchant, IClientSessionHandle session);
+        Task<UpdateMerchantResponse> UpdateMerchantAsyncWithSession(string id, Merchant updatedMerchant, IClientSessionHandle session = null);
 
     }
 }

@@ -12,17 +12,13 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
         {
             _merchantRepository = merchantRepository;
         }
-        public bool Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
+        public async Task<bool> Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
         {
-            if (message is null)
-            {
-                throw new System.ArgumentNullException(nameof(message));
-            }
             //TODO
             //verify update??
-            var response =  _merchantRepository.UpdateMerchant(message.MerchantId, message.Updated);
+            var response = await _merchantRepository.UpdateMerchantAsyncWithSession(message.MerchantId, message.Updated);
 
-            outputPort.Handle(response.Success ? new UpdateMerchantResponse(response.Id, true) : new UpdateMerchantResponse(response.Errors));
+            outputPort.Handle(response);
             return response.Success;
         }
 

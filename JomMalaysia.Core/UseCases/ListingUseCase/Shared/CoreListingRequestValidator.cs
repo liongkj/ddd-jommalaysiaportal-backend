@@ -11,11 +11,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
     {
         public CoreListingRequestValidator()
         {
-            RuleFor(x => x.ListingId)
-                .Length(24)
-                .NotNull()
-                .NotEmpty()
-                .WithMessage("ListingId is not valid");
+
             RuleFor(x => x.MerchantId)
                 .Length(24)
                 .NotNull()
@@ -30,6 +26,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
             RuleFor(l => l.Category).NotEmpty().NotNull();
             RuleFor(l => l.Subcategory).NotEmpty().NotNull();
 
+
             //if listing type is event must have eventdate
             RuleFor(req => req.EventStartDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
             RuleFor(req => req.EventEndDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
@@ -37,7 +34,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
 
             RuleFor(p => p.MerchantId).NotEmpty().NotNull().WithMessage("Please select a valid merchant");
         }
-
 
     }
 }

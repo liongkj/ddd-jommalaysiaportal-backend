@@ -18,9 +18,10 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
         }
         public async Task<bool> Handle(GetMerchantRequest message, IOutputPort<GetMerchantResponse> outputPort)
         {
+            GetMerchantResponse response;
             try
             {
-                var response = await _merchantRepository.FindByIdAsync(message.Id).ConfigureAwait(false);
+                response = await _merchantRepository.FindByIdAsync(message.Id).ConfigureAwait(false);
                 outputPort.Handle(response);
                 return response.Success;
             }

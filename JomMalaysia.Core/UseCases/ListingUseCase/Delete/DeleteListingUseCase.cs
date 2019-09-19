@@ -39,7 +39,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
                     try
                     {
                         session.StartTransaction();
-                        var UpdateMerchantResponse = await _merchantRepository.UpdateMerchant(Merchant.MerchantId, Merchant, session).ConfigureAwait(false);
+                        var UpdateMerchantResponse = await _merchantRepository.UpdateMerchantAsyncWithSession(Merchant.MerchantId, Merchant, session).ConfigureAwait(false);
                         var deleteListingResponse = await _listingRepository.DeleteAsyncWithSession(message.ListingId, session).ConfigureAwait(false);
                         if (deleteListingResponse.Success)
                         {

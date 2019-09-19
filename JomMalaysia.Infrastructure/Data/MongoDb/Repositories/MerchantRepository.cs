@@ -102,15 +102,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public UpdateMerchantResponse UpdateMerchant(string id, Merchant updatedMerchant)
-        {
-            ReplaceOneResult result = _db.ReplaceOne(merchant => merchant.Id == id, _mapper.Map<MerchantDto>(updatedMerchant));
-            var response = result.ModifiedCount != 0 ? new UpdateMerchantResponse(id, true)
-                : new UpdateMerchantResponse(new List<string>() { "update merchant failed" }, false);
-            return response;
-        }
-
-        public async Task<UpdateMerchantResponse> UpdateMerchant(string id, Merchant updatedMerchant, IClientSessionHandle session)
+        public async Task<UpdateMerchantResponse> UpdateMerchantAsyncWithSession(string id, Merchant updatedMerchant, IClientSessionHandle session)
         {
             ReplaceOneResult result;
             var merchantDto = _mapper.Map<MerchantDto>(updatedMerchant);
@@ -121,7 +113,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception e)
             {
-                return new UpdateMerchantResponse(new List<string> { e.ToString() }, false, e.Message);
+                return new UpdateMerchantResponse(new List<string> { "Update failed: Repository Error" }, false, e.Message);
             }
             return new UpdateMerchantResponse(id, result.IsModifiedCountAvailable, "update success");
         }

@@ -29,9 +29,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         }
         public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
         {
-
-
-            //find merchant and add to merchant
+            ///find merchant and add to merchant
             var FindMerchantResponse = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
             if (!FindMerchantResponse.Success) //merchant not found
             {
@@ -64,7 +62,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                         NewListing.ListingId = listing.Id;//retrieve the created listing Id and add into merchant
                         MerchantUser.AddNewListing(NewListing);
                         //update merchant command
-                        var UpdateMerchantCommand = await _merchantRepository.UpdateMerchant(MerchantUser.MerchantId, MerchantUser, session).ConfigureAwait(false);
+                        var UpdateMerchantCommand = await _merchantRepository.UpdateMerchantAsyncWithSession(MerchantUser.MerchantId, MerchantUser, session).ConfigureAwait(false);
                         if (UpdateMerchantCommand.Success)
                         {
                             await session.CommitTransactionAsync();
