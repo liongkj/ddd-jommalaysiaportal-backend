@@ -160,6 +160,25 @@ public class ListingRepository : IListingRepository
         return new CoreListingResponse(listing.ListingId, result.IsAcknowledged, "update success");
     }
 
+    public async Task<CoreListingResponse> UpdateCategoryAsyncWithSession(List<string> toBeUpdateListings, Category toBeUpdateSubcategory, IClientSessionHandle session)
+    {
+        UpdateResult result;
+
+        FilterDefinition<ListingDto> filter = Builders<ListingDto>.Filter.In(m => m.Id, toBeUpdateListings);
+        UpdateDefinition<ListingDto> update = Builders<ListingDto>.Update.Set(l => l.Category, toBeUpdateSubcategory.ToString());
+        try
+        {
+
+            result = await _db.UpdateManyAsync(session, filter, update);
+        }
+
+        catch (Exception e)
+        {
+            return new CoreListingResponse(new List<string> { e.ToString() }, false, e.Message);
+        }
+        return new CoreListingResponse(new List<string> { "Listing updated" }, result.IsAcknowledged, $" {result.ModifiedCount} listings updated.");
+    }
+
 
 
 

@@ -51,10 +51,10 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 List<string> Errors = new List<string>();
 
                 var update1 = _CategoryRepository.UpdateManyWithSession(updatedSubcategories, session);
-                if (update1.Errors != null) Errors.AddRange(update1.Errors);
+
 
                 var update2 = _CategoryRepository.UpdateCategoryWithSession(category.CategoryId, category, session);
-                if (update2.Errors != null) Errors.AddRange(update2.Errors);
+
                 //var update3 = _ListingRepository.UpdateListingWithSession
 
                 if (Errors.Count == 0)

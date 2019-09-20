@@ -239,16 +239,16 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         }
 
 
-        public UpdateCategoryResponse UpdateCategoryWithSession(string id, Category updatedCategory, IClientSessionHandle session)
+        public async Task<UpdateCategoryResponse> UpdateCategoryWithSession(string id, Category updatedCategory, IClientSessionHandle session)
         {
 
-            ReplaceOneResult result = _db.ReplaceOne(session, Category => Category.Id == id, _mapper.Map<CategoryDto>(updatedCategory));
-            var response = result.ModifiedCount != 0 ? new UpdateCategoryResponse(id, true)
+            ReplaceOneResult result = await _db.ReplaceOneAsync(session, Category => Category.Id == id, _mapper.Map<CategoryDto>(updatedCategory));
+            var response = result.ModifiedCount != 0 ? new UpdateCategoryResponse(id, true, "Category Updated Successfully")
                 : new UpdateCategoryResponse(new List<string>() { "update Category failed" }, false);
             return response;
         }
 
-        public UpdateCategoryResponse UpdateManyWithSession(List<Category> categories, IClientSessionHandle session)
+        public async Task<UpdateCategoryResponse> UpdateManyWithSession(List<Category> categories, IClientSessionHandle session)
         {
 
             var categoryList = _mapper.Map<List<CategoryDto>>(categories);
@@ -264,7 +264,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 bulkOps.Add(updateOne);
             }
 
-            var response = _db.BulkWrite(session, bulkOps);
+            var response = await _db.BulkWriteAsync(session, bulkOps);
 
             return new UpdateCategoryResponse("update many operation",
                 response.IsAcknowledged,

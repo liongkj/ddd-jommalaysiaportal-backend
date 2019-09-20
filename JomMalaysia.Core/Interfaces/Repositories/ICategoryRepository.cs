@@ -22,8 +22,8 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<GetCategoryResponse> FindByNameAsync(string cat, string sub);
         GetCategoryResponse FindById(string id);
 
-        UpdateCategoryResponse UpdateManyWithSession(List<Category> categories, IClientSessionHandle session);
-        UpdateCategoryResponse UpdateCategoryWithSession(string id, Category Category, IClientSessionHandle session);
+        Task<UpdateCategoryResponse> UpdateManyWithSession(List<Category> categories, IClientSessionHandle session);
+        Task<UpdateCategoryResponse> UpdateCategoryWithSession(string id, Category Category, IClientSessionHandle session);
 
     }
 }

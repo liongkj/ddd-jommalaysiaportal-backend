@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.Interfaces
 {
     public interface IMongoDbContext
     {
-        IMongoDatabase Database { get;  }
+        IMongoDatabase Database { get; }
         IClientSessionHandle Session { get; }
         Task<IClientSessionHandle> StartSession(CancellationToken cancellactionToken = default);
     }

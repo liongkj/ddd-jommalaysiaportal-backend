@@ -27,7 +27,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             if (Subcategory.Category != null)
             {
                 //check whether listing have this category
-                //TODO wait vinnie listing done
+
                 var GetListingWithCategoryResponse = await _Listing.GetAllListings(CategoryPath);
                 if (GetListingWithCategoryResponse.Success)
                 {

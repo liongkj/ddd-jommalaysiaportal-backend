@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
@@ -20,9 +21,6 @@ namespace JomMalaysia.Core.Interfaces
         GetListingResponse FindByName(string name);
         Task<GetListingResponse> FindById(string id);
         Task<CoreListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null);
-
-
-
-
+        Task<CoreListingResponse> UpdateCategoryAsyncWithSession(List<string> toBeUpdateField, Category toBeUpdateSubcategory, IClientSessionHandle session); //optimize performance
     }
 }
