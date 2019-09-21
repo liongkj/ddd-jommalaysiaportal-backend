@@ -2,6 +2,7 @@
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Framework.Helper;
 using JomMalaysia.Infrastructure.Auth0.Entities;
+using JomMalaysia.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +25,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Mapping
             .ReverseMap();
 
             CreateMap<PagingHelper<User>, Auth0PagingHelper<UserDto>>(MemberList.None)
-            .ForMember(dest => dest.users, opt => opt.MapFrom(src => src.Results))    
+            .ForMember(dest => dest.users, opt => opt.MapFrom(src => src.Results))
             .ReverseMap();
         }
     }

@@ -3,9 +3,9 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Get.Response;
-using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Framework.Helper;
 using JomMalaysia.Infrastructure.Auth0.Entities;
+using JomMalaysia.Infrastructure.Helpers;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
@@ -46,11 +46,11 @@ namespace JomMalaysia.Infrastructure.Auth0
             result.PageSize = countperpage;
             int TotalPageCount = result.TotalRowCount / result.PageSize;
             result.PageCount = (result.TotalRowCount % result.PageSize == 0) ?
-                TotalPageCount : TotalPageCount + 1; 
+                TotalPageCount : TotalPageCount + 1;
 
 
-            return deserializedJson.length == 0 ? 
-                new GetAllUserResponse(new List<string> { "No Users" }, false) 
+            return deserializedJson.length == 0 ?
+                new GetAllUserResponse(new List<string> { "No Users" }, false)
                 : new GetAllUserResponse(result, true);
         }
 

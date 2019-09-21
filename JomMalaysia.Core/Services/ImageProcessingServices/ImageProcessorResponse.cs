@@ -21,7 +21,7 @@ namespace JomMalaysia.Core.Services.ImageProcessingServices
         {
             get
             {
-                return $"{ Framework.Constant.APIConstant.API.Path.Image}/{ImageId}";
+                return ImageId;
             }
 
 

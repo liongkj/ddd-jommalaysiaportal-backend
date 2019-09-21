@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create.UseCase
         private readonly IAppSetting _appSetting;
 
         public CreateUserUseCase(
-            IUserRepository userRepository, 
+            IUserRepository userRepository,
             ILoginInfoProvider loginInfo,
             IAppSetting appSetting)
         {

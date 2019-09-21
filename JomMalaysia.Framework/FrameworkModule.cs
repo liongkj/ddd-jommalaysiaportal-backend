@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
-using JomMalaysia.Framework.WebServices;
+
 
 namespace JomMalaysia.Framework
 {
@@ -11,13 +11,6 @@ namespace JomMalaysia.Framework
         protected override void Load(ContainerBuilder builder)
         {
 
-
-
-            builder.RegisterType<WebServiceExecutor>().AsImplementedInterfaces().InstancePerLifetimeScope();
-
-            builder.RegisterType<WebServiceResponse>().AsImplementedInterfaces().InstancePerLifetimeScope();
-
-            builder.RegisterType<ApiBuilder>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
         }
     }
