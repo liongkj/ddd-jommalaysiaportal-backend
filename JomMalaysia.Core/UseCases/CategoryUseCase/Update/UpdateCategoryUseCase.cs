@@ -1,5 +1,7 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
@@ -11,11 +13,13 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
     public class UpdateCategoryUseCase : IUpdateCategoryUseCase
     {
         private readonly ICategoryRepository _CategoryRepository;
+        private readonly IListingRepository _ListingRepository;
         private readonly IMongoDbContext _transaction;
 
-        public UpdateCategoryUseCase(ICategoryRepository CategoryRepository, IMongoDbContext transaction)
+        public UpdateCategoryUseCase(ICategoryRepository CategoryRepository, IMongoDbContext transaction, IListingRepository listingRepository)
         {
             _CategoryRepository = CategoryRepository;
+            _ListingRepository = listingRepository;
             _transaction = transaction;
         }
         public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
@@ -23,49 +27,61 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             //TODO
             //check if any listing has this category
 
-            var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
-            var subcategories = (await _CategoryRepository.GetAllCategoriesAsync(message.CategoryName)).Categories;
-            if (category != null) //if category found
+            // var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
+            var GetAllCategoriesResponse = await _CategoryRepository.GetAllCategoriesAsync(message.CategoryName);
+            if (!GetAllCategoriesResponse.Success)
             {
-                //find all subcategories with same name
-                if (category.UpdateCategoryIsSuccess(message.Updated, true))
-                {
-                    var response = await TransactionHasNoError(category, subcategories);
-
-                    outputPort.Handle(response);
-                    return response.Success;
-                }
+                outputPort.Handle(new UpdateCategoryResponse(GetAllCategoriesResponse.Errors, false, GetAllCategoriesResponse.Message));
+                return false;
             }
-            outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Category Not Found" }, false));
-            return false;
+            var ToBeUpdateCategories = GetAllCategoriesResponse.Categories.Where(x => !x.IsCategory()).ToList();
+            var OldCategory = GetAllCategoriesResponse.Categories.Where(x => x.IsCategory()).FirstOrDefault();
+
+            var GetListingWithCategories = await _ListingRepository.GetAllListings(OldCategory.CategoryPath);
+            if (!GetListingWithCategories.Success) //handle get listing
+            {
+                outputPort.Handle(new UpdateCategoryResponse(GetListingWithCategories.Errors, false, GetListingWithCategories.Message));
+                return false;
+            }
+            List<Listing> ToBeUpdateListings = GetListingWithCategories.Listings;
+
+
+            //start update operation
+            List<Category> UpdatedCategories = OldCategory.UpdateCategory(message.Updated, ToBeUpdateCategories);
+
+            var response = await TransactionHasNoError(message.Updated, ToBeUpdateListings, UpdatedCategories);
+
+            outputPort.Handle(response);
+            return response.Success;
+
+
         }
 
-        private async Task<UpdateCategoryResponse> TransactionHasNoError(Category category, List<Category> subcategories)
+        private async Task<UpdateCategoryResponse> TransactionHasNoError(Category UpdatedCategory, List<Listing> ToBeUpdateListings, List<Category> updatedSubcategories)
         {
             using (var session = await _transaction.StartSession())
             {
-                session.StartTransaction();
-
-                var updatedSubcategories = category.UpdateSubcategories(subcategories, category);
-
-                List<string> Errors = new List<string>();
-
-                var update1 = _CategoryRepository.UpdateManyWithSession(updatedSubcategories, session);
-
-
-                var update2 = _CategoryRepository.UpdateCategoryWithSession(category.CategoryId, category, session);
-
-                //var update3 = _ListingRepository.UpdateListingWithSession
-
-                if (Errors.Count == 0)
+                UpdateCategoryResponse response = new UpdateCategoryResponse(new List<string> { "Error updating Category" });
+                try
                 {
-                    session.CommitTransaction();
-                    return new UpdateCategoryResponse(category.CategoryId, true, "update category committed successfully");
-
+                    session.StartTransaction();
+                    //TODO liongkj do here
+                    var updateListngResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(ToBeUpdateListings.Select(x => x.ListingId).ToList(), UpdatedCategory, session);
+                    response = await _CategoryRepository.UpdateManyWithSession(updatedSubcategories, session);
                 }
-                _transaction.Session.AbortTransaction();
-                return new UpdateCategoryResponse(Errors);
+
+                catch (Exception e)
+                {
+                    await session.AbortTransactionAsync();
+
+                    return new UpdateCategoryResponse(new List<string> { e.Source }, false, e.Message);
+                }
+
+                session.CommitTransaction();
+                return response;
+
             }
+
         }
     }
 }

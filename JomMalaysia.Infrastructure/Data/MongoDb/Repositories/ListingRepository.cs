@@ -111,7 +111,7 @@ public class ListingRepository : IListingRepository
             else
             {
                 query = await _db.AsQueryable()
-                .Where(l => l.Category.Equals(cp.ToString()))
+                .Where(l => l.Category.StartsWith(cp.ToString()))
                 .ToListAsync();
             }
 
@@ -165,7 +165,7 @@ public class ListingRepository : IListingRepository
         UpdateResult result;
 
         FilterDefinition<ListingDto> filter = Builders<ListingDto>.Filter.In(m => m.Id, toBeUpdateListings);
-        UpdateDefinition<ListingDto> update = Builders<ListingDto>.Update.Set(l => l.Category, toBeUpdateSubcategory.ToString());
+        UpdateDefinition<ListingDto> update = Builders<ListingDto>.Update.Set(l => l.Category, toBeUpdateSubcategory.CategoryPath.ToString());
         try
         {
 

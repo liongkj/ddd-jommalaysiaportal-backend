@@ -221,8 +221,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 var query = await
                         _db.AsQueryable()
                     .Where(M => M.CategoryPath.StartsWith(querystring))
-                    .Where(M => !M.CategoryPath.Equals(querystring))
-                    //.Where(m=>!(m.CategoryPath.str).Equals(querystring.Length))
+                    //.Where(M => !M.CategoryPath.Equals(querystring)) //include category
                     .OrderBy(c => c.CategoryName)
                     .ToListAsync();
 

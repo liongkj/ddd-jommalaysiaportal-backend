@@ -40,38 +40,35 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             //fetch listing with this subcategory
             var GetListingWithThisSubcategory = await _ListingRepository.GetAllListings(ToBeUpdateSubcategory.CategoryPath);
             var ToBeUpdateListings = GetListingWithThisSubcategory.Listings;
-            if (ToBeUpdateSubcategory.UpdateCategoryIsSuccess(message.Updated, false))
+            ToBeUpdateSubcategory.UpdateCategory(message.Updated, null, false);
+
+            UpdateCategoryResponse updateCategoryResponse;
+            CoreListingResponse updateListingResponse;
+            using (var session = await _transaction.StartSession())
             {
-                UpdateCategoryResponse updateCategoryResponse;
-                CoreListingResponse updateListingResponse;
-                using (var session = await _transaction.StartSession())
+                try
                 {
-                    try
+                    session.StartTransaction();
+                    //start update operation
+                    if (ToBeUpdateListings.Count > 0)
                     {
-                        session.StartTransaction();
-                        //start update operation
-                        if (ToBeUpdateListings.Count > 0)
-                        {
-                            updateListingResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(ToBeUpdateListings.Select(x => x.ListingId).ToList(), ToBeUpdateSubcategory, session);
-                        }
-
-                        updateCategoryResponse = await _CategoryRepository.UpdateCategoryWithSession(ToBeUpdateSubcategory.CategoryId, ToBeUpdateSubcategory, session);
+                        updateListingResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(ToBeUpdateListings.Select(x => x.ListingId).ToList(), ToBeUpdateSubcategory, session);
                     }
 
-                    catch
-                    {
-                        await session.AbortTransactionAsync();
-
-                        outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Update category operation failed" }));
-                        return false;
-                    }
-                    await session.CommitTransactionAsync();
-                    outputPort.Handle(updateCategoryResponse);
-                    return true;
+                    updateCategoryResponse = await _CategoryRepository.UpdateCategoryWithSession(ToBeUpdateSubcategory.CategoryId, ToBeUpdateSubcategory, session);
                 }
+
+                catch
+                {
+                    await session.AbortTransactionAsync();
+
+                    outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Update category operation failed" }));
+                    return false;
+                }
+                await session.CommitTransactionAsync();
+                outputPort.Handle(updateCategoryResponse);
+                return true;
             }
-            outputPort.Handle(new UpdateCategoryResponse(new List<string> { "Problem updating category Name" }));
-            return false;
 
         }
     }
