@@ -33,7 +33,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         #endregion
         public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
         {
-            //TODO add factory
+
             //update listing
             #region Handle Find Merchant, Category and create new listing object
 

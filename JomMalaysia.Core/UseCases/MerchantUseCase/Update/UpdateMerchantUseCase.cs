@@ -14,7 +14,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
         }
         public async Task<bool> Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
         {
-            //TODO
+
             //verify update??
             var response = await _merchantRepository.UpdateMerchantAsyncWithSession(message.MerchantId, message.Updated);
 

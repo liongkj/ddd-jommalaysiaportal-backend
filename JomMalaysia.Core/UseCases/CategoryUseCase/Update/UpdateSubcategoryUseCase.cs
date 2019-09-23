@@ -59,7 +59,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                     //start update operation
                     if (ToBeUpdateListings.Count > 0)
                     {
-                        //TODO
+
                         updateListingResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(UpdatedListings, session);
                     }
 

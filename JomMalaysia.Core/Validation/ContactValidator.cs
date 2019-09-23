@@ -40,7 +40,7 @@ namespace JomMalaysia.Core.Validation
             //var StartsWith = number.StartsWith("0");
             var ValidLength = number.Length >= 10 && number.Length <= 11;
             return IsDigit;
-            //TODO Verify digit validation
+
 
 
         }

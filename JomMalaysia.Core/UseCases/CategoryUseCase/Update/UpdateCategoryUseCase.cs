@@ -24,7 +24,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         }
         public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
-            //TODO
+
             //check if any listing has this category
 
             // var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
@@ -65,7 +65,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 try
                 {
                     session.StartTransaction();
-                    //TODO liongkj do here
+
                     if (UpdatedListing.Count != 0)
                     {
                         var updateListngResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(UpdatedListing, session);

@@ -90,7 +90,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                       .ToListAsync().ConfigureAwait(false);
                 merchants = _mapper.Map<List<Merchant>>(query);
 
-                //TODO fix mapping profile
+
             }
             catch (Exception e)
             {
