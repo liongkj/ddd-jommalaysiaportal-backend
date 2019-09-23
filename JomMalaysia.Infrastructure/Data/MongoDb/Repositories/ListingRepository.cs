@@ -160,16 +160,26 @@ public class ListingRepository : IListingRepository
         return new CoreListingResponse(listing.ListingId, result.IsAcknowledged, "update success");
     }
 
-    public async Task<CoreListingResponse> UpdateCategoryAsyncWithSession(List<string> toBeUpdateListings, Category toBeUpdateSubcategory, IClientSessionHandle session)
+    public async Task<CoreListingResponse> UpdateCategoryAsyncWithSession(Dictionary<string, string> toBeUpdateListings, IClientSessionHandle session)
     {
-        UpdateResult result;
-
-        FilterDefinition<ListingDto> filter = Builders<ListingDto>.Filter.In(m => m.Id, toBeUpdateListings);
-        UpdateDefinition<ListingDto> update = Builders<ListingDto>.Update.Set(l => l.Category, toBeUpdateSubcategory.CategoryPath.ToString());
+        BulkWriteResult result;
+        var bulkOps = new List<WriteModel<ListingDto>>();
         try
         {
+            foreach (var list in toBeUpdateListings)
+            {
+                var filter = Builders<ListingDto>.Filter.Where(l => l.Id == list.Key);
 
-            result = await _db.UpdateManyAsync(session, filter, update);
+                var update = Builders<ListingDto>.Update.Set(l => l.Category, list.Value);
+
+
+                var updateOne = new UpdateOneModel<ListingDto>(filter, update);
+                //only valid for update subcategories
+                bulkOps.Add(updateOne);
+
+
+            }
+            result = await _db.BulkWriteAsync(session, bulkOps);
         }
 
         catch (Exception e)

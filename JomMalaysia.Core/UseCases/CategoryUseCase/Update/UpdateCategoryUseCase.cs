@@ -44,12 +44,12 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 return false;
             }
             List<Listing> ToBeUpdateListings = GetListingWithCategories.Listings;
-
+            var UpdatedListings = message.Updated.UpdateListings(ToBeUpdateListings);
 
             //start update operation
             List<Category> UpdatedCategories = OldCategory.UpdateCategory(message.Updated, ToBeUpdateCategories);
 
-            var response = await TransactionHasNoError(message.Updated, ToBeUpdateListings, UpdatedCategories);
+            var response = await TransactionHasNoError(UpdatedListings, UpdatedCategories);
 
             outputPort.Handle(response);
             return response.Success;
@@ -57,7 +57,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
         }
 
-        private async Task<UpdateCategoryResponse> TransactionHasNoError(Category UpdatedCategory, List<Listing> ToBeUpdateListings, List<Category> updatedSubcategories)
+        private async Task<UpdateCategoryResponse> TransactionHasNoError(Dictionary<string, string> UpdatedListing, List<Category> updatedSubcategories)
         {
             using (var session = await _transaction.StartSession())
             {
@@ -66,7 +66,10 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 {
                     session.StartTransaction();
                     //TODO liongkj do here
-                    var updateListngResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(ToBeUpdateListings.Select(x => x.ListingId).ToList(), UpdatedCategory, session);
+                    if (UpdatedListing.Count != 0)
+                    {
+                        var updateListngResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(UpdatedListing, session);
+                    }
                     response = await _CategoryRepository.UpdateManyWithSession(updatedSubcategories, session);
                 }
 

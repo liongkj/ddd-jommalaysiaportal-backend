@@ -26,6 +26,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
 
+            //retrieve data start
             //check if any listing has this category -currently no need
             var getCategoryResponse = await _CategoryRepository.FindByNameAsync(message.ParentCategory, message.CategoryName);
 
@@ -35,12 +36,18 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 return false;
             }
             var ToBeUpdateSubcategory = getCategoryResponse.Category;
-            //TODO find all subcategories with same name
 
             //fetch listing with this subcategory
             var GetListingWithThisSubcategory = await _ListingRepository.GetAllListings(ToBeUpdateSubcategory.CategoryPath);
             var ToBeUpdateListings = GetListingWithThisSubcategory.Listings;
+            //retrieve data end
+
+            //Update Operation Start
             ToBeUpdateSubcategory.UpdateCategory(message.Updated, null, false);
+
+            var UpdatedListings = ToBeUpdateSubcategory.UpdateListings(ToBeUpdateListings, false);
+            //update operation end
+
 
             UpdateCategoryResponse updateCategoryResponse;
             CoreListingResponse updateListingResponse;
@@ -52,7 +59,8 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                     //start update operation
                     if (ToBeUpdateListings.Count > 0)
                     {
-                        updateListingResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(ToBeUpdateListings.Select(x => x.ListingId).ToList(), ToBeUpdateSubcategory, session);
+                        //TODO
+                        updateListingResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(UpdatedListings, session);
                     }
 
                     updateCategoryResponse = await _CategoryRepository.UpdateCategoryWithSession(ToBeUpdateSubcategory.CategoryId, ToBeUpdateSubcategory, session);

@@ -232,7 +232,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 throw e;
             }
             var response = Categories.Count < 1 ?
-                new GetAllCategoryResponse(new List<string> { "No Subcategories" }, false) :
+                new GetAllCategoryResponse(new List<string> { "No Categories found" }, false) :
                 new GetAllCategoryResponse(Categories, true, $"{Categories.Count} result found");
             return response;
         }
