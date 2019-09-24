@@ -77,6 +77,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         [Route("")]
         [Route("status/{status}")]
         [Route("status")]
+        [HttpGet]
         public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "pending")
         {
             var req = new GetAllWorkflowRequest(status.ToLower());
