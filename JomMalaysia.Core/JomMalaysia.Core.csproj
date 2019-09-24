@@ -13,6 +13,8 @@
     <PackageReference Include="Google.LibPhoneNumber" Version="1.0.0" />
     
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0006" />
@@ -22,14 +24,7 @@
     <ProjectReference Include="..\JomMalaysia.Framework\JomMalaysia.Framework.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Features">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.features\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  
 
   <ItemGroup>
     <Folder Include="Services\GeocodingServices\" />
