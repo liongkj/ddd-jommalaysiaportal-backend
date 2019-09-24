@@ -49,12 +49,13 @@ namespace JomMalaysia.Api.UseCases.Workflows
         #endregion
         //publish a listing a start a approval workflow
         //PUT api/listings/{id}/publish
-        [Route("~/api/listings/{ListingId}/publish")]
+        [Route("~/api/listings/{ListingId}/publish/{months:int}")]
         [HttpPost]
-        public async Task<IActionResult> Publish([FromRoute] string ListingId)
+        public async Task<IActionResult> Publish([FromRoute] string ListingId, [FromRoute] int months = 12)
         {
 
             var req = new ListingWorkflowRequest(ListingId);
+            req.Months = months;
 
             await _publishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;

@@ -83,6 +83,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
                             }
                         }//Handle Switch Ownership End
                         NewListing.Updated();
+
                         updateListingResponse = await _listingRepository.UpdateAsyncWithSession(NewListing, session);
                     }
                     catch

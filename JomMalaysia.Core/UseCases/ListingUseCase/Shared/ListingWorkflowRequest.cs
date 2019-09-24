@@ -11,6 +11,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase
     public class ListingWorkflowRequest : IUseCaseRequest<ListingWorkflowResponse>
     {
         public string ListingId { get; set; }
+        public int Months { get; set; }
 
         public ListingWorkflowRequest(string listingId)
         {
