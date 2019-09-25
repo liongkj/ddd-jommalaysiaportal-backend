@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using JomMalaysia.Api.UseCases.User.CreateUser;
-using JomMalaysia.Api.UseCases.User.GetUser;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.UserUseCase;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
@@ -15,34 +13,33 @@ namespace JomMalaysia.Api.UseCases.User
     public class UserController : ControllerBase
     {
         private readonly IGetAllUserUseCase _getAllUserUseCase;
-        private readonly GetAllUserPresenter _getAllUserPresenter;
+        private readonly UserPresenter _userPresenter;
         private readonly ICreateUserUseCase _createUserUseCase;
-        private readonly CreateUserPresenter _createUserPresenter;
+
         private readonly ILoginInfoProvider _loginInfo;
         private readonly IMapper _mapper;
 
+        #region dependecies
         public UserController(
             IGetAllUserUseCase getAllUserUseCase,
-            GetAllUserPresenter AllUserPresenter,
+            UserPresenter UserPresenter,
             ICreateUserUseCase createUserUseCase,
-            CreateUserPresenter CreateUserPresenter,
             ILoginInfoProvider loginInfo,
             IMapper mapper)
         {
             _getAllUserUseCase = getAllUserUseCase;
-            _getAllUserPresenter = AllUserPresenter;
             _createUserUseCase = createUserUseCase;
-            _createUserPresenter = CreateUserPresenter;
+            _userPresenter = UserPresenter;
             _loginInfo = loginInfo;
             _mapper = mapper;
         }
-
+        #endregion
         [HttpGet]
         public IActionResult Get()
         {
-            _getAllUserUseCase.Handle(new GetAllUserRequest(), _getAllUserPresenter);
+            _getAllUserUseCase.Handle(new GetAllUserRequest(), _userPresenter);
 
-            return _getAllUserPresenter.ContentResult;
+            return _userPresenter.ContentResult;
         }
 
         [HttpPost]
@@ -50,9 +47,9 @@ namespace JomMalaysia.Api.UseCases.User
         {
             var MappedUser = _mapper.Map<UserDto, Core.Domain.Entities.User>(user);
 
-            _createUserUseCase.Handle(new CreateUserRequest(MappedUser), _createUserPresenter);
+            _createUserUseCase.Handle(new CreateUserRequest(MappedUser), _userPresenter);
 
-            return _createUserPresenter.ContentResult;
+            return _userPresenter.ContentResult;
         }
 
     }

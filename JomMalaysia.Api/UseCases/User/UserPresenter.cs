@@ -7,18 +7,18 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace JomMalaysia.Api.UseCases.User.CreateUser
+namespace JomMalaysia.Api.UseCases.User
 {
-    public sealed class CreateUserPresenter : IOutputPort<CreateUserResponse>
+    public sealed class UserPresenter : IOutputPort<UseCaseResponseMessage>
     {
         public JsonContentResult ContentResult { get; }
 
-        public CreateUserPresenter()
+        public UserPresenter()
         {
             ContentResult = new JsonContentResult();
         }
 
-        public void Handle(CreateUserResponse response)
+        public void Handle(UseCaseResponseMessage response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
             ContentResult.Content = JsonSerializer.SerializeObject(response);
