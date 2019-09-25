@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Framework.Configuration;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace JomMalaysia.Framework.Configuration
+namespace JomMalaysia.Infrastructure.Auth0
 {
-    public class AppSetting : IAppSetting
+    public class Auth0Setting : IAuth0Setting
     {
         IConfiguration _IConfiguration;
         private static string _Auth0Domain;
@@ -14,13 +16,15 @@ namespace JomMalaysia.Framework.Configuration
         private static string _WebApiUrl;
         private static string _DbConnection;
         private static string _Scope;
+        private static string _Auth0UserManagementApi;
+        private static string _Auth0SendResetPasswordEmailApi;
 
-        public AppSetting(IConfiguration IConfiguration)
+        public Auth0Setting(IConfiguration IConfiguration)
         {
             _IConfiguration = IConfiguration;
             Initialize();
         }
-
+        public string Auth0UserManagementApi => _Auth0UserManagementApi;
         public string Auth0Domain => _Auth0Domain;
 
         public string Auth0ClientId => _Auth0ClientId;
@@ -32,6 +36,8 @@ namespace JomMalaysia.Framework.Configuration
         public string DBConnection => _DbConnection;
 
         public string Scope => _Scope;
+
+        public string Auth0SendResetPasswordEmailApi => _Auth0SendResetPasswordEmailApi;
 
         public void Initialize()
         {
@@ -63,6 +69,16 @@ namespace JomMalaysia.Framework.Configuration
             if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:Scope")))
             {
                 _Scope = _IConfiguration.GetValue<string>("Auth0:Scope");
+            }
+
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:ManagementApi:User")))
+            {
+                _Auth0UserManagementApi = _IConfiguration.GetValue<string>("Auth0:ManagementApi:User");
+            }
+
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:ManagementApi:ResetPassword")))
+            {
+                _Auth0SendResetPasswordEmailApi = _IConfiguration.GetValue<string>("Auth0:ManagementApi:ResetPassword");
             }
 
         }

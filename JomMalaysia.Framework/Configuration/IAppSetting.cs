@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JomMalaysia.Framework.Configuration
 {
-    public interface IAppSetting
+    public interface IAuth0Setting
     {
         void Initialize();
 
@@ -19,5 +19,7 @@ namespace JomMalaysia.Framework.Configuration
         string DBConnection { get; }
 
         string Scope { get; }
+        string Auth0UserManagementApi { get; }
+        string Auth0SendResetPasswordEmailApi { get; }
     }
 }

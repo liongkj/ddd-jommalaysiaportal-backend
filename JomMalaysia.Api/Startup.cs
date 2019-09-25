@@ -99,7 +99,7 @@ namespace JomMalaysia.Api
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
             builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();
-            builder.RegisterType<AppSetting>().As<IAppSetting>().InstancePerLifetimeScope();
+            //builder.RegisterType<AppSetting>().As<IAppSetting>().InstancePerLifetimeScope();
 
             // Presenters
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();

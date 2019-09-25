@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.UserUseCase;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
@@ -10,7 +11,7 @@ namespace JomMalaysia.Api.UseCases.User
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IGetAllUserUseCase _getAllUserUseCase;
         private readonly UserPresenter _userPresenter;
@@ -20,7 +21,7 @@ namespace JomMalaysia.Api.UseCases.User
         private readonly IMapper _mapper;
 
         #region dependecies
-        public UserController(
+        public UsersController(
             IGetAllUserUseCase getAllUserUseCase,
             UserPresenter UserPresenter,
             ICreateUserUseCase createUserUseCase,
@@ -44,11 +45,12 @@ namespace JomMalaysia.Api.UseCases.User
         }
 
         [HttpPost]
-        public IActionResult Post(UserDto user)
+        public async Task<IActionResult> Post([FromBody]UserDto user)
         {
-            var MappedUser = _mapper.Map<UserDto, Core.Domain.Entities.User>(user);
+            var req = new CreateUserRequest(user.username, user.name, user.email);
 
-            _createUserUseCase.Handle(new CreateUserRequest(MappedUser), _userPresenter);
+
+            await _createUserUseCase.Handle(req, _userPresenter);
 
             return _userPresenter.ContentResult;
         }

@@ -31,9 +31,9 @@ namespace JomMalaysia.Api.Providers
             {
                 UserId = loginInfo.userId,
                 Name = (Name)(loginInfo.name),
-                
-                
-                
+
+
+
             };
             return logged;
         }
@@ -41,7 +41,7 @@ namespace JomMalaysia.Api.Providers
         public LoginInfo GetLoginInfo()
         {
             IEnumerable<Claim> claims = _httpContextAccessor.HttpContext.User.Claims;
-            
+
             LoginInfo userInfo = new LoginInfo
             {
                 userId = claims.Where(c => c.Type == ConstantHelper.Claims.userId).Select(c => c.Value).FirstOrDefault(),

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 {
-    public interface ICreateUserUseCase : IUseCaseHandler<CreateUserRequest, CreateUserResponse>
+    public interface ICreateUserUseCase : IUseCaseHandlerAsync<CreateUserRequest, CreateUserResponse>
     {
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -7,46 +8,32 @@ namespace JomMalaysia.Core.Domain.Entities
 {
     public class User
     {
-        public User(string userId, string username, Email email, Name name)
-        {
-            this.UserId = userId;
-            this.Username = username;
-            this.Email = email;
-            this.Name = name;
 
-        }
 
         public User()
         {
 
         }
 
-        public User(string userId)
+        public User(string username, string name, string email)
         {
-            UserId = userId;
+            //For auth0 new users
+            Username = username;
+            Email = Email.For(email);
+            Name = Name.For(name);
+
+
         }
 
         public string UserId { get; set; }
         public string Username { get; set; }
-        public string Nickname { get; set; }
-        //public string StringEmail { get; set; }
-        //public string StringName { get; set; }
         public Email Email { get; set; }
         public Name Name { get; set; }
         public string Role { get; set; }
-        public bool VerifyEmail { get; set; }
-        public string Connection { get; set; }
-        public string Password { get; set; }
+        public bool IsEmailVerified { get; set; }
+        public List<string> AdditionalPermissions { get; set; }
 
-        public void AddListing()
-        {
 
-        }
-
-        public void AddNewUser(User user)
-        {
-
-        }
         /// <summary>
         /// Create a new workflow object 
         /// </summary>

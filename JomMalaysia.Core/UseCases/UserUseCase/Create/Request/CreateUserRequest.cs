@@ -6,13 +6,17 @@ using System.Text;
 
 namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 {
-    public class CreateUserRequest  : IUseCaseRequest<CreateUserResponse>
+    public class CreateUserRequest : IUseCaseRequest<CreateUserResponse>
     {
-        public User user { get; set; }
-
-        public CreateUserRequest(User _user)
+        public CreateUserRequest(string username, string email, string name)
         {
-            user = _user;
+            this.Username = username;
+            this.Email = email;
+            this.Name = name;
+
         }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Name { get; set; }
     }
 }
