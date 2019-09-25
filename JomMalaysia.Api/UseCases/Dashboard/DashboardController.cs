@@ -13,7 +13,7 @@ namespace JomMalaysia.Api.UseCases.Dashboard
     public class DashboardController : ControllerBase
     {
         [HttpGet]
-        [Authorize("read:merchant")]
+        //[Authorize("read:merchant")]
         public async Task<IActionResult> Get()
         {
             return Ok();

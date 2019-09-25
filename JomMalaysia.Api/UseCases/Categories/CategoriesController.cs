@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-
+using JomMalaysia.Api.Scope;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
@@ -63,7 +63,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories
         //get whole category collection
         [HttpGet]
-
+        [Authorize(Policies.MANAGER)]
         public async Task<IActionResult> Get(int pageSize = 20, int pageNumber = 0)
         {
             var req = new GetAllCategoryRequest
@@ -100,6 +100,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //DELETE api/categories/{slug}
         [HttpDelete("{slug}")]
+        [Authorize(Policies.SUPERADMIN)]
         public async Task<IActionResult> Delete(string slug)
         {
             var req = new DeleteCategoryRequest(slug);

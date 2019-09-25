@@ -34,6 +34,7 @@ namespace JomMalaysia.Api.UseCases.User
             _mapper = mapper;
         }
         #endregion
+
         [HttpGet]
         public IActionResult Get()
         {

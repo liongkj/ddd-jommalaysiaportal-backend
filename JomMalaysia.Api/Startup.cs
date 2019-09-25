@@ -26,6 +26,7 @@ using JomMalaysia.Framework.Configuration;
 using FluentValidation;
 using JomMalaysia.Core.Services.ImageProcessingServices;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+using JomMalaysia.Api.Scope;
 
 namespace JomMalaysia.Api
 {
@@ -61,7 +62,9 @@ namespace JomMalaysia.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("read:merchant", policy => policy.Requirements.Add(new HasScopeRequirement("read:merchant", "https://jomn9.auth0.com/")));
+                options.AddPolicy(Policies.MANAGER, policy => policy.RequireClaim(Policies.NAMESPACE, "Manager"));
+                options.AddPolicy(Policies.SUPERADMIN, policy => policy.RequireClaim(Policies.NAMESPACE, "Superadmin"));
+                options.AddPolicy(Policies.EDITOR, policy => policy.RequireClaim(Policies.NAMESPACE, "Editor"));
             });
             //services.AddHttpContextAccessor();
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
