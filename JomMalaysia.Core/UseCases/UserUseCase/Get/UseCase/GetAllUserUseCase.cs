@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.UserUseCase.Get.Request;
@@ -19,7 +20,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase
             _loginInfo = loginInfo;
         }
 
-        public bool Handle(GetAllUserRequest message, IOutputPort<GetAllUserResponse> outputPort)
+        public async Task<bool> Handle(GetAllUserRequest message, IOutputPort<GetAllUserResponse> outputPort)
         {
             //validate request
             if (message == null)
@@ -27,11 +28,12 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase
                 throw new ArgumentNullException(nameof(message));
             }
 
-            var response = _userRepository.GetAllUsers();
+            var response = await _userRepository.GetAllUsers();
 
             if (!response.Success)
             {
                 outputPort.Handle(new GetAllUserResponse(response.Errors));
+                return false;
             }
             outputPort.Handle(new GetAllUserResponse(response.Users, true));
 

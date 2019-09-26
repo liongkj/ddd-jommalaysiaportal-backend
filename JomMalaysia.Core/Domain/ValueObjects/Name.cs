@@ -20,8 +20,15 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             try
             {
                 var index = nameString.IndexOf(" ", StringComparison.Ordinal);
-                name.FirstName = nameString.Substring(0, index);
-                name.LastName = nameString.Substring(index + 1);
+                if (index > 0)
+                {
+                    name.FirstName = nameString.Substring(0, index);
+                    name.LastName = nameString.Substring(index + 1);
+                }
+                else
+                {
+                    name.LastName = nameString;
+                }
             }
             catch (Exception ex)
             {

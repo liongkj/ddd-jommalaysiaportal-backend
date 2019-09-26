@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        GetAllUserResponse GetAllUsers(int countperpage = 10, int page = 0);
+        Task<GetAllUserResponse> GetAllUsers(int countperpage = 10, int page = 0);
 
         Task<CreateUserResponse> CreateUser(User user);
     }

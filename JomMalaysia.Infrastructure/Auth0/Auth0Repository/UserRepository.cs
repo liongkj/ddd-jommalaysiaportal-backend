@@ -32,21 +32,34 @@ namespace JomMalaysia.Infrastructure.Auth0
             var client = new RestClient("https://jomn9.auth0.com/oauth/token");
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");
-            request.AddParameter("application/json", "{\"client_id\":\"9mWFLX7PoR6sELJWiH4JSUzV913LTuN6\",\"client_secret\":\"Ef3xlYarfqeys8S9g_hmnCjbOfufK63wtMP8Jl2uJM2ZymKd_gd0EUpHNGoFqhV0\",\"audience\":\"https://jomn9.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+            request.AddParameter("application/json", "{\"client_id\":\"" + _appSetting.Auth0ClientId + "\",\"client_secret\":\"" + _appSetting.Auth0ClientSecret + "\",\"audience\":\"https://jomn9.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
             IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
             dynamic deserializedJson = JsonConvert.DeserializeObject(response.Content);
 
             return (deserializedJson.access_token != null) ? deserializedJson.access_token : null;
         }
 
-        public GetAllUserResponse GetAllUsers(int countperpage = 10, int page = 0)
+        public async Task<GetAllUserResponse> GetAllUsers(int countperpage = 10, int page = 0)
         {
-            var client = new RestClient($"{_appSetting.Auth0UserManagementApi}?per_page=" + countperpage + "&page=" + page + "&include_totals=true");
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("authorization", "Bearer " + getAccessToken());
-            IRestResponse response = client.Execute(request);
-            Auth0PagingHelper<UserDto> deserializedJson = JsonConvert.DeserializeObject<Auth0PagingHelper<UserDto>>(response.Content);
-            var result = _mapper.Map<PagingHelper<User>>(deserializedJson);
+            PagingHelper<User> result;
+            Auth0PagingHelper<Auth0User> deserializedJson;
+            try
+            {
+                var client = new RestClient($"{_appSetting.Auth0UserManagementApi}?per_page=" + countperpage + "&page=" + page + "&include_totals=true");
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("authorization", "Bearer " + await getAccessToken());
+                IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+
+                deserializedJson = JsonConvert.DeserializeObject<Auth0PagingHelper<Auth0User>>(response.Content);
+
+                result = _mapper.Map<PagingHelper<User>>(deserializedJson);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
             result.CurrentPage = page + 1;
             result.TotalRowCount = deserializedJson.total;
             result.PageSize = countperpage;
@@ -95,7 +108,6 @@ namespace JomMalaysia.Infrastructure.Auth0
         public bool SendResetPasswordEmail(string email)
         {
             IRestResponse response;
-            //string accessToken = await getAccessToken();
 
             try
             {
@@ -104,7 +116,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 var request = new RestRequest(Method.POST);
                 //request.AddHeader("authorization", "Bearer " + accessToken);
                 request.AddHeader("content-type", "application/json");
-                request.AddParameter("application / json", "{\"client_id\": \"9mWFLX7PoR6sELJWiH4JSUzV913LTuN6\",\"email\": \"" + email + "\",\"connection\": \"Username-Password-Authentication\"}", ParameterType.RequestBody);
+                request.AddParameter("application / json", "{\"client_id\": \"" + _appSetting.Auth0ClientId + "\",\"email\": \"" + email + "\",\"connection\": \"Username-Password-Authentication\"}", ParameterType.RequestBody);
 
                 response = client.Execute(request);
             }

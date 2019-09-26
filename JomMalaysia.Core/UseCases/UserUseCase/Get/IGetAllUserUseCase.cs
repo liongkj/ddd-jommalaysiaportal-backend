@@ -4,7 +4,7 @@ using JomMalaysia.Core.UseCases.UserUseCase.Get.Response;
 
 namespace JomMalaysia.Core.UseCases.UserUseCase
 {
-    public interface IGetAllUserUseCase : IUseCaseHandler<GetAllUserRequest, GetAllUserResponse>
+    public interface IGetAllUserUseCase : IUseCaseHandlerAsync<GetAllUserRequest, GetAllUserResponse>
     {
     }
 }

@@ -21,8 +21,6 @@ namespace JomMalaysia.Core.Domain.Entities
             Username = username;
             Email = Email.For(email);
             Name = Name.For(name);
-
-
         }
 
         public string UserId { get; set; }
@@ -30,8 +28,9 @@ namespace JomMalaysia.Core.Domain.Entities
         public Email Email { get; set; }
         public Name Name { get; set; }
         public string Role { get; set; }
-        public bool IsEmailVerified { get; set; }
         public List<string> AdditionalPermissions { get; set; }
+        public string PictureUri { get; set; }
+        public DateTime LastLogin { get; set; }
 
 
         /// <summary>

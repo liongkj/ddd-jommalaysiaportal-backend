@@ -37,9 +37,9 @@ namespace JomMalaysia.Api.UseCases.User
         #endregion
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            _getAllUserUseCase.Handle(new GetAllUserRequest(), _userPresenter);
+            await _getAllUserUseCase.Handle(new GetAllUserRequest(), _userPresenter);
 
             return _userPresenter.ContentResult;
         }
