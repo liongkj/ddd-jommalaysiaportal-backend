@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 {
     public class CreateUserResponse : UseCaseResponseMessage
     {
-        public string user_id { get; }
+        public string UserId { get; }
 
         public IEnumerable<string> Errors { get; }
 
@@ -22,7 +22,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 
         public CreateUserResponse(string id, bool success = false, string message = null) : base(success, message)
         {
-            user_id = id;
+            UserId = id;
         }
     }
 }

@@ -6,7 +6,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JomMalaysia.Core.UseCases.UserUseCase.Create.UseCase
+namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 {
     public class CreateUserUseCase : ICreateUserUseCase
     {
