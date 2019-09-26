@@ -18,6 +18,7 @@ namespace JomMalaysia.Infrastructure.Auth0
         private static string _Scope;
         private static string _Auth0UserManagementApi;
         private static string _Auth0SendResetPasswordEmailApi;
+        private static string _RequestAccessTokenApi;
 
         public Auth0Setting(IConfiguration IConfiguration)
         {
@@ -38,6 +39,8 @@ namespace JomMalaysia.Infrastructure.Auth0
         public string Scope => _Scope;
 
         public string Auth0SendResetPasswordEmailApi => _Auth0SendResetPasswordEmailApi;
+
+        public string RequestAccessTokenApi => _RequestAccessTokenApi;
 
         public void Initialize()
         {
@@ -81,6 +84,10 @@ namespace JomMalaysia.Infrastructure.Auth0
                 _Auth0SendResetPasswordEmailApi = _IConfiguration.GetValue<string>("Auth0:ManagementApi:ResetPassword");
             }
 
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:OAuth")))
+            {
+                _RequestAccessTokenApi = _IConfiguration.GetValue<string>("Auth0:OAuth");
+            }
         }
     }
 }

@@ -15,7 +15,8 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Delete
         public async Task<bool> Handle(DeleteUserRequest message, IOutputPort<DeleteUserResponse> outputPort)
         {
             var DeleteUserResponse = await _userRepository.DeleteUser(message.Userid);
-            throw new System.NotImplementedException();
+            outputPort.Handle(DeleteUserResponse);
+            return DeleteUserResponse.Success;
         }
     }
 }

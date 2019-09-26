@@ -21,5 +21,6 @@ namespace JomMalaysia.Framework.Configuration
         string Scope { get; }
         string Auth0UserManagementApi { get; }
         string Auth0SendResetPasswordEmailApi { get; }
+        string RequestAccessTokenApi { get; }
     }
 }

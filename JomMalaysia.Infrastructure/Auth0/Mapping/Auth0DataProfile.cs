@@ -28,7 +28,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Mapping
                         .ForMember(dest => dest.AdditionalPermissions, opt => opt.MapFrom(src => src.app_metadata.authorization.permissions))
                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => Name.For(src.name)))
                         .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.username))
-                        .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.identities.Select(x => x.user_id).FirstOrDefault()))
+                        .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.user_id))
                         .ForMember(dest => dest.PictureUri, opt => opt.MapFrom(src => src.picture))
                         .ForMember(dest => dest.LastLogin, opt => opt.MapFrom(src => src.last_login))
 

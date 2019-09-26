@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace JomMalaysia.Infrastructure.Auth0.Entities
 {
-    public class Identity
-    {
-        public string user_id { get; set; }
-    }
+
+
+
 
     public class Authorization
     {
@@ -26,8 +25,8 @@ namespace JomMalaysia.Infrastructure.Auth0.Entities
 
         public string name { get; set; }
         public string picture { get; set; }
+        public string user_id { get; set; }
 
-        public List<Identity> identities { get; set; }
 
         public DateTime last_login { get; set; }
 

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace JomMalaysia.Infrastructure.Auth0
 {
@@ -31,7 +32,7 @@ namespace JomMalaysia.Infrastructure.Auth0
 
         private async Task<string> getAccessToken()
         {
-            var client = new RestClient("https://jomn9.auth0.com/oauth/token");
+            var client = new RestClient(_appSetting.RequestAccessTokenApi);
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", "{\"client_id\":\"" + _appSetting.Auth0ClientId + "\",\"client_secret\":\"" + _appSetting.Auth0ClientSecret + "\",\"audience\":\"https://jomn9.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
@@ -60,7 +61,6 @@ namespace JomMalaysia.Infrastructure.Auth0
             {
                 throw e;
             }
-
 
             result.CurrentPage = page + 1;
             result.TotalRowCount = deserializedJson.total;
@@ -99,7 +99,7 @@ namespace JomMalaysia.Infrastructure.Auth0
             if (response.IsSuccessful)
             {
                 var tempuser = JsonConvert.DeserializeObject<Auth0User>(response.Content);
-                var userid = tempuser.identities.Select(x => x.user_id).FirstOrDefault();
+                var userid = tempuser.user_id;
                 createUserResponse = new CreateUserResponse(userid, true, "User Created Successfully");
                 if (!SendResetPasswordEmail(tempuser.email))
                     createUserResponse = new CreateUserResponse("Fail to send reset password email.", true);
@@ -113,8 +113,49 @@ namespace JomMalaysia.Infrastructure.Auth0
             return createUserResponse;
         }
 
+        public async Task<DeleteUserResponse> DeleteUser(string Userid)
+        {
+            DeleteUserResponse deleteUserResponse;
+            IRestResponse response;
+            string accessToken = await getAccessToken();
 
-        public bool SendResetPasswordEmail(string email)
+            try
+            {
+                var client = new RestClient(_appSetting.Auth0UserManagementApi);
+                var GetRequest = new RestRequest(Userid, Method.GET);
+                GetRequest.AddHeader("authorization", "Bearer " + accessToken);
+                IRestResponse GetResponse = await client.ExecuteTaskAsync(GetRequest, new CancellationTokenSource().Token);
+                if (GetResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    var DeleteRequest = new RestRequest(Userid, Method.DELETE);
+                    DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
+                    response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+                    if (response.IsSuccessful)
+                    {
+                        deleteUserResponse = new DeleteUserResponse("User Deleted Successfully", true);
+                    }
+                    else
+                    {
+                        var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
+                        deleteUserResponse = new DeleteUserResponse(Error.StatusCode, false, Error.Message);
+                    }
+
+                    return deleteUserResponse;
+                }
+                else
+                {
+                    var Error = JsonConvert.DeserializeObject<Auth0Errors>(GetResponse.Content);
+                    deleteUserResponse = new DeleteUserResponse(Error.StatusCode, false, Error.Message);
+                }
+                return deleteUserResponse;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        private bool SendResetPasswordEmail(string email)
         {
             IRestResponse response;
 
@@ -136,9 +177,5 @@ namespace JomMalaysia.Infrastructure.Auth0
             return response.IsSuccessful;
         }
 
-        public Task<DeleteUserResponse> DeleteUser(string Userid)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
