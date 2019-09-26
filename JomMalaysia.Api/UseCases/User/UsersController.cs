@@ -20,10 +20,11 @@ namespace JomMalaysia.Api.UseCases.User
     public class UsersController : ControllerBase
     {
         private readonly IGetAllUserUseCase _getAllUserUseCase;
+        private readonly IGetUserUseCase _getUserUseCase;
         private readonly UserPresenter _userPresenter;
         private readonly ICreateUserUseCase _createUserUseCase;
         private readonly IDeleteUserUseCase _deleteUserUseCase;
-        private readonly IGetUserUseCase _getUserUseCase;
+        private readonly IUpdateUserUseCase _updateUserUseCase;
         private readonly ILoginInfoProvider _loginInfo;
         private readonly IMapper _mapper;
 
@@ -33,6 +34,7 @@ namespace JomMalaysia.Api.UseCases.User
             ICreateUserUseCase createUserUseCase,
             IDeleteUserUseCase deleteUserUseCase,
             IGetUserUseCase getUserUseCase,
+            IUpdateUserUseCase updateUserUseCase,
             ILoginInfoProvider loginInfo,
             IMapper mapper)
         {
@@ -41,6 +43,7 @@ namespace JomMalaysia.Api.UseCases.User
             _createUserUseCase = createUserUseCase;
             _userPresenter = UserPresenter;
             _deleteUserUseCase = deleteUserUseCase;
+            _updateUserUseCase = updateUserUseCase;
             _loginInfo = loginInfo;
             _mapper = mapper;
         }
@@ -84,6 +87,17 @@ namespace JomMalaysia.Api.UseCases.User
             await _deleteUserUseCase.Handle(req, _userPresenter);
             return _userPresenter.ContentResult;
         }
+
+
+        [HttpPatch("{userid}")]
+        public async Task<IActionResult> Update([FromRoute]string userid, [FromBody]Auth0User updatedUser)
+        {
+            var req = new UpdateUserRequest(userid, updatedUser);
+            await _updateUserUseCase.Handle(req, _userPresenter);
+            return _userPresenter.ContentResult;
+        }
+
+        // PATCH /api/users/8bf3b151-49d1-4df0-8900-d6bc91b3650f/roles
 
     }
 }
