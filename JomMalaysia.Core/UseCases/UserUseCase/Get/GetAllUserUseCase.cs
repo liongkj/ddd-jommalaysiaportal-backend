@@ -4,10 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.UseCases.UserUseCase.Get.Request;
-using JomMalaysia.Core.UseCases.UserUseCase.Get.Response;
 
-namespace JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase
+namespace JomMalaysia.Core.UseCases.UserUseCase.Get
 {
     public class GetAllUserUseCase : IGetAllUserUseCase
     {
@@ -22,12 +20,6 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get.UseCase
 
         public async Task<bool> Handle(GetAllUserRequest message, IOutputPort<GetAllUserResponse> outputPort)
         {
-            //validate request
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
             var response = await _userRepository.GetAllUsers();
 
             if (!response.Success)

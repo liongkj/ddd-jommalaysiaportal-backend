@@ -3,19 +3,17 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Delete;
-using JomMalaysia.Core.UseCases.UserUseCase.Get.Response;
 using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Framework.Helper;
 using JomMalaysia.Infrastructure.Auth0.Entities;
-using JomMalaysia.Infrastructure.Helpers;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using JomMalaysia.Core.UseCases.UserUseCase.Get;
 
 namespace JomMalaysia.Infrastructure.Auth0
 {
@@ -73,6 +71,38 @@ namespace JomMalaysia.Infrastructure.Auth0
             return deserializedJson.length == 0 ?
                 new GetAllUserResponse(new List<string> { "No Users" }, false)
                 : new GetAllUserResponse(result, true);
+        }
+
+
+        public async Task<GetUserResponse> GetUser(string userId)
+        {
+            IRestResponse GetResponse;
+            GetUserResponse response;
+            string accessToken = await getAccessToken();
+            try
+            {
+                var client = new RestClient(_appSetting.Auth0UserManagementApi);
+                var GetRequest = new RestRequest(userId, Method.GET);
+                GetRequest.AddHeader("authorization", "Bearer " + accessToken);
+                GetResponse = await client.ExecuteTaskAsync(GetRequest, new CancellationTokenSource().Token);
+                if (GetResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    var auth0User = JsonConvert.DeserializeObject<Auth0User>(GetResponse.Content);
+                    var user = _mapper.Map<User>(auth0User);
+                    response = new GetUserResponse(user, true);
+                }
+                else
+                {
+                    var Error = JsonConvert.DeserializeObject<Auth0Errors>(GetResponse.Content);
+                    response = new GetUserResponse(Error.StatusCode, false, Error.Message);
+                }
+                return response;
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task<CreateUserResponse> CreateUser(User user)
@@ -176,6 +206,7 @@ namespace JomMalaysia.Infrastructure.Auth0
             }
             return response.IsSuccessful;
         }
+
 
     }
 }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace JomMalaysia.Core.UseCases.UserUseCase.Get.Response
+namespace JomMalaysia.Core.UseCases.UserUseCase.Get
 {
     public class GetAllUserResponse : UseCaseResponseMessage
     {

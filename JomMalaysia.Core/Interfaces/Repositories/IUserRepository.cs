@@ -2,7 +2,7 @@
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Delete;
-using JomMalaysia.Core.UseCases.UserUseCase.Get.Response;
+using JomMalaysia.Core.UseCases.UserUseCase.Get;
 
 namespace JomMalaysia.Core.Interfaces.Repositories
 {
@@ -10,6 +10,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     {
         Task<GetAllUserResponse> GetAllUsers(int countperpage = 10, int page = 0);
 
+        Task<GetUserResponse> GetUser(string userId);
         Task<CreateUserResponse> CreateUser(User user);
         Task<DeleteUserResponse> DeleteUser(string Userid);
     }

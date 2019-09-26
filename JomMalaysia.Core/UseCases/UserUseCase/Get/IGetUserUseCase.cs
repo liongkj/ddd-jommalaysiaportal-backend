@@ -2,7 +2,7 @@
 
 namespace JomMalaysia.Core.UseCases.UserUseCase.Get
 {
-    public interface IGetAllUserUseCase : IUseCaseHandlerAsync<GetAllUserRequest, GetAllUserResponse>
+    public interface IGetUserUseCase : IUseCaseHandlerAsync<GetUserRequest, GetUserResponse>
     {
     }
 }

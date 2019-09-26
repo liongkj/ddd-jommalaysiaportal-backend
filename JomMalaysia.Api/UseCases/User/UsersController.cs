@@ -5,7 +5,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.UserUseCase;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Delete;
-using JomMalaysia.Core.UseCases.UserUseCase.Get.Request;
+using JomMalaysia.Core.UseCases.UserUseCase.Get;
 using JomMalaysia.Infrastructure.Auth0.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +23,7 @@ namespace JomMalaysia.Api.UseCases.User
         private readonly UserPresenter _userPresenter;
         private readonly ICreateUserUseCase _createUserUseCase;
         private readonly IDeleteUserUseCase _deleteUserUseCase;
+        private readonly IGetUserUseCase _getUserUseCase;
         private readonly ILoginInfoProvider _loginInfo;
         private readonly IMapper _mapper;
 
@@ -31,10 +32,12 @@ namespace JomMalaysia.Api.UseCases.User
             UserPresenter UserPresenter,
             ICreateUserUseCase createUserUseCase,
             IDeleteUserUseCase deleteUserUseCase,
+            IGetUserUseCase getUserUseCase,
             ILoginInfoProvider loginInfo,
             IMapper mapper)
         {
             _getAllUserUseCase = getAllUserUseCase;
+            _getUserUseCase = getUserUseCase;
             _createUserUseCase = createUserUseCase;
             _userPresenter = UserPresenter;
             _deleteUserUseCase = deleteUserUseCase;
@@ -53,6 +56,13 @@ namespace JomMalaysia.Api.UseCases.User
             return _userPresenter.ContentResult;
         }
 
+        [HttpGet("{userid}")]
+        public async Task<IActionResult> Get([FromRoute]string userid)
+        {
+            var req = new GetUserRequest(userid);
+            await _getUserUseCase.Handle(req, _userPresenter);
+            return _userPresenter.ContentResult;
+        }
 
         //POST api/users/
         [HttpPost]
