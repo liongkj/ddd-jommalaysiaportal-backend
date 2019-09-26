@@ -1,18 +1,22 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using JomMalaysia.Api.Scope;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.UserUseCase;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Delete;
 using JomMalaysia.Core.UseCases.UserUseCase.Get.Request;
 using JomMalaysia.Infrastructure.Auth0.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.User
 {
-    #region dependenciees
+    #region dependencies
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policies.SUPERADMIN)]
+    [Authorize(Policies.MANAGER)]
     public class UsersController : ControllerBase
     {
         private readonly IGetAllUserUseCase _getAllUserUseCase;
@@ -39,6 +43,8 @@ namespace JomMalaysia.Api.UseCases.User
         }
         #endregion
 
+
+        //GET api/users/
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -47,6 +53,8 @@ namespace JomMalaysia.Api.UseCases.User
             return _userPresenter.ContentResult;
         }
 
+
+        //POST api/users/
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]UserDto user)
         {
@@ -58,6 +66,7 @@ namespace JomMalaysia.Api.UseCases.User
             return _userPresenter.ContentResult;
         }
 
+        //DELETE api/users/{userid}
         [HttpDelete("{userid}")]
         public async Task<IActionResult> Delete([FromRoute]string userid)
         {

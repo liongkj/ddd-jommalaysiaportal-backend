@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
     {
         public CreateUserRequestValidator()
         {
-            RuleFor(x => x.Username).NotEmpty().NotNull().MinimumLength(5).WithMessage("{ PropertyName} should be not be blank and have minimum 5 characters");
+            RuleFor(x => x.Username).NotEmpty().NotNull().Length(5, 15).WithMessage("{ PropertyName} should be not be blank and have between 5 to 15 characters");
             RuleFor(x => x.Email).SetValidator(new EmailValidator());
             RuleFor(x => x.Name).Must(BeAValidName).NotEmpty()
                 .NoStartWithWhiteSpace()

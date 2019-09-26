@@ -2,6 +2,7 @@
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
+using JomMalaysia.Core.UseCases.UserUseCase.Delete;
 using JomMalaysia.Core.UseCases.UserUseCase.Get.Response;
 using JomMalaysia.Framework.Configuration;
 using JomMalaysia.Framework.Helper;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -75,7 +77,9 @@ namespace JomMalaysia.Infrastructure.Auth0
 
         public async Task<CreateUserResponse> CreateUser(User user)
         {
-            IRestResponse<CreateUserResponse> response;
+
+            CreateUserResponse createUserResponse;
+            IRestResponse response;
             string accessToken = await getAccessToken();
 
             try
@@ -86,8 +90,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 request.AddHeader("authorization", "Bearer " + accessToken);
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(userDto);
-
-                response = client.Execute<CreateUserResponse>(request);
+                response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
             }
             catch (Exception e)
             {
@@ -95,13 +98,19 @@ namespace JomMalaysia.Infrastructure.Auth0
             }
             if (response.IsSuccessful)
             {
-                if (SendResetPasswordEmail(user.Email.ToString()))
-                    return new CreateUserResponse(response.Data.user_id, true);
+                var tempuser = JsonConvert.DeserializeObject<Auth0User>(response.Content);
+                var userid = tempuser.identities.Select(x => x.user_id).FirstOrDefault();
+                createUserResponse = new CreateUserResponse(userid, true, "User Created Successfully");
+                if (!SendResetPasswordEmail(tempuser.email))
+                    createUserResponse = new CreateUserResponse("Fail to send reset password email.", true);
+                return createUserResponse;
             }
-
-            //var deserializedJson = JsonConvert.DeserializeObject(response.Content);
-
-            return new CreateUserResponse(new List<string> { response.Content }, response.IsSuccessful);
+            else
+            {
+                var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
+                createUserResponse = new CreateUserResponse(Error.StatusCode, false, Error.Message);
+            }
+            return createUserResponse;
         }
 
 
@@ -125,6 +134,11 @@ namespace JomMalaysia.Infrastructure.Auth0
                 throw e;
             }
             return response.IsSuccessful;
+        }
+
+        public Task<DeleteUserResponse> DeleteUser(string Userid)
+        {
+            throw new NotImplementedException();
         }
     }
 }
