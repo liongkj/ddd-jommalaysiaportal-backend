@@ -42,16 +42,41 @@ namespace JomMalaysia.Core.Domain.Entities
             return true;
         }
 
+        public Tuple<List<string>, bool> UpdateRole(string role)
+        {
+
+            bool DeleteOperation;
+            List<string> roles = new List<string> { "editor", "admin", "manager", "superadmin" };
+            var OldIndex = roles.IndexOf(Role.Name.ToLower());
+
+            var NewIndex = roles.IndexOf(role.ToLower());
+            if (NewIndex == -1) return null;
+            if (OldIndex == NewIndex) return null;
+            if (OldIndex > NewIndex)
+            {//lower rank, delete{
+                roles.RemoveRange(0, NewIndex);
+                DeleteOperation = true;
+            }
+            else
+            {
+                roles.RemoveRange(NewIndex + 1, roles.Count - NewIndex - 1);
+                DeleteOperation = false;
+            }//TODO do unit test
+            return Tuple.Create(roles, DeleteOperation);
+        }
+
         public PagingHelper<User> GetManageableUsers(PagingHelper<User> users)
         {
             List<User> LowerOrSameRankUsers = new List<User>();
             foreach (User u in users.Results)
             {
-                if (u.Role == null || HasHigherRankThan(u) || HasEqualRankTo(u))
+                if (UserId != u.UserId)
                 {
-                    LowerOrSameRankUsers.Add(u);
+                    if (u.Role == null || HasHigherRankThan(u) || HasEqualRankTo(u))
+                    {
+                        LowerOrSameRankUsers.Add(u);
+                    }
                 }
-
             }
             users.Results = LowerOrSameRankUsers;
             users.TotalRowCount = LowerOrSameRankUsers.Count;

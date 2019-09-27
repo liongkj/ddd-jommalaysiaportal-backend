@@ -14,6 +14,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using JomMalaysia.Core.UseCases.UserUseCase.Get;
+using JomMalaysia.Core.UseCases.UserUseCase.Update;
+using System.Linq;
 
 namespace JomMalaysia.Infrastructure.Auth0
 {
@@ -174,6 +176,47 @@ namespace JomMalaysia.Infrastructure.Auth0
             }
 
         }
+
+        public async Task<UpdateUserResponse> UpdateUser(string userId, Tuple<List<string>, bool> updatedUserRole)
+        {
+            var roleIds = await RoleIds();
+            var client = new RestClient(_appSetting.AuthorizationApi);
+            if (updatedUserRole.Item2)//is delete operation
+            {
+                var DeleteRequest = new RestRequest(userId, Method.DELETE, DataFormat.Json);
+                DeleteRequest.AddJsonBody(updatedUserRole.Item1);
+                var ClearRoles = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+            }
+            else
+            {
+                var PatchRequest = new RestRequest(userId, Method.PATCH, DataFormat.Json);
+                PatchRequest.AddBody(roleIds);
+            }
+            return new UpdateUserResponse();
+            //.Where(x => updatedUserRole.Contains(x.name.ToLower()))
+        }
+
+
+        private async Task<List<string>> RoleIds()
+        {
+            string accessToken = await getAccessToken();
+            var client = new RestClient(_appSetting.AuthorizationApi);
+            var request = new RestRequest("roles", Method.GET);
+            request.AddHeader("authorization", "Bearer " + accessToken);
+            var response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+
+            var deserializedJson = JsonConvert.DeserializeObject<Auth0RoleList>(response.Content);
+
+            return deserializedJson.roles
+
+                .Select(x => x._id)
+                .ToList();
+
+
+
+        }
+
+
         private bool SendResetPasswordEmail(string email)
         {
             IRestResponse response;

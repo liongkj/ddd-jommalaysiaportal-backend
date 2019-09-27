@@ -20,6 +20,7 @@ namespace JomMalaysia.Infrastructure.Auth0
         private static string _Auth0SendResetPasswordEmailApi;
         private static string _RequestAccessTokenApi;
         private static string _AdditionalClaimsRoles;
+        private static string _AuthorizationApi;
         public Auth0Setting(IConfiguration IConfiguration)
         {
             _IConfiguration = IConfiguration;
@@ -42,6 +43,8 @@ namespace JomMalaysia.Infrastructure.Auth0
 
         public string RequestAccessTokenApi => _RequestAccessTokenApi;
         public string AdditionalClaimsRoles => _AdditionalClaimsRoles;
+
+        public string AuthorizationApi => _AuthorizationApi;
 
         public void Initialize()
         {
@@ -92,6 +95,10 @@ namespace JomMalaysia.Infrastructure.Auth0
             if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AdditionalClaims:Roles")))
             {
                 _AdditionalClaimsRoles = _IConfiguration.GetValue<string>("Auth0:AdditionalClaims:Roles");
+            }
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AuthorizationApi")))
+            {
+                _AuthorizationApi = _IConfiguration.GetValue<string>("Auth0:AuthorizationApi");
             }
 
         }

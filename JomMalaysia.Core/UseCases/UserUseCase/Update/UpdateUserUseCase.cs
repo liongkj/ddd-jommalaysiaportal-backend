@@ -24,10 +24,18 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Update
                 return false;
             }
             var OldUser = getUserResponse.User;
-            // OldUser.UpdateUser();
-            outputPort.Handle(new UpdateUserResponse());
+            var updatedUserRole = OldUser.UpdateRole(message.Role);
+            if (updatedUserRole == null)
+            {
+                outputPort.Handle(new UpdateUserResponse(new List<string> { "Role not found / Role is not updated" }, false));
 
-            return true;
+                return false;
+            }
+            var UpdateUserResponse = await _userRepository.UpdateUser(message.UserId, updatedUserRole);
+            // OldUser.UpdateUser();
+            outputPort.Handle(UpdateUserResponse);
+
+            return UpdateUserResponse.Success;
 
         }
     }

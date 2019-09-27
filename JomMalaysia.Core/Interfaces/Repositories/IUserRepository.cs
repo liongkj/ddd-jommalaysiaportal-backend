@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Delete;
 using JomMalaysia.Core.UseCases.UserUseCase.Get;
+using JomMalaysia.Core.UseCases.UserUseCase.Update;
 
 namespace JomMalaysia.Core.Interfaces.Repositories
 {
@@ -13,5 +16,6 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<GetUserResponse> GetUser(string userId);
         Task<CreateUserResponse> CreateUser(User user);
         Task<DeleteUserResponse> DeleteUser(string Userid);
+        Task<UpdateUserResponse> UpdateUser(string userId, Tuple<List<string>, bool> updatedUserRole);
     }
 }
