@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Framework.Helper;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
@@ -41,9 +42,30 @@ namespace JomMalaysia.Core.Domain.Entities
             return true;
         }
 
-        private bool HasHigherRankThan(User toBeDelete)
+        public PagingHelper<User> GetManageableUsers(PagingHelper<User> users)
         {
-            return Role.HasHigherAuthority(toBeDelete.Role);
+            List<User> LowerOrSameRankUsers = new List<User>();
+            foreach (User u in users.Results)
+            {
+                if (u.Role == null || HasHigherRankThan(u) || HasEqualRankTo(u))
+                {
+                    LowerOrSameRankUsers.Add(u);
+                }
+
+            }
+            users.Results = LowerOrSameRankUsers;
+            users.TotalRowCount = LowerOrSameRankUsers.Count;
+            return users;
+        }
+
+        private bool HasHigherRankThan(User user2)
+        {
+            return Role.HasHigherAuthority(user2.Role);
+        }
+
+        private bool HasEqualRankTo(User user2)
+        {
+            return Role.Equals(user2.Role);
         }
 
 

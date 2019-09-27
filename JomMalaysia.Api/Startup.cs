@@ -28,6 +28,7 @@ using JomMalaysia.Core.Services.ImageProcessingServices;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
 using System.IdentityModel.Tokens.Jwt;
+using System.Collections.Generic;
 
 namespace JomMalaysia.Api
 {
@@ -63,13 +64,18 @@ namespace JomMalaysia.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Policies.MANAGER, policy => policy.RequireClaim(Policies.NAMESPACE, "Manager"));
-                options.AddPolicy(Policies.SUPERADMIN, policy => policy.RequireClaim(Policies.NAMESPACE, "Superadmin"));
-                options.AddPolicy(Policies.EDITOR, policy => policy.RequireClaim(Policies.NAMESPACE, "Editor"));
+                options.AddPolicy(Policies.MANAGER, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Manager", "Admin", "Editor" }));
+                options.AddPolicy(Policies.SUPERADMIN, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Superadmin", "Manager", "Admin", "Editor" }));
+                options.AddPolicy(Policies.ADMIN, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Admin", "Editor" }));
+                options.AddPolicy(Policies.EDITOR, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Editor" }));
             });
             //services.AddHttpContextAccessor();
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+
             services.AddScoped<AppUserRoleValidation>();
+            services.AddScoped<ILoginInfoProvider, AppUserRoleValidation>(opt => opt.GetRequiredService<AppUserRoleValidation>());
+
 
             //Add mongodb
 
@@ -100,7 +106,7 @@ namespace JomMalaysia.Api
             var builder = new ContainerBuilder();
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
-            builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();
+            //builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();
             //builder.RegisterType<AppSetting>().As<IAppSetting>().InstancePerLifetimeScope();
 
             // Presenters

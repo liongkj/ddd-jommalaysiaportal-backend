@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Framework.Helper;
 using JomMalaysia.Infrastructure.Auth0.Entities;
@@ -24,7 +25,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Mapping
 
             CreateMap<Auth0User, User>(MemberList.None)
                         .ForMember(dest => dest.Email, opt => opt.MapFrom(src => Email.For(src.email)))
-                        .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.app_metadata.authorization.roles.FirstOrDefault()))
+                        .ForMember(dest => dest.Role, opt => opt.MapFrom(src => UserRoleEnum.For(src.app_metadata.authorization.roles.FirstOrDefault())))
                         .ForMember(dest => dest.AdditionalPermissions, opt => opt.MapFrom(src => src.app_metadata.authorization.permissions))
                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => Name.For(src.name)))
                         .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.username))

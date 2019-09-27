@@ -17,7 +17,7 @@ namespace JomMalaysia.Api.Providers
     {
         private readonly IAuth0Setting _auth0Setting;
         private readonly IUserRepository _userRepository;
-        private User AppUser;
+        private User AppUser { get; set; }
 
         public AppUserRoleValidation(IAuth0Setting auth0Setting, IUserRepository userRepository)
         {
@@ -53,9 +53,6 @@ namespace JomMalaysia.Api.Providers
                 throw new Exception(user.Error);
             }
 
-            // return base.TokenValidated(context);
         }
-
-
     }
 }

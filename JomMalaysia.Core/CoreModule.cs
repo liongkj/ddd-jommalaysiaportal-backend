@@ -1,14 +1,9 @@
 ﻿
 using System.Reflection;
-using System.Web.Http.Validation;
 using Autofac;
 using FluentValidation;
-using FluentValidation.WebApi;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Services.ImageProcessingServices;
-using JomMalaysia.Core.UseCases.UserUseCase;
-using JomMalaysia.Core.UseCases.UserUseCase.Get;
-using JomMalaysia.Core.Validation;
 
 namespace JomMalaysia.Core
 {

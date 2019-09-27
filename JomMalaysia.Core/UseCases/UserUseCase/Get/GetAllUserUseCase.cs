@@ -20,6 +20,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
 
         public async Task<bool> Handle(GetAllUserRequest message, IOutputPort<GetAllUserResponse> outputPort)
         {
+            var AppUser = _loginInfo.AuthenticatedUser();
             var response = await _userRepository.GetAllUsers();
 
             if (!response.Success)
@@ -27,7 +28,8 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
                 outputPort.Handle(new GetAllUserResponse(response.Errors));
                 return false;
             }
-            outputPort.Handle(new GetAllUserResponse(response.Users, true));
+            var ManageableUsers = AppUser.GetManageableUsers(response.Users);
+            outputPort.Handle(new GetAllUserResponse(ManageableUsers, true));
 
             return response.Success;
         }
