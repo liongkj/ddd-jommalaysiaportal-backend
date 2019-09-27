@@ -152,32 +152,21 @@ namespace JomMalaysia.Infrastructure.Auth0
             try
             {
                 var client = new RestClient(_appSetting.Auth0UserManagementApi);
-                var GetRequest = new RestRequest(Userid, Method.GET);
-                GetRequest.AddHeader("authorization", "Bearer " + accessToken);
-                IRestResponse GetResponse = await client.ExecuteTaskAsync(GetRequest, new CancellationTokenSource().Token);
-                if (GetResponse.StatusCode == HttpStatusCode.OK)
+                var DeleteRequest = new RestRequest(Userid, Method.DELETE);
+                DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
+                response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+                if (response.IsSuccessful)
                 {
-                    var DeleteRequest = new RestRequest(Userid, Method.DELETE);
-                    DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
-                    response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
-                    if (response.IsSuccessful)
-                    {
-                        deleteUserResponse = new DeleteUserResponse("User Deleted Successfully", true);
-                    }
-                    else
-                    {
-                        var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
-                        deleteUserResponse = new DeleteUserResponse(Error.StatusCode, false, Error.Message);
-                    }
-
-                    return deleteUserResponse;
+                    deleteUserResponse = new DeleteUserResponse("User Deleted Successfully", true);
                 }
                 else
                 {
-                    var Error = JsonConvert.DeserializeObject<Auth0Errors>(GetResponse.Content);
+                    var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
                     deleteUserResponse = new DeleteUserResponse(Error.StatusCode, false, Error.Message);
                 }
+
                 return deleteUserResponse;
+
             }
             catch (Exception e)
             {

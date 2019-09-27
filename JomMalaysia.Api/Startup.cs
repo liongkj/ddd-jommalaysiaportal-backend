@@ -27,6 +27,7 @@ using FluentValidation;
 using JomMalaysia.Core.Services.ImageProcessingServices;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace JomMalaysia.Api
 {
@@ -48,15 +49,15 @@ namespace JomMalaysia.Api
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
             }).AddJwtBearer(options =>
             {
 
-                options.Authority =
-                //"https://jomn9.auth0.com/";
-                Configuration["Auth0:Authority"];
-                options.Audience =
-                //"https://localhost:44368/";
-                Configuration["Auth0:Audience"];
+
+                options.Authority = Configuration["Auth0:Authority"];
+                options.Audience = Configuration["Auth0:Audience"];
+
+                options.EventsType = typeof(AppUserRoleValidation);
 
             });
 
@@ -68,6 +69,7 @@ namespace JomMalaysia.Api
             });
             //services.AddHttpContextAccessor();
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+            services.AddScoped<AppUserRoleValidation>();
 
             //Add mongodb
 

@@ -12,17 +12,16 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Reject
     public class RejectWorkflowUseCase : IRejectWorkflowUseCase
     {
         private readonly IWorkflowRepository _workfowRepository;
+        private readonly ILoginInfoProvider _loginInfo;
 
-        public RejectWorkflowUseCase(IWorkflowRepository workflowRepository)
+        public RejectWorkflowUseCase(IWorkflowRepository workflowRepository, ILoginInfoProvider loginInfo)
         {
+            _loginInfo = loginInfo;
             _workfowRepository = workflowRepository;
         }
         public async Task<bool> Handle(WorkflowActionRequest message, IOutputPort<WorkflowActionResponse> outputPort)
         {
-            var responder = new User
-            {
-                Role = "admin"
-            };
+            var responder = _loginInfo.AuthenticatedUser();
 
 
             try

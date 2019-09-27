@@ -6,7 +6,7 @@ using Xunit;
 
 namespace JomMalaysia.Test.Core.ValueObject
 {
-    public class ValueObjectTest
+    public class CategoryPathTest
     {
         [Fact]
         public void ExtractSubcategoryPathTest()
@@ -17,7 +17,7 @@ namespace JomMalaysia.Test.Core.ValueObject
             //expect
             string category = "restaurant";
             string subcategory = "chinese muslim";
-            
+
 
             Assert.Equal(category, categorypath.Category);
             Assert.Equal(subcategory, categorypath.Subcategory);
@@ -30,8 +30,8 @@ namespace JomMalaysia.Test.Core.ValueObject
             string path = ",restaurant,";
             CategoryPath categorypath = (CategoryPath)(path);
             string category = "restaurant";
-            
-           
+
+
 
             Assert.Equal(category, categorypath.Category);
             Assert.Null(categorypath.Subcategory);
@@ -43,7 +43,7 @@ namespace JomMalaysia.Test.Core.ValueObject
             //given
             string category = "restaurant";
             string subcategory = "Chinese mUsLim";
-            CategoryPath categorypath = new CategoryPath(category,subcategory);
+            CategoryPath categorypath = new CategoryPath(category, subcategory);
             categorypath.ToString();
             Assert.Equal("restaurant", categorypath.Category);
             Assert.Equal("chinese-muslim", categorypath.Subcategory);
@@ -55,11 +55,11 @@ namespace JomMalaysia.Test.Core.ValueObject
         {
             //given
             string category = "restaurant";
-            
+
             CategoryPath categorypath = new CategoryPath(category, "");
 
             Assert.Equal(",restaurant,", categorypath.ToString());
-            
+
         }
 
         [Fact]

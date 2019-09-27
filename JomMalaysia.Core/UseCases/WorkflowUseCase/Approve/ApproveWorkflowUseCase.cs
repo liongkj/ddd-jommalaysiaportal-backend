@@ -13,20 +13,19 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
     {
         private readonly IWorkflowRepository _workfowRepository;
         private readonly IListingRepository _listingRepository;
+        private readonly ILoginInfoProvider _loginInfo;
 
-        public ApproveWorkflowUseCase(IWorkflowRepository workflowRepository, IListingRepository listingRepository)
+        public ApproveWorkflowUseCase(IWorkflowRepository workflowRepository, IListingRepository listingRepository, ILoginInfoProvider loginInfo)
         {
             _workfowRepository = workflowRepository;
             _listingRepository = listingRepository;
+            _loginInfo = loginInfo;
         }
         public async Task<bool> Handle(WorkflowActionRequest message, IOutputPort<WorkflowActionResponse> outputPort)
         {
             // throw new NotImplementedException();
             //TODO get current signed in user
-            var responder = new User
-            {
-                Role = "admin"
-            };
+            var responder = _loginInfo.AuthenticatedUser();
 
 
             try

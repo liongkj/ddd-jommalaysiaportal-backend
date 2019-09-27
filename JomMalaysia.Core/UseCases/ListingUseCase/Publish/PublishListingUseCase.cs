@@ -29,14 +29,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         }
         public async Task<bool> Handle(ListingWorkflowRequest message, IOutputPort<ListingWorkflowResponse> outputPort)
         {
-            var requester = new User
-            {
-                Role = "admin"
-            };
-            //_loginInfo.AuthenticatedUser();
+            var requester = _loginInfo.AuthenticatedUser();
 
-
-            //TODO find user by id/token
             //TODO check user level and assign workflow level
 
             //validate listingsid are real

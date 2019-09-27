@@ -27,10 +27,24 @@ namespace JomMalaysia.Core.Domain.Entities
         public string Username { get; set; }
         public Email Email { get; set; }
         public Name Name { get; set; }
-        public string Role { get; set; }
+        public UserRoleEnum Role { get; set; }
         public List<string> AdditionalPermissions { get; set; }
         public string PictureUri { get; set; }
         public DateTime LastLogin { get; set; }
+
+        public bool CanDelete(User toBeDelete)
+        {
+
+            if (UserId == toBeDelete.UserId) return false; //cannot delete self
+            if (toBeDelete.Role == UserRoleEnum.Superadmin) return false;
+            if (!this.HasHigherRankThan(toBeDelete)) return false;
+            return true;
+        }
+
+        private bool HasHigherRankThan(User toBeDelete)
+        {
+            return Role.HasHigherAuthority(toBeDelete.Role);
+        }
 
 
         /// <summary>
@@ -93,18 +107,7 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         private int UserWorkflowLevel()
         {
-            var assignedRole = Role.ToLower();
-            switch (assignedRole)
-            {
-                case "admin":
-                    return 2;
-                case "editor":
-                    return 1;
-                case "manager":
-                    return 3;
-                default:
-                    return 0;
-            }
+            return Role.Id;
 
         }
 

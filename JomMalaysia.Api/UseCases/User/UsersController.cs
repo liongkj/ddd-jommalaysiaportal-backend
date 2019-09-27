@@ -6,6 +6,7 @@ using JomMalaysia.Core.UseCases.UserUseCase;
 using JomMalaysia.Core.UseCases.UserUseCase.Create;
 using JomMalaysia.Core.UseCases.UserUseCase.Delete;
 using JomMalaysia.Core.UseCases.UserUseCase.Get;
+using JomMalaysia.Core.UseCases.UserUseCase.Update;
 using JomMalaysia.Infrastructure.Auth0.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -90,10 +91,10 @@ namespace JomMalaysia.Api.UseCases.User
 
 
         [HttpPatch("{userid}")]
-        public async Task<IActionResult> Update([FromRoute]string userid, [FromBody]Auth0User updatedUser)
+        public async Task<IActionResult> Update([FromRoute]string userid, [FromBody]UpdateUserRequest updatedUser)
         {
-            var req = new UpdateUserRequest(userid, updatedUser);
-            await _updateUserUseCase.Handle(req, _userPresenter);
+            updatedUser.UserId = userid;
+            await _updateUserUseCase.Handle(updatedUser, _userPresenter);
             return _userPresenter.ContentResult;
         }
 
