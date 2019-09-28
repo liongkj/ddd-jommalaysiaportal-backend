@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JomMalaysia.Core\JomMalaysia.Core.csproj" />
+     <ProjectReference Include="..\JomMalaysia.Framework\JomMalaysia.Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 using JomMalaysia.Infrastructure.Auth0;
+using JomMalaysia.Infrastructure.Auth0.Managers;
 using JomMalaysia.Infrastructure.Data.MongoDb;
 
 namespace JomMalaysia.Infrastructure
@@ -18,6 +19,11 @@ namespace JomMalaysia.Infrastructure
             builder.RegisterType<Auth0Setting>()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<Auth0AccessTokenManager>()
+               .AsImplementedInterfaces()
+               .InstancePerLifetimeScope();
+
 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                    .Where(repo => repo.Name.EndsWith("Repository"))
