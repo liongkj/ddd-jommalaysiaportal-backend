@@ -42,6 +42,9 @@ namespace JomMalaysia.Infrastructure.Auth0
             return (deserializedJson.access_token != null) ? deserializedJson.access_token : null;
         }
 
+
+
+
         public async Task<GetAllUserResponse> GetAllUsers(int countperpage = 10, int page = 0)
         {
             PagingHelper<User> result;
@@ -177,29 +180,73 @@ namespace JomMalaysia.Infrastructure.Auth0
 
         }
 
+        //authorization api
+
+        private async Task<string> getAuthorizationApiAccessToken()
+        {
+            var client = new RestClient(_appSetting.RequestAccessTokenApi);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("content-type", "application/json");
+            request.AddParameter("application/json",
+            "{\"client_id\":\"" + _appSetting.AuthorizationClientId +
+            "\",\"client_secret\":\"" + _appSetting.AuthorizationClientSecret +
+            "\",\"audience\":\"" + _appSetting.AuthorizationAudience +
+            "\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+
+            IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+            dynamic deserializedJson = JsonConvert.DeserializeObject(response.Content);
+
+            return (deserializedJson.access_token != null) ? deserializedJson.access_token : null;
+        }
+
         public async Task<UpdateUserResponse> UpdateUser(string userId, Tuple<List<string>, bool> updatedUserRole)
         {
             var roleIds = await RoleIds();
-            var client = new RestClient(_appSetting.AuthorizationApi);
-            if (updatedUserRole.Item2)//is delete operation
+            var client = new RestClient($"{_appSetting.AuthorizationApi}/users/{userId}/roles");
+
+            IRestResponse response;
+            string accessToken = await getAuthorizationApiAccessToken();
+            if (roleIds != null)
             {
-                var DeleteRequest = new RestRequest(userId, Method.DELETE, DataFormat.Json);
-                DeleteRequest.AddJsonBody(updatedUserRole.Item1);
-                var ClearRoles = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+                if (updatedUserRole.Item2)//is delete operation
+                {
+                    var ToDelete = updatedUserRole.Item1;
+                    var filtered = roleIds.Where(x => ToDelete.Equals(x.name.ToLower()));
+                    var DeleteRequest = new RestRequest(userId, Method.DELETE, DataFormat.Json);
+                    DeleteRequest.AddHeader("content-type", "application/json");
+                    DeleteRequest.AddJsonBody(filtered);
+                    DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
+                    response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+                }
+                else
+                {
+                    var ToAdd = updatedUserRole.Item1;
+                    var filtered = roleIds
+                        .Where(x => ToAdd.Contains(x.name.ToLower()))
+                        .Select(x => x._id)
+                        .ToArray();
+
+                    //.Select(x => x.Item1.Where(updatedUserRole.Item1.Contains(x.Item2.ToLower())));
+                    //.Where(x => updatedUserRole.Item1.Contains(x.Item2.ToLower()));
+                    var PatchRequest = new RestRequest(Method.PATCH);
+                    PatchRequest.AddHeader("content-type", "application/json");
+                    PatchRequest.AddHeader("authorization", "Bearer " + accessToken);
+                    PatchRequest.AddJsonBody(filtered);
+                    response = await client.ExecuteTaskAsync(PatchRequest, new CancellationTokenSource().Token);
+                }
+                var UpdateUserResponse = (response.StatusCode == HttpStatusCode.NoContent) ?
+                  new UpdateUserResponse("User Updated to " + updatedUserRole.Item1.Last(), response.IsSuccessful) : //success
+                 new UpdateUserResponse(response.Content, response.IsSuccessful);
+                return UpdateUserResponse;
             }
-            else
-            {
-                var PatchRequest = new RestRequest(userId, Method.PATCH, DataFormat.Json);
-                PatchRequest.AddBody(roleIds);
-            }
-            return new UpdateUserResponse();
+            return new UpdateUserResponse(new List<string> { "Not Authorized" }, false);
             //.Where(x => updatedUserRole.Contains(x.name.ToLower()))
         }
 
 
-        private async Task<List<string>> RoleIds()
+        private async Task<List<Auth0RoleList.Role>> RoleIds()
         {
-            string accessToken = await getAccessToken();
+            string accessToken = await getAuthorizationApiAccessToken();
             var client = new RestClient(_appSetting.AuthorizationApi);
             var request = new RestRequest("roles", Method.GET);
             request.AddHeader("authorization", "Bearer " + accessToken);
@@ -208,11 +255,8 @@ namespace JomMalaysia.Infrastructure.Auth0
             var deserializedJson = JsonConvert.DeserializeObject<Auth0RoleList>(response.Content);
 
             return deserializedJson.roles
-
-                .Select(x => x._id)
+                .Select(x => x)
                 .ToList();
-
-
 
         }
 

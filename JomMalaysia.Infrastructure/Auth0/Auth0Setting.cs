@@ -20,6 +20,10 @@ namespace JomMalaysia.Infrastructure.Auth0
         private static string _Auth0SendResetPasswordEmailApi;
         private static string _RequestAccessTokenApi;
         private static string _AdditionalClaimsRoles;
+        //Authorization setting API;
+        private static string _AuthorizationClientSecret;
+        private static string _AuthorizationClientId;
+        private static string _AuthorizationAudience;
         private static string _AuthorizationApi;
         public Auth0Setting(IConfiguration IConfiguration)
         {
@@ -43,8 +47,11 @@ namespace JomMalaysia.Infrastructure.Auth0
 
         public string RequestAccessTokenApi => _RequestAccessTokenApi;
         public string AdditionalClaimsRoles => _AdditionalClaimsRoles;
-
+        //Authoriation APi
         public string AuthorizationApi => _AuthorizationApi;
+        public string AuthorizationClientId => _AuthorizationClientId;
+        public string AuthorizationClientSecret => _AuthorizationClientSecret;
+        public string AuthorizationAudience => _AuthorizationAudience;
 
         public void Initialize()
         {
@@ -92,13 +99,28 @@ namespace JomMalaysia.Infrastructure.Auth0
             {
                 _RequestAccessTokenApi = _IConfiguration.GetValue<string>("Auth0:OAuth");
             }
+
             if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AdditionalClaims:Roles")))
             {
                 _AdditionalClaimsRoles = _IConfiguration.GetValue<string>("Auth0:AdditionalClaims:Roles");
             }
-            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AuthorizationApi")))
+
+            //AuthorizationAPi
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AuthorizationApi:ClientId")))
             {
-                _AuthorizationApi = _IConfiguration.GetValue<string>("Auth0:AuthorizationApi");
+                _AuthorizationClientId = _IConfiguration.GetValue<string>("Auth0:AuthorizationApi:ClientId");
+            }
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AuthorizationApi:ClientSecret")))
+            {
+                _AuthorizationClientSecret = _IConfiguration.GetValue<string>("Auth0:AuthorizationApi:ClientSecret");
+            }
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AuthorizationApi:Audience")))
+            {
+                _AuthorizationAudience = _IConfiguration.GetValue<string>("Auth0:AuthorizationApi:Audience");
+            }
+            if (!string.IsNullOrEmpty(_IConfiguration.GetValue<string>("Auth0:AuthorizationApi:Api")))
+            {
+                _AuthorizationApi = _IConfiguration.GetValue<string>("Auth0:AuthorizationApi:Api");
             }
 
         }

@@ -23,6 +23,10 @@ namespace JomMalaysia.Framework.Configuration
         string Auth0SendResetPasswordEmailApi { get; }
         string RequestAccessTokenApi { get; }
         string AdditionalClaimsRoles { get; }
+        //Authorization Extension API
         string AuthorizationApi { get; }
+        string AuthorizationClientSecret { get; }
+        string AuthorizationClientId { get; }
+        string AuthorizationAudience { get; }
     }
 }
