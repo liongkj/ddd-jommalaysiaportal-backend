@@ -210,7 +210,7 @@ namespace JomMalaysia.Infrastructure.Auth0
             string accessToken = await _tokenManager.GetAccessToken();
             if (roleIds != null)
             {
-                if (updatedUserRole.Item2)//is delete operation
+                if (updatedUserRole.Item2)//is delete operation remove roles
                 {
                     var ToDelete = updatedUserRole.Item1;
                     var filtered = roleIds.Where(x => ToDelete.Equals(x.name.ToLower()));

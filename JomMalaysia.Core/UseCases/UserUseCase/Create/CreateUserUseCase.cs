@@ -25,9 +25,18 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
         {
 
             User NewUser = new User(message.Username, message.Email, message.Name);
-            var response = await _userRepository.CreateUser(NewUser);
-            outputPort.Handle(response);
-            return response.Success;
+            var updateRole = NewUser.AssignRole("Editor");
+            var createUserResponse = await _userRepository.CreateUser(NewUser);
+            if (createUserResponse.Success)
+            {
+                var response = await _userRepository.UpdateUser(createUserResponse.Status, updateRole);
+                if (!response.Success)
+                {
+                    await _userRepository.DeleteUser(createUserResponse.Status); //rollback
+                }
+            }
+            outputPort.Handle(createUserResponse);
+            return createUserResponse.Success;
         }
 
     }

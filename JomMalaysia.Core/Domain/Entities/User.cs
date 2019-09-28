@@ -42,26 +42,39 @@ namespace JomMalaysia.Core.Domain.Entities
             return true;
         }
 
+
+        public Tuple<List<string>, bool> AssignRole(string role)
+        {
+            List<string> roles = new List<string> { "editor", "admin", "manager", "superadmin" };
+            var NewIndex = roles.IndexOf(role.ToLower());
+            if (NewIndex == -1) return null;
+            roles.RemoveRange(NewIndex + 1, roles.Count - NewIndex - 1);
+            return Tuple.Create(roles, false);
+        }
+
         public Tuple<List<string>, bool> UpdateRole(string role)
         {
 
-            bool DeleteOperation;
+            bool DeleteOperation = false;
             List<string> roles = new List<string> { "editor", "admin", "manager", "superadmin" };
-            var OldIndex = roles.IndexOf(Role.Name.ToLower());
-
             var NewIndex = roles.IndexOf(role.ToLower());
-            if (NewIndex == -1) return null;
-            if (OldIndex == NewIndex) return null;
-            if (OldIndex > NewIndex)
-            {//lower rank, delete{
-                roles.RemoveRange(0, NewIndex);
-                DeleteOperation = true;
+            if (Role != null)
+            {
+                var OldIndex = roles.IndexOf(Role.Name.ToLower());
+                if (OldIndex == NewIndex) return null;
+                if (OldIndex > NewIndex)
+                {//lower rank, delete{
+                    roles.RemoveRange(0, NewIndex);
+                    DeleteOperation = true;
+                }
             }
             else
             {
                 roles.RemoveRange(NewIndex + 1, roles.Count - NewIndex - 1);
                 DeleteOperation = false;
             }//TODO do unit test
+            if (NewIndex == -1) return null; //cant find role variable 
+
             return Tuple.Create(roles, DeleteOperation);
         }
 
