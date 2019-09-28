@@ -16,6 +16,7 @@ namespace JomMalaysia.Api.UseCases.Categories
     // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policies.MANAGER)]
     public class CategoriesController : ControllerBase
     {
         #region dependencies
@@ -63,7 +64,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         //GET api/categories
         //get whole category collection
         [HttpGet]
-        [Authorize(Policies.MANAGER)]
+
         public async Task<IActionResult> Get(int pageSize = 20, int pageNumber = 0)
         {
             var req = new GetAllCategoryRequest

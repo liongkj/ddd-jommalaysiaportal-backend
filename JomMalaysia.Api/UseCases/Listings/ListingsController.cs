@@ -7,6 +7,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ListingsController : ControllerBase
     {
         #region Dependencies

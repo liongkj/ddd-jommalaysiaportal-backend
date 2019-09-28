@@ -30,6 +30,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
 
             try
             {
+                //get workflow details from db
                 var getWorkflowResponse = await _workfowRepository.GetWorkflowByIdAsync(message.WorkflowId);
                 if (!getWorkflowResponse.Success)
                 {
@@ -37,11 +38,12 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
                     return false;
                 }
                 var ApprovedWorkflow = getWorkflowResponse.Workflow;
+                //check user priveledge
                 var ApprovedWorkflowCanProceed = responder.ApproveRejectWorkflow(getWorkflowResponse.Workflow, message.Action, message.Comments);
 
                 if (!ApprovedWorkflowCanProceed)
                 {
-                    if (ApprovedWorkflow.Responder != null) //not enought
+                    if (ApprovedWorkflow.Responder != null) //not enough priviledge
                     {
                         outputPort.Handle(new WorkflowActionResponse(new List<string> { "User do not have enough authority" }));
                         return false;
