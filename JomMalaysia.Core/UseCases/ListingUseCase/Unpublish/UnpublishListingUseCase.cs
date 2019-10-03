@@ -42,8 +42,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 
             var ToBeDeleted = getListingResponse.Listing;
 
-            //TODO check is there any request related to the listing
-
+            //check is there any request related to the listing
+            bool ListingHasPendingWorkflows = await _workflowRepository.GetPendingWorkflowForListing(ToBeDeleted.ListingId);
+            if (ListingHasPendingWorkflows)
+            {
+                outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBeDeleted.ListingName } has pending workflows, please complete the workflow before creating a new one." }));
+                return false;
+            }
 
             //create new workflow
             Workflow UnpublishListingWorkflow = requester.UnpublishListing(ToBeDeleted);

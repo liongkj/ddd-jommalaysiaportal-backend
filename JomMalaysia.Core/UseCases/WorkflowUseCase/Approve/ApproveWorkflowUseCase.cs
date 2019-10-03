@@ -23,8 +23,6 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
         }
         public async Task<bool> Handle(WorkflowActionRequest message, IOutputPort<WorkflowActionResponse> outputPort)
         {
-            // throw new NotImplementedException();
-            //TODO get current signed in user
             var responder = _loginInfo.AuthenticatedUser();
 
 

@@ -19,17 +19,12 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
         {
             var workflowResponse = await _workfowRepository.GetWorkflowByIdAsync(message.WorkflowId);
 
-            //foreach(var c in response.Categories){
-            //    foreach(var sub in message.Subcategories)
-            //    c.Subcategories.Add(sub);
-            //}
-
             outputPort.Handle(workflowResponse);
 
 
             return workflowResponse.Success;
-            //throw new NotImplementedException();
-            //TODO 
+
+
 
         }
     }

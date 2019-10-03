@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using FluentValidation;
 using JomMalaysia.Core.Domain.Enums;
@@ -18,16 +19,28 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
 
             RuleFor(x => x.CompanyName).NotEmpty().WithMessage("{PropertyName} should not be empty");
 
-            RuleFor(x => x.CompanyRegistrationNumber).NotEmpty().Must(BeValidCompanyReqNo);
+            RuleFor(x => x.CompanyRegistrationNumber).NotEmpty().Must(ValidNewRegistrationNo).WithMessage("{PropertyName} should have 12 characters");
 
             RuleFor(x => x.Contacts.Count).GreaterThan(0).WithMessage("{PropertyName} shuould have at least one primary contact");
 
             RuleForEach(x => x.Contacts).SetValidator(new ContactValidator());
         }
-        protected bool BeValidCompanyReqNo(string regNo)
+        protected bool ValidOldRegistrationNo(string regNo)
         {
-            return true;
-            //TODO Check malaysia company reg pattern
+            var regNumber = regNo.Trim().Split('-');
+            var sufficientLength = regNumber[0].Length >= 6 && regNumber[0].Length <= 7; //check number 6 -7;
+            var IsAlpha = char.IsLetter(char.Parse(regNumber[1]));
+            return IsAlpha && sufficientLength;
+        }
+
+        protected bool ValidNewRegistrationNo(string regNo)
+        {
+            var regNumber = regNo.Trim();
+            var IsDigit = regNumber.All(Char.IsDigit);
+            var validLength = regNumber.Length == 12;
+            //check number 6 -7;
+            return IsDigit && validLength;
+
         }
 
     }

@@ -87,7 +87,7 @@ public class ListingRepository : IListingRepository
         else return new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
     }
 
-    public GetListingResponse FindByName(string name)
+    public async Task<GetListingResponse> FindByName(string name)
     {
         throw new System.NotImplementedException();
         //TODO If need this function

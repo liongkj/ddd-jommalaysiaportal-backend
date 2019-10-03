@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.Interfaces
         Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null);
         Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
 
-        GetListingResponse FindByName(string name);
+        Task<GetListingResponse> FindByName(string name);
         Task<GetListingResponse> FindById(string id);
         Task<CoreListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null);
         Task<CoreListingResponse> UpdateCategoryAsyncWithSession(Dictionary<string, string> toBeUpdateListings, IClientSessionHandle session); //optimize performance
