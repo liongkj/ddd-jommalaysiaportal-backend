@@ -7,10 +7,11 @@ using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.SharedRequest;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
 {
-    public class CoreListingRequest : IUseCaseRequest<CoreListingResponse>
+    public class CoreListingRequest : IUseCaseRequest<CoreListingResponse>, IUseCaseRequest<CreateWorkflowResponse>
     {
         public CoreListingRequest()
         {

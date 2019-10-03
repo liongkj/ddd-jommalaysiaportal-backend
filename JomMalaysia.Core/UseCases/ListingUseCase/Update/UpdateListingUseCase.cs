@@ -17,14 +17,17 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         private readonly IListingRepository _listingRepository;
         private readonly IMerchantRepository _merchantRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IWorkflowRepository _workflowRepository;
         private readonly IMongoDbContext _transaction;
 
         public UpdateListingUseCase(IListingRepository listingRepository
         , IMerchantRepository merchantRepository,
         ICategoryRepository categoryRepository,
+        IWorkflowRepository workflowRepository,
         IMongoDbContext transaction
         )
         {
+            _workflowRepository = workflowRepository;
             _merchantRepository = merchantRepository;
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
@@ -34,8 +37,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
         {
 
+
             //update listing
-            #region Handle Find Merchant, Category and create new listing object
+            #region Handle Find Merchant, Category, find related workflow and create new listing object
+
 
             var FindMerchantResponse = await GetMerchant(message.MerchantId);
             if (!FindMerchantResponse.Success) //merchant not found

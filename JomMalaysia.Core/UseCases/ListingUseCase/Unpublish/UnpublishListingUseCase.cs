@@ -31,14 +31,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
         {
             var requester = _loginInfo.AuthenticatedUser();
 
-
-            //TODO find user by id/token
-            //TODO check user level and assign workflow level
-
             //validate listingsid are real
             var getListingResponse = await _listingRepository.FindById(message.ListingId);
-
-            //TODO check is there any request related to the listing
 
             if (!getListingResponse.Success) //found listing
             {
@@ -47,6 +41,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
             }
 
             var ToBeDeleted = getListingResponse.Listing;
+
+            //TODO check is there any request related to the listing
+
+
             //create new workflow
             Workflow UnpublishListingWorkflow = requester.UnpublishListing(ToBeDeleted);
 

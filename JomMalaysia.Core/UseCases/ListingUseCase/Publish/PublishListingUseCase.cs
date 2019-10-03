@@ -41,7 +41,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             }
             var ToBePublishListing = getListingResponse.Listing;
 
-            //TODO check is there any request related to the listing
+            //check is there any request related to the listing
             bool ListingHasPendingWorkflows = await _workflowRepository.GetPendingWorkflowForListing(ToBePublishListing.ListingId);
             if (ListingHasPendingWorkflows)
             {

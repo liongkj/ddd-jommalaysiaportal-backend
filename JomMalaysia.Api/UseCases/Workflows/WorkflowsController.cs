@@ -2,7 +2,9 @@
 using AutoMapper;
 using JomMalaysia.Core.UseCases.ListingUseCase;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Unpublish;
+using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Core.UseCases.WorkflowUseCase;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Approve;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
@@ -21,6 +23,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         private readonly WorkflowPresenter _workflowPresenter;
 
         private readonly IPublishListingUseCase _publishListingUseCase;
+        private readonly IUpdatePublishListingUseCase _updatePublishListingUseCase;
         private readonly IUnpublishListingUseCase _unpublishListingUseCase;
         private readonly IGetAllWorkflowUseCase _getAllWorkflowUseCase;
         private readonly IGetWorkflowUseCase _getWorkflowUseCase;
@@ -34,7 +37,8 @@ namespace JomMalaysia.Api.UseCases.Workflows
             WorkflowPresenter workflowPresenter,
             IApproveWorkflowUseCase approveWorkflowUseCase,
             IRejectWorkflowUseCase rejectWorkflowUseCase,
-            IUnpublishListingUseCase unpublishListingUseCase
+            IUnpublishListingUseCase unpublishListingUseCase,
+            IUpdatePublishListingUseCase updatePublishListingUseCase
             )
         {
             _mapper = mapper;
@@ -45,6 +49,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
             _approveWorkflowUseCase = approveWorkflowUseCase;
             _rejectWorkflowUseCase = rejectWorkflowUseCase;
             _unpublishListingUseCase = unpublishListingUseCase;
+            _updatePublishListingUseCase = updatePublishListingUseCase;
         }
         #endregion
         //publish a listing a start a approval workflow
@@ -70,6 +75,17 @@ namespace JomMalaysia.Api.UseCases.Workflows
             var req = new ListingWorkflowRequest(ListingId);
 
             await _unpublishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
+            return _workflowPresenter.ContentResult;
+        }
+
+        [Route("~/api/listings/{ListingId}/update")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromRoute] string ListingId, [FromBody] CoreListingRequest ListingObject)
+        {
+
+            ListingObject.ListingId = ListingId;
+
+            await _updatePublishListingUseCase.Handle(ListingObject, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;
         }
 

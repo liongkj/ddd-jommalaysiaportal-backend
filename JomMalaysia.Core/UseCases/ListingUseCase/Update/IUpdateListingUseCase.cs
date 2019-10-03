@@ -1,5 +1,4 @@
-﻿
-using JomMalaysia.Core.Interfaces;
+﻿using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Update

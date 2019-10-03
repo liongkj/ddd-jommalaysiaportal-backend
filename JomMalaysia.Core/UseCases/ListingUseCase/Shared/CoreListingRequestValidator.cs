@@ -17,7 +17,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("Merchant ID is not valid");
-            //TODO regex for validate mongodb object id
             RuleFor(x => x.Address);
             // .NotEmpty()
             // .SetValidator(new AddressValidator());
