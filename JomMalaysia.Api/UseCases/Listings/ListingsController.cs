@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JomMalaysia.Api.Scope;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
@@ -16,7 +17,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Policies.EDITOR)]
     public class ListingsController : ControllerBase
     {
         #region Dependencies
@@ -63,6 +64,7 @@ namespace JomMalaysia.Api.UseCases.Listings
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            //TODO add query and paging
             await _getAllListingUseCase.Handle(new GetAllListingRequest(), _listingPresenter);
             return _listingPresenter.ContentResult;
         }

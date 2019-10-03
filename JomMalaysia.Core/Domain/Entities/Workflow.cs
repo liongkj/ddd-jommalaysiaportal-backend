@@ -43,7 +43,6 @@ namespace JomMalaysia.Core.Domain.Entities
             Created = DateTime.Now;
             Lvl = parentWorkflow.Status.Id;
             Responder = responder;
-
         }
 
         public void UpdateWorkflowStatus(WorkflowStatusEnum action)

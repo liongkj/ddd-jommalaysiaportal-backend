@@ -10,6 +10,7 @@ namespace JomMalaysia.Core.Domain.Entities
     public class Category
     {
         public string CategoryId { get; set; }
+        public string CategoryCode { get; set; }
         public string CategoryName { get; set; }
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
@@ -20,19 +21,13 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public Category(string categoryName, string categoryNameMs, string categoryNameZh, CategoryPath CategoryPath)
+
+        public Category(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh)
         {
+            CategoryCode = categoryCode;
             CategoryName = categoryName;
             CategoryNameMs = categoryNameMs;
             CategoryNameZh = categoryNameZh;
-            this.CategoryPath = CategoryPath;
-        }
-
-        public Category(string categoryName, string categoryNameMs, string categoryNameZh)
-        {
-            CategoryName = categoryName.Trim().ToLower();
-            CategoryNameMs = categoryNameMs.Trim().ToLower();
-            CategoryNameZh = categoryNameZh.Trim().ToLower();
         }
 
         public bool HasSubcategories(List<Category> subcategories)

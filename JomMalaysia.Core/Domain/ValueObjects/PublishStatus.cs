@@ -5,39 +5,43 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class PublishStatus : ValueObjectBase
     {
-
-        //TODO published workflow
         public bool IsPublished { get; set; }
-        public DateTime ValidityStart { get; set; }
-        public DateTime ValidityEnd { get; set; }
+        public DateTime? ValidityStart { get; set; }
+        public DateTime? ValidityEnd { get; set; }
 
-        public static explicit operator PublishStatus(int months)
+
+        public void Publish(int months)
         {
-            return For(months);
+            ValidityStart = DateTime.Now;
+            ValidityEnd = ValidityStart.Value.AddMonths(months);
+            IsPublished = true;
         }
 
-        public static PublishStatus For(int months)
+        public void Extend(int months)
         {
-            throw new NotImplementedException();
-        }
+            if (ValidityEnd.HasValue)
+            {
+                ValidityEnd.Value.AddMonths(months);
+            }
+            else
+            {
+                Publish(months);
+            }
 
-        private PublishStatus()
-        {
-
-        }
-
-
-
-        public void Extend()
-        {
-
+            //TODO unit test
         }
 
         public void Unpublish()
         {
-
+            IsPublished = false;
+            ClearValidity();
         }
 
+        private void ClearValidity()
+        {
+            ValidityStart = null;
+            ValidityEnd = null;
+        }
         protected override IEnumerable<object> GetAtomicValues()
         {
             throw new NotImplementedException();

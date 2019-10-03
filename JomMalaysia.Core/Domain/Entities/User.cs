@@ -58,21 +58,21 @@ namespace JomMalaysia.Core.Domain.Entities
             bool DeleteOperation = false;
             List<string> roles = new List<string> { "editor", "admin", "manager", "superadmin" };
             var NewIndex = roles.IndexOf(role.ToLower());
-            if (Role != null)
+            if (Role != null)//user has role -> get list of to be delete roles
             {
                 var OldIndex = roles.IndexOf(Role.Name.ToLower());
                 if (OldIndex == NewIndex) return null;
                 if (OldIndex > NewIndex)
                 {//lower rank, delete{
-                    roles.RemoveRange(0, NewIndex);
+                    roles.RemoveRange(0, NewIndex + 1);
                     DeleteOperation = true;
                 }
             }
             else
-            {
+            {//user has no role -> get list of to be added roles
                 roles.RemoveRange(NewIndex + 1, roles.Count - NewIndex - 1);
                 DeleteOperation = false;
-            }//TODO do unit test
+            }
             if (NewIndex == -1) return null; //cant find role variable 
 
             return Tuple.Create(roles, DeleteOperation);
@@ -121,7 +121,6 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 //if eligible to publish, return new Workflow
                 return new Workflow(this, l, WorkflowTypeEnum.Publish);
-
             }
             return null;
         }
@@ -139,6 +138,7 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             bool CanProceed = false;
             if (!w.IsCompleted())
+            //TODO unit test
             {
                 var ChildWorkflow = new Workflow(this, w, comments);
 
@@ -163,7 +163,7 @@ namespace JomMalaysia.Core.Domain.Entities
         private bool UserHasAuthorityIn(Workflow workflow)
         {
             return UserWorkflowLevel() >= workflow.Lvl;
-            //TODO Auth0 role
+
         }
         private int UserWorkflowLevel()
         {

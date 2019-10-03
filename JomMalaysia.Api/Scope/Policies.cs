@@ -5,7 +5,7 @@ namespace JomMalaysia.Api.Scope
         public const string NAMESPACE = "https://jomn9.com/roles";
         public const string MANAGER = "RequireManagerRole";
         public const string SUPERADMIN = "RequireSuperadminRole";
-        public static string EDITOR = "RequireEditorRole";
+        public const string EDITOR = "RequireEditorRole";
         public const string ADMIN = "RequireAdminRole";
     }
 }

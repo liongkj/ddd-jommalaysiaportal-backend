@@ -55,7 +55,7 @@ namespace JomMalaysia.Core.Domain.Entities
                 }
             }
             newListing.Merchant = this;
-            newListing.Status = ListingStatusEnum.New;
+            newListing.Status = ListingStatusEnum.Pending;
             Listings.Add(newListing.ListingId);
         }
 

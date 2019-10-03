@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         }
         public async Task<bool> Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
-            Category NewCategory = new Category(message.CategoryName, message.CategoryNameMs, message.CategoryNameZh);
+            Category NewCategory = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh);
             NewCategory.CreateCategoryPath(message.ParentCategory, message.CategoryName);
             //Get all check unique
             try

@@ -16,6 +16,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        public string CategoryCode { get; set; }
         public string CategoryName { get; set; }
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }

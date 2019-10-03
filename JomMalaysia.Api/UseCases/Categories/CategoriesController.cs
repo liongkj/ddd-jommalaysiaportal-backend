@@ -16,7 +16,7 @@ namespace JomMalaysia.Api.UseCases.Categories
     // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policies.MANAGER)]
+    [Authorize(Policies.EDITOR)]
     public class CategoriesController : ControllerBase
     {
         #region dependencies
@@ -93,7 +93,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.ParentCategory);
+            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.ParentCategory);
 
             await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
@@ -152,7 +152,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
+            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
 
             try
             {

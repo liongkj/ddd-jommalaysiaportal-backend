@@ -144,6 +144,29 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return new WorkflowActionResponse("Workflow " + updatedWorkflow.WorkflowId, result.IsAcknowledged, "update success");
         }
 
+
+
+        public async Task<bool> GetPendingWorkflowForListing(string listingId)
+        {
+            bool HasPendingWorkflows = false;
+            try
+            {
+                var query = await
+                    _db.AsQueryable()
+                    .Where(w => w.Listing.Id == listingId
+                            && w.Status != WorkflowStatusEnum.Completed.ToString()
+                            || w.Status != WorkflowStatusEnum.Rejected.ToString())
+                    .ToListAsync();
+                if (query.Count > 1) HasPendingWorkflows = true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return HasPendingWorkflows;
+        }
+
+
         #region private helper method
         private Listing Converted(ListingSummaryDto list)
         {

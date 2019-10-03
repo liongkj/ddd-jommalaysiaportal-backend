@@ -48,7 +48,7 @@ namespace JomMalaysia.Framework.Helper
             }
             catch (Exception e)
             {
-                throw new NotSupportedException(String.Format("ERROR: Input value '{0}' is not parseable using the following supported formats: {1}. {e}", v, string.Join(",", InputFormats)));
+                throw new NotSupportedException(String.Format("ERROR: Input value '{0}' is not parseable using the following supported formats: {1}. {e}", v, string.Join(",", InputFormats, e)));
             }
         }
 

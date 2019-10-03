@@ -17,5 +17,6 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId);
         Task<GetAllWorkflowResponse> GetAllWorkflowByStatusAsync(WorkflowStatusEnum status, int counterpage = 10, int page = 0);
         Task<WorkflowActionResponse> UpdateAsync(Workflow updateddWorkflow, IClientSessionHandle sessionHandle = null);
+        Task<bool> GetPendingWorkflowForListing(string listingId);
     }
 }

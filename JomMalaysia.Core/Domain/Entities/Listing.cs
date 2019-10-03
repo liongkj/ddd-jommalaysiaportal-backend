@@ -42,7 +42,7 @@ namespace JomMalaysia.Core.Domain.Entities
             Address = add;
             Tags = ValidateTags(tags);
             ListingType = listingType;
-            Status = ListingStatusEnum.New;
+            Status = ListingStatusEnum.Pending;
 
         }
 

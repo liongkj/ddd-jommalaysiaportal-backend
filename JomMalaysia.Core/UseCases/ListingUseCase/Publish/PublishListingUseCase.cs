@@ -31,19 +31,24 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         {
             var requester = _loginInfo.AuthenticatedUser();
 
-            //TODO check user level and assign workflow level
 
             //validate listingsid are real
             var getListingResponse = await _listingRepository.FindById(message.ListingId);
-
-            //TODO check is there any request related to the listing
-
             if (!getListingResponse.Success) //found listing
             {
                 outputPort.Handle(new ListingWorkflowResponse(getListingResponse.Errors, false, getListingResponse.Message));
                 return false;
             }
             var ToBePublishListing = getListingResponse.Listing;
+
+            //TODO check is there any request related to the listing
+            bool ListingHasPendingWorkflows = await _workflowRepository.GetPendingWorkflowForListing(ToBePublishListing.ListingId);
+            if (ListingHasPendingWorkflows)
+            {
+                outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } has pending workflows, please complete the workflow before creating a new one." }));
+                return false;
+            }
+
             //create new workflow objects
             Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
             if (PublishListingWorkflow == null)//if not published
@@ -51,8 +56,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } is already published" }));
                 return false;
             }
-
-            //TODO filter workflow with same type and same listing
 
             //save into workflow database
 
