@@ -16,7 +16,7 @@ namespace JomMalaysia.Api.UseCases.Categories
     // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policies.EDITOR)]
+    // [Authorize(Policies.EDITOR)]
     public class CategoriesController : ControllerBase
     {
         #region dependencies

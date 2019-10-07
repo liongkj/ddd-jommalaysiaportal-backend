@@ -17,7 +17,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policies.EDITOR)]
+    // [Authorize(Policies.EDITOR)]
     public class ListingsController : ControllerBase
     {
         #region Dependencies
