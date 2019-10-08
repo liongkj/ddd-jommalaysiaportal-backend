@@ -31,7 +31,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
                 var GetListingWithCategoryResponse = await _Listing.GetAllListings(CategoryPath);
                 if (GetListingWithCategoryResponse.Success)
                 {
-                    var ListingCounts = GetListingWithCategoryResponse.Listings.Count;
+                    var ListingCounts = GetListingWithCategoryResponse.Data.Count;
                     if (ListingCounts > 0)
                     {
                         outputPort.Handle(new DeleteCategoryResponse(new List<string> { "Failed to delete" }, false, $"There are still {ListingCounts} listing under this category. Please update the listing and try again"));
