@@ -34,8 +34,8 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 outputPort.Handle(new UpdateCategoryResponse(GetAllCategoriesResponse.Errors, false, GetAllCategoriesResponse.Message));
                 return false;
             }
-            var ToBeUpdateCategories = GetAllCategoriesResponse.Categories.Where(x => !x.IsCategory()).ToList();
-            var OldCategory = GetAllCategoriesResponse.Categories.Where(x => x.IsCategory()).FirstOrDefault();
+            var ToBeUpdateCategories = GetAllCategoriesResponse.Data.Where(x => !x.IsCategory()).ToList();
+            var OldCategory = GetAllCategoriesResponse.Data.Where(x => x.IsCategory()).FirstOrDefault();
 
             var GetListingWithCategories = await _ListingRepository.GetAllListings(OldCategory.CategoryPath);
             if (!GetListingWithCategories.Success) //handle get listing

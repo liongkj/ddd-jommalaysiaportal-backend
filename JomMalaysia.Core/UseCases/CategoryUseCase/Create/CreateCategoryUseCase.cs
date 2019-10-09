@@ -27,7 +27,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
                 var queries = await _CategoryRepository.GetAllCategoriesAsync().ConfigureAwait(false);
 
 
-                if (NewCategory.HasDuplicate(queries.Categories))
+                if (NewCategory.HasDuplicate(queries.Data))
                 {//has duplicates
                     outputPort.Handle(new CreateCategoryResponse(new List<string> { "Duplicated Category Name" }));
                     return false;

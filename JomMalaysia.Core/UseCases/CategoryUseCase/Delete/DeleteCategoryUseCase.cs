@@ -30,7 +30,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
                     //fetch subcategories
                     var Subcategories = await _CategoryRepo.GetAllCategoriesAsync(message.Name);
 
-                    if (Subcategories.Categories.Count > 1 && category.HasSubcategories(Subcategories.Categories))
+                    if (Subcategories.Data.Count > 1 && category.HasSubcategories(Subcategories.Data))
                     {
                         outputPort.Handle(new DeleteCategoryResponse(category.CategoryName, false, category.CategoryName + " still has subcategories associated."));
                         return false;
