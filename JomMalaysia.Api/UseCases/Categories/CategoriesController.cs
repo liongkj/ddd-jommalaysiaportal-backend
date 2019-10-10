@@ -150,12 +150,13 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpPost("{slug}/subcategories")]
         public async Task<IActionResult> CreateSubcategory([FromRoute] string slug, [FromBody] CategoryDto request)
         {
-            Category cat = _mapper.Map<CategoryDto, Category>(request);
-
-            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
-
             try
             {
+                Category cat = _mapper.Map<CategoryDto, Category>(request);
+
+                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
+
+
                 await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             }
             catch (Exception e)

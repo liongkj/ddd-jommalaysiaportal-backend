@@ -18,9 +18,23 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         {
             CategoryCode = categoryCode.Trim().ToUpper();
             CategoryName = categoryName.Trim().ToLower();
+            CategoryCode = handleCode(categoryCode, CategoryName);
             CategoryNameMs = categoryNameMs.Trim().ToLower();
             CategoryNameZh = categoryNameZh.Trim().ToLower();
             this.ParentCategory = ParentCategory;
+        }
+
+        private string handleCode(string categoryCode, string categoryName)
+        {
+            if (categoryCode == null)
+            {
+                var index = categoryName.Length >= 5 ? 5 : categoryName.Length;
+                return categoryName.Substring(0, index).ToUpper();
+            }
+            else
+            {
+                return categoryCode.Trim().ToUpper();
+            }
         }
     }
 }
