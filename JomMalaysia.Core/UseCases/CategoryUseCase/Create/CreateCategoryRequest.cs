@@ -16,7 +16,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
 
         public CreateCategoryRequest(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, string ParentCategory)
         {
-            CategoryCode = categoryCode.Trim().ToUpper();
+
             CategoryName = categoryName.Trim().ToLower();
             CategoryCode = handleCode(categoryCode, CategoryName);
             CategoryNameMs = categoryNameMs.Trim().ToLower();
