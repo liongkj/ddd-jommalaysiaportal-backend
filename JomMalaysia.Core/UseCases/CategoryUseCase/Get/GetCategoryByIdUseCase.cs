@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 
@@ -12,10 +13,10 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         {
             _CategoryRepository = CategoryRepository;
         }
-        public bool Handle(GetCategoryByIdRequest message, IOutputPort<GetCategoryResponse> outputPort)
+        public async Task<bool> Handle(GetCategoryByIdRequest message, IOutputPort<GetCategoryResponse> outputPort)
         {
 
-            var response = _CategoryRepository.FindById(message.Id);
+            var response = await _CategoryRepository.FindByIdAsync(message.Id);
             if (!response.Success)
             {
                 outputPort.Handle(new GetCategoryResponse(response.Errors));

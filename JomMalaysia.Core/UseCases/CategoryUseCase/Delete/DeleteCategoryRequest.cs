@@ -6,18 +6,18 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
 {
     public class DeleteCategoryRequest : IUseCaseRequest<DeleteCategoryResponse>
     {
-        public string Name { get; set; }
+        public string Id { get; set; }
 
 
-        public DeleteCategoryRequest(string Name)
+        public DeleteCategoryRequest(string Id)
         {
-            if (string.IsNullOrWhiteSpace(Name))
+            if (string.IsNullOrWhiteSpace(Id))
             {
-                throw new System.ArgumentException("Delete Category: Category name null", nameof(Name));
+                throw new System.ArgumentException("Delete Category: Category name null", nameof(Id));
             }
 
 
-            this.Name = Name;
+            this.Id = Id;
         }
     }
 }

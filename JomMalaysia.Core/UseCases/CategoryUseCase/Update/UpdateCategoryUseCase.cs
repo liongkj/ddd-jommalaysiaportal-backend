@@ -14,47 +14,63 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
     {
         private readonly ICategoryRepository _CategoryRepository;
         private readonly IListingRepository _ListingRepository;
+        private readonly IUpdateSubcategoryUseCase _updateSubcategoryUseCase;
         private readonly IMongoDbContext _transaction;
 
-        public UpdateCategoryUseCase(ICategoryRepository CategoryRepository, IMongoDbContext transaction, IListingRepository listingRepository)
+        public UpdateCategoryUseCase(ICategoryRepository CategoryRepository, IMongoDbContext transaction, IListingRepository listingRepository, IUpdateSubcategoryUseCase updateSubcategoryUseCase)
         {
             _CategoryRepository = CategoryRepository;
             _ListingRepository = listingRepository;
             _transaction = transaction;
+            _updateSubcategoryUseCase = updateSubcategoryUseCase;
         }
         public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
 
             //check if any listing has this category
-
-            // var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
-            var GetAllCategoriesResponse = await _CategoryRepository.GetAllCategoriesAsync(message.CategoryName);
-            if (!GetAllCategoriesResponse.Success)
+            var CategoryQuery = await _CategoryRepository.FindByIdAsync(message.id);
+            var Category = CategoryQuery.Category;
+            if (!CategoryQuery.Success)
             {
-                outputPort.Handle(new UpdateCategoryResponse(GetAllCategoriesResponse.Errors, false, GetAllCategoriesResponse.Message));
+                outputPort.Handle(new UpdateCategoryResponse(CategoryQuery.Errors, false, CategoryQuery.Message));
                 return false;
             }
-            var ToBeUpdateCategories = GetAllCategoriesResponse.Data.Where(x => !x.IsCategory()).ToList();
-            var OldCategory = GetAllCategoriesResponse.Data.Where(x => x.IsCategory()).FirstOrDefault();
-
-            var GetListingWithCategories = await _ListingRepository.GetAllListings(OldCategory.CategoryPath);
-            if (!GetListingWithCategories.Success) //handle get listing
+            if (Category.IsCategory())
             {
-                outputPort.Handle(new UpdateCategoryResponse(GetListingWithCategories.Errors, false, GetListingWithCategories.Message));
-                return false;
+                // var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
+                var GetAllCategoriesResponse = await _CategoryRepository.GetAllCategoriesAsync(Category.CategoryName);
+                if (!GetAllCategoriesResponse.Success)
+                {
+                    outputPort.Handle(new UpdateCategoryResponse(GetAllCategoriesResponse.Errors, false, GetAllCategoriesResponse.Message));
+                    return false;
+                }
+                var ToBeUpdateCategories = GetAllCategoriesResponse.Data.Where(x => !x.IsCategory()).ToList();
+                var OldCategory = GetAllCategoriesResponse.Data.Where(x => x.IsCategory()).FirstOrDefault();
+
+                var GetListingWithCategories = await _ListingRepository.GetAllListings(OldCategory.CategoryPath);
+                if (!GetListingWithCategories.Success) //handle get listing
+                {
+                    outputPort.Handle(new UpdateCategoryResponse(GetListingWithCategories.Errors, false, GetListingWithCategories.Message));
+                    return false;
+                }
+                List<Listing> ToBeUpdateListings = GetListingWithCategories.Data;
+                var UpdatedListings = message.Updated.UpdateListings(ToBeUpdateListings);
+
+                //start update operation
+                List<Category> UpdatedCategories = OldCategory.UpdateCategory(message.Updated, ToBeUpdateCategories);
+
+                var response = await TransactionHasNoError(UpdatedListings, UpdatedCategories);
+
+                outputPort.Handle(response);
+                return response.Success;
+                // throw new NotImplementedException();
             }
-            List<Listing> ToBeUpdateListings = GetListingWithCategories.Data;
-            var UpdatedListings = message.Updated.UpdateListings(ToBeUpdateListings);
-
-            //start update operation
-            List<Category> UpdatedCategories = OldCategory.UpdateCategory(message.Updated, ToBeUpdateCategories);
-
-            var response = await TransactionHasNoError(UpdatedListings, UpdatedCategories);
-
-            outputPort.Handle(response);
-            return response.Success;
 
 
+            else
+            {
+                return await _updateSubcategoryUseCase.Handle(message, outputPort);
+            }
         }
 
         private async Task<UpdateCategoryResponse> TransactionHasNoError(Dictionary<string, string> UpdatedListing, List<Category> updatedSubcategories)

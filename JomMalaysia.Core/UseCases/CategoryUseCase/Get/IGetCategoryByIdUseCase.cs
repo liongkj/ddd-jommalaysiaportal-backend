@@ -2,7 +2,7 @@
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
 {
-    public interface IGetCategoryByIdUseCase : IUseCaseHandler<GetCategoryByIdRequest, GetCategoryResponse>
+    public interface IGetCategoryByIdUseCase : IUseCaseHandlerAsync<GetCategoryByIdRequest, GetCategoryResponse>
     {
 
     }

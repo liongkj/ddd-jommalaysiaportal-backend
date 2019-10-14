@@ -19,7 +19,20 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         public async Task<bool> Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
             Category NewCategory = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh);
-            NewCategory.CreateCategoryPath(message.ParentCategory, message.CategoryName);
+            if (message.ParentCategory != null) //create subcategory
+            {
+                var ParentCategoryQuery = await _CategoryRepository.FindByIdAsync(message.ParentCategory);
+                if (!ParentCategoryQuery.Success)
+                {
+                    outputPort.Handle(new CreateCategoryResponse(new List<string> { "Category not found." }));
+                    return false;
+                }
+                NewCategory.CreateCategoryPath(ParentCategoryQuery.Category.CategoryName, message.CategoryName);
+            }
+            else
+            {
+                NewCategory.CreateCategoryPath(null, message.CategoryName);
+            }
             //Get all check unique
             try
             {

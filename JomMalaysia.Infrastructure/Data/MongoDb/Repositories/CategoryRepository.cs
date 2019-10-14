@@ -66,15 +66,27 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
 
 
-        public GetCategoryResponse FindById(string CategoryId)
+        public async Task<GetCategoryResponse> FindByIdAsync(string CategoryId)
         {
             //linq to search with criteria
-            var query =
-                  _db.AsQueryable()
-                  .Where(M => M.Id == CategoryId)
-                  .Select(M => M)
-                  .FirstOrDefault();
-            Category m = _mapper.Map<Category>(query);
+            Category m;
+            try
+            {
+                //linq query
+                var query = await
+                    _db.AsQueryable()
+                    .Where(M => M.Id.Equals(CategoryId))
+                    .FirstOrDefaultAsync();
+                m = _mapper.Map<Category>(query);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                return new GetCategoryResponse(new List<string> { "FindByIdAsync repo error" }, false, e.ToString());
+            }
             var response = m == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(m, true);
             return response;
         }

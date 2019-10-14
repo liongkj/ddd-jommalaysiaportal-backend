@@ -1,22 +1,18 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using JomMalaysia.Api.Scope;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Categories
 {
-    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize(Policies.EDITOR)]
     public class CategoriesController : ControllerBase
     {
         #region dependencies
@@ -26,12 +22,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         private readonly IGetCategoryByIdUseCase _getCategoryByIdUseCase;
         private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
-        private readonly IGetCategoryByNameUseCase _getCategoryByNameUseCase;
         private readonly CategoryPresenter _categoryPresenter;
-
-        private readonly IGetAllSubcategoryUseCase _getAllSubcategoryUseCase;
-        private readonly IDeleteSubcategoryUseCase _deleteSubcategoryUseCase;
-        private readonly IUpdateSubcategoryUseCase _updateSubcategoryUseCase;
 
         public CategoriesController(IMapper mapper,
         ICreateCategoryUseCase createCategoryUseCase,
@@ -40,11 +31,8 @@ namespace JomMalaysia.Api.UseCases.Categories
             IGetCategoryByNameUseCase getCategoryByNameUseCase,
             IDeleteCategoryUseCase deleteCategoryUseCase,
             IUpdateCategoryUseCase updateCategoryUseCase,
-            CategoryPresenter categoryPresenter,
-            IGetAllSubcategoryUseCase getAllSubcategoryUseCase,
-            IDeleteSubcategoryUseCase deleteSubcategoryUseCase,
-            IUpdateSubcategoryUseCase updateSubcategoryUseCase
-            )
+            CategoryPresenter categoryPresenter
+        )
         {
             _mapper = mapper;
             _createCategoryUseCase = createCategoryUseCase;
@@ -52,17 +40,10 @@ namespace JomMalaysia.Api.UseCases.Categories
             _getCategoryByIdUseCase = getCategoryByIdUseCase;
             _deleteCategoryUseCase = deleteCategoryUseCase;
             _updateCategoryUseCase = updateCategoryUseCase;
-            _getCategoryByNameUseCase = getCategoryByNameUseCase;
+            _getCategoryByIdUseCase = getCategoryByIdUseCase;
             _categoryPresenter = categoryPresenter;
-            _getAllSubcategoryUseCase = getAllSubcategoryUseCase;
-            _deleteSubcategoryUseCase = deleteSubcategoryUseCase;
-            _updateSubcategoryUseCase = updateSubcategoryUseCase;
         }
         #endregion
-        #region category
-
-        //GET api/categories
-        //get whole category collection
         [HttpGet]
 
         public async Task<IActionResult> Get(int pageSize = 20, int pageNumber = 0)
@@ -80,8 +61,8 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpGet("{slug}")]
         public async Task<IActionResult> Get(string slug)
         {
-            var req = new GetCategoryByNameRequest(slug);
-            try { await _getCategoryByNameUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false); }
+            var req = new GetCategoryByIdRequest(slug);
+            try { await _getCategoryByIdUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false); }
             catch (Exception e) { throw e; }
             return _categoryPresenter.ContentResult;
         }
@@ -99,62 +80,15 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
 
-        //DELETE api/categories/{slug}
-        [HttpDelete("{slug}")]
-        [Authorize(Policies.SUPERADMIN)]
-        public async Task<IActionResult> Delete(string slug)
-        {
-            var req = new DeleteCategoryRequest(slug);
-            await _deleteCategoryUseCase.Handle(req, _categoryPresenter);
-            return _categoryPresenter.ContentResult;
-        }
 
-
-        //PUT api/categories/{slug}
-        [HttpPut("{slug}")]
-        public async Task<IActionResult> UpdateCategory(string slug, CategoryDto Updated)
-        {
-            Category updated = _mapper.Map<Category>(Updated);
-            var req = new UpdateCategoryRequest(slug, updated);
-            await _updateCategoryUseCase.Handle(req, _categoryPresenter);
-            return _categoryPresenter.ContentResult;
-        }
-
-        #endregion
-
-        #region subcategory
-        //GET api/categories/{slug}/subcategories
-
-        [HttpGet("{slug}/subcategories")]
-        public async Task<IActionResult> GetSubcategories([FromRoute]string slug)
-        {
-            var req = new GetAllSubcategoryRequest(slug);
-
-            await _getAllSubcategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
-            return _categoryPresenter.ContentResult;
-        }
-
-
-        //GET api/categories/{slug}/subcategories/{slug}
-        //TODO Return with all listings
-        [HttpGet("{cat}/subcategories/{slug}")]
-        public async Task<IActionResult> GetSubcategory([FromRoute]string cat, [FromRoute]string slug)
-        {
-            var req = new GetCategoryByNameRequest(cat, slug);
-            await _getCategoryByNameUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
-            return _categoryPresenter.ContentResult;
-        }
-
-
-        //POST api/categories/{slug}/subcategories
-        [HttpPost("{slug}/subcategories")]
-        public async Task<IActionResult> CreateSubcategory([FromRoute] string slug, [FromBody] CategoryDto request)
+        [HttpPost("{id}/subcategories")]
+        public async Task<IActionResult> CreateSubcategory([FromRoute] string id, [FromBody] CategoryDto request)
         {
             try
             {
                 Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, slug);
+                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, id);
 
 
                 await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
@@ -165,25 +99,28 @@ namespace JomMalaysia.Api.UseCases.Categories
             }
             return _categoryPresenter.ContentResult;
         }
-        //DELETE api/categories/{slug}/subcategories/{slug}
-        [HttpDelete("{cat}/subcategories/{slug}")]
-        public async Task<IActionResult> Delete([FromRoute] string cat, [FromRoute]string slug)
+
+
+        //DELETE api/categories/{slug}
+        [HttpDelete("{id}")]
+
+        public async Task<IActionResult> Delete(string id)
         {
-            var req = new DeleteSubcategoryRequest(cat, slug);
-            await _deleteSubcategoryUseCase.Handle(req, _categoryPresenter);
+            var req = new DeleteCategoryRequest(id);
+            await _deleteCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
-        //PUT api/categories/{slug}/subcategories/{slug}
-        [HttpPut("{cat}/subcategories/{slug}")]
-        public async Task<IActionResult> UpdateSubcategory([FromRoute]string cat, [FromRoute]string slug, [FromBody]CategoryDto Updated)
+
+        //PUT api/categories/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCategory(string id, CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
-            var req = new UpdateCategoryRequest(cat, slug, updated);
-            await _updateSubcategoryUseCase.Handle(req, _categoryPresenter);
+            var req = new UpdateCategoryRequest(id, updated);
+            await _updateCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
 
-        #endregion
     }
 }

@@ -28,13 +28,9 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
             //retrieve data start
             //check if any listing has this category -currently no need
-            var getCategoryResponse = await _CategoryRepository.FindByNameAsync(message.ParentCategory, message.CategoryName);
+            var getCategoryResponse = await _CategoryRepository.FindByIdAsync(message.id);
 
-            if (!getCategoryResponse.Success) //handle category not found
-            {
-                outputPort.Handle(new UpdateCategoryResponse(getCategoryResponse.Errors, false, getCategoryResponse.Message));
-                return false;
-            }
+
             var ToBeUpdateSubcategory = getCategoryResponse.Category;
 
             //fetch listing with this subcategory
@@ -78,6 +74,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 return true;
             }
 
+            // throw new NotImplementedException();
         }
     }
 }

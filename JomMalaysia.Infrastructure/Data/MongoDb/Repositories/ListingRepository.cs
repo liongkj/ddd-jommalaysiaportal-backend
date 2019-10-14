@@ -104,14 +104,12 @@ public class ListingRepository : IListingRepository
             {
                 query =
                         await _db.AsQueryable()
-
                       .ToListAsync();
-
             }
             else
             {
                 query = await _db.AsQueryable()
-                .Where(l => l.Category.StartsWith(cp.ToString()))
+                .Where(l => l.Category.Equals(cp.ToString()))
                 .ToListAsync();
             }
 
