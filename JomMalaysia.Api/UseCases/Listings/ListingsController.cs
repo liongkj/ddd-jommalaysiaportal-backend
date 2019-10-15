@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
-using JomMalaysia.Api.Scope;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.MobileUseCases.GetNearbyListings;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
-using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace JomMalaysia.Api.UseCases.Listings
@@ -30,6 +25,8 @@ namespace JomMalaysia.Api.UseCases.Listings
         private readonly IMapper _mapper;
         private readonly IUpdateListingUseCase _updateListingUseCase;
 
+        private readonly IGetNearbyListingUseCase _getNearbyListingUseCase;
+
 
 
         public ListingsController(ICreateListingUseCase createListingUseCase,
@@ -39,7 +36,9 @@ namespace JomMalaysia.Api.UseCases.Listings
             IGetListingUseCase getListingUseCase,
             IDeleteListingUseCase deleteListingUseCase,
              IUpdateListingUseCase updateListingUseCase,
-            IMapper mapper
+
+            IGetNearbyListingUseCase getNearbyListingUseCase
+
 
             )
         {
@@ -49,12 +48,16 @@ namespace JomMalaysia.Api.UseCases.Listings
             _getListingUseCase = getListingUseCase;
 
             _deleteListingUseCase = deleteListingUseCase;
-            _mapper = mapper;
+
             _updateListingUseCase = updateListingUseCase;
+
+            _getNearbyListingUseCase = getNearbyListingUseCase;
 
 
         }
         #endregion
+
+        #region portal
         /// <summary>
         /// Get list of listings
         /// </summary>
@@ -68,6 +71,8 @@ namespace JomMalaysia.Api.UseCases.Listings
             await _getAllListingUseCase.Handle(new GetAllListingRequest(), _listingPresenter);
             return _listingPresenter.ContentResult;
         }
+
+
 
         ///Get details of listing
         //GET api/listings/{id}
@@ -110,6 +115,18 @@ namespace JomMalaysia.Api.UseCases.Listings
             // var mapped = _mapper.Map<CreateListingRequest>(ListingObject);
             await _createListingUseCase.Handle(ListingObject, _listingPresenter);
 
+            return _listingPresenter.ContentResult;
+        }
+        #endregion
+
+
+        // location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise
+        [HttpGet("nearby")]
+        public async Task<IActionResult> GetListingsWithinRadius([FromQuery] string location, [FromQuery] double radius = 10.0, [FromQuery] string type = "all")
+        {
+            GetNearbyListingRequest req = new GetNearbyListingRequest(location, radius, type);
+            //TODO add query and paging
+            await _getNearbyListingUseCase.Handle(req, _listingPresenter);
             return _listingPresenter.ContentResult;
         }
     }

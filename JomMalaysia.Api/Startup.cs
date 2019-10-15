@@ -29,6 +29,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
 using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
+using JomMalaysia.Api.Serialization;
 
 namespace JomMalaysia.Api
 {
@@ -138,6 +139,7 @@ namespace JomMalaysia.Api
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
+            // app.UseMiddleware(typeof(ExceptionHandlerSerializer));
             app.UseMvc(routes =>
             {
 

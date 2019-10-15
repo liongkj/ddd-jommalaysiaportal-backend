@@ -15,6 +15,11 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             this.Coordinates = Coordinates;
         }
 
+        public Location(Coordinates Coordinates)
+        {
+            this.Coordinates = new List<Coordinates> { Coordinates };
+        }
+
         public GeoJsonGeometry<GeoJson2DGeographicCoordinates> ToGeoJsonPoint()
         {
             if (Coordinates.Count == 1)

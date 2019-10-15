@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             catch (Exception e)
             {
                 response = new GetAllListingResponse(new List<string> { e.ToString() });
-                
+
             }
             outputPort.Handle(response);
 

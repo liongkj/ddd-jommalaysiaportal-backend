@@ -14,7 +14,7 @@ namespace JomMalaysia.Api.UseCases.Merchants.CreateMerchant
         {
             ContentResult = new JsonContentResult();
         }
- 
+
 
         public void Handle(CreateMerchantResponse response)
         {

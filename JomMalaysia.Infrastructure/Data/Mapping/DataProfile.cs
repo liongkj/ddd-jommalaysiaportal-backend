@@ -69,15 +69,19 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
 
+
                 .IncludeAllDerived()
 
                 ;
 
 
+
             CreateMap<EventListing, ListingDto>()
+            .IncludeBase<Listing, ListingDto>()
                     ;
 
             CreateMap<PrivateListing, ListingDto>()
+            .IncludeBase<Listing, ListingDto>()
                 ;
 
 
@@ -91,6 +95,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
                         .ForMember(l => l.Status, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
                         .ForMember(ld => ld.Address, opt => opt.MapFrom(l => l.ListingAddress))
+                        // .ForPath(ld => ld.Address.Location.Coordinates, opt => opt.MapFrom(l => Coordinates.For(l.ListingAddress.Location.Coordinates)))
                         .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
                         .ForMember(l => l.ModifiedAt, opt => opt.MapFrom(ld => ld.ModifiedAt.ToLocalTime()))
                         .IncludeAllDerived()
@@ -99,9 +104,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<ListingDto, EventListing>()
                     .ForMember(e => e.EventStartDateTime, opt => opt.MapFrom(ld => ld.EventStartDateTime.ToLocalTime()))
                     .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
+
                     ;
 
             CreateMap<ListingDto, PrivateListing>()
+            .IncludeBase<ListingDto, Listing>()
                 ;
 
             CreateMap<CategoryDto, Category>()
@@ -115,10 +122,12 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<Address, AddressDto>()
             .ForMember(ad => ad.Location, opt => opt.MapFrom(a => a.Location.ToGeoJsonPoint()))
+            .ReverseMap()
             ;
 
             CreateMap<AddressDto, Address>()
-                .ForMember(a => a.Location, opt => opt.Ignore())
+                .ForMember(a => a.Location, opt => opt.MapFrom(ad => new Location(
+                    new Coordinates(ad.Location.Coordinates.Longitude, ad.Location.Coordinates.Latitude))))
                 ;
 
             // CreateMap<Address, AddressDto>()

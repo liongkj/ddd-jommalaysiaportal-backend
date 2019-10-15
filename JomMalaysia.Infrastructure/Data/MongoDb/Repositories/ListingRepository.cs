@@ -12,6 +12,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
+using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -83,7 +84,7 @@ public class ListingRepository : IListingRepository
         {
             return new GetListingResponse(new List<string> { "Get Listing Error" }, false, e.Message);
         }
-        if (item != null) return new GetListingResponse(Converted(item), true);
+        if (item != null) return new GetListingResponse(ListingDtoParser.Converted(_mapper, item), true);
         else return new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
     }
 
@@ -116,7 +117,7 @@ public class ListingRepository : IListingRepository
             //var Listings = _mapper.Map<List<Listing>>(query);
             foreach (ListingDto list in query)
             {
-                var temp = Converted(list);
+                var temp = ListingDtoParser.Converted(_mapper, list);
                 if (temp != null)
                 {
                     Mapped.Add(temp);
@@ -189,41 +190,4 @@ public class ListingRepository : IListingRepository
 
 
 
-
-    #region private helper method
-    private Listing Converted(ListingDto list)
-    {
-        if (list != null)
-        {
-            if (GetListingTypeHelper(list).Equals(typeof(EventListing)))
-            {
-                var i = _mapper.Map<EventListing>(list);
-
-                return i;
-            }
-
-            if (GetListingTypeHelper(list).Equals(typeof(PrivateListing)))
-            {
-                var i = _mapper.Map<PrivateListing>(list);
-                return i;
-            }
-        }
-        return null;
-    }
-
-    private Type GetListingTypeHelper(ListingDto list)
-    {
-        if (list.ListingType == ListingTypeEnum.Event.ToString())
-        {
-            return typeof(EventListing);
-
-        }
-        if (list.ListingType == ListingTypeEnum.Private.ToString())
-        {
-            return typeof(PrivateListing);
-        }
-        throw new ArgumentException("Error taking listing info from database ");
-        #endregion
-
-    }
 }
