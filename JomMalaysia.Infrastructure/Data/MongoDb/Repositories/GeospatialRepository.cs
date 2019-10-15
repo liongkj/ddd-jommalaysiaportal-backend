@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.MobileUseCases;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using MongoDB.Driver;
-using MongoDB.Driver.GeoJsonObjectModel;
+
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
@@ -29,16 +30,28 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             ListingResponse res;
             List<ListingDto> query;
             List<Listing> Mapped = new List<Listing>();
+            var listingType = ListingTypeEnum.For(type);
             try
             {
                 var userCurrentLocation = location.ToGeoJsonCoordinates();
-                var locationQuery = new FilterDefinitionBuilder<ListingDto>().GeoWithinCenter(x => x.ListingAddress.Location, userCurrentLocation.Longitude, userCurrentLocation.Latitude, radius);
-                // (tag => tag.ListingAddress.Location, userCurrentLocation,
-                // 50); //fetch results that are within a 50 metre radius of the point we're searching.
+
+                var locationQuery = new FilterDefinitionBuilder<ListingDto>().GeoWithinCenter(x => x.ListingAddress.Location, userCurrentLocation.Longitude, userCurrentLocation.Latitude, radius)
+                   ;
+                FilterDefinition<ListingDto> typeQuery;
+                if (listingType != null)//all
+                {
+                    typeQuery = new FilterDefinitionBuilder<ListingDto>().Where(l => l.ListingType == listingType.ToString());
+                }
+                else
+                {
+                    typeQuery = new FilterDefinitionBuilder<ListingDto>().Empty;
+                }
+
                 query = await _db
-                   .Find(locationQuery)
-                   .Limit(10)
-                   .ToListAsync(); //Limit the query to return only the top 10 results.
+                  .Find(locationQuery & typeQuery)
+                  .Limit(10)
+                  .ToListAsync();
+
 
                 foreach (ListingDto list in query)
                 {

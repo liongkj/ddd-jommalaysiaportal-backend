@@ -50,14 +50,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
             }
             var NewMerchant = FindMerchantResponse.Merchant;
 
-            var FindCategoryResponse = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
+            var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
             if (!FindCategoryResponse.Success)
             {
                 outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
                 return false;
             }
 
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, NewMerchant);
+            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Category, NewMerchant);
             #endregion
             if (NewListing is Listing && NewListing != null) //validate is Listing Type
 

@@ -6,7 +6,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 public class PrivateListing : Listing
 {
-    public PrivateListing(CoreListingRequest listing, Address address, Merchant merchant) : base(listing.ListingName, merchant, new CategoryPath(listing.Category, listing.Subcategory), ListingTypeEnum.Private, listing.ImageUris, listing.Tags, listing.Description, address)
+    public PrivateListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, category.CategoryPath, ListingTypeEnum.Private, listing.ImageUris, listing.Tags, listing.Description, address)
     {
     }
     public PrivateListing()

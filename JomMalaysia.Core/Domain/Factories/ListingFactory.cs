@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Domain.Factories
         private const int EVE = 3;
         private const int SOC = 4;
 
-        public static Listing CreateListing(ListingTypeEnum ListingType, CoreListingRequest listing, Merchant merchant)
+        public static Listing CreateListing(ListingTypeEnum ListingType, CoreListingRequest listing, Category category, Merchant merchant)
         {
             int listingTypeId = ListingType.Id;
             List<Coordinates> cor = new List<Coordinates>();
@@ -29,9 +29,9 @@ namespace JomMalaysia.Core.Domain.Factories
             switch (listingTypeId)
             {
                 case EVE:
-                    return new EventListing(listing, Address, merchant);
+                    return new EventListing(listing, category, Address, merchant);
                 case PRI:
-                    return new PrivateListing(listing, Address, merchant);
+                    return new PrivateListing(listing, category, Address, merchant);
                 default:
                     return null;
             }

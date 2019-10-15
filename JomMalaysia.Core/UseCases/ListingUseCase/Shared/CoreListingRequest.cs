@@ -24,8 +24,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public string ListingType { get; set; }
 
 
-        public string Category { get; set; }
-        public string Subcategory { get; set; }
+        public string CategoryId { get; set; }
+        // public string Subcategory { get; set; }
 
         public List<string> Tags { get; set; }
         public AddressRequest Address { get; set; }

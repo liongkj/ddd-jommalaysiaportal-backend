@@ -38,7 +38,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             }
 
             //verify is there this category
-            var FindCategoryResponse = await _categoryRepository.FindByNameAsync(message.Category, message.Subcategory).ConfigureAwait(false);
+            var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
             if (!FindCategoryResponse.Success)
             {
                 outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
@@ -46,7 +46,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             }
 
             //create listing factory pattern
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindMerchantResponse.Merchant);
+            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Category, FindMerchantResponse.Merchant);
             if (NewListing is Listing && NewListing != null) //validate is Listing Type
             {
                 //start transaction

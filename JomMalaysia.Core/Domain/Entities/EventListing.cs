@@ -16,7 +16,7 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public EventListing(CoreListingRequest listing, Address address, Merchant merchant) : base(listing.ListingName, merchant, new CategoryPath(listing.Category, listing.Subcategory), ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
+        public EventListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, category.CategoryPath, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
         {
             EventStartDateTime = listing.EventStartDateTime;
             EventEndDateTime = listing.EventEndDateTime;
