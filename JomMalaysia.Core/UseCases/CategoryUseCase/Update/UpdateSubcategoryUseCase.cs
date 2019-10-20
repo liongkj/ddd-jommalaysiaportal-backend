@@ -28,7 +28,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
             //retrieve data start
             //check if any listing has this category -currently no need
-            var getCategoryResponse = await _CategoryRepository.FindByIdAsync(message.id);
+            var getCategoryResponse = await _CategoryRepository.FindByIdAsync(message.CategoryId);
 
 
             var ToBeUpdateSubcategory = getCategoryResponse.Category;

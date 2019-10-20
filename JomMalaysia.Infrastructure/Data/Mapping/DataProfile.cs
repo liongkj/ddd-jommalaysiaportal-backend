@@ -111,10 +111,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             .IncludeBase<ListingDto, Listing>()
                 ;
 
-            CreateMap<CategoryDto, Category>()
-               .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
-
-                ;
 
             #endregion
 
@@ -138,11 +134,18 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region category
             CreateMap<Category, CategoryDto>()
                                 .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
-                                .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
-    //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
-    //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
-    //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
-    ;
+                                .ForMember(cd => cd.ParentCategory, opt => opt.Ignore());
+
+
+
+            CreateMap<CategoryDto, Category>()
+               .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
+
+                ;
+            //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
+            //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
+            //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
+            ;
             #endregion
 
 

@@ -179,6 +179,8 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private void UpdateName(Category updated)
         {
+            CategoryCode = updated.CategoryCode;
+
             CategoryName = updated.CategoryName;
             CategoryNameMs = updated.CategoryNameMs;
             CategoryNameZh = updated.CategoryNameZh;
