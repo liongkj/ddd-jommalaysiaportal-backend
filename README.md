@@ -13,7 +13,8 @@ Web API for Jommalaysia web app frontend : https://github.com/liongkj/JomMalaysi
 
 ##category
 
-- [ ] category favicon
+- [x] category code
+- [ ] category image upload
 
 ## workflow
 
