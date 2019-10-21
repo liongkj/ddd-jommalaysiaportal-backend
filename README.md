@@ -1,10 +1,11 @@
 Web API for Jommalaysia web app frontend : https://github.com/liongkj/JomMalaysiaWebFrontend
+https://jommalaysiaapi.azurewebsites.net/
 
 ## TODO
 
 ## others
 
-- [ ] save cloudinary url to db
+- [x] save cloudinary url to db
 
 ## listing
 
@@ -14,7 +15,7 @@ Web API for Jommalaysia web app frontend : https://github.com/liongkj/JomMalaysi
 ##category
 
 - [x] category code
-- [ ] category image upload
+- [x] category image upload
 
 ## workflow
 
