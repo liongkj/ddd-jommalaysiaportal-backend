@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="UseCases\Login\**" />
-    <Content Remove="UseCases\Login\**" />
-    <EmbeddedResource Remove="UseCases\Login\**" />
-    <None Remove="UseCases\Login\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Auth0.AuthenticationApi" Version="6.4.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
@@ -38,8 +31,6 @@
     <ProjectReference Include="..\JomMalaysia.Framework\JomMalaysia.Framework.csproj" />
     <ProjectReference Include="..\JomMalaysia.Infrastructure\JomMalaysia.Infrastructure.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+ 
 
 </Project>

@@ -3,7 +3,6 @@ using System.Reflection;
 using Autofac;
 using FluentValidation;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Services.ImageProcessingServices;
 
 namespace JomMalaysia.Core
 {
@@ -17,11 +16,6 @@ namespace JomMalaysia.Core
             builder.RegisterAssemblyTypes(dataAccess)
                 .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                 .AsImplementedInterfaces();
-
-            builder.RegisterType<ImageProcessor>()
-                .As<IImageProcessor>()
-                .InstancePerLifetimeScope();
-            ;
 
             builder.RegisterAssemblyTypes(dataAccess)
                    .Where(t => t.Name.EndsWith("UseCase"))

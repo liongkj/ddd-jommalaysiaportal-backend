@@ -24,7 +24,6 @@ using JomMalaysia.Api.Providers;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Framework.Configuration;
 using FluentValidation;
-using JomMalaysia.Core.Services.ImageProcessingServices;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
 using System.IdentityModel.Tokens.Jwt;
@@ -82,7 +81,6 @@ namespace JomMalaysia.Api
 
             services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
-            services.Configure<ImageOptions>(Configuration.GetSection("ImageOptions"));
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc

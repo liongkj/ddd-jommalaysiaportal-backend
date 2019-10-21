@@ -13,8 +13,9 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
         public string ParentCategory { get; set; }
+        public Image Image { get; set; }
 
-        public CreateCategoryRequest(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, string ParentCategory)
+        public CreateCategoryRequest(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, Image image, string ParentCategory)
         {
 
             CategoryName = categoryName.Trim().ToLower();
@@ -22,6 +23,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
             CategoryNameMs = categoryNameMs.Trim().ToLower();
             CategoryNameZh = categoryNameZh.Trim().ToLower();
             this.ParentCategory = ParentCategory;
+            Image = image;
         }
 
         private string handleCode(string categoryCode, string categoryName)

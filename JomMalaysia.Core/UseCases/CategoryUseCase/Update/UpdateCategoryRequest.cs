@@ -1,6 +1,6 @@
 
 using JomMalaysia.Core.Domain.Entities;
-
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 
 
@@ -12,14 +12,14 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
         public Category Updated { get; set; }
 
-        public UpdateCategoryRequest(string categoryId, string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh)
+        public UpdateCategoryRequest(string categoryId, string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, Image image)
         {
             CategoryId = categoryId;
             var CategoryName = categoryName.Trim().ToLower();
             var CategoryCode = handleCode(categoryCode, CategoryName);
             var CategoryNameMs = categoryNameMs.Trim().ToLower();
             var CategoryNameZh = categoryNameZh.Trim().ToLower();
-            Updated = new Category(CategoryCode, CategoryName, CategoryNameMs, CategoryNameZh);
+            Updated = new Category(CategoryCode, CategoryName, CategoryNameMs, CategoryNameZh, image);
 
         }
 

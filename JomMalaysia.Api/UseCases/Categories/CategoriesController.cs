@@ -74,7 +74,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.ParentCategory);
+            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.Image, request.ParentCategory);
 
             await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
@@ -88,7 +88,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             {
                 Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, id);
+                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.Image, id);
 
 
                 await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
@@ -117,7 +117,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public async Task<IActionResult> UpdateCategory(string id, [FromBody] CategoryDto Updated)
         {
             Category updated = _mapper.Map<Category>(Updated);
-            var req = new UpdateCategoryRequest(id, updated.CategoryCode, updated.CategoryName, updated.CategoryNameMs, updated.CategoryNameZh);
+            var req = new UpdateCategoryRequest(id, updated.CategoryCode, updated.CategoryName, updated.CategoryNameMs, updated.CategoryNameZh, updated.Image);
             await _updateCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }

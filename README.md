@@ -4,7 +4,7 @@ Web API for Jommalaysia web app frontend : https://github.com/liongkj/JomMalaysi
 
 ## others
 
-- [ ] image processing api
+- [ ] save cloudinary url to db
 
 ## listing
 
