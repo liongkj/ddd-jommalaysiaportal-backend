@@ -5,7 +5,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
     public class Image : ValueObjectBase
     {
         public string Url { get; }
-        public string ThumbnailUrl { get; }
+        public string ThumbnailUrl { get; } = "https://cloudinary.com/documentation/upload_widget#upload_widget_options";
 
 
         Image(string url, string thumbnailurl)
