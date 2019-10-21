@@ -27,6 +27,11 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
             if (message.CategoryId != null)
             {
                 var CategoryQuery = await _categoryRepository.FindByIdAsync(message.CategoryId);
+                if (!CategoryQuery.Success)
+                {
+                    outputPort.Handle(new ListingResponse(CategoryQuery.Errors, false, CategoryQuery.Message));
+                    return false;
+                }
                 category = CategoryQuery.Category.CategoryPath;
             }
 
