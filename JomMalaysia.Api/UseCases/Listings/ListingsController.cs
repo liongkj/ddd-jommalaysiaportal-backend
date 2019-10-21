@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JomMalaysia.Core.MobileUseCases.GetNearbyListings;
+using JomMalaysia.Core.MobileUseCases.QueryListings;
 using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
@@ -27,6 +28,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         private readonly IGetNearbyListingUseCase _getNearbyListingUseCase;
 
+        private readonly IQueryListingUseCase _queryListingUseCase;
 
 
         public ListingsController(ICreateListingUseCase createListingUseCase,
@@ -37,7 +39,8 @@ namespace JomMalaysia.Api.UseCases.Listings
             IDeleteListingUseCase deleteListingUseCase,
              IUpdateListingUseCase updateListingUseCase,
 
-            IGetNearbyListingUseCase getNearbyListingUseCase
+            IGetNearbyListingUseCase getNearbyListingUseCase,
+            IQueryListingUseCase queryListingUseCase
 
 
             )
@@ -52,7 +55,7 @@ namespace JomMalaysia.Api.UseCases.Listings
             _updateListingUseCase = updateListingUseCase;
 
             _getNearbyListingUseCase = getNearbyListingUseCase;
-
+            _queryListingUseCase = queryListingUseCase;
 
         }
         #endregion
@@ -119,6 +122,14 @@ namespace JomMalaysia.Api.UseCases.Listings
         }
         #endregion
 
+        [HttpGet("query")]
+        public async Task<IActionResult> GetListingsOfCategory([FromQuery] string category = null, [FromQuery] string type = "all", [FromQuery] bool groupBySub = false)
+        {
+            QueryListingRequest req = new QueryListingRequest(category, type, false);
+            //TODO add query and paging
+            await _queryListingUseCase.Handle(req, _listingPresenter);
+            return _listingPresenter.ContentResult;
+        }
 
         // location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise
         [HttpGet("nearby")]

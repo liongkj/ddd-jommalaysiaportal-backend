@@ -10,6 +10,7 @@ https://jommalaysiaapi.azurewebsites.net/
 ## listing
 
 - [x] fetch listing with around specific location
+- [ ] fetch listing with category
 - [ ] publish listing
 
 ##category

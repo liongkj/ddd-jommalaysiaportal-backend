@@ -6,7 +6,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.MobileUseCases;
 using JomMalaysia.Core.MobileUseCases.GetNearbyListings;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
+namespace JomMalaysia.Core.MobileUseCases.GetNearbyListings
 {
     public class GetNearbyListingUseCase : IGetNearbyListingUseCase
     {

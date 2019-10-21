@@ -94,25 +94,69 @@ public class ListingRepository : IListingRepository
         //TODO If need this function
     }
 
-    public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp)
+    public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp, string type, bool groupBySub)
     {
         GetAllListingResponse res;
         List<ListingDto> query;
         List<Listing> Mapped = new List<Listing>();
+        var listingType = ListingTypeEnum.For(type);
+
+        var builder = Builders<ListingDto>.Filter;
+        var filter = builder.Empty;
         try
         {
-            if (cp == null)
+            if (cp != null)
             {
-                query =
-                        await _db.AsQueryable()
-                      .ToListAsync();
+                FilterDefinition<ListingDto> categoryFilter;
+                if (groupBySub)
+                {
+                    categoryFilter = builder.Eq(ld => ld.Category, cp.ToString());
+
+                }
+                else
+                {
+                    categoryFilter = builder.Where(ld => ld.Category.StartsWith(cp.ToString()));
+                }
+                filter = filter & categoryFilter;
             }
-            else
+            if (listingType != null)
             {
-                query = await _db.AsQueryable()
-                .Where(l => l.Category.Equals(cp.ToString()))
-                .ToListAsync();
+                var typeFilter = builder.Eq(ld => ld.ListingType, listingType.ToString());
+                filter = filter & typeFilter;
             }
+
+            query = await _db.Find(filter)
+            .ToListAsync();
+
+
+            // if (cp == null)
+            // {//return all
+            //     if (listingType == null)
+            //         query =
+            //                 await _db.AsQueryable()
+            //               .ToListAsync();
+            //     else
+            //     {//return by listing type
+            //         query = await _db.AsQueryable()
+            //         .Where(l => l.ListingType.Equals(listingType.ToString()))
+            //         .ToListAsync();
+            //     }
+            // }
+            // else
+            // {//return by category, by subcategory
+            //     if (groupBySub)
+            //     {
+            //         query = await _db.AsQueryable()
+            //             .Where(l => l.Category.Equals(cp.ToString()))
+            //             .ToListAsync();
+            //     }
+            //     else
+            //     {
+            //         query = await _db.AsQueryable()
+            //            .Where(l => l.Category.StartsWith(cp.ToString()))
+            //            .ToListAsync();
+            //     }
+            // }
 
             //var Listings = _mapper.Map<List<Listing>>(query);
             foreach (ListingDto list in query)
