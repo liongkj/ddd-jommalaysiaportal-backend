@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
@@ -73,8 +74,9 @@ namespace JomMalaysia.Api.UseCases.Categories
         public async Task<IActionResult> Create([FromBody] CategoryDto request)
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
+            Image img = new Image(request.Url, request.ThumbnailUrl);
 
-            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.Image, request.ParentCategory);
+            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, img, request.ParentCategory);
 
             await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
@@ -84,11 +86,12 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpPost("{id}/subcategories")]
         public async Task<IActionResult> CreateSubcategory([FromRoute] string id, [FromBody] CategoryDto request)
         {
+            Image img = new Image(request.Url, request.ThumbnailUrl);
             try
             {
                 Category cat = _mapper.Map<CategoryDto, Category>(request);
 
-                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, request.Image, id);
+                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, img, id);
 
 
                 await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);

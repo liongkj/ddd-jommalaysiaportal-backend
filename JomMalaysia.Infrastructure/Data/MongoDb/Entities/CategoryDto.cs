@@ -23,7 +23,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         [BsonIgnoreIfNull]
         public string ParentCategory { get; set; }
         public string CategoryPath { get; set; }
-        public Image Image { get; set; }
+        public string Url { get; set; }
+        public string ThumbnailUrl { get; set; } = "https://res.cloudinary.com/jomn9-com/image/upload/v1571632729/category_thumbnail/proz1gzlepy9gp3rk0ej.jpg";
+
 
         public CategoryDto()
         {

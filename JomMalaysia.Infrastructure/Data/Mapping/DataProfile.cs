@@ -134,13 +134,16 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region category
             CreateMap<Category, CategoryDto>()
                                 .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
-                                .ForMember(cd => cd.ParentCategory, opt => opt.Ignore());
+                                .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
+                                .ForMember(cd => cd.ThumbnailUrl, opt => opt.MapFrom(c => c.Image.ThumbnailUrl))
+                                .ForMember(cd => cd.Url, opt => opt.MapFrom(c => c.Image.Url))
+                                ;
 
 
 
             CreateMap<CategoryDto, Category>()
-               .ForMember(cd => cd.CategoryId, opt => opt.MapFrom(c => c.Id))
-
+               .ForMember(c => c.CategoryId, opt => opt.MapFrom(cd => cd.Id))
+               .ForMember(c => c.Image, opt => opt.MapFrom(cd => new Image(cd.Url, cd.ThumbnailUrl)))
                 ;
             //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
             //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
