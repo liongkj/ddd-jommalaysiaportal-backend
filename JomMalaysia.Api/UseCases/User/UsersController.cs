@@ -16,7 +16,7 @@ namespace JomMalaysia.Api.UseCases.User
     #region dependencies
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policies.ADMIN)]
+    // [Authorize(Policies.ADMIN)]
 
     public class UsersController : ControllerBase
     {
