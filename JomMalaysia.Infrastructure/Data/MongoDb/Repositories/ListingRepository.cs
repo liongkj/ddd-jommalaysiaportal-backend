@@ -94,12 +94,13 @@ public class ListingRepository : IListingRepository
         //TODO If need this function
     }
 
-    public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp, string type, bool groupBySub)
+    public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp, string type, bool groupBySub, string status)
     {
         GetAllListingResponse res;
         List<ListingDto> query;
         List<Listing> Mapped = new List<Listing>();
         var listingType = ListingTypeEnum.For(type);
+        var publishStatus = ListingStatusEnum.For(status);
 
         var builder = Builders<ListingDto>.Filter;
         var filter = builder.Empty;
@@ -119,6 +120,12 @@ public class ListingRepository : IListingRepository
                 }
                 filter = filter & categoryFilter;
             }
+            if (publishStatus != null)
+            {
+                var statusFilter = builder.Eq(ld => ld.Status, publishStatus.ToString());
+                filter = filter & statusFilter;
+            }
+
             if (listingType != null)
             {
                 var typeFilter = builder.Eq(ld => ld.ListingType, listingType.ToString());

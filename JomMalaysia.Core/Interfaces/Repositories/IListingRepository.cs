@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Interfaces
     {
 
         Task<CoreListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
-        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null, string type = "all", bool groupBySub = false);
+        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null, string type = "all", bool groupBySub = false, string publishStatus = "published");
         Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
 
         Task<GetListingResponse> FindByName(string name);
