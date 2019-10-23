@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
         public CategoryPath CategoryPath { get; set; }
-        public Image Image { get; set; }
+        public Image CategoryThumbnail { get; set; }
 
         public Category()
         {
@@ -29,7 +29,7 @@ namespace JomMalaysia.Core.Domain.Entities
             CategoryName = categoryName;
             CategoryNameMs = categoryNameMs;
             CategoryNameZh = categoryNameZh;
-            Image = image;
+            CategoryThumbnail = image;
         }
 
         public bool HasSubcategories(List<Category> subcategories)
@@ -186,7 +186,7 @@ namespace JomMalaysia.Core.Domain.Entities
             CategoryName = updated.CategoryName;
             CategoryNameMs = updated.CategoryNameMs;
             CategoryNameZh = updated.CategoryNameZh;
-            Image = updated.Image;
+            CategoryThumbnail = updated.CategoryThumbnail;
         }
         #endregion
 
