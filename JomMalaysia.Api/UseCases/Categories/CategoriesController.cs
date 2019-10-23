@@ -74,7 +74,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         public async Task<IActionResult> Create([FromBody] CategoryDto request)
         {
             Category cat = _mapper.Map<CategoryDto, Category>(request);
-            Image img = new Image(request.Url, request.ThumbnailUrl);
+            Image img = new Image(request.CategoryThumbnail.Url, request.CategoryThumbnail.ThumbnailUrl);
 
             var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, img, request.ParentCategory);
 
@@ -86,7 +86,7 @@ namespace JomMalaysia.Api.UseCases.Categories
         [HttpPost("{id}/subcategories")]
         public async Task<IActionResult> CreateSubcategory([FromRoute] string id, [FromBody] CategoryDto request)
         {
-            Image img = new Image(request.Url, request.ThumbnailUrl);
+            Image img = new Image(request.CategoryThumbnail.Url, request.CategoryThumbnail.ThumbnailUrl);
             try
             {
                 Category cat = _mapper.Map<CategoryDto, Category>(request);

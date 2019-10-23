@@ -22,7 +22,12 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public string Category { get; set; }
 
         public ICollection<string> Tags { get; set; }
-        public ListingImages ListingImages { get; set; }
+        public ListingImages ListingImages { get; set; } = new ListingImages
+        {
+            ListingLogo = new Image(),
+            CoverPhoto = new Image(),
+
+        };
 
         public string Status { get; set; }
         [BsonIgnoreIfNull]

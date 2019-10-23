@@ -6,9 +6,9 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class ListingImages : ValueObjectBase
     {
-        public string ListingLogo { get; set; }
-        public string CoverPhoto { get; set; }
-        public List<string> ListingDetails { get; set; }
+        public Image ListingLogo { get; set; }
+        public Image CoverPhoto { get; set; }
+        public List<Image> ListingDetails { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

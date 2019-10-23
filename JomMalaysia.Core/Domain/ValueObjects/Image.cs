@@ -13,6 +13,12 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             ThumbnailUrl = thumbnailurl;
         }
 
+        public Image()
+        {
+            Url = Constants.DefaultImages.Url;
+            ThumbnailUrl = Constants.DefaultImages.ThumbnailUrl;
+        }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             throw new System.NotImplementedException();
