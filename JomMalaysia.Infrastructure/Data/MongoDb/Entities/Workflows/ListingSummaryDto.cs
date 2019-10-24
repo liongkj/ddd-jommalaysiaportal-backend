@@ -19,6 +19,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
         public ListingImages ListingImages { get; set; }
         public ICollection<string> Tags { get; set; }
         public string Status { get; set; }
+        public OperatingHoursDto OperatingHours { get; set; }
 
         [BsonIgnoreIfNull]
         public BsonDateTime CreatedAt { get; set; }

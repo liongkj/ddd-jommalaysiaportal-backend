@@ -34,7 +34,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             this.PostalCode = postalCode;
             this.Country = country;
         }
-        public Address(string add1, string add2, string city, string state, string postalCode, string country, List<Coordinates> coordinates)
+        public Address(string add1, string add2, string city, string state, string postalCode, string country, Coordinates coordinates)
         {
             this.Add1 = add1;
             this.Add2 = add2;

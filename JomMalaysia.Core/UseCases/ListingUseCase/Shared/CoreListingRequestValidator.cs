@@ -20,13 +20,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
             RuleFor(x => x.Address);
             // .NotEmpty()
             // .SetValidator(new AddressValidator());
-            RuleForEach(x => x.Coordinates).NotNull();
+            RuleFor(x => x.Coordinates).NotNull();
             RuleFor(l => l.ListingType).NotEmpty();
             RuleFor(l => l.CategoryId).NotEmpty().NotNull().
                 When(HasCategory).WithMessage("Please select a valid category for this listing type");
 
             //if listing type is event must have eventdate
-            RuleFor(req => req.EventStartDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Local.ToString())).WithMessage("Please enter a valid start date for event type listing");
+            RuleFor(req => req.EventStartDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
             RuleFor(req => req.EventEndDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
 
 

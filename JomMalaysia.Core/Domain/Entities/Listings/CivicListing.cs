@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Merchant = merchant;
         }
 
-        public CivicListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
+        public CivicListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
             OpeningHoursStart = listing.EventStartDateTime;
             OpeningHoursEnd = listing.EventEndDateTime;

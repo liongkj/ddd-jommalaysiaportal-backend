@@ -3,7 +3,6 @@ using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.UseCases.ListingUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.Domain.Factories
@@ -38,13 +37,10 @@ namespace JomMalaysia.Core.Domain.Factories
 
         private static Address GenerateAddress(CoreListingRequest listing)
         {
-            List<Coordinates> cor = new List<Coordinates>();
-            foreach (var c in listing.Coordinates)
-                foreach (var b in c)
-                {
-                    cor.Add(new Coordinates(b[0], b[1]));
-                }
-            var Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City, listing.Address.State, listing.Address.PostalCode, listing.Address.Country, cor);
+            var coord = listing.Coordinates;
+            var coor = new Coordinates(coord.Longitude, coord.Latitude);
+
+            var Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City, listing.Address.State, listing.Address.PostalCode, listing.Address.Country, coor);
             return Address;
         }
     }

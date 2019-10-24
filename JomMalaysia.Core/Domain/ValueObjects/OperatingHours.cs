@@ -8,16 +8,22 @@ namespace JomMalaysia.Core.Domain.ValueObjects
     public class OperatingHours : ValueObjectBase
     {
 
-        List<StoreTimes> OperationHours { get; }
-        public OperatingHours()
+        public List<StoreTimes> OperationHours { get; private set; }
+        public OperatingHours(List<StoreTimes> store)
         {
-            OperationHours = new List<StoreTimes>();
+            OperationHours = store;
         }
 
         public void Add(StoreTimes newOpsHours)
         {
             if (newOpsHours == null) return;
-
+            foreach (var oh in OperationHours)
+            {
+                if (oh.DayOfWeek == newOpsHours.DayOfWeek)
+                {
+                    OperationHours.Remove(oh);
+                }
+            }
             OperationHours.Add(newOpsHours);
         }
 
@@ -33,7 +39,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public TimeSpan OpenTime { get; protected set; }
         public TimeSpan CloseTime { get; protected set; }
 
-        public StoreTimes(string dayOfWeek, string openTime = "0800", string closeTime = "1700")
+        public StoreTimes(int dayOfWeek, string openTime = "0800", string closeTime = "1700")
         {
             DayOfWeek = DayOfWeekEnum.Parse<DayOfWeekEnum>(dayOfWeek);
             if (DayOfWeek == null)
@@ -47,7 +53,8 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         private TimeSpan ConvertTime(string timeString)
         {
-            if (String.IsNullOrWhiteSpace(timeString) && timeString.Length == 4)
+            if (!String.IsNullOrWhiteSpace(timeString)
+            && timeString.Length == 4)
             {
                 int hour = int.Parse(timeString.Substring(0, 2));
                 int minute = int.Parse(timeString.Substring(2, 2));

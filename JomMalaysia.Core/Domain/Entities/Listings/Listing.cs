@@ -22,15 +22,17 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public ListingStatusEnum Status { get; set; }
 
         public Contact Contact { get; set; }
+        public OperatingHours OperatingHours { get; set; }
         public PublishStatus PublishStatus { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+
         public Listing()
         {
 
         }
-        public Listing(string listingName, Merchant merchant, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add)
+        public Listing(string listingName, Merchant merchant, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
         {
             Merchant = merchant;
             ListingName = listingName;
@@ -41,6 +43,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Tags = ValidateTags(tags);
             ListingType = listingType;
             Status = ListingStatusEnum.Pending;
+            OperatingHours = PopulateOperatingHours(operatingHours);
 
         }
 
@@ -99,7 +102,16 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             }
             return CleanTags;
         }
-
+        private OperatingHours PopulateOperatingHours(List<StoreTimesRequest> OperatingHours)
+        {
+            List<StoreTimes> store = new List<StoreTimes>();
+            foreach (var t in OperatingHours)
+            {
+                store.Add(new StoreTimes(t.Day, t.StartTime, t.CloseTime));
+            }
+            var OperatingHour = new OperatingHours(store);
+            return OperatingHour;
+        }
         internal void Updated()
         {
             ModifiedAt = DateTime.Now;

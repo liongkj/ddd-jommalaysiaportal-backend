@@ -75,11 +75,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<EventListing, ListingDto>()
             .IncludeBase<Listing, ListingDto>()
-            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
+            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category.CategoryPath))
                     ;
 
             CreateMap<LocalListing, ListingDto>()
-            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
+            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category.CategoryPath))
             .IncludeBase<Listing, ListingDto>()
                 ;
 
@@ -112,6 +112,21 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
                 ;
 
+
+            #endregion
+
+            #region map operatinghours
+
+            CreateMap<OperatingHours, OperatingHoursDto>()
+            // .ForMember(od => od.operation)
+            .ReverseMap()
+    ;
+
+            CreateMap<StoreTimes, StoreTimesDto>()
+                .ForMember(sd => sd.CloseTime, opt => opt.MapFrom(s => s.CloseTime.ToString()))
+                .ForMember(sd => sd.CloseTime, opt => opt.MapFrom(s => s.CloseTime.ToString()))
+                .ReverseMap()
+            ;
 
             #endregion
 
