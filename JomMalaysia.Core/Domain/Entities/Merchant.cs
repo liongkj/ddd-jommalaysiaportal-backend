@@ -1,9 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Domain.Enums;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Core.Domain.Entities
 {

@@ -6,6 +6,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Framework.Helper;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Core.Domain.Entities
 {

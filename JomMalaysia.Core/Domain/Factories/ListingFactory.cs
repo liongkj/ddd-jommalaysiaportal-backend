@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -31,7 +32,7 @@ namespace JomMalaysia.Core.Domain.Factories
                 case EVE:
                     return new EventListing(listing, category, Address, merchant);
                 case PRI:
-                    return new PrivateListing(listing, category, Address, merchant);
+                    return new LocalListing(listing, category, Address, merchant);
                 default:
                     return null;
             }

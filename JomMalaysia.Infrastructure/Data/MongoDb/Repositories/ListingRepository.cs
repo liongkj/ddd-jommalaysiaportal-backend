@@ -15,6 +15,7 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using JomMalaysia.Core.Domain.Entities.Listing;
 
 public class ListingRepository : IListingRepository
 {

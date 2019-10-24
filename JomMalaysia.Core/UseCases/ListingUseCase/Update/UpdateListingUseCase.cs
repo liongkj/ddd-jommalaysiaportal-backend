@@ -8,6 +8,7 @@ using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
 {

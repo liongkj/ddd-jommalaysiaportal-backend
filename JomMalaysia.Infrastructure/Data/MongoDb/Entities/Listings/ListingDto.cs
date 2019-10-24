@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
 {
-    public class ListingDto : IEntityDateTime
+    public class ListingDto : IEntityDateTime, IListingDto
     {
         //add all possible properties here, etc. event listing has start date and end date
         [BsonId]

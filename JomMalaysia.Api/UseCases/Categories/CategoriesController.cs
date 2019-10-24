@@ -107,9 +107,8 @@ namespace JomMalaysia.Api.UseCases.Categories
         //DELETE api/categories/{slug}
         [HttpDelete("{id}")]
 
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(DeleteCategoryRequest req)
         {
-            var req = new DeleteCategoryRequest(id);
             await _deleteCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }

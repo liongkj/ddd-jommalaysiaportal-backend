@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {

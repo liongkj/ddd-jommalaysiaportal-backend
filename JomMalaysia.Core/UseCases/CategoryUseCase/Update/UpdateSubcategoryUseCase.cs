@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.Domain.ValueObjects;
-using System.Linq;
+using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
 {
@@ -13,12 +14,12 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
 
         public DeleteMerchantRequest(string MerchantId)
         {
-            if (string.IsNullOrWhiteSpace(MerchantId)) 
+            if (string.IsNullOrWhiteSpace(MerchantId))
             {
                 throw new System.ArgumentException("Delete Merchant: Listing Id null", nameof(MerchantId));
             }
             Listings = new Collection<Listing>();
-            
+
             this.MerchantId = MerchantId;
         }
     }

@@ -5,6 +5,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
 {

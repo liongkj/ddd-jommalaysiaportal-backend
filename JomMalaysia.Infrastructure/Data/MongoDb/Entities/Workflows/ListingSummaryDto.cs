@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
 {
-    public class ListingSummaryDto
+    public class ListingSummaryDto : IListingDto
     {
         [BsonId]
         [BsonIgnoreIfDefault]

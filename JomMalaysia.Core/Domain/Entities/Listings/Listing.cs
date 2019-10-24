@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 
-
-namespace JomMalaysia.Core.Domain.Entities
+namespace JomMalaysia.Core.Domain.Entities.Listings
 {
-
     public abstract class Listing
     {
-
         public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
