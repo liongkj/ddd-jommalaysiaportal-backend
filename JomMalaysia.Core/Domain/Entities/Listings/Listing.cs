@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using JomMalaysia.Core.Domain.Enums;
+using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 
 namespace JomMalaysia.Core.Domain.Entities.Listings
 {
@@ -20,19 +24,18 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public Contact Contact { get; set; }
         public PublishStatus PublishStatus { get; set; }
         public ListingTypeEnum ListingType { get; set; }
-        public CategoryPath Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public Listing()
         {
 
         }
-        public Listing(string listingName, Merchant merchant, CategoryPath category, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add)
+        public Listing(string listingName, Merchant merchant, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add)
         {
             Merchant = merchant;
             ListingName = listingName;
             Description = description;
-            Category = category;
+
             ListingImages = images;
             Address = add;
             Tags = ValidateTags(tags);
@@ -40,6 +43,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Status = ListingStatusEnum.Pending;
 
         }
+
 
         public bool IsSafeToDelete()
         {

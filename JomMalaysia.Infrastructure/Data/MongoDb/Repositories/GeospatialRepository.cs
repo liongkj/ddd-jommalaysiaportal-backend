@@ -11,7 +11,7 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using MongoDB.Driver;
 
-using JomMalaysia.Core.Domain.Entities.Listing;
+using JomMalaysia.Core.Domain.Entities.Listings;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {

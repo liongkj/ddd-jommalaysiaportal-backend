@@ -28,14 +28,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Helpers
             return null;
         }
 
-        public static Type GetListingTypeHelper(ListingDto list)
+        public static Type GetListingTypeHelper(IListingDto list)
         {
             if (list.ListingType == ListingTypeEnum.Event.ToString())
             {
                 return typeof(EventListing);
 
             }
-            if (list.ListingType == ListingTypeEnum.Private.ToString())
+            if (list.ListingType == ListingTypeEnum.Local.ToString())
             {
                 return typeof(LocalListing);
             }

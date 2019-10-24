@@ -88,13 +88,21 @@ namespace JomMalaysia.Api.UseCases.Listings
             return _listingPresenter.ContentResult;
         }
 
+        // POST api/listings
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CoreListingRequest ListingObject)
+        {
+            await _createListingUseCase.Handle(ListingObject, _listingPresenter);
+
+            return _listingPresenter.ContentResult;
+        }
         ///delete listing
         ///DELETE api/listings/{id}
         ///
         [HttpDelete("{ListingId}")]
-        public async Task<IActionResult> Delete([FromRoute]string ListingId)
+        public async Task<IActionResult> Delete([FromRoute]DeleteListingRequest req)
         {
-            await _deleteListingUseCase.Handle(new DeleteListingRequest(ListingId), _listingPresenter);
+            await _deleteListingUseCase.Handle(req, _listingPresenter);
             return _listingPresenter.ContentResult;
         }
 
@@ -109,17 +117,7 @@ namespace JomMalaysia.Api.UseCases.Listings
             return _listingPresenter.ContentResult;
         }
 
-        // POST api/listings
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CoreListingRequest ListingObject)
-        {
 
-            //var results = validator.Validate(req);
-            // var mapped = _mapper.Map<CreateListingRequest>(ListingObject);
-            await _createListingUseCase.Handle(ListingObject, _listingPresenter);
-
-            return _listingPresenter.ContentResult;
-        }
         #endregion
 
         [HttpGet("query")]

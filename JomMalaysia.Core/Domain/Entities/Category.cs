@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.Domain.Entities
 {
@@ -76,25 +77,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public Dictionary<string, string> UpdateListings(List<Listing> toBeUpdateListings, bool IsUpdateCategoryOperation = true)
-        {
-            Dictionary<string, string> UpdatedListings = new Dictionary<string, string>();
-            foreach (var listing in toBeUpdateListings)
-            {
-                CategoryPath cp;
-                if (IsUpdateCategoryOperation)
-                {
-                    cp = new CategoryPath(this.CategoryName, listing.Category.Subcategory);
 
-                }
-                else
-                {
-                    cp = new CategoryPath(listing.Category.Category, this.CategoryName);
-                }
-                UpdatedListings.Add(listing.ListingId, cp.ToString());
-            }
-            return UpdatedListings;
-        }
 
         public List<Category> UpdateCategory(Category updated, List<Category> ToBeUpdate = null, bool IsUpdateCategoryOperation = true)
         {

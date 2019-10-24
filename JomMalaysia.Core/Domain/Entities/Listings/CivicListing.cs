@@ -11,18 +11,27 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
     //https://www.dofactory.com/net/factory-method-design-pattern
     public sealed class CivicListing : Listing
     {
+        private CoreListingRequest listing;
 
         public CivicListing()
         {
 
         }
-        public CivicListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, category.CategoryPath, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
+
+        public CivicListing(CoreListingRequest listing, Address address, Merchant merchant)
         {
-            EventStartDateTime = listing.EventStartDateTime;
-            EventEndDateTime = listing.EventEndDateTime;
+            this.listing = listing;
+            Address = address;
+            Merchant = merchant;
         }
-        public DateTime EventStartDateTime { get; set; }
-        public DateTime EventEndDateTime { get; set; }
+
+        public CivicListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address)
+        {
+            OpeningHoursStart = listing.EventStartDateTime;
+            OpeningHoursEnd = listing.EventEndDateTime;
+        }
+        public DateTime OpeningHoursStart { get; set; }
+        public DateTime OpeningHoursEnd { get; set; }
 
 
 

@@ -99,7 +99,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 foreach (WorkflowDto workflow in query)
                 {
 
-                    var temp = ListingDtoParser.Converted(workflow.Listing);
+                    var temp = ListingDtoParser.Converted(_mapper, workflow.Listing);
                     if (temp != null)
                     {
                         Workflows[i].Listing = temp;

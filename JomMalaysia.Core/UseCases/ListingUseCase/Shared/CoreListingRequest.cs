@@ -21,14 +21,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public string MerchantId { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
+
         public string ListingType { get; set; }
 
-
         public string CategoryId { get; set; }
-        // public string Subcategory { get; set; }
-
         public List<string> Tags { get; set; }
         public AddressRequest Address { get; set; }
+        public OperatingHours OperatingHours { get; set; }
 
         public List<List<List<double>>> Coordinates { get; set; }
         public ListingImages ImageUris { get; set; }

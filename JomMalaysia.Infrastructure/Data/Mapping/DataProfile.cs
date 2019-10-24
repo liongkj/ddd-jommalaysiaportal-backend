@@ -63,14 +63,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region listing mapping
             // domain->dto
             CreateMap<Listing, ListingDto>()
-                .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
                 .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
                 .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
-
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
-
-
                 .IncludeAllDerived()
 
                 ;
@@ -79,9 +75,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<EventListing, ListingDto>()
             .IncludeBase<Listing, ListingDto>()
+            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
                     ;
 
-            CreateMap<PrivateListing, ListingDto>()
+            CreateMap<LocalListing, ListingDto>()
+            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
             .IncludeBase<Listing, ListingDto>()
                 ;
 
@@ -90,7 +88,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             //mapping parent class
             CreateMap<ListingDto, Listing>()
                         .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
-                        .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
+
                         .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                         .ForPath(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                         .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
@@ -105,11 +103,13 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<ListingDto, EventListing>()
                     .ForMember(e => e.EventStartDateTime, opt => opt.MapFrom(ld => ld.EventStartDateTime.ToLocalTime()))
                     .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
-
+                    .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
+                    .IncludeBase<ListingDto, Listing>()
                     ;
 
-            CreateMap<ListingDto, PrivateListing>()
+            CreateMap<ListingDto, LocalListing>()
             .IncludeBase<ListingDto, Listing>()
+            .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
                 ;
 
 
@@ -171,7 +171,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             ;
 
             CreateMap<EventListing, ListingSummaryDto>();
-            CreateMap<PrivateListing, ListingSummaryDto>();
+            CreateMap<LocalListing, ListingSummaryDto>();
 
             //dto --> domain
             CreateMap<WorkflowDto, Workflow>()
@@ -196,7 +196,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<ListingSummaryDto, EventListing>()
                         ;
 
-            CreateMap<ListingSummaryDto, PrivateListing>();
+            CreateMap<ListingSummaryDto, LocalListing>();
 
 
 

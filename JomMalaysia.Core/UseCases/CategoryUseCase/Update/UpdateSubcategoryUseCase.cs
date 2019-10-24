@@ -39,8 +39,9 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
             //Update Operation Start
             ToBeUpdateSubcategory.UpdateCategory(message.Updated, null, false);
-
-            var UpdatedListings = ToBeUpdateSubcategory.UpdateListings(ToBeUpdateListings, false);
+            //TODO
+            var UpdatedListings = new Dictionary<string, string>();
+            // ToBeUpdateSubcategory.UpdateListings(ToBeUpdateListings, false);
             //update operation end
 
 
