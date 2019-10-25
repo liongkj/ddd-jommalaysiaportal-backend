@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
-using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
+namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
 {
     public class PublishListingUseCase : IPublishListingUseCase
     {
+        #region dependencies
         private readonly IListingRepository _listingRepository;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IMongoDbContext _transaction;
@@ -28,7 +27,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             _transaction = transaction;
             _loginInfo = loginInfoProvider;
         }
-        public async Task<bool> Handle(ListingWorkflowRequest message, IOutputPort<ListingWorkflowResponse> outputPort)
+        #endregion
+        public async Task<bool> Handle(PublishListingRequest message, IOutputPort<NewWorkflowResponse> outputPort)
         {
             var requester = _loginInfo.AuthenticatedUser();
 
@@ -37,7 +37,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             var getListingResponse = await _listingRepository.FindById(message.ListingId);
             if (!getListingResponse.Success) //found listing
             {
-                outputPort.Handle(new ListingWorkflowResponse(getListingResponse.Errors, false, getListingResponse.Message));
+                outputPort.Handle(new NewWorkflowResponse(getListingResponse.Errors, false, getListingResponse.Message));
                 return false;
             }
             var ToBePublishListing = getListingResponse.Listing;
@@ -46,7 +46,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             bool ListingHasPendingWorkflows = await _workflowRepository.GetPendingWorkflowForListing(ToBePublishListing.ListingId);
             if (ListingHasPendingWorkflows)
             {
-                outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } has pending workflows, please complete the workflow before creating a new one." }));
+                outputPort.Handle(new NewWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } has pending workflows, please complete the workflow before creating a new one." }));
                 return false;
             }
 
@@ -54,43 +54,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
             if (PublishListingWorkflow == null)//if not published
             {
-                outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } is already published" }));
+                outputPort.Handle(new NewWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } is already published" }));
                 return false;
             }
 
             //save into workflow database
+            return await WorkflowFactory.Create(_transaction, _workflowRepository, _listingRepository, PublishListingWorkflow, ToBePublishListing, outputPort);
 
-            using (var session = await _transaction.StartSession())
-            {
-                try
-                {
-                    session.StartTransaction();
-                    var createWorkflowResponse = await _workflowRepository.CreateWorkflowAsyncWithSession(PublishListingWorkflow, session);
-                    var updateListingStatusResponse = await _listingRepository.UpdateAsyncWithSession(ToBePublishListing, session);
-                    if (!createWorkflowResponse.Success)
-                    {
-                        outputPort.Handle(new ListingWorkflowResponse(createWorkflowResponse.Errors, false, createWorkflowResponse.Message));
-                        return false;
-                    }
-                    // update listing status set to pending
-
-
-                    if (!updateListingStatusResponse.Success)
-                    {
-                        outputPort.Handle(new ListingWorkflowResponse(updateListingStatusResponse.Errors, false, updateListingStatusResponse.Message));
-                        return false;
-                    }
-                }
-                catch
-                {
-                    await session.AbortTransactionAsync();
-                    outputPort.Handle(new ListingWorkflowResponse(ToBePublishListing.ListingId + " error creating workflow"));
-                    return false;
-                }
-                await session.CommitTransactionAsync();
-                outputPort.Handle(new ListingWorkflowResponse(ToBePublishListing.ListingId + " workflow created successfully", true));
-                return true;
-            }
         }
 
     }

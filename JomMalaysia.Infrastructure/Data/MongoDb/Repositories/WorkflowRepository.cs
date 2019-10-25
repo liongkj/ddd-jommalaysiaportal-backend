@@ -6,15 +6,13 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.UseCases.ListingUseCase;
 using JomMalaysia.Core.UseCases.WorkflowUseCase;
-using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 using MongoDB.Driver;
-using JomMalaysia.Core.Domain.Entities.Listings;
 using MongoDB.Driver.Linq;
 using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
@@ -28,7 +26,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             _db = context.Database.GetCollection<WorkflowDto>("Workflow");
             _mapper = mapper;
         }
-        public async Task<ListingWorkflowResponse> CreateWorkflowAsyncWithSession(Workflow workflow, IClientSessionHandle session)
+        public async Task<NewWorkflowResponse> CreateWorkflowAsyncWithSession(Workflow workflow, IClientSessionHandle session)
         {
             var WorkflowDto = _mapper.Map<WorkflowDto>(workflow);
 
@@ -39,9 +37,9 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception e)
             {
-                return new ListingWorkflowResponse(new List<string> { e.Message, "Error saving workflow" }, false);
+                return new NewWorkflowResponse(new List<string> { e.Message, "Error saving workflow" }, false);
             }
-            return new ListingWorkflowResponse(WorkflowDto.Id + " created", true);
+            return new NewWorkflowResponse(WorkflowDto.Id + " created", true);
         }
 
         public async Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId)

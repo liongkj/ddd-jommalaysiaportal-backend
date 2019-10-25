@@ -1,12 +1,10 @@
-﻿
-
-using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.UseCases.ListingUseCase.Create;
-using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
+﻿using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 {
-    public interface IUnpublishListingUseCase : IUseCaseHandlerAsync<ListingWorkflowRequest, ListingWorkflowResponse>
+    public interface IUnpublishListingUseCase : IUseCaseHandlerAsync<UnpublishListingRequest, NewWorkflowResponse>
     {
 
     }

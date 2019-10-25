@@ -7,6 +7,7 @@ using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Publish;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 {
@@ -28,7 +29,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
             _transaction = transaction;
             _loginInfo = loginInfoProvider;
         }
-        public async Task<bool> Handle(ListingWorkflowRequest message, IOutputPort<ListingWorkflowResponse> outputPort)
+        public async Task<bool> Handle(UnpublishListingRequest message, IOutputPort<NewWorkflowResponse> outputPort)
         {
             var requester = _loginInfo.AuthenticatedUser();
 
@@ -37,7 +38,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 
             if (!getListingResponse.Success) //found listing
             {
-                outputPort.Handle(new ListingWorkflowResponse(getListingResponse.Errors, false, getListingResponse.Message));
+                outputPort.Handle(new NewWorkflowResponse(getListingResponse.Errors, false, getListingResponse.Message));
                 return false;
             }
 
@@ -47,7 +48,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
             bool ListingHasPendingWorkflows = await _workflowRepository.GetPendingWorkflowForListing(ToBeDeleted.ListingId);
             if (ListingHasPendingWorkflows)
             {
-                outputPort.Handle(new ListingWorkflowResponse(new List<string> { $"{ToBeDeleted.ListingName } has pending workflows, please complete the workflow before creating a new one." }));
+                outputPort.Handle(new NewWorkflowResponse(new List<string> { $"{ToBeDeleted.ListingName } has pending workflows, please complete the workflow before creating a new one." }));
                 return false;
             }
 
@@ -56,14 +57,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Unpublish
 
             if (UnpublishListingWorkflow == null)
             {
-                outputPort.Handle(new ListingWorkflowResponse(new List<string> { "Listing is not published" }));
+                outputPort.Handle(new NewWorkflowResponse(new List<string> { "Listing is not published" }));
                 return false;
             }
 
             using (var session = await _transaction.StartSession())
             {
                 session.StartTransaction();
-                ListingWorkflowResponse NewWorkflowResponse;
+                NewWorkflowResponse NewWorkflowResponse;
                 try
                 {
                     NewWorkflowResponse = await _workflowRepository.CreateWorkflowAsyncWithSession(UnpublishListingWorkflow, session);

@@ -57,17 +57,15 @@ namespace JomMalaysia.Api.UseCases.Workflows
         [Route("~/api/listings/{ListingId}/publish")]
         [Route("~/api/listings/{ListingId}/publish/{months:int}")]
         [HttpPost]
-        public async Task<IActionResult> Publish([FromRoute] ListingWorkflowRequest req)
+        public async Task<IActionResult> Publish([FromRoute] PublishListingRequest req)
         {
-
-
             await _publishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;
         }
 
         [Route("~/api/listings/{ListingId}/unpublish")]
         [HttpPost]
-        public async Task<IActionResult> Unpublish([FromRoute] ListingWorkflowRequest req)
+        public async Task<IActionResult> Unpublish([FromRoute] UnpublishListingRequest req)
         {
             await _unpublishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;
