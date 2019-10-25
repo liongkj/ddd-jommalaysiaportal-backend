@@ -1,3 +1,4 @@
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 
@@ -5,15 +6,14 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 {
     public class AdministrativeListing : Listing
     {
-        private CoreListingRequest listing;
-        private Address address;
-        private Merchant merchant;
 
-        public AdministrativeListing(CoreListingRequest listing, Address address, Merchant merchant)
+        public AdministrativeListing()
         {
-            this.listing = listing;
-            this.address = address;
-            this.merchant = merchant;
+
+        }
+        public AdministrativeListing(CoreListingRequest listing, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Gover, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        {
+
         }
     }
 }

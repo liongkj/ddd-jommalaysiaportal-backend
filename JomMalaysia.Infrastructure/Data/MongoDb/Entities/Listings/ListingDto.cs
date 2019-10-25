@@ -18,7 +18,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public string Description { get; set; }
         public string ListingType { get; set; }
         public AddressDto ListingAddress { get; set; }
-        public OperatingHoursDto OperatingHours { get; set; }
+        public List<StoreTimesDto> OperatingHours { get; set; }
 
         public string Category { get; set; }
 

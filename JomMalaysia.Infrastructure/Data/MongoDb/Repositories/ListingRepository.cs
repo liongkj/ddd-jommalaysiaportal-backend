@@ -138,36 +138,6 @@ public class ListingRepository : IListingRepository
             .ToListAsync();
 
 
-            // if (cp == null)
-            // {//return all
-            //     if (listingType == null)
-            //         query =
-            //                 await _db.AsQueryable()
-            //               .ToListAsync();
-            //     else
-            //     {//return by listing type
-            //         query = await _db.AsQueryable()
-            //         .Where(l => l.ListingType.Equals(listingType.ToString()))
-            //         .ToListAsync();
-            //     }
-            // }
-            // else
-            // {//return by category, by subcategory
-            //     if (groupBySub)
-            //     {
-            //         query = await _db.AsQueryable()
-            //             .Where(l => l.Category.Equals(cp.ToString()))
-            //             .ToListAsync();
-            //     }
-            //     else
-            //     {
-            //         query = await _db.AsQueryable()
-            //            .Where(l => l.Category.StartsWith(cp.ToString()))
-            //            .ToListAsync();
-            //     }
-            // }
-
-            //var Listings = _mapper.Map<List<Listing>>(query);
             foreach (ListingDto list in query)
             {
                 var temp = ListingDtoParser.Converted(_mapper, list);

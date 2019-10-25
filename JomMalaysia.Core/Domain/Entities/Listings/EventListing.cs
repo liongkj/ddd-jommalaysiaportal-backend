@@ -17,13 +17,13 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         {
 
         }
-        public EventListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public EventListing(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
             EventStartDateTime = listing.EventStartDateTime;
             EventEndDateTime = listing.EventEndDateTime;
             Category = category;
         }
-        public Category Category;
+        public CategoryPath Category;
         public DateTime EventStartDateTime { get; set; }
         public DateTime EventEndDateTime { get; set; }
 

@@ -18,13 +18,14 @@ namespace JomMalaysia.Core.Domain.Factories
         public static Listing CreateListing(ListingTypeEnum ListingType, CoreListingRequest listing, Category category, Merchant merchant)
         {
             int listingTypeId = ListingType.Id;
+            var categoryPath = category.CategoryPath;
 
             switch (listingTypeId)
             {
                 case EVENT:
-                    return new EventListing(listing, category, GenerateAddress(listing), merchant);
+                    return new EventListing(listing, categoryPath, GenerateAddress(listing), merchant);
                 case LOCAL:
-                    return new LocalListing(listing, category, GenerateAddress(listing), merchant);
+                    return new LocalListing(listing, categoryPath, GenerateAddress(listing), merchant);
                 case CIVIC:
                     return new CivicListing(listing, GenerateAddress(listing), merchant);
                 case GOVER:

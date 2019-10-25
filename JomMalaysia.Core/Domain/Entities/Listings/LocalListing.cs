@@ -11,8 +11,8 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 {
     public class LocalListing : Listing, IWithCategory
     {
-        public Category Category { get; set; }
-        public LocalListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Local, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public CategoryPath Category { get; set; }
+        public LocalListing(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Local, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
             Category = category;
         }

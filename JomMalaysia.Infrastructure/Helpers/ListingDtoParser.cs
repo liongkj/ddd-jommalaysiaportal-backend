@@ -10,18 +10,24 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Helpers
     {
         public static Listing Converted(IMapper mapper, IListingDto list)
         {
+            var type = GetListingTypeHelper(list);
             if (list != null)
             {
-                if (GetListingTypeHelper(list).Equals(typeof(EventListing)))
+                if (type.Equals(typeof(EventListing)))
                 {
                     var i = mapper.Map<EventListing>(list);
 
                     return i;
                 }
 
-                if (GetListingTypeHelper(list).Equals(typeof(LocalListing)))
+                if (type.Equals(typeof(LocalListing)))
                 {
                     var i = mapper.Map<LocalListing>(list);
+                    return i;
+                }
+                if (type.Equals(typeof(AdministrativeListing)))
+                {
+                    var i = mapper.Map<AdministrativeListing>(list);
                     return i;
                 }
             }
@@ -38,6 +44,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Helpers
             if (list.ListingType == ListingTypeEnum.Local.ToString())
             {
                 return typeof(LocalListing);
+            }
+
+            if (list.ListingType == ListingTypeEnum.Gover.ToString())
+            {
+                return typeof(AdministrativeListing);
             }
             throw new ArgumentException("Error taking listing info from database ");
 

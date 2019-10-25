@@ -51,9 +51,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid subcategory"));
                 return false;
             }
-
+            var ListingType = ListingTypeEnum.For(message.ListingType);
+            if (ListingType == null)
+            {
+                outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid listing type"));
+                return false;
+            }
             //create listing factory pattern
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Category, FindMerchantResponse.Merchant);
+            var NewListing = ListingFactory.CreateListing(ListingType, message, FindCategoryResponse.Category, FindMerchantResponse.Merchant);
             if (NewListing is Listing && NewListing != null) //validate is Listing Type
             {
                 //start transaction
