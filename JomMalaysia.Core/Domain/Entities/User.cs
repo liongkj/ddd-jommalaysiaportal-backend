@@ -42,6 +42,15 @@ namespace JomMalaysia.Core.Domain.Entities
             return true;
         }
 
+        public bool CanUpdateLiveListing()
+        {
+            bool can = false;
+            if (Role.HasHigherAuthority(UserRoleEnum.Editor))
+            {
+                can = true;
+            }
+            return can;
+        }
 
         public Tuple<List<string>, bool> AssignRole(string role)
         {
