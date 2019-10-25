@@ -1,20 +1,27 @@
 using System;
 using System.Collections.Generic;
+using JomMalaysia.Core.Domain.Enums;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class PublishStatus : ValueObjectBase
     {
-        public bool IsPublished { get; set; }
-        public DateTime? ValidityStart { get; set; }
-        public DateTime? ValidityEnd { get; set; }
+        public ListingStatusEnum Status { get; private set; }
 
+        public DateTime? ValidityStart { get; private set; }
+        public DateTime? ValidityEnd { get; private set; }
+
+        public PublishStatus()
+        {
+            Status = ListingStatusEnum.Pending;
+
+        }
 
         public void Publish(int months)
         {
+            Status = ListingStatusEnum.Published;
             ValidityStart = DateTime.Now;
             ValidityEnd = ValidityStart.Value.AddMonths(months);
-            IsPublished = true;
         }
 
         public void Extend(int months)
@@ -33,7 +40,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         public void Unpublish()
         {
-            IsPublished = false;
+            Status = ListingStatusEnum.Unpublished;
             ClearValidity();
         }
 

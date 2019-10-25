@@ -4,7 +4,7 @@ using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
 {
-    public interface IUpdatePublishListingUseCase : IUseCaseHandlerAsync<CoreListingRequest, CreateWorkflowResponse>
+    public interface IUpdatePublishListingUseCase : IUseCaseHandlerAsync<CoreListingRequest, CoreListingResponse>
     {
 
     }

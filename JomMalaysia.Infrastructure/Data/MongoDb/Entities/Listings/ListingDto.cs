@@ -30,7 +30,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
 
         };
 
-        public string Status { get; set; }
+        public PublishStatusDto Status { get; set; }
         [BsonIgnoreIfNull]
         public BsonDateTime EventStartDateTime { get; set; }
         [BsonIgnoreIfNull]

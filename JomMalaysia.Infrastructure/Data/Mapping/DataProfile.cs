@@ -64,7 +64,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region listing mapping
             // domain->dto
             CreateMap<Listing, ListingDto>()
-                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
+                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status))
                 .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
@@ -95,7 +95,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                         .ForPath(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                         .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
-                        .ForMember(l => l.Status, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
+                        .ForMember(l => l.Status, opt => opt.MapFrom(ld => ld.Status))
                         .ForMember(l => l.Address, opt => opt.MapFrom(ld => ld.ListingAddress))
                         .ForMember(l => l.OperatingHours, opt => opt.MapFrom(ld => ld.OperatingHours))
                         .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
@@ -108,13 +108,13 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                     .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
                     .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
                     .IncludeBase<ListingDto, Listing>()
-                    .ReverseMap()
+
                     ;
 
             CreateMap<ListingDto, LocalListing>()
                 .IncludeBase<ListingDto, Listing>()
                 .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
-                .ReverseMap()
+
                 ;
 
             CreateMap<ListingDto, AdministrativeListing>()
@@ -122,6 +122,22 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .IncludeBase<ListingDto, Listing>()
             ;
 
+            #endregion
+
+            #region map publish status
+            CreateMap<PublishStatus, PublishStatusDto>()
+                .ForMember(pd => pd.Status, opt => opt.MapFrom(p => p.Status.ToString()))
+                .ForMember(pd => pd.ValidityStart, opt => opt.MapFrom(p => p.ValidityStart))
+                .ForMember(pd => pd.ValidityEnd, opt => opt.MapFrom(p => p.ValidityEnd))
+
+            ;
+
+            CreateMap<PublishStatusDto, PublishStatus>()
+           .ForMember(p => p.Status, opt => opt.MapFrom(pd => ListingStatusEnum.For(pd.Status)))
+           .ForMember(p => p.ValidityStart, opt => opt.MapFrom(pd => pd.ValidityStart))
+           .ForMember(p => p.ValidityEnd, opt => opt.MapFrom(pd => pd.ValidityEnd))
+
+       ;
             #endregion
 
             #region map operatinghours

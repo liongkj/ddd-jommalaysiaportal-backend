@@ -124,7 +124,7 @@ public class ListingRepository : IListingRepository
             }
             if (publishStatus != null)
             {
-                var statusFilter = builder.Eq(ld => ld.Status, publishStatus.ToString());
+                var statusFilter = builder.Eq(ld => ld.Status.Status, publishStatus.ToString());
                 filter = filter & statusFilter;
             }
 

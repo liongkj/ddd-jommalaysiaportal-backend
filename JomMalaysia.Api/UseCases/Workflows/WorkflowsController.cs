@@ -57,11 +57,9 @@ namespace JomMalaysia.Api.UseCases.Workflows
         [Route("~/api/listings/{ListingId}/publish")]
         [Route("~/api/listings/{ListingId}/publish/{months:int}")]
         [HttpPost]
-        public async Task<IActionResult> Publish([FromRoute] string ListingId, [FromRoute] int months = 12)
+        public async Task<IActionResult> Publish([FromRoute] ListingWorkflowRequest req)
         {
 
-            var req = new ListingWorkflowRequest(ListingId);
-            req.Months = months;
 
             await _publishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;
@@ -69,25 +67,12 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
         [Route("~/api/listings/{ListingId}/unpublish")]
         [HttpPost]
-        public async Task<IActionResult> Unpublish([FromRoute] string ListingId)
+        public async Task<IActionResult> Unpublish([FromRoute] ListingWorkflowRequest req)
         {
-
-            var req = new ListingWorkflowRequest(ListingId);
-
             await _unpublishListingUseCase.Handle(req, _workflowPresenter).ConfigureAwait(false);
             return _workflowPresenter.ContentResult;
         }
 
-        [Route("~/api/listings/{ListingId}/update")]
-        [HttpPost]
-        public async Task<IActionResult> Update([FromRoute] string ListingId, [FromBody] CoreListingRequest ListingObject)
-        {
-
-            ListingObject.ListingId = ListingId;
-
-            await _updatePublishListingUseCase.Handle(ListingObject, _workflowPresenter).ConfigureAwait(false);
-            return _workflowPresenter.ContentResult;
-        }
 
         //GET api/workflows
         //GET api/workflows/status/{pending}

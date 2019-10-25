@@ -19,11 +19,11 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public ICollection<string> Tags { get; private set; }
         public Address Address { get; set; }
         public ListingImages ListingImages { get; set; }
-        public ListingStatusEnum Status { get; set; }
+        // public ListingStatusEnum Status { get; set; }
 
         public Contact Contact { get; set; }
         public List<StoreTimes> OperatingHours { get; set; }
-        public PublishStatus PublishStatus { get; set; }
+        public PublishStatus Status { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -42,7 +42,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Address = add;
             Tags = ValidateTags(tags);
             ListingType = listingType;
-            Status = ListingStatusEnum.Pending;
+            Status = new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
 
         }
@@ -50,16 +50,22 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         public bool IsSafeToDelete()
         {
-            return PublishStatus == null || !PublishStatus.IsPublished;
+            return !IsPublished();
         }
 
         public bool IsEligibleToPublish()
         {
-            return PublishStatus == null || !PublishStatus.IsPublished;
+            return !IsPublished();
         }
+
+        public bool IsPublished()
+        {
+            return Status.Status == ListingStatusEnum.Published;
+        }
+
         public bool IsEligibleToUnpublish()
         {
-            return PublishStatus == null || PublishStatus.IsPublished;
+            return IsPublished();
         }
 
         public bool HasPrimaryContact()
@@ -70,13 +76,6 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public void UpdateContact(Contact contact)
         {
             Contact = Contact.For(contact.Name, contact.Email, contact.Phone);
-        }
-        public void RemovePhoto() { }
-        public void UpdateDescription() { }
-
-        public void UpdateAds()
-        {
-
         }
 
         public List<Merchant> SwitchOwnershipFromTo(Merchant Old, Merchant New)

@@ -20,11 +20,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         private readonly ICategoryRepository _categoryRepository;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IMongoDbContext _transaction;
+        private readonly IUpdatePublishListingUseCase _updatePublishedListingUseCase;
 
         public UpdateListingUseCase(IListingRepository listingRepository
         , IMerchantRepository merchantRepository,
         ICategoryRepository categoryRepository,
         IWorkflowRepository workflowRepository,
+        IUpdatePublishListingUseCase updatePublishListingUseCase,
         IMongoDbContext transaction
         )
         {
@@ -32,99 +34,31 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
             _merchantRepository = merchantRepository;
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
+            _updatePublishedListingUseCase = updatePublishListingUseCase;
             _transaction = transaction;
         }
         #endregion
         public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
         {
 
-
-            //update listing
-            #region Handle Find Merchant, Category, find related workflow and create new listing object
-
-
-            var FindMerchantResponse = await GetMerchant(message.MerchantId);
-            if (!FindMerchantResponse.Success) //merchant not found
+            var OldListingResponse = await _listingRepository.FindById(message.ListingId);
+            if (!OldListingResponse.Success)
             {
-                outputPort.Handle(new CoreListingResponse(FindMerchantResponse.Errors, false, FindMerchantResponse.Message));
+                outputPort.Handle(new CoreListingResponse(OldListingResponse.Errors, false, OldListingResponse.Message));
                 return false;
             }
-            var NewMerchant = FindMerchantResponse.Merchant;
+            var OldListing = OldListingResponse.Listing;
 
-            var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
-            if (!FindCategoryResponse.Success)
-            {
-                outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
-                return false;
+            if (!OldListing.IsPublished())
+            {//hanldle unpublished listing
+                return await UpdateOperation.HandleListingUpdate(message, outputPort, _categoryRepository, _transaction, _merchantRepository, _listingRepository);
             }
-
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Category, NewMerchant);
-            #endregion
-            if (NewListing is Listing && NewListing != null) //validate is Listing Type
-
-            {
-                NewListing.ListingId = message.ListingId;
-                //start transaction
-                using (var session = await _transaction.StartSession())
-                {
-                    CoreListingResponse updateListingResponse;
-                    try
-                    {
-                        session.StartTransaction();
-                        //Handle Switch Ownership
-                        var OldMerchant = await GetOldMerchant(message.ListingId);
-                        if (IsSwitchingOwnership(NewMerchant, OldMerchant))
-                        {
-                            var ToBeUpdateMerchantList = NewListing.SwitchOwnershipFromTo(OldMerchant, NewMerchant);
-
-                            foreach (var m in ToBeUpdateMerchantList)
-                            {
-                                var UpdateMerchantResponse = await _merchantRepository.UpdateMerchantAsyncWithSession(m.MerchantId, m, session);
-                                if (!UpdateMerchantResponse.Success)
-                                {
-                                    outputPort.Handle(new CoreListingResponse(UpdateMerchantResponse.Errors, false, UpdateMerchantResponse.Message));
-                                    return false;
-                                }
-
-                            }
-                        }//Handle Switch Ownership End
-                        NewListing.Updated();
-
-                        updateListingResponse = await _listingRepository.UpdateAsyncWithSession(NewListing, session);
-                    }
-                    catch
-                    {
-                        await session.AbortTransactionAsync();
-                        throw;
-                    }
-                    await session.CommitTransactionAsync();
-                    outputPort.Handle(updateListingResponse);
-                    return updateListingResponse.Success;
-                }
+            else
+            {//handle published listing
+                return await _updatePublishedListingUseCase.Handle(message, outputPort);
             }
-            outputPort.Handle(new CoreListingResponse(new List<string> { "Update Listing:Unknown Error" }));
-            return false;
         }
 
-        private async Task<GetMerchantResponse> GetMerchant(string id)
-        {
-            return await _merchantRepository.FindByIdAsync(id).ConfigureAwait(false);
-        }
 
-        private async Task<Merchant> GetOldMerchant(string id)
-        {
-            var GetListingResponse = await _listingRepository.FindById(id);
-            if (GetListingResponse.Success)
-            {
-                var merchantId = GetListingResponse.Listing.Merchant.MerchantId;
-                var merchant = (await GetMerchant(merchantId)).Merchant;
-                return merchant;
-            }
-            return null;
-        }
-        private bool IsSwitchingOwnership(Merchant newMerchant, Merchant oldMerchant)
-        {
-            return oldMerchant.MerchantId != newMerchant.MerchantId;
-        }
     }
 }
