@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using MongoDB.Driver;
@@ -17,8 +18,17 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb
 
         public MongoDbContext(IMongoSettings settings)
         {
-            _client = new MongoClient(settings.ConnectionString);
-            Database = _client.GetDatabase(settings.DatabaseName);
+            try
+            {
+
+
+                _client = new MongoClient(settings.ConnectionString);
+                Database = _client.GetDatabase(settings.DatabaseName);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task<IClientSessionHandle> StartSession(CancellationToken cancellactionToken = default)

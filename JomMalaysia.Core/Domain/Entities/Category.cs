@@ -77,7 +77,26 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
+        public Dictionary<string, string> UpdateListings(List<Listing> toBeUpdateListings, bool IsUpdateCategoryOperation)
+        {
+            Dictionary<string, string> UpdatedListings = new Dictionary<string, string>();
+            foreach (var listing in toBeUpdateListings)
+            {
+                var converted = (IWithCategory)listing;
+                CategoryPath cp;
+                if (IsUpdateCategoryOperation)
+                {
+                    cp = new CategoryPath(this.CategoryName, converted.Category.Subcategory);
 
+                }
+                else
+                {
+                    cp = new CategoryPath(converted.Category.Category, this.CategoryName);
+                }
+                UpdatedListings.Add(converted.ListingId, cp.ToString());
+            }
+            return UpdatedListings;
+        }
 
         public List<Category> UpdateCategory(Category updated, List<Category> ToBeUpdate = null, bool IsUpdateCategoryOperation = true)
         {

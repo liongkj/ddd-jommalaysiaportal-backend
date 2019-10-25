@@ -20,30 +20,6 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         {
 
         }
-        public Dictionary<string, string> UpdateCategory(Listing toBeUpdateListings, bool IsUpdateCategoryOperation = true)
-        {
-            // Dictionary<string, string> UpdatedListings = new Dictionary<string, string>();
-            // foreach (var listing in toBeUpdateListings)
-            // {
-            //     CategoryPath cp;
-            //     if (IsUpdateCategoryOperation)
-            //     {
-            //         cp = new CategoryPath(this.CategoryName, listing.Category.Subcategory);
 
-            //     }
-            //     else
-            //     {
-            //         cp = new CategoryPath(listing.Category.Category, this.CategoryName);
-            //     }
-            //     UpdatedListings.Add(listing.ListingId, cp.ToString());
-            // }
-            // return UpdatedListings;
-            throw new NotImplementedException();
-        }
-
-        public Dictionary<string, string> updateCategory(Listing toBeUpdate, bool IsUpdateCategory = true)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

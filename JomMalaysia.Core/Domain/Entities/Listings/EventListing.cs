@@ -23,9 +23,10 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             EventEndDateTime = listing.EventEndDateTime;
             Category = category;
         }
-        public CategoryPath Category;
+        public CategoryPath Category { get; set; }
         public DateTime EventStartDateTime { get; set; }
         public DateTime EventEndDateTime { get; set; }
+
 
         public void UpdateEventDate(DateTime EventStartDateTime, DateTime EventEndDateTime)
         {
@@ -33,9 +34,6 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             this.EventEndDateTime = EventEndDateTime;
         }
 
-        public Dictionary<string, string> updateCategory(Listing toBeUpdate, bool IsUpdateCategory = true)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

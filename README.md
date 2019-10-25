@@ -11,9 +11,10 @@ https://jommalaysiaapi.azurewebsites.net/
 
 - [x] fetch listing with around specific location
 - [x] Create local and administrative listing
+
 - [ ] Create Event listing
-- [ ] Check update local and adminstrative listing
-- [ ] fetch listing with category
+- [x] Check update local and adminstrative listing
+- [x] fetch listing with category
 - [ ] publish listing
 
 ##category

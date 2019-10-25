@@ -157,6 +157,44 @@ public class ListingRepository : IListingRepository
         return res;
     }
 
+    public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp)
+    {
+        GetAllListingResponse res;
+        List<ListingDto> query;
+        List<Listing> Mapped = new List<Listing>();
+
+        var builder = Builders<ListingDto>.Filter;
+        var filter = builder.Empty;
+        try
+        {
+            if (cp != null)
+            {
+                var categoryFilter = builder.Where(ld => ld.Category.StartsWith(cp.ToString()));
+                filter = filter & categoryFilter;
+
+            }
+
+            query = await _db.Find(filter)
+                            .ToListAsync();
+            foreach (ListingDto list in query)
+            {
+                var temp = ListingDtoParser.Converted(_mapper, list);
+                if (temp != null)
+                {
+                    Mapped.Add(temp);
+                }
+            }
+
+            res = new GetAllListingResponse(Mapped, true, $"Returned {Mapped.Count} results");
+        }
+        catch (Exception e)
+        {
+            res = new GetAllListingResponse(new List<string> { "GetAllListingRepo" }, false, e.ToString() + e.Message);
+        }
+
+        return res;
+    }
+
 
 
     public async Task<CoreListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null)
