@@ -51,7 +51,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
             }
 
             //create new workflow objects
-            Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing);
+            Workflow PublishListingWorkflow = requester.PublishListing(ToBePublishListing, message.Months);
             if (PublishListingWorkflow == null)//if not published
             {
                 outputPort.Handle(new NewWorkflowResponse(new List<string> { $"{ToBePublishListing.ListingName } is already published" }));

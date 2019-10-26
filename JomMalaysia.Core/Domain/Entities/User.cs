@@ -122,23 +122,23 @@ namespace JomMalaysia.Core.Domain.Entities
         /// <param name="listing"></param>
         /// <param name="details-optional"></param>
         /// <returns>Workflow object</returns>
-        public Workflow PublishListing(Listing l, string details = null)
+        public Workflow PublishListing(Listing l, int months = 12)
         {
             //check wheter listing is published
             //check listing is pending
             if (l.IsEligibleToPublish())
             {
                 //if eligible to publish, return new Workflow
-                return new Workflow(this, l, WorkflowTypeEnum.Publish);
+                return new Workflow(this, l, WorkflowTypeEnum.Publish, months);
             }
             return null;
         }
 
-        public Workflow UnpublishListing(Listing l, string details = null)
+        public Workflow UnpublishListing(Listing l, string reason = null)
         {
             if (l.IsEligibleToUnpublish())
             {
-                return new Workflow(this, l, WorkflowTypeEnum.Unpublish);
+                return new Workflow(this, l, WorkflowTypeEnum.Unpublish, reason);
             }
             return null;
         }

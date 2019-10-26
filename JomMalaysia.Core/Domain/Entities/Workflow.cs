@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string WorkflowId { get; set; }
         public WorkflowTypeEnum Type { get; set; }
         public int Lvl { get; set; }
-
+        public int Months { get; set; }
         public Listing Listing { get; set; }
         public User Requester { get; set; }
         public User Responder { get; set; }
@@ -24,17 +24,29 @@ namespace JomMalaysia.Core.Domain.Entities
         {
 
         }
-        public Workflow(User user, Listing listing, WorkflowTypeEnum type) //create new workflow
+        public Workflow(User user, Listing listing, WorkflowTypeEnum type, int months) //create new workflow
         {
             Requester = user;
             Listing = listing;
             Created = DateTime.Now;
             Type = type;
             Status = WorkflowStatusEnum.Pending;
-
+            Type = WorkflowTypeEnum.Publish;
+            Months = months;
             HistoryData = new Collection<Workflow>();
         }
 
+        public Workflow(User user, Listing listing, WorkflowTypeEnum type, string reason) //create new workflow
+        {
+            Requester = user;
+            Listing = listing;
+            Created = DateTime.Now;
+            Type = type;
+            Status = WorkflowStatusEnum.Pending;
+            Type = WorkflowTypeEnum.Unpublish;
+            Comments = reason;
+            HistoryData = new Collection<Workflow>();
+        }
         public Workflow(User responder, Workflow parentWorkflow, string comments)
         {
             Comments = comments;

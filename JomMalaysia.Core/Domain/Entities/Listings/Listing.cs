@@ -114,5 +114,10 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         {
             ModifiedAt = DateTime.Now;
         }
+
+        internal void GoLive(Workflow workflow)
+        {
+            Status.Publish(workflow.Months);
+        }
     }
 }

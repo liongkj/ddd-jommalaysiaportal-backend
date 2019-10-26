@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
             }
 
             var GoLiveListing = findListingResponse.Listing;
-            GoLiveListing.GoLive();
+            GoLiveListing.GoLive(approvedWorkflow);
 
             using (var session = await _transaction.StartSession())
             {
@@ -28,12 +28,10 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
                     session.StartTransaction();
                     //save workflow info
                     var updateWorkflowCommand = await _workflowRepository.UpdateAsync(approvedWorkflow, session);
+                    var updateListingCommand = await _listingRepository.UpdateAsyncWithSession(GoLiveListing, session);
 
-
-
-
-
-
+                    outputPort.Handle(new WorkflowActionResponse(updateListingCommand.Errors, updateListingCommand.Success, updateListingCommand.Message));
+                    return updateListingCommand.Success;
                     //listing go live
 
                 }

@@ -205,6 +205,7 @@ public class ListingRepository : IListingRepository
         try
         {
             var ListingDto = _mapper.Map<ListingDto>(listing);
+            ListingDto.ModifiedAt = DateTime.Now;
             if (session != null)
                 result = await _db.ReplaceOneAsync(session, filter, ListingDto);
             else result = await _db.ReplaceOneAsync(filter, ListingDto);
