@@ -37,7 +37,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Reject
 
                 if (!RejectedWorkflowCanProceed)
                 {
-                    if (RejectedWorkflow.Responder != null) //not enought
+                    if (RejectedWorkflow.Responder != null) //not enough authority
                     {
                         outputPort.Handle(new WorkflowActionResponse(new List<string> { "User do not have enough authority" }));
                         return false;

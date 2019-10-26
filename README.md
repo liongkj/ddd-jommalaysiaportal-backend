@@ -15,8 +15,10 @@ https://jommalaysiaapi.azurewebsites.net/
 * [x] Check update local and adminstrative listing
 * [x] fetch listing with category
 * [x] Update pending and live listing
-* [ ] publish listing
+* [ ] publish listing 50%
 * [ ] Create Event listing
+
+- [ ] Start do frontend gateway
 
 ##category
 

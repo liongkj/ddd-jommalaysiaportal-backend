@@ -112,7 +112,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception e)
             {
-                return new GetAllWorkflowResponse(new List<string> { "Unknown error" }, false, e.ToString());
+                throw e;
             }
             var response = Workflows.Count < 1 ?
                 new GetAllWorkflowResponse(new List<string> { "No workflow found" }, false) :
@@ -139,7 +139,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception e)
             {
-                return new WorkflowActionResponse(new List<string> { e.ToString() }, false, e.Message);
+                throw e;
             }
             return new WorkflowActionResponse("Workflow " + updatedWorkflow.WorkflowId, result.IsAcknowledged, "update success");
         }

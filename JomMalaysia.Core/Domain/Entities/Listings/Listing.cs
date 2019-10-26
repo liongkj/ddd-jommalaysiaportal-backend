@@ -72,7 +72,6 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         {
             return Contact != null;
         }
-        public void UpdatePhoto() { }
         public void UpdateContact(Contact contact)
         {
             Contact = Contact.For(contact.Name, contact.Email, contact.Phone);

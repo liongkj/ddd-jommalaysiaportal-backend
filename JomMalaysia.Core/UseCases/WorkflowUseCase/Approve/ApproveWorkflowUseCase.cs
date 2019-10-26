@@ -11,25 +11,24 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
 {
     public class ApproveWorkflowUseCase : IApproveWorkflowUseCase
     {
-        private readonly IWorkflowRepository _workfowRepository;
+        private readonly IWorkflowRepository _workflowRepository;
         private readonly IListingRepository _listingRepository;
         private readonly ILoginInfoProvider _loginInfo;
-
-        public ApproveWorkflowUseCase(IWorkflowRepository workflowRepository, IListingRepository listingRepository, ILoginInfoProvider loginInfo)
+        private readonly IMongoDbContext _transaction;
+        public ApproveWorkflowUseCase(IWorkflowRepository workflowRepository, IListingRepository listingRepository, ILoginInfoProvider loginInfo, IMongoDbContext transaction)
         {
-            _workfowRepository = workflowRepository;
+            _workflowRepository = workflowRepository;
             _listingRepository = listingRepository;
             _loginInfo = loginInfo;
+            _transaction = transaction;
         }
         public async Task<bool> Handle(WorkflowActionRequest message, IOutputPort<WorkflowActionResponse> outputPort)
         {
             var responder = _loginInfo.AuthenticatedUser();
-
-
             try
             {
                 //get workflow details from db
-                var getWorkflowResponse = await _workfowRepository.GetWorkflowByIdAsync(message.WorkflowId);
+                var getWorkflowResponse = await _workflowRepository.GetWorkflowByIdAsync(message.WorkflowId);
                 if (!getWorkflowResponse.Success)
                 {
                     outputPort.Handle(new WorkflowActionResponse(getWorkflowResponse.Errors, false, getWorkflowResponse.Message));
@@ -37,10 +36,10 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
                 }
                 var ApprovedWorkflow = getWorkflowResponse.Workflow;
                 //check user priveledge
-                var ApprovedWorkflowCanProceed = responder.ApproveRejectWorkflow(getWorkflowResponse.Workflow, message.Action, message.Comments);
+                var ApprovedWorkflowCanProceed = responder.ApproveRejectWorkflow(ApprovedWorkflow, message.Action, message.Comments);
 
                 if (!ApprovedWorkflowCanProceed)
-                {
+                {//handle approve workflow error
                     if (ApprovedWorkflow.Responder != null) //not enough priviledge
                     {
                         outputPort.Handle(new WorkflowActionResponse(new List<string> { "User do not have enough authority" }));
@@ -54,11 +53,20 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
                     outputPort.Handle(new WorkflowActionResponse(new List<string> { "Error Approving Workflow" }));
                     return false;
                 }
+                if (ApprovedWorkflow.IsCompleted())
+                {
+                    return await GoLiveOperation.GoLive(_transaction, outputPort, _workflowRepository, _listingRepository, ApprovedWorkflow);
+                }
+                else
+                {
+                    var response = await _workflowRepository.UpdateAsync(ApprovedWorkflow);
+                    outputPort.Handle(response);
+                    return response.Success;
+                }
+                //save workflow info
 
-                var response = await _workfowRepository.UpdateAsync(ApprovedWorkflow);
-                //TODO update listing if published logic
-                outputPort.Handle(response);
-                return response.Success;
+
+
             }
             catch (Exception e)
             {
