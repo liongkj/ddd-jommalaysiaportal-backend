@@ -20,10 +20,5 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
         public ICollection<string> Tags { get; set; }
         public string Status { get; set; }
         public List<StoreTimesDto> OperatingHours { get; set; }
-
-        [BsonIgnoreIfNull]
-        public BsonDateTime CreatedAt { get; set; }
-        [BsonIgnoreIfNull]
-        public BsonDateTime ModifiedAt { get; set; }
     }
 }

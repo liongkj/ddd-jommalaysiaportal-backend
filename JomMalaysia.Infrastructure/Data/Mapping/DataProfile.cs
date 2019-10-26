@@ -7,6 +7,7 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using System.Collections.Generic;
+using JomMalaysia.Infrastructure.Auth0.Entities;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
 {
@@ -201,31 +202,34 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             .ReverseMap()
                 ;
 
-            CreateMap<Listing, ListingSummaryDto>()
-                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
-                .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
-                .IncludeAllDerived()
-            ;
 
-            CreateMap<EventListing, ListingSummaryDto>();
-            CreateMap<LocalListing, ListingSummaryDto>();
 
             //dto --> domain
             CreateMap<WorkflowDto, Workflow>()
                 .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
-                .ForMember(w => w.Lvl, opt => opt.Ignore())
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
                 .ForMember(w => w.Listing, opt => opt.Ignore())
+                 .ForMember(w => w.Lvl, opt => opt.Ignore())
+                 .ForMember(w => w.Requester, opt => opt.MapFrom(wd => wd.Requester))
+                 .ForMember(w => w.Responder, opt => opt.MapFrom(wd => wd.Responder))
 
                 ;
 
+
+            CreateMap<Listing, ListingSummaryDto>()
+                           .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
+                           .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                           .IncludeAllDerived()
+                       ;
+
+            CreateMap<EventListing, ListingSummaryDto>();
+            CreateMap<LocalListing, ListingSummaryDto>();
             CreateMap<ListingSummaryDto, Listing>()
                             .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
                             .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
                             .ForMember(l => l.Status, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
-                            .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
-                        .ForMember(l => l.ModifiedAt, opt => opt.MapFrom(ld => ld.ModifiedAt.ToLocalTime()))
+
                             .IncludeAllDerived()
 
                         ;
@@ -235,7 +239,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<ListingSummaryDto, LocalListing>();
 
-
+            CreateMap<UserDtoSummary, User>()
+            .ForMember(u => u.UserId, opt => opt.MapFrom(ud => ud.UserId))
+            .ForMember(u => u.Username, opt => opt.MapFrom(ud => ud.Username))
+            .ReverseMap()
+            ;
 
 
             #endregion

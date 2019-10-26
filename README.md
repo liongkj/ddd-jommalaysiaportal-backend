@@ -15,9 +15,12 @@ https://jommalaysiaapi.azurewebsites.net/
 * [x] Check update local and adminstrative listing
 * [x] fetch listing with category
 * [x] Update pending and live listing
-* [ ] publish listing 50%
+
 * [ ] Create Event listing
 
+- [ ] Query published listing
+- [ ] Query government listing type
+- [ ] query event
 - [ ] Start do frontend gateway
 
 ##category
@@ -27,5 +30,8 @@ https://jommalaysiaapi.azurewebsites.net/
 
 ## workflow
 
-- [ ] Publish Listing to show on map
-- [ ] Workflow
+- [ ] test publish listing
+
+## refactor code
+
+- [ ] Refactor Exception

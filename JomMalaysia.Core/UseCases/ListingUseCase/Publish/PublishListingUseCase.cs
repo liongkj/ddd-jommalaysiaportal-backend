@@ -5,6 +5,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Create;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+using JomMalaysia.Core.Exceptions;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
 {
@@ -31,7 +32,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Publish
         public async Task<bool> Handle(PublishListingRequest message, IOutputPort<NewWorkflowResponse> outputPort)
         {
             var requester = _loginInfo.AuthenticatedUser();
-
+            if (requester == null)
+            {
+                throw new NotAuthorizedException();
+            }
 
             //validate listingsid are real
             var getListingResponse = await _listingRepository.FindById(message.ListingId);
