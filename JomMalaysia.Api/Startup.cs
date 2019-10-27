@@ -99,7 +99,7 @@ namespace JomMalaysia.Api
                         In = "header",
                         Description = "Please enter into field the word 'Bearer' following by space and JWT Token",
                         Name = "Authorization",
-                        Type = "JWT Token"
+                        Type = "apiKey"
                     });
                     c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                          { "Bearer", Enumerable.Empty<string>() }});
