@@ -21,5 +21,10 @@ namespace JomMalaysia.Core.Domain.Enums
 
             return Parse<ListingStatusEnum>(enumstring);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

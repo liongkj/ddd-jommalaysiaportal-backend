@@ -65,7 +65,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region listing mapping
             // domain->dto
             CreateMap<Listing, ListingDto>()
-                .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status))
+                .ForMember(ld => ld.PublishStatus, opt => opt.MapFrom(l => l.Status))
                 .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
@@ -96,7 +96,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                         .ForPath(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                         .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
-                        .ForMember(l => l.Status, opt => opt.MapFrom(ld => ld.Status))
+                        .ForMember(l => l.Status, opt => opt.MapFrom(ld => ld.PublishStatus))
                         .ForMember(l => l.Address, opt => opt.MapFrom(ld => ld.ListingAddress))
                         .ForMember(l => l.OperatingHours, opt => opt.MapFrom(ld => ld.OperatingHours))
                         .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
@@ -218,7 +218,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<Listing, ListingSummaryDto>()
-                           .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.ToString()))
+                           .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.Status.Status.ToString()))
                            .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                            .IncludeAllDerived()
                        ;
