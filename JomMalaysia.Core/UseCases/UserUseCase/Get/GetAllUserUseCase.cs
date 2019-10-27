@@ -32,7 +32,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
                 outputPort.Handle(new GetAllUserResponse(response.Errors));
                 return false;
             }
-            var ManageableUsers = AppUser.GetManageableUsers(response.Users);
+            var ManageableUsers = AppUser.GetManageableUsers(response.Data);
             outputPort.Handle(new GetAllUserResponse(ManageableUsers, true));
 
             return response.Success;
