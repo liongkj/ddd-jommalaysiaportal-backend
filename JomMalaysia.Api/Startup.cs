@@ -97,9 +97,9 @@ namespace JomMalaysia.Api
                     c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                     {
                         In = "header",
-                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                        Description = "Please enter into field the word 'Bearer' following by space and JWT Token",
                         Name = "Authorization",
-                        Type = "apiKey"
+                        Type = "JWT Token"
                     });
                     c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                          { "Bearer", Enumerable.Empty<string>() }});
