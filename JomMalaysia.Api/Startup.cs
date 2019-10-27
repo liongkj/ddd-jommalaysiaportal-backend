@@ -89,15 +89,31 @@ namespace JomMalaysia.Api
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreListingRequestValidator>());
 
             //add swagger
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" }));
+            services.AddSwaggerGen(
+                c =>
+                {
+                    c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" });
+
+                    c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                    {
+                        In = "header",
+                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    });
+                    c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+                         { "Bearer", Enumerable.Empty<string>() }});
+
+                });
+
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new DataProfile());
+                {
+                    mc.AddProfile(new DataProfile());
 
-                mc.AddProfile(new Auth0DataProfile());
-            });
+                    mc.AddProfile(new Auth0DataProfile());
+                });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
