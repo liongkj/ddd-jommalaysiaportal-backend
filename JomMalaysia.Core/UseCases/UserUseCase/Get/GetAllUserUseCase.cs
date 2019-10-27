@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using JomMalaysia.Core.Exceptions;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 
@@ -22,7 +23,10 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
         {
             var AppUser = _loginInfo.AuthenticatedUser();
             var response = await _userRepository.GetAllUsers();
-
+            if (AppUser == null)
+            {
+                throw new NotAuthorizedException();
+            }
             if (!response.Success)
             {
                 outputPort.Handle(new GetAllUserResponse(response.Errors));
