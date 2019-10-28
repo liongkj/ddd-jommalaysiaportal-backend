@@ -17,10 +17,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
              .NotEmpty()
              .SetValidator(new AddressValidator());
 
-            RuleFor(x => x.CompanyName).NotEmpty().WithMessage("{PropertyName} should not be empty");
 
-            RuleFor(x => x.CompanyRegistrationNumber).NotEmpty().Must(ValidNewRegistrationNo).WithMessage("{PropertyName} should have 12 characters");
+            RuleFor(x => x.SsmId).NotEmpty().NotNull().Must(ValidNewRegistrationNo).WithMessage("{PropertyName} should have 12 characters");
 
+            RuleFor(x => x.CompanyRegistrationName).NotEmpty().WithMessage("{PropertyName} must not be blank");
             RuleFor(x => x.Contacts.Count).GreaterThan(0).WithMessage("{PropertyName} shuould have at least one primary contact");
 
             RuleForEach(x => x.Contacts).SetValidator(new ContactValidator());

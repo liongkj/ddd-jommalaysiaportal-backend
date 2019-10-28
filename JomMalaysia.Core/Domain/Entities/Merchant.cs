@@ -13,8 +13,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
         public string MerchantId { get; private set; }
-        public string CompanyName { get; private set; }
-        public CompanyRegistrationNumber CompanyRegistrationNumber { get; private set; }
+        public CompanyRegistration CompanyRegistration { get; private set; }
         public Address Address { get; private set; }
 
         public List<string> Listings { get; set; }
@@ -24,14 +23,13 @@ namespace JomMalaysia.Core.Domain.Entities
 
 
 
-        public Merchant(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, Address Address)
+        public Merchant(CompanyRegistration companyRegistration, Address address)
         {
             Listings = new List<string>();
             Contacts = new List<Contact>();
 
-            this.CompanyName = CompanyName ?? throw new Exception("Company Name is required");
-            this.CompanyRegistrationNumber = CompanyRegistrationNumber ?? throw new Exception("Company Registration Number is required");
-            this.Address = Address ?? throw new Exception("Address is required");
+            CompanyRegistration = companyRegistration;
+            Address = address;
 
         }
         public bool IsSafeToDelete()

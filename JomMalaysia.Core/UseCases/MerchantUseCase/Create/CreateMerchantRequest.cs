@@ -18,8 +18,8 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
 
         // }
 
-        public string CompanyName { get; set; }
-        public string CompanyRegistrationNumber { get; set; }
+        public string SsmId { get; set; }
+        public string CompanyRegistrationName { get; set; }
         public AddressRequest Address { get; set; }
         public List<ContactRequest> Contacts { get; set; }
         // public List<Listing> Listings { get; }

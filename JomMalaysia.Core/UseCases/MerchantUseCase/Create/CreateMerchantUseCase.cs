@@ -17,8 +17,9 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
         public async Task<bool> Handle(CreateMerchantRequest message, IOutputPort<CreateMerchantResponse> outputPort)
         {
             var add = message.Address;
+            var CompanyRegistration = new CompanyRegistration(message.SsmId, message.CompanyRegistrationName);
             //create new merchant
-            Merchant merchant = new Merchant(message.CompanyName, (CompanyRegistrationNumber)message.CompanyRegistrationNumber, new Address(add.Add1, add.Add2, add.City, add.State, add.PostalCode, add.Country));
+            Merchant merchant = new Merchant(CompanyRegistration, new Address(add.Add1, add.Add2, add.City, add.State, add.PostalCode, add.Country));
 
             //add contacts to merchant
             if (message.Contacts != null)

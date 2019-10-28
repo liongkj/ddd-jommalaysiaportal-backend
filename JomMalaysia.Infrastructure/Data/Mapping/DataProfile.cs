@@ -21,8 +21,9 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(md => md.Id, opt => opt.MapFrom(m => m.MerchantId))
                 .ForMember(md => md.Contacts, opt => opt.MapFrom(m => m.Contacts))
                 .ForMember(md => md.ListingIds, opt => opt.MapFrom(m => m.Listings))
-                .ForMember(md => md.CompanyRegistrationNumber, opt => opt.MapFrom(m => m.CompanyRegistrationNumber.ToString()))
-                .ReverseMap()
+                .ForMember(md => md.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
+                .ForMember(md => md.CompanyRegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
+
                 ;
 
             //dto to domain 
@@ -30,12 +31,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
                 //.ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
                 .ForMember(m => m.Listings, opt => opt.MapFrom(m => m.ListingIds))
-                .ForMember(m => m.CompanyRegistrationNumber, opt => opt.MapFrom(md => (CompanyRegistrationNumber)md.CompanyRegistrationNumber))
+                .ForMember(m => m.CompanyRegistration, opt => opt.MapFrom(md => CompanyRegistration.For(md.SsmId, md.CompanyRegistrationName)))
 
                  ;
 
             CreateMap<Merchant, MerchantSummaryDto>()
-            .ForMember(msd => msd.CompanyName, opt => opt.MapFrom(m => m.CompanyName))
             .ForMember(msd => msd.Id, opt => opt.MapFrom(m => m.MerchantId))
             .ReverseMap()
             ;
@@ -84,6 +84,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
             .IncludeBase<Listing, ListingDto>()
                 ;
+
             CreateMap<AdministrativeListing, ListingDto>()
                        .IncludeBase<Listing, ListingDto>()
 
@@ -195,7 +196,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                     .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
                     .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                     .ForMember(wd => wd.Listing, opt => opt.MapFrom(w => w.Listing))
-                    .ForMember(wd => wd.Merchant, opt => opt.MapFrom(w => w.Listing.Merchant.CompanyName))
+                    .ForMember(wd => wd.Merchant, opt => opt.MapFrom(w => w.Listing.Merchant.CompanyRegistration.RegistrationName))
                     ;
 
             CreateMap<Workflow, WorkflowSummaryDto>()
