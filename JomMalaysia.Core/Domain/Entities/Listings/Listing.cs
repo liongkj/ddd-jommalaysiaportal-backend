@@ -23,7 +23,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         public Contact Contact { get; set; }
         public List<StoreTimes> OperatingHours { get; set; }
-        public PublishStatus Status { get; set; }
+        public PublishStatus PublishStatus { get; set; }
         public ListingTypeEnum ListingType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -42,7 +42,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Address = add;
             Tags = ValidateTags(tags);
             ListingType = listingType;
-            Status = new PublishStatus();
+            PublishStatus = new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
 
         }
@@ -60,7 +60,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         public bool IsPublished()
         {
-            return Status.Status == ListingStatusEnum.Published;
+            return PublishStatus.Status == ListingStatusEnum.Published;
         }
 
         public bool IsEligibleToUnpublish()
@@ -117,7 +117,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         internal void GoLive(Workflow workflow)
         {
-            Status.Publish(workflow.Months);
+            PublishStatus.Publish(workflow.Months);
         }
     }
 }
