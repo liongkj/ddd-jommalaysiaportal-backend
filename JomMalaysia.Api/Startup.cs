@@ -22,13 +22,10 @@ using Microsoft.AspNetCore.Authorization;
 using FluentValidation.AspNetCore;
 using JomMalaysia.Api.Providers;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
-using JomMalaysia.Framework.Configuration;
 using FluentValidation;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
-using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
-using JomMalaysia.Api.Serialization;
 
 namespace JomMalaysia.Api
 {
