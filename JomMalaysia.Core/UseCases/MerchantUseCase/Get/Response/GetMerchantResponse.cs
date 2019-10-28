@@ -6,7 +6,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response
 {
     public class GetMerchantResponse : UseCaseResponseMessage
     {
-        public Merchant Merchant { get; }
+        public Merchant Data { get; }
         public IEnumerable<string> Errors { get; }
 
         public GetMerchantResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
@@ -16,7 +16,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response
 
         public GetMerchantResponse(Merchant merchant, bool success = false, string message = null) : base(success, message)
         {
-            Merchant = merchant;
+            Data = merchant;
         }
     }
 }

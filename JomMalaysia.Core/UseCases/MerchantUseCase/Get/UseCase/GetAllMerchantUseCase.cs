@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Get.UseCase
                     outputPort.Handle(new GetAllMerchantResponse(response.Errors));
                     return response.Success;
                 }
-                outputPort.Handle(new GetAllMerchantResponse(response.Merchants, true));
+                outputPort.Handle(new GetAllMerchantResponse(response.Data, true));
                 return response.Success;
             }
             catch (Exception e)

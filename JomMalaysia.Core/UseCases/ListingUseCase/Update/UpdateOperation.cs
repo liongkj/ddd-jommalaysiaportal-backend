@@ -22,7 +22,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
                 outputPort.Handle(new CoreListingResponse(FindMerchantResponse.Errors, false, FindMerchantResponse.Message));
                 return false;
             }
-            var NewMerchant = FindMerchantResponse.Merchant;
+            var NewMerchant = FindMerchantResponse.Data;
 
             var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
             if (!FindCategoryResponse.Success)
@@ -90,7 +90,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
             if (GetListingResponse.Success)
             {
                 var merchantId = GetListingResponse.Listing.Merchant.MerchantId;
-                var merchant = (await GetMerchant(merchantId, _merchantRepository)).Merchant;
+                var merchant = (await GetMerchant(merchantId, _merchantRepository)).Data;
                 return merchant;
             }
             return null;

@@ -26,7 +26,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Delete
 
                 if (query.Success)
                 {//found
-                    if (!query.Merchant.IsSafeToDelete())
+                    if (!query.Data.IsSafeToDelete())
                     {//still have listing, cannot delete
                         outputPort.Handle(new DeleteMerchantResponse(message.MerchantId, false, "Merchant still has listing associated"));
                         return false;

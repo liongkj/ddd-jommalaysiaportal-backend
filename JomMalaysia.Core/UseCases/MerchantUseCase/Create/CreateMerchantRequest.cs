@@ -9,15 +9,6 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
 {
     public class CreateMerchantRequest : IUseCaseRequest<CreateMerchantResponse>
     {
-        // public CreateMerchantRequest(string CompanyName, CompanyRegistrationNumber CompanyRegistrationNumber, List<Contact> Contacts, Address Address)
-        // {
-        //     this.CompanyName = CompanyName;
-        //     this.CompanyRegistrationNumber = CompanyRegistrationNumber;
-        //     this.Contacts = Contacts;
-        //     this.Address = Address;
-
-        // }
-
         public string SsmId { get; set; }
         public string CompanyRegistrationName { get; set; }
         public AddressRequest Address { get; set; }
