@@ -19,10 +19,5 @@
     <ProjectReference Include="..\JomMalaysia.Framework\JomMalaysia.Framework.csproj" />
   </ItemGroup>
 
-  
-
-  <ItemGroup>
-    <Folder Include="Services\GeocodingServices\" />
-  </ItemGroup>
 
 </Project>
