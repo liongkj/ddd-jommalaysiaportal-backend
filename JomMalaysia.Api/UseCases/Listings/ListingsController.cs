@@ -80,10 +80,10 @@ namespace JomMalaysia.Api.UseCases.Listings
         ///Get details of listing
         //GET api/listings/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] string id)
+        public async Task<IActionResult> Get([FromRoute] GetListingRequest req)
         {
 
-            await _getListingUseCase.Handle(new GetListingRequest(id), _listingPresenter);
+            await _getListingUseCase.Handle(req, _listingPresenter);
 
             return _listingPresenter.ContentResult;
         }

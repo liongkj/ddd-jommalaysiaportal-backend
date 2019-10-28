@@ -5,11 +5,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {
     public class GetListingRequest : IUseCaseRequest<GetListingResponse>
     {
-        public string Id { get; }
+        public string Id { get; set; }
 
-        public GetListingRequest(string id)
-        {
-            Id = id;
-        }
     }
 }
