@@ -71,30 +71,21 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         // POST api/Categories
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CategoryDto request)
+        public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
         {
-            Category cat = _mapper.Map<CategoryDto, Category>(request);
-            Image img = new Image(request.CategoryThumbnail.Url, request.CategoryThumbnail.ThumbnailUrl);
-
-            var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, img, request.ParentCategory);
-
-            await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
+            await _createCategoryUseCase.Handle(request, _categoryPresenter).ConfigureAwait(false);
             return _categoryPresenter.ContentResult;
         }
 
 
         [HttpPost("{id}/subcategories")]
-        public async Task<IActionResult> CreateSubcategory([FromRoute] string id, [FromBody] CategoryDto request)
+        public async Task<IActionResult> CreateSubcategory([FromRoute] string id, [FromBody] CreateCategoryRequest request)
         {
-            Image img = new Image(request.CategoryThumbnail.Url, request.CategoryThumbnail.ThumbnailUrl);
+
             try
             {
-                Category cat = _mapper.Map<CategoryDto, Category>(request);
-
-                var req = new CreateCategoryRequest(cat.CategoryCode, cat.CategoryName, cat.CategoryNameMs, cat.CategoryNameZh, img, id);
-
-
-                await _createCategoryUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false);
+                request.ParentCategory = id;
+                await _createCategoryUseCase.Handle(request, _categoryPresenter).ConfigureAwait(false);
             }
             catch (Exception e)
             {
