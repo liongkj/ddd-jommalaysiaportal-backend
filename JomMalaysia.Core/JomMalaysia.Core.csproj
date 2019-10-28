@@ -8,11 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="FluentValidation" Version="8.4.0" />
-    <PackageReference Include="FluentValidation.WebApi" Version="8.4.0" />
+    <PackageReference Include="FluentValidation" Version="8.5.0" />
     <PackageReference Include="Google.LibPhoneNumber" Version="1.0.0" />
-    
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
