@@ -58,7 +58,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 return false;
             }
             //create listing factory pattern
-            var NewListing = ListingFactory.CreateListing(ListingType, message, FindCategoryResponse.Category, FindMerchantResponse.Merchant);
+            var NewListing = ListingFactory.CreateListing(ListingType, message, FindCategoryResponse.Category, FindMerchantResponse.Data);
             if (NewListing is Listing && NewListing != null) //validate is Listing Type
             {
                 //start transaction
@@ -66,7 +66,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 {
                     try
                     {
-                        var MerchantUser = FindMerchantResponse.Merchant;
+                        var MerchantUser = FindMerchantResponse.Data;
                         session.StartTransaction();
 
                         //create Listing command

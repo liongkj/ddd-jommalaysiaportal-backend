@@ -31,7 +31,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
 
             var ToBeDeleted = getListingResponse.Listing;
             var getMerchantResponse = await _merchantRepository.FindByIdAsync(ToBeDeleted.Merchant.MerchantId).ConfigureAwait(false);
-            var Merchant = getMerchantResponse.Merchant;
+            var Merchant = getMerchantResponse.Data;
             if (ToBeDeleted.IsSafeToDelete()) //check if it is safe to delete
             {
                 Merchant.RemoveListing(ToBeDeleted);
