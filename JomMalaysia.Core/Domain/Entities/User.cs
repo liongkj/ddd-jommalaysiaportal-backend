@@ -95,12 +95,19 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 if (UserId != u.UserId)
                 {
-                    LowerOrSameRankUsers.Add(u);
+
                     if (u.Role != null)
-                        if (HasHigherRankThan(u) || HasEqualRankTo(u))
+                    {
+                        if (HasHigherRankThan(u))
                         {
                             u.CanAssign = true;
                         }
+                    }
+                    else
+                    {
+                        u.CanAssign = true;
+                    }
+                    LowerOrSameRankUsers.Add(u);
                 }
             }
             users.Results = LowerOrSameRankUsers;
