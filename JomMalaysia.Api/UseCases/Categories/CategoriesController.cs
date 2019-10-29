@@ -29,7 +29,6 @@ namespace JomMalaysia.Api.UseCases.Categories
         ICreateCategoryUseCase createCategoryUseCase,
             IGetAllCategoryUseCase getAllCategoryUseCase,
             IGetCategoryByIdUseCase getCategoryByIdUseCase,
-            IGetCategoryByNameUseCase getCategoryByNameUseCase,
             IDeleteCategoryUseCase deleteCategoryUseCase,
             IUpdateCategoryUseCase updateCategoryUseCase,
             CategoryPresenter categoryPresenter

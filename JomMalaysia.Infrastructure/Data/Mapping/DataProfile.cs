@@ -37,8 +37,16 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<Merchant, MerchantSummaryDto>()
             .ForMember(msd => msd.Id, opt => opt.MapFrom(m => m.MerchantId))
-            .ReverseMap()
+            .ForMember(msd => msd.CompanyName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
+            .ForMember(msd => msd.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
+
             ;
+
+            CreateMap<MerchantSummaryDto, Merchant>()
+           .ForMember(ms => ms.MerchantId, opt => opt.MapFrom(md => md.Id))
+           .ForMember(ms => ms.CompanyRegistration, opt => opt.MapFrom(md => CompanyRegistration.For(md.SsmId, md.CompanyName)))
+
+           ;
             #endregion
 
             #region contacts mapping

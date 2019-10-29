@@ -7,7 +7,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {
     public class GetAllListingResponse : UseCaseResponseMessage
     {
-        public List<Listing> Data { get; }
+        public List<Listing> Listings { get; }
+        public List<ListingViewModel> Data { get; }
         public IEnumerable<string> Errors { get; }
 
         public GetAllListingResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
@@ -16,6 +17,11 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         }
 
         public GetAllListingResponse(List<Listing> listings, bool success = false, string message = null) : base(success, message)
+        {
+            Listings = listings;
+        }
+
+        public GetAllListingResponse(List<ListingViewModel> listings, bool success = false, string message = null) : base(success, message)
         {
             Data = listings;
         }

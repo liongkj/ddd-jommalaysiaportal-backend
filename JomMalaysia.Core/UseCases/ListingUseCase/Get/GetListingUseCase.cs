@@ -1,5 +1,6 @@
 ﻿
 using System.Threading.Tasks;
+using AutoMapper;
 using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
@@ -7,10 +8,12 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
     public class GetListingUseCase : IGetListingUseCase
     {
         private readonly IListingRepository _listingRepository;
+        private readonly IMapper _mapper;
 
-        public GetListingUseCase(IListingRepository listingRepository)
+        public GetListingUseCase(IListingRepository listingRepository, IMapper mapper)
         {
             _listingRepository = listingRepository;
+            _mapper = mapper;
         }
         public async Task<bool> Handle(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
         {
@@ -26,7 +29,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             }
             if (response.Listing != null)
             {
-                outputPort.Handle(new GetListingResponse(response.Listing, true));
+                var listingVM = _mapper.Map<ListingViewModel>(response.Listing);
+                outputPort.Handle(new GetListingResponse(listingVM, true));
                 return response.Success;
             }
             else

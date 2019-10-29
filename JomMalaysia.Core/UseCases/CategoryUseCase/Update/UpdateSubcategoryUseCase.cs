@@ -34,7 +34,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
             //fetch listing with this subcategory
             var GetListingWithThisSubcategory = await _ListingRepository.GetAllListings(ToBeUpdateSubcategory.CategoryPath);
-            var ToBeUpdateListings = GetListingWithThisSubcategory.Data;
+            var ToBeUpdateListings = GetListingWithThisSubcategory.Listings;
             //retrieve data end
 
             //Update Operation Start

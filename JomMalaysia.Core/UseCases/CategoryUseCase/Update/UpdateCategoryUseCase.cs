@@ -54,7 +54,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                     outputPort.Handle(new UpdateCategoryResponse(GetListingWithCategories.Errors, false, GetListingWithCategories.Message));
                     return false;
                 }
-                List<Listing> ToBeUpdateListings = GetListingWithCategories.Data;
+                List<Listing> ToBeUpdateListings = GetListingWithCategories.Listings;
                 //TODO
                 var UpdatedListings = new Dictionary<string, string>();
                 //  = message.Updated.UpdateListings(ToBeUpdateListings);

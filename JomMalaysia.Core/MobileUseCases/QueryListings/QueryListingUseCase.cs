@@ -42,7 +42,7 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
                 outputPort.Handle(new ListingResponse(ListingQuery.Errors, false, ListingQuery.Message));
                 return false;
             }
-            outputPort.Handle(new ListingResponse(ListingQuery.Data, true, ListingQuery.Message));
+            outputPort.Handle(new ListingResponse(ListingQuery.Listings, true, ListingQuery.Message));
             return ListingQuery.Success;
         }
     }

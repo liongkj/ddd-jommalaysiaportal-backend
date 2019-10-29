@@ -26,6 +26,7 @@ using FluentValidation;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
 using System.Collections.Generic;
+using JomMalaysia.Core.Mapping;
 
 namespace JomMalaysia.Api
 {
@@ -108,7 +109,7 @@ namespace JomMalaysia.Api
             var mappingConfig = new MapperConfiguration(mc =>
                 {
                     mc.AddProfile(new DataProfile());
-
+                    mc.AddProfile(new CoreDataProfile());
                     mc.AddProfile(new Auth0DataProfile());
                 });
             IMapper mapper = mappingConfig.CreateMapper();
