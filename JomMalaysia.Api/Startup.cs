@@ -106,14 +106,15 @@ namespace JomMalaysia.Api
 
 
             // Auto Mapper Configurations
-            var mappingConfig = new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new DataProfile());
-                    mc.AddProfile(new CoreDataProfile());
-                    mc.AddProfile(new Auth0DataProfile());
-                });
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddSingleton(new MapperConfiguration(mc =>
+                 {
+
+                     mc.AddProfile(new Auth0DataProfile());
+                     mc.AddProfile(new DataProfile());
+                     mc.AddProfile(new CoreDataProfile());
+                 }).CreateMapper());
+
+
 
             // Now register our services with Autofac container.
             var builder = new ContainerBuilder();

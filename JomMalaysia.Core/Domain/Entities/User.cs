@@ -32,6 +32,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public List<string> AdditionalPermissions { get; set; }
         public string PictureUri { get; set; }
         public DateTime LastLogin { get; set; }
+        public bool CanAssign { get; set; } = false;
 
         public bool CanDelete(User toBeDelete)
         {
@@ -94,10 +95,12 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 if (UserId != u.UserId)
                 {
-                    if (u.Role == null || HasHigherRankThan(u) || HasEqualRankTo(u))
-                    {
-                        LowerOrSameRankUsers.Add(u);
-                    }
+                    LowerOrSameRankUsers.Add(u);
+                    if (u.Role != null)
+                        if (HasHigherRankThan(u) || HasEqualRankTo(u))
+                        {
+                            u.CanAssign = true;
+                        }
                 }
             }
             users.Results = LowerOrSameRankUsers;
@@ -114,7 +117,6 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             return Role.Equals(user2.Role);
         }
-
 
         /// <summary>
         /// Create a new workflow object 
