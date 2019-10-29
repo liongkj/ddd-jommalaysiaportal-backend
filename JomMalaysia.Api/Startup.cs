@@ -27,6 +27,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
 using System.Collections.Generic;
 using JomMalaysia.Core.Mapping;
+using System.Security.Claims;
 
 namespace JomMalaysia.Api
 {
@@ -62,10 +63,10 @@ namespace JomMalaysia.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Policies.MANAGER, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Manager", "Admin", "Editor" }));
-                options.AddPolicy(Policies.SUPERADMIN, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Superadmin", "Manager", "Admin", "Editor" }));
-                options.AddPolicy(Policies.ADMIN, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Admin", "Editor" }));
-                options.AddPolicy(Policies.EDITOR, policy => policy.RequireClaim(Policies.NAMESPACE, new List<string> { "Editor" }));
+                options.AddPolicy(Policies.MANAGER, policy => policy.RequireClaim(ClaimTypes.Role, "Manager"));
+                options.AddPolicy(Policies.SUPERADMIN, policy => policy.RequireClaim(ClaimTypes.Role, "Superadmin"));
+                options.AddPolicy(Policies.ADMIN, policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+                options.AddPolicy(Policies.EDITOR, policy => policy.RequireClaim(ClaimTypes.Role, "Editor"));
             });
             //services.AddHttpContextAccessor();
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();

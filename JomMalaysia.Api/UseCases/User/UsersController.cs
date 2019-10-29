@@ -53,6 +53,7 @@ namespace JomMalaysia.Api.UseCases.User
 
         //GET api/users/
         [HttpGet]
+        [Authorize(Roles = "superadmin,manager")]
         public async Task<IActionResult> Get()
         {
             await _getAllUserUseCase.Handle(new GetAllUserRequest(), _userPresenter);
