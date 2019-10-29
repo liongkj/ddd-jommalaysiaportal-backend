@@ -9,7 +9,9 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
 {
     public class GetAllUserResponse : UseCaseResponseMessage
     {
-        public PagingHelper<User> Data { get; }
+        public PagingHelper<User> Users { get; }
+
+        public PagingHelper<UserViewModel> Data { get; }
         public IEnumerable<string> Errors { get; }
 
         public GetAllUserResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
@@ -17,9 +19,14 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
             Errors = errors;
         }
 
-        public GetAllUserResponse(PagingHelper<User> Data, bool success = false, string message = null) : base(success, message)
+        public GetAllUserResponse(PagingHelper<User> Users, bool success = false, string message = null) : base(success, message)
         {
-            this.Data = Data;
+            this.Users = Users;
+        }
+
+        public GetAllUserResponse(PagingHelper<UserViewModel> Users, bool success = false, string message = null) : base(success, message)
+        {
+            this.Data = Users;
         }
     }
 }

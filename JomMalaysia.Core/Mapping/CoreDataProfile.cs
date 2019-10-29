@@ -4,6 +4,8 @@ using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Core.UseCases.UserUseCase.Get;
+using JomMalaysia.Framework.Helper;
 using static JomMalaysia.Core.UseCases.ListingUseCase.Get.ListingViewModel;
 
 namespace JomMalaysia.Core.Mapping
@@ -50,6 +52,20 @@ namespace JomMalaysia.Core.Mapping
             .ForMember(vm => vm.Status, opt => opt.MapFrom(l => l.Status.ToString()))
             ;
             #endregion
+
+
+            #region map user
+            CreateMap<User, UserViewModel>()
+                .ForMember(vm => vm.Name, opt => opt.MapFrom(u => u.Name.ToString().ToUpper()))
+                .ForMember(vm => vm.Email, opt => opt.MapFrom(u => u.Email.ToString()))
+                .ForMember(vm => vm.Role, opt => opt.MapFrom(u => u.Role.ToString().ToUpper()))
+            ;
+            CreateMap<PagingHelper<User>, PagingHelper<UserViewModel>>()
+
+              ;
+
+            #endregion
+
         }
     }
 }

@@ -10,6 +10,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
     public class GetUserResponse : UseCaseResponseMessage
     {
         public User User { get; }
+        public UserViewModel Data { get; }
         public string Error { get; }
 
         public GetUserResponse(string errors, bool success = false, string message = null) : base(success, message)
@@ -20,6 +21,11 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
         public GetUserResponse(User user, bool success = false, string message = null) : base(success, message)
         {
             User = user;
+        }
+
+        public GetUserResponse(UserViewModel user, bool success = false, string message = null) : base(success, message)
+        {
+            Data = user;
         }
     }
 }

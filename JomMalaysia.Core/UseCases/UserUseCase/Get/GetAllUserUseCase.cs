@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using JomMalaysia.Core.Exceptions;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Framework.Helper;
 
 namespace JomMalaysia.Core.UseCases.UserUseCase.Get
 {
@@ -12,28 +14,43 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
     {
         private readonly IUserRepository _userRepository;
         private readonly ILoginInfoProvider _loginInfo;
+        private readonly IMapper _mapper;
 
-        public GetAllUserUseCase(IUserRepository userRepository, ILoginInfoProvider loginInfo)
+        public GetAllUserUseCase(IUserRepository userRepository, ILoginInfoProvider loginInfo, IMapper mapper)
         {
             _userRepository = userRepository;
             _loginInfo = loginInfo;
+            _mapper = mapper;
         }
 
         public async Task<bool> Handle(GetAllUserRequest message, IOutputPort<GetAllUserResponse> outputPort)
         {
-            var AppUser = _loginInfo.AuthenticatedUser();
-            var response = await _userRepository.GetAllUsers();
-            if (AppUser == null)
+            GetAllUserResponse response;
+            try
             {
-                throw new NotAuthorizedException();
+                var AppUser = _loginInfo.AuthenticatedUser();
+
+                if (AppUser == null)
+                {
+                    throw new NotAuthorizedException();
+                }
+                var getAllUserResponse = await _userRepository.GetAllUsers();
+                if (!getAllUserResponse.Success)
+                {
+                    outputPort.Handle(new GetAllUserResponse(getAllUserResponse.Errors));
+                    return false;
+                }
+                var ManageableUsers = AppUser.GetManageableUsers(getAllUserResponse.Users);
+                var mapped = _mapper.Map<PagingHelper<UserViewModel>>(ManageableUsers);
+
+
+                response = new GetAllUserResponse(mapped, getAllUserResponse.Success, getAllUserResponse.Message);
             }
-            if (!response.Success)
+            catch (Exception e)
             {
-                outputPort.Handle(new GetAllUserResponse(response.Errors));
-                return false;
+                throw e;
             }
-            var ManageableUsers = AppUser.GetManageableUsers(response.Data);
-            outputPort.Handle(new GetAllUserResponse(ManageableUsers, true));
+            outputPort.Handle(response);
 
             return response.Success;
         }
