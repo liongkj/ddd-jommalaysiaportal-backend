@@ -71,10 +71,8 @@ namespace JomMalaysia.Api.UseCases.User
 
         //POST api/users/
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]UserDto user)
+        public async Task<IActionResult> Post([FromBody]CreateUserRequest req)
         {
-            var req = new CreateUserRequest(user.username, user.name, user.email);
-
 
             await _createUserUseCase.Handle(req, _userPresenter);
 
