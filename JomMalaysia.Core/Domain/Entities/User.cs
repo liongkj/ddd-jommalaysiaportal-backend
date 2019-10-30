@@ -20,13 +20,13 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             //For auth0 new users
             Username = username;
-            Email = Email.For(email);
+            Email = email;
             Name = Name.For(name);
         }
 
         public string UserId { get; set; }
         public string Username { get; set; }
-        public Email Email { get; set; }
+        public string Email { get; set; }
         public Name Name { get; set; }
         public UserRoleEnum Role { get; set; }
         public List<string> AdditionalPermissions { get; set; }

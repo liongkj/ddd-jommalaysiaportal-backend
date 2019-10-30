@@ -23,20 +23,26 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 
         public async Task<bool> Handle(CreateUserRequest message, IOutputPort<CreateUserResponse> outputPort)
         {
-
-            User NewUser = new User(message.Username, message.Email, message.Name);
-            var updateRole = NewUser.AssignRole(message.Role);
-            var createUserResponse = await _userRepository.CreateUser(NewUser);
-            if (createUserResponse.Success)
+            try
             {
-                var response = await _userRepository.UpdateUser(createUserResponse.Status, updateRole);
-                if (!response.Success)
+                User NewUser = new User(message.Username, message.Email, message.Name);
+                var updateRole = NewUser.AssignRole(message.Role);
+                var createUserResponse = await _userRepository.CreateUser(NewUser);
+                if (createUserResponse.Success)
                 {
-                    await _userRepository.DeleteUser(createUserResponse.Status); //rollback
+                    var response = await _userRepository.UpdateUser(createUserResponse.Status, updateRole);
+                    if (!response.Success)
+                    {
+                        await _userRepository.DeleteUser(createUserResponse.Status); //rollback
+                    }
                 }
+                outputPort.Handle(createUserResponse);
+                return createUserResponse.Success;
             }
-            outputPort.Handle(createUserResponse);
-            return createUserResponse.Success;
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
     }

@@ -60,7 +60,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<ContactsDto, Contact>()
             .ForMember(c => c.Phone, opt => opt.MapFrom(cd => (Phone)cd.Phone))
-            .ForMember(c => c.Email, opt => opt.MapFrom(cd => (Email)cd.Email))
+            .ForMember(c => c.Email, opt => opt.MapFrom(cd => cd.Email))
             .ForMember(c => c.Name, opt => opt.MapFrom(cd => (Name)cd.Name))
             ;
 

@@ -24,7 +24,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Mapping
             ;
 
             CreateMap<Auth0User, User>(MemberList.None)
-                        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => Email.For(src.email)))
+                        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.email))
                         .ForMember(dest => dest.Role, opt => opt.MapFrom(src => UserRoleEnum.For(src.app_metadata.authorization.roles.FirstOrDefault())))
                         .ForMember(dest => dest.AdditionalPermissions, opt => opt.MapFrom(src => src.app_metadata.authorization.permissions))
                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => Name.For(src.name)))

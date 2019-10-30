@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         }
 
         public Name Name { get; private set; }
-        public Email Email { get; private set; }
+        public string Email { get; private set; }
         public Phone Phone { get; private set; }
         public bool IsPrimary { get; private set; }
 
@@ -27,13 +27,13 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
             if (!string.IsNullOrEmpty(email))
             {
-                Email = (Email)email;
+                Email = email;
             }
 
             this.IsPrimary = IsPrimary;
         }
 
-        public static Contact For(Name name, Email email, Phone phone)
+        public static Contact For(Name name, string email, Phone phone)
         {
             var contact = new Contact
             {
