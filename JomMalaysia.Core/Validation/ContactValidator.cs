@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.Validation
         public ContactValidator()
         {
             RuleFor(x => x.Email)
-                .Must(BeAValidEmail)
+                .EmailAddress()
                 .WithMessage("{PropertyName} is not valid."); //check from EmailValidator
             RuleFor(x => x.Phone)
                 .Cascade(CascadeMode.StopOnFirstFailure)
@@ -25,11 +25,6 @@ namespace JomMalaysia.Core.Validation
                 .Length(2, 25);
             //check from NameValidator
 
-        }
-
-        protected bool BeAValidEmail(string email)
-        {
-            return email.Contains("@");
         }
 
 

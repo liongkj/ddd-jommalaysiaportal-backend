@@ -16,10 +16,13 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
             try
             {
-                var index = emailstring.IndexOf("@", StringComparison.Ordinal);
-                email.User = emailstring.Substring(0, index);
-                email.Domain = emailstring.Substring(index + 1);
-
+                var index = emailstring.IndexOf('@', StringComparison.Ordinal);
+                if (index >= 0)
+                {
+                    email.User = emailstring.Substring(0, index);
+                    email.Domain = emailstring.Substring(index + 1);
+                }
+                else throw new ValidationException("Email format is incorrect");
             }
             catch (Exception e)
             {
