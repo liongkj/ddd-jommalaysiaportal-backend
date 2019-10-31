@@ -36,7 +36,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public bool CanDelete(User toBeDelete)
         {
-
+            if (toBeDelete.Role == null) return true;
             if (UserId == toBeDelete.UserId) return false; //cannot delete self
             if (toBeDelete.Role == UserRoleEnum.Superadmin) return false;
             if (!this.HasHigherRankThan(toBeDelete)) return false;
@@ -117,7 +117,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private bool HasHigherRankThan(User user2)
         {
-            return Role.HasHigherAuthority(user2.Role);
+            return Role.HasHigherAuthority(user2.Role) || user2.Role == null;
         }
 
         private bool HasEqualRankTo(User user2)
