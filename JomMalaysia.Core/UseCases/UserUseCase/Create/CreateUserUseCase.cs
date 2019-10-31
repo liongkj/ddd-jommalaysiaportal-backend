@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
         {
             try
             {
-                User NewUser = new User(message.Username, message.Email, message.Name);
+                User NewUser = new User(message.Username, message.Name, message.Email);
                 var updateRole = NewUser.AssignRole(message.Role);
                 var createUserResponse = await _userRepository.CreateUser(NewUser);
                 if (createUserResponse.Success)

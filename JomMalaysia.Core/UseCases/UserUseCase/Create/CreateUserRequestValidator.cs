@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
         public CreateUserRequestValidator()
         {
             RuleFor(x => x.Username).NotEmpty().NotNull().Length(5, 15).WithMessage("{ PropertyName} should be not be blank and have between 5 to 15 characters");
-            RuleFor(x => x.Email).EmailAddress();
+            RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress();
             RuleFor(x => x.Name).Must(BeAValidName).NotEmpty()
                 .NoStartWithWhiteSpace()
                 .Length(2, 50)
