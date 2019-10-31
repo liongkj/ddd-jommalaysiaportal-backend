@@ -31,7 +31,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public UserRoleEnum Role { get; set; }
         public List<string> AdditionalPermissions { get; set; }
         public string PictureUri { get; set; }
-        public DateTime LastLogin { get; set; }
+        public DateTime? LastLogin { get; set; }
         public bool CanAssign { get; set; } = false;
 
         public bool CanDelete(User toBeDelete)

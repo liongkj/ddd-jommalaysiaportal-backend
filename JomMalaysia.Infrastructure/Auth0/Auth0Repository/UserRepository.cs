@@ -101,7 +101,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 else
                 {
                     var Error = JsonConvert.DeserializeObject<Auth0Errors>(GetResponse.Content);
-                    response = new GetUserResponse(Error.StatusCode, false, Error.Message);
+                    response = new GetUserResponse(new List<string> { Error.Error }, false, Error.Message, Error.StatusCode);
                 }
                 return response;
 
@@ -145,7 +145,7 @@ namespace JomMalaysia.Infrastructure.Auth0
             else
             {
                 var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
-                createUserResponse = new CreateUserResponse(Error.StatusCode, false, Error.Message);
+                createUserResponse = new CreateUserResponse(new List<string> { Error.Error }, false, Error.Message, Error.StatusCode);
             }
             return createUserResponse;
         }
@@ -169,7 +169,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 else
                 {
                     var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
-                    deleteUserResponse = new DeleteUserResponse(Error.StatusCode, false, Error.Message);
+                    deleteUserResponse = new DeleteUserResponse(new List<string> { Error.Error }, false, Error.Message, Error.StatusCode);
                 }
 
                 return deleteUserResponse;

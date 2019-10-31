@@ -28,7 +28,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Entities
         public string user_id { get; set; }
 
 
-        public DateTime last_login { get; set; }
+        public DateTime? last_login { get; set; }
 
         public AppMetadata app_metadata { get; set; }
     }

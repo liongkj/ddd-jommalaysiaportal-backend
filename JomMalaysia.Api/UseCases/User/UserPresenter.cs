@@ -20,7 +20,9 @@ namespace JomMalaysia.Api.UseCases.User
 
         public void Handle(UseCaseResponseMessage response)
         {
-            ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
+            if (!response.StatusCode.HasValue)
+                ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
+            else ContentResult.StatusCode = response.StatusCode;
             ContentResult.Content = JsonSerializer.SerializeObject(response);
         }
     }

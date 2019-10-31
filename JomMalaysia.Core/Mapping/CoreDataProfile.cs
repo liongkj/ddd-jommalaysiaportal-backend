@@ -57,7 +57,7 @@ namespace JomMalaysia.Core.Mapping
 
             #region map user
             CreateMap<User, UserViewModel>()
-                .ForMember(vm => vm.Name, opt => opt.MapFrom(u => u.Name.ToString().ToUpper()))
+                .ForMember(vm => vm.Name, opt => opt.MapFrom(u => u.Name.ToString()))
                 .ForMember(vm => vm.Email, opt => opt.MapFrom(u => u.Email.ToString()))
                 .ForMember(vm => vm.Role, opt => opt.MapFrom(u => u.Role.ToString().ToUpper()))
                 .ForMember(vm => vm.HasAuthority, opt => opt.MapFrom(u => u.CanAssign))

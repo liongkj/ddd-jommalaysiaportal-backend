@@ -11,11 +11,11 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
     {
         public User User { get; }
         public UserViewModel Data { get; }
-        public string Error { get; }
+        public IEnumerable<string> Errors { get; }
 
-        public GetUserResponse(string errors, bool success = false, string message = null) : base(success, message)
+        public GetUserResponse(List<string> errors, bool success = false, string message = null, int? statusCode = null) : base(success, message, statusCode)
         {
-            Error = errors;
+            Errors = errors;
         }
 
         public GetUserResponse(User user, bool success = false, string message = null) : base(success, message)

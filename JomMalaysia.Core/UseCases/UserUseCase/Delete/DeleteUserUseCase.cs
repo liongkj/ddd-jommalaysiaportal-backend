@@ -37,7 +37,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Delete
             }
             else
             {
-                outputPort.Handle(new DeleteUserResponse(GetUserResponse.Error, false, GetUserResponse.Message));
+                outputPort.Handle(new DeleteUserResponse(GetUserResponse.Errors, false, GetUserResponse.Message));
                 return false;
             }
 

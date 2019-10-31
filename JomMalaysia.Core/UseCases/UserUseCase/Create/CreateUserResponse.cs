@@ -7,18 +7,22 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
 {
     public class CreateUserResponse : UseCaseResponseMessage
     {
-
-
-        public string Status { get; set; }
+        public string UserId { get; }
+        public IEnumerable<string> Errors { get; }
 
         public CreateUserResponse()
         {
 
         }
 
-        public CreateUserResponse(string status, bool success = false, string message = null) : base(success, message)
+        public CreateUserResponse(string userId, bool success = false, string message = null) : base(success, message)
         {
-            Status = status;
+            UserId = userId;
+        }
+
+        public CreateUserResponse(IEnumerable<string> errors, bool success = false, string message = null, int? statusCode = null) : base(success, message, statusCode)
+        {
+            Errors = errors;
         }
     }
 }

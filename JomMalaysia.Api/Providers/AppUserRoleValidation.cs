@@ -42,15 +42,15 @@ namespace JomMalaysia.Api.Providers
             var userid = accessToken.Subject;
 
 
-            var user = await _userRepository.GetUser(userid.ToString());
-            if (user.Success)
+            var getUserReponse = await _userRepository.GetUser(userid.ToString());
+            if (getUserReponse.Success)
             {
-                AppUser = user.User;
+                AppUser = getUserReponse.User;
 
             }
             else
             {
-                throw new Exception(user.Error);
+                throw new Exception(getUserReponse.Errors.ToString());
             }
 
         }

@@ -10,7 +10,8 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Get
         public string Name { get; set; }
         public string Role { get; set; }
         public string PictureUri { get; set; } = "https://www.gravatar.com/avatar/?d=mp";
-        public DateTime LastLogin { get; set; }
+        public DateTime? LastLogin { get; set; }
         public bool HasAuthority { get; set; }
+
     }
 }

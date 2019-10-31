@@ -30,10 +30,10 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
                 var createUserResponse = await _userRepository.CreateUser(NewUser);
                 if (createUserResponse.Success)
                 {
-                    var response = await _userRepository.UpdateUser(createUserResponse.Status, updateRole);
+                    var response = await _userRepository.UpdateUser(createUserResponse.UserId, updateRole);
                     if (!response.Success)
                     {
-                        await _userRepository.DeleteUser(createUserResponse.Status); //rollback
+                        await _userRepository.DeleteUser(createUserResponse.UserId); //rollback
                     }
                 }
                 outputPort.Handle(createUserResponse);

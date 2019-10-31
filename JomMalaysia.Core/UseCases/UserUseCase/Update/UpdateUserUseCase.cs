@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Update
             var getUserResponse = await _userRepository.GetUser(message.UserId);
             if (!getUserResponse.Success)
             {
-                outputPort.Handle(new UpdateUserResponse(new List<string> { getUserResponse.Error }, false, getUserResponse.Message));
+                outputPort.Handle(new UpdateUserResponse(getUserResponse.Errors, false, getUserResponse.Message));
                 return false;
             }
             var OldUser = getUserResponse.User;

@@ -16,7 +16,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Entities
 
         public string name { get; set; }
 
-        public bool verify_email { get; set; } = false;
+        public bool verify_email { get; set; }
 
         public string connection { get; set; } = "Username-Password-Authentication";
 
