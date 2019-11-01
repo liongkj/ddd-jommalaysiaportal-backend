@@ -17,6 +17,7 @@ using JomMalaysia.Core.UseCases.UserUseCase.Get;
 using JomMalaysia.Core.UseCases.UserUseCase.Update;
 using System.Linq;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.Exceptions;
 
 namespace JomMalaysia.Infrastructure.Auth0
 {
@@ -145,6 +146,8 @@ namespace JomMalaysia.Infrastructure.Auth0
             else
             {
                 var Error = JsonConvert.DeserializeObject<Auth0Errors>(response.Content);
+                if (Error.StatusCode == (int)HttpStatusCode.Conflict) throw new DuplicatedException(Error.Error);
+
                 createUserResponse = new CreateUserResponse(new List<string> { Error.Error }, false, Error.Message, Error.StatusCode);
             }
             return createUserResponse;

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Validators;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Validation;
 using JomMalaysia.Core.Validation.Extension;
 
@@ -17,6 +18,7 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
                 .NoStartWithWhiteSpace()
                 .Length(2, 50)
                 .WithMessage("{PropertyName} should have length of between 2 characters to maximum 50 characters.");
+            RuleFor(x => x.Role).IsEnumName(typeof(UserRoleEnum));
         }
 
         protected bool BeAValidName(string name)

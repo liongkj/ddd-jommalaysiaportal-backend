@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace JomMalaysia.Api.Providers
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
+    public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         public override void OnException(ExceptionContext context)
 
@@ -27,6 +27,15 @@ namespace JomMalaysia.Api.Providers
 
                 return;
             }
+            if (context.Exception is NotAuthorizedException)
+            {
+                context.HttpContext.Response.ContentType = "application/json";
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                context.Result = new JsonResult(
+                    ((NotAuthorizedException)context.Exception).Message);
+
+                return;
+            }
 
             if (context.Exception is ValidationException)
             {
@@ -38,15 +47,17 @@ namespace JomMalaysia.Api.Providers
                 return;
             }
 
-            if (context.Exception is NotAuthorizedException)
+            if (context.Exception is DuplicatedException)
             {
                 context.HttpContext.Response.ContentType = "application/json";
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
                 context.Result = new JsonResult(
-                    ((NotAuthorizedException)context.Exception).Message);
+                    ((DuplicatedException)context.Exception).Message);
 
                 return;
             }
+
+
 
 
 

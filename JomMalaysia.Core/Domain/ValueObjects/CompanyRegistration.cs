@@ -5,18 +5,20 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class CompanyRegistration : ValueObjectBase
     {
+        public string OldSsmId { get; private set; }
         public string SsmId { get; private set; }
         public string RegistrationName { get; private set; }
 
         private CompanyRegistration() { }
 
 
-        public static CompanyRegistration For(string regString, string regName)
+        public static CompanyRegistration For(string regString, string regName, string oldSsmId = null)
         {
             var regNo = new CompanyRegistration
             {
                 SsmId = regString,
-                RegistrationName = regName
+                RegistrationName = regName,
+                OldSsmId = oldSsmId ?? oldSsmId
             };
             //todo Validation
             return regNo;
@@ -26,11 +28,13 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return SsmId;
         }
 
-        public CompanyRegistration(string regNo, string regName)
+        public CompanyRegistration(string regNo, string regName, string oldSsmId = null)
         {
             SsmId = regNo;
             RegistrationName = regName;
+            OldSsmId = oldSsmId;
         }
+
 
         protected override IEnumerable<object> GetAtomicValues()
         {

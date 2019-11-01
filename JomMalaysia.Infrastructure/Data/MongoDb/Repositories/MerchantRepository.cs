@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Exceptions;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Delete;
@@ -78,6 +79,17 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public GetMerchantResponse FindByName(string name)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task FindBySsmIdAsync(string ssmId)
+        {
+            var query = await
+                      _db.AsQueryable()
+                                      .Where(M => M.CompanyRegistration.SsmId == ssmId)
+                                      .Select(M => M)
+                                      .FirstOrDefaultAsync();
+            if (query != null)
+                throw new DuplicatedException(ssmId);
         }
 
         public async Task<GetAllMerchantResponse> GetAllMerchantAsync()

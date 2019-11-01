@@ -32,7 +32,7 @@ namespace JomMalaysia.Api.Serialization
         {
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
 
-            // if (ex is ValidationException) code = HttpStatusCode.BadRequest;
+            if (ex is ValidationException) code = HttpStatusCode.BadRequest;
             // else if (ex is MyUnauthorizedException) code = HttpStatusCode.Unauthorized;
             // else if (ex is MyException) code = HttpStatusCode.BadRequest;
 

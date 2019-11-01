@@ -21,9 +21,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(md => md.Id, opt => opt.MapFrom(m => m.MerchantId))
                 .ForMember(md => md.Contacts, opt => opt.MapFrom(m => m.Contacts))
                 .ForMember(md => md.ListingIds, opt => opt.MapFrom(m => m.Listings))
-                .ForMember(md => md.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
-                .ForMember(md => md.CompanyRegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
-
+                .ForMember(md => md.CompanyRegistration, opt => opt.MapFrom(m => m.CompanyRegistration))
                 ;
 
             //dto to domain 
@@ -31,7 +29,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(m => m.MerchantId, opt => opt.MapFrom(md => md.Id))
                 //.ForMember(m => m.Contacts, opt => opt.MapFrom(md => md.Contacts))
                 .ForMember(m => m.Listings, opt => opt.MapFrom(m => m.ListingIds))
-                .ForMember(m => m.CompanyRegistration, opt => opt.MapFrom(md => CompanyRegistration.For(md.SsmId, md.CompanyRegistrationName)))
+                .ForMember(m => m.CompanyRegistration, opt => opt.MapFrom(md => CompanyRegistration.For(md.CompanyRegistration.SsmId, md.CompanyRegistration.RegistrationName, md.CompanyRegistration.OldSsmId)))
 
                  ;
 
@@ -42,11 +40,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             ;
 
-            CreateMap<MerchantSummaryDto, Merchant>()
-           .ForMember(ms => ms.MerchantId, opt => opt.MapFrom(md => md.Id))
-           .ForMember(ms => ms.CompanyRegistration, opt => opt.MapFrom(md => CompanyRegistration.For(md.SsmId, md.CompanyName)))
 
-           ;
             #endregion
 
             #region contacts mapping
