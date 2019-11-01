@@ -11,16 +11,21 @@ namespace JomMalaysia.Core.Validation
         public ContactValidator()
         {
             RuleFor(x => x.Email)
+            .NotNull()
                 .EmailAddress()
                 .WithMessage("{PropertyName} is not valid."); //check from EmailValidator
+
+
             RuleFor(x => x.Phone)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+            .Cascade(CascadeMode.StopOnFirstFailure)
+            .NotNull()
                 .NotEmpty().WithMessage("{PropertyName} should not be blank")
                 .Must(BeAValidNumber)
 
                 ; //check from PhoneValidator
             RuleFor(x => x.Name)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+            .Cascade(CascadeMode.StopOnFirstFailure)
+            .NotNull()
                 .NotEmpty().WithMessage("{PropertyName} should not be blank")
                 .Length(2, 25);
             //check from NameValidator

@@ -7,12 +7,14 @@ namespace JomMalaysia.Core.Exceptions
 {
     public class DuplicatedException : Exception
     {
-        private string Msg { get; set; }
-        public DuplicatedException(string msg)
+        public string Error { get; }
+
+
+        public DuplicatedException(string error, string msg)
             : base(msg)
         {
+            Error = error;
 
-            Msg = msg;
         }
 
     }

@@ -28,10 +28,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             {
                 Longitude = x;
             }
-            else
-            {
-                throw new ValidationException();
-            }
+
             if (Double.TryParse(Lat, out y))
             {
                 Latitude = y;

@@ -12,13 +12,13 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
     {
         public CreateUserRequestValidator()
         {
-            RuleFor(x => x.Username).NotEmpty().NotNull().Length(5, 15).WithMessage("{ PropertyName} should be not be blank and have between 5 to 15 characters");
+            RuleFor(x => x.Username).NotEmpty().NotNull().Length(5, 15).WithMessage("{PropertyName} should be not be blank and have between 5 to 15 characters");
             RuleFor(x => x.Email).NotEmpty().NotNull().EmailAddress();
             RuleFor(x => x.Name).Must(BeAValidName).NotEmpty()
                 .NoStartWithWhiteSpace()
                 .Length(2, 50)
                 .WithMessage("{PropertyName} should have length of between 2 characters to maximum 50 characters.");
-            RuleFor(x => x.Role).IsEnumName(typeof(UserRoleEnum));
+            RuleFor(x => x.Role).NotEmpty().NotNull();
         }
 
         protected bool BeAValidName(string name)

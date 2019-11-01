@@ -32,13 +32,14 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
             RuleFor(x => x.CompanyRegistrationName).NotEmpty().WithMessage("{PropertyName} must not be blank");
             RuleFor(x => x.Contacts.Count).GreaterThan(0).WithMessage("{PropertyName} shuould have at least one primary contact");
 
-            RuleForEach(x => x.Contacts).SetValidator(new ContactValidator());
+            RuleForEach(x => x.Contacts).SetValidator(new ContactValidator()).When(x => x.Contacts.Count > 0);
         }
         protected bool ValidOldRegistrationNo(string regNo)
         {
             if (regNo != null)
             {
                 var regNumber = regNo.Trim().Split('-');
+                if (regNumber.Length == 1) return false;
                 var sufficientLength = regNumber[0].Length >= 6 && regNumber[0].Length <= 7; //check number 6 -7;
                 var IsAlpha = char.IsLetter(char.Parse(regNumber[1]));
                 return IsAlpha && sufficientLength;

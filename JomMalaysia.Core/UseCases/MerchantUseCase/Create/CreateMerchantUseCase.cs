@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -39,6 +40,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
                 outputPort.Handle(response.Success ? new CreateMerchantResponse(response.Id, true, "Merchant created.") : new CreateMerchantResponse(response.Errors));
                 return response.Success;
             }
+
             catch (Exception e)
             {
                 throw e;

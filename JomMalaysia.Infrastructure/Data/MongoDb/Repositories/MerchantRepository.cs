@@ -89,7 +89,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                                       .Select(M => M)
                                       .FirstOrDefaultAsync();
             if (query != null)
-                throw new DuplicatedException(ssmId);
+                throw new DuplicatedException(ssmId, "Merchant is registered before.");
         }
 
         public async Task<GetAllMerchantResponse> GetAllMerchantAsync()
