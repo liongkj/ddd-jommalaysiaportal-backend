@@ -37,50 +37,32 @@ namespace JomMalaysia.Api.Providers
 
                 return;
             }
-            if (!context.ModelState.IsValid)
+
+
+
+            if (context.Exception is DuplicatedException)
             {
-                var errors = new List<string>();
-
-                foreach (var modelState in context.ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        errors.Add(error.ErrorMessage);
-                    }
-                }
-
-                var responseObj = new
-                {
-                    code = 400,
-                    messages = errors
-                };
-
-
-
-                if (context.Exception is DuplicatedException)
-                {
-                    context.HttpContext.Response.ContentType = "application/json";
-                    context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
-                    context.Result = new JsonResult(new ExceptionResponse(((DuplicatedException)context.Exception).Error));
-                    return;
-                }
-
-
-
-
-
-                var code = HttpStatusCode.InternalServerError;
-
-
                 context.HttpContext.Response.ContentType = "application/json";
-                context.HttpContext.Response.StatusCode = (int)code;
-                context.Result = new JsonResult(new
-                {
-                    error = new[] { context.Exception.Message },
-                    stackTrace = context.Exception.StackTrace
-
-                });
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                context.Result = new JsonResult(new ExceptionResponse(((DuplicatedException)context.Exception).Message));
+                return;
             }
+
+
+
+
+
+            var code = HttpStatusCode.InternalServerError;
+
+
+            context.HttpContext.Response.ContentType = "application/json";
+            context.HttpContext.Response.StatusCode = (int)code;
+            context.Result = new JsonResult(new
+            {
+                error = new[] { context.Exception.Message },
+                stackTrace = context.Exception.StackTrace
+
+            });
         }
     }
 }
