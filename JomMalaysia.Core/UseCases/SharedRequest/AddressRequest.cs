@@ -1,3 +1,5 @@
+using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+
 namespace JomMalaysia.Core.UseCases.SharedRequest
 {
     public class AddressRequest
@@ -8,5 +10,6 @@ namespace JomMalaysia.Core.UseCases.SharedRequest
         public string State { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
+        public CoordinateRequest Coordinates { get; set; }
     }
 }

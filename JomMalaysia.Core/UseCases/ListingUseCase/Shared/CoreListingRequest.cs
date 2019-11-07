@@ -25,7 +25,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public AddressRequest Address { get; set; }
         public List<StoreTimesRequest> OperatingHours { get; set; }
 
-        public CoordinateRequest Coordinates { get; set; }
+
         public ListingImages ImageUris { get; set; }
         public DateTime EventStartDateTime { get; set; }
         public DateTime EventEndDateTime { get; set; }
