@@ -37,7 +37,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             .ForMember(msd => msd.Id, opt => opt.MapFrom(m => m.MerchantId))
             .ForMember(msd => msd.CompanyName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
             .ForMember(msd => msd.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
-
+            .ReverseMap()
             ;
 
 

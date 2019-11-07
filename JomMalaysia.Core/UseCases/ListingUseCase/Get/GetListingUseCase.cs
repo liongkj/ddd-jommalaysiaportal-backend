@@ -17,10 +17,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         }
         public async Task<bool> Handle(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
         {
-            if (message is null)
-            {
-                throw new System.ArgumentNullException(nameof(message));
-            }
+
 
             var response = await _listingRepository.FindById(message.Id).ConfigureAwait(false);
             if (!response.Success)
