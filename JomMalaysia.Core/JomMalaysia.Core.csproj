@@ -9,6 +9,7 @@
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="FluentValidation" Version="8.5.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
     <PackageReference Include="Google.LibPhoneNumber" Version="1.0.0" />
     
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

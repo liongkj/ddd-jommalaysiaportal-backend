@@ -38,13 +38,24 @@ namespace JomMalaysia.Api.Providers
                 return;
             }
 
+            if (context.Exception is BadRequestException)
+            {
+                context.HttpContext.Response.ContentType = "application/json";
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Result = new JsonResult(
+                    new ExceptionResponse(((BadRequestException)context.Exception).Message));
+
+                return;
+            }
+
 
 
             if (context.Exception is DuplicatedException)
             {
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
-                context.Result = new JsonResult(new ExceptionResponse(((DuplicatedException)context.Exception).Message));
+                context.Result = new JsonResult(
+                    new ExceptionResponse(((DuplicatedException)context.Exception).Message));
                 return;
             }
 

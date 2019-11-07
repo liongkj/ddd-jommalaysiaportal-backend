@@ -83,9 +83,13 @@ namespace JomMalaysia.Api
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc
-            services.AddMvc(options => options.Filters.Add(new ApiExceptionFilterAttribute()))
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ApiExceptionFilterAttribute());
+                options.Filters.Add(new ValidationFilter());
+            })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreListingRequestValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             //add swagger
             services.AddSwaggerGen(
