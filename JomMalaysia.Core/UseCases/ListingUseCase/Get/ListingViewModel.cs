@@ -6,7 +6,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {
     public class ListingViewModel
     {
-        public string Id { get; set; }
+        public string ListingId { get; set; }
         public MerchantViewModel Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }

@@ -106,10 +106,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 }
 
             }
-            catch (AutoMapperMappingException e)
-            {
-                return new GetAllWorkflowResponse(new List<string> { "Mapping error" }, false, e.ToString());
-            }
+
             catch (Exception e)
             {
                 throw e;

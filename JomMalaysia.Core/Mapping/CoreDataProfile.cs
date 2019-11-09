@@ -6,6 +6,7 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.UserUseCase.Get;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 using JomMalaysia.Framework.Helper;
 using static JomMalaysia.Core.UseCases.ListingUseCase.Get.ListingViewModel;
 
@@ -17,7 +18,6 @@ namespace JomMalaysia.Core.Mapping
         {
             #region Listing Mapping
             CreateMap<Listing, ListingViewModel>()
-                .ForMember(vm => vm.Id, opt => opt.MapFrom(l => l.ListingId))
                 .ForMember(vm => vm.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
                 .ForMember(vm => vm.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(vm => vm.Merchant, opt => opt.MapFrom(l => l.Merchant))
@@ -65,6 +65,25 @@ namespace JomMalaysia.Core.Mapping
             CreateMap<PagingHelper<User>, PagingHelper<UserViewModel>>()
 
               ;
+
+            #endregion
+
+            #region workflow
+            CreateMap<Workflow, WorkflowViewModel>()
+
+            ;
+
+            CreateMap<Listing, ListingSummary>()
+
+            ;
+
+
+            CreateMap<Merchant, MerchantVM>()
+                .ForMember(vm => vm.RegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
+            ;
+
+            CreateMap<User, UserVM>()
+            ;
 
             #endregion
 

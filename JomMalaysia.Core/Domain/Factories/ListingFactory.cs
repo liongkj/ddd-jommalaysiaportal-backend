@@ -38,7 +38,7 @@ namespace JomMalaysia.Core.Domain.Factories
 
         private static Address GenerateAddress(CoreListingRequest listing)
         {
-            var coord = listing.Coordinates;
+            var coord = listing.Address.Coordinates;
             var coor = new Coordinates(coord.Longitude, coord.Latitude);
 
             var Address = new Address(listing.Address.Add1, listing.Address.Add2, listing.Address.City, listing.Address.State, listing.Address.PostalCode, listing.Address.Country, coor);

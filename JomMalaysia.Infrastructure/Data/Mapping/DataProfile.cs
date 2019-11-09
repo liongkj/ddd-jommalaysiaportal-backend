@@ -228,11 +228,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<EventListing, ListingSummaryDto>();
             CreateMap<LocalListing, ListingSummaryDto>();
+
             CreateMap<ListingSummaryDto, Listing>()
                             .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
                             .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
                             .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
-
                             .IncludeAllDerived()
 
                         ;
@@ -241,6 +241,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         ;
 
             CreateMap<ListingSummaryDto, LocalListing>();
+
+            CreateMap<ListingStatusEnum, PublishStatus>()
+                    ;
+
 
             CreateMap<UserDtoSummary, User>()
             .ForMember(u => u.UserId, opt => opt.MapFrom(ud => ud.UserId))
