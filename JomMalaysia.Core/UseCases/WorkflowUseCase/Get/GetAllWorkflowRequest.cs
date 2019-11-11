@@ -32,6 +32,9 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
                 case "rejected":
                     Status = WorkflowStatusEnum.Rejected;
                     break;
+                case "all":
+                    Status = WorkflowStatusEnum.All;
+                    break;
                 default:
                     Status = null;
                     break;

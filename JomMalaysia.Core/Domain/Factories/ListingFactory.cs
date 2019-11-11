@@ -18,7 +18,9 @@ namespace JomMalaysia.Core.Domain.Factories
         public static Listing CreateListing(ListingTypeEnum ListingType, CoreListingRequest listing, Category category, Merchant merchant)
         {
             int listingTypeId = ListingType.Id;
-            var categoryPath = category.CategoryPath;
+
+
+            CategoryPath categoryPath = category == null ? null : category.CategoryPath;
 
             switch (listingTypeId)
             {

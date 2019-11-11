@@ -8,6 +8,7 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using System.Collections.Generic;
 using JomMalaysia.Infrastructure.Auth0.Entities;
+using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
 {
@@ -194,11 +195,9 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             #region workflow mapping
 
             CreateMap<Workflow, WorkflowDto>()
-                    .ForMember(wd => wd.Id, opt => opt.MapFrom(w => w.WorkflowId))
                     .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
                     .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                     .ForMember(wd => wd.Listing, opt => opt.MapFrom(w => w.Listing))
-                    .ForMember(wd => wd.Merchant, opt => opt.MapFrom(w => w.Listing.Merchant.CompanyRegistration.RegistrationName))
                     ;
 
             CreateMap<Workflow, WorkflowSummaryDto>()
@@ -209,7 +208,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             //dto --> domain
             CreateMap<WorkflowDto, Workflow>()
-                .ForMember(w => w.WorkflowId, opt => opt.MapFrom(wd => wd.Id))
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
                 .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
                 .ForMember(w => w.Listing, opt => opt.Ignore())
@@ -223,14 +221,20 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<Listing, ListingSummaryDto>()
                            .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.PublishStatus.Status.ToString()))
                            .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                           .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                            .IncludeAllDerived()
                        ;
+
+            CreateMap<Merchant, WorkflowMerchantSummaryDto>()
+                .ForMember(md => md.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
+                .ForMember(md => md.RegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
+            ;
 
             CreateMap<EventListing, ListingSummaryDto>();
             CreateMap<LocalListing, ListingSummaryDto>();
 
             CreateMap<ListingSummaryDto, Listing>()
-                            .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
+                            .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.ListingId))
                             .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
                             .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
                             .IncludeAllDerived()
@@ -255,7 +259,23 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             #endregion
 
+            #region workflowdto to workflowvm
+            CreateMap<WorkflowDto, WorkflowViewModel>()
 
+            ;
+
+            CreateMap<ListingSummaryDto, ListingSummary>()
+
+            ;
+
+
+            CreateMap<WorkflowMerchantSummaryDto, MerchantVM>()
+            ;
+
+            CreateMap<UserDtoSummary, UserVM>()
+            ;
+
+            #endregion
 
 
 

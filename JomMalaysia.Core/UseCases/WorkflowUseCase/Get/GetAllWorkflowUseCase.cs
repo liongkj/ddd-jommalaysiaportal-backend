@@ -28,11 +28,11 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
                     outputPort.Handle(queryAllWorkflow);
                     return false;
                 }
-                var mapped = _mapper.Map<List<WorkflowViewModel>>(queryAllWorkflow.Workflows);
-                GetAllWorkflowResponse response = new GetAllWorkflowResponse(mapped, queryAllWorkflow.Success, queryAllWorkflow.Message);
+                // var mapped = _mapper.Map<List<WorkflowViewModel>>(queryAllWorkflow.Workflows);
+                // GetAllWorkflowResponse response = new GetAllWorkflowResponse(queryAllWorkflow.Data, queryAllWorkflow.Success, queryAllWorkflow.Message);
 
-                outputPort.Handle(response);
-                return response.Success;
+                outputPort.Handle(queryAllWorkflow);
+                return queryAllWorkflow.Success;
             }
             catch (Exception e)
             {

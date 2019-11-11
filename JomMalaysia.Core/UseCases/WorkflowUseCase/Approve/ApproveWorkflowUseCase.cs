@@ -6,6 +6,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.Domain.Enums;
+using JomMalaysia.Core.Exceptions;
 
 namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
 {
@@ -25,6 +26,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Approve
         public async Task<bool> Handle(WorkflowActionRequest message, IOutputPort<WorkflowActionResponse> outputPort)
         {
             var responder = _loginInfo.AuthenticatedUser();
+            if (responder == null) throw new NotAuthorizedException();
             try
             {
                 //get workflow details from db

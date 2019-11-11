@@ -78,7 +78,7 @@ namespace JomMalaysia.Api.UseCases.Workflows
         [Route("status/{status}")]
         [Route("status")]
         [HttpGet]
-        public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "pending")
+        public async Task<IActionResult> GetAllWorkflowByStatus([FromRoute]string status = "all")
         {
             var req = new GetAllWorkflowRequest(status.ToLower());
             await _getAllWorkflowUseCase.Handle(req, _workflowPresenter);
@@ -98,20 +98,29 @@ namespace JomMalaysia.Api.UseCases.Workflows
 
         //PUT api/workflows/{id}/approve
         [HttpPut("{WorkflowId}/approve")]
-        public async Task<IActionResult> Approve([FromRoute]string WorkflowId, [FromBody]WorkflowActionRequest req)
+        public async Task<IActionResult> Approve([FromRoute]string WorkflowId, [FromBody]WorkflowRequest comments)
         {
-            req.WorkflowId = WorkflowId;
-            req.Action = "approve";
+            var req = new WorkflowActionRequest
+            {
+                WorkflowId = WorkflowId,
+                Action = "approve",
+                Comments = comments.Comments
+            };
+
             await _approveWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }
 
         //PUT api/workflows/{id}/reject
         [HttpPut("{WorkflowId}/reject")]
-        public async Task<IActionResult> Reject([FromRoute]string WorkflowId, [FromBody]WorkflowActionRequest req)
+        public async Task<IActionResult> Reject([FromRoute]string WorkflowId, [FromBody]WorkflowRequest comments)
         {
-            req.WorkflowId = WorkflowId;
-            req.Action = "reject";
+            var req = new WorkflowActionRequest
+            {
+                WorkflowId = WorkflowId,
+                Action = "reject",
+                Comments = comments.Comments
+            };
             await _rejectWorkflowUseCase.Handle(req, _workflowPresenter);
             return _workflowPresenter.ContentResult;
         }

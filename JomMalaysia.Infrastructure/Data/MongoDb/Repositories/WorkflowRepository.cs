@@ -13,6 +13,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+using JomMalaysia.Core.Exceptions;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
@@ -28,18 +29,19 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         }
         public async Task<NewWorkflowResponse> CreateWorkflowAsyncWithSession(Workflow workflow, IClientSessionHandle session)
         {
-            var WorkflowDto = _mapper.Map<WorkflowDto>(workflow);
 
+            WorkflowDto workflowDto;
             try
             {
-                await _db.InsertOneAsync(session, WorkflowDto);
+                workflowDto = _mapper.Map<WorkflowDto>(workflow);
+                await _db.InsertOneAsync(session, workflowDto);
 
             }
             catch (Exception e)
             {
-                return new NewWorkflowResponse(new List<string> { e.Message, "Error saving workflow" }, false);
+                throw e;
             }
-            return new NewWorkflowResponse(WorkflowDto.Id + " created", true);
+            return new NewWorkflowResponse(workflowDto.WorkflowId + " created", true);
         }
 
         public async Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId)
@@ -49,7 +51,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 var query = await
                     _db.AsQueryable()
-                    .Where(W => W.Id == workflowId)
+                    .Where(W => W.WorkflowId == workflowId)
                     .FirstOrDefaultAsync();
                 workflow = _mapper.Map<Workflow>(query);
                 var temp = ListingDtoParser.Converted(_mapper, query.Listing);
@@ -72,7 +74,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             //todo add paging
             List<WorkflowDto> query = new List<WorkflowDto>();
-            List<Workflow> Workflows;
+            List<WorkflowViewModel> Workflows;
             try
             {
                 if (status == null)
@@ -92,21 +94,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                         _db.AsQueryable()
                         .ToListAsync();
                 }
-                Workflows = _mapper.Map<List<Workflow>>(query);
-                int i = 0;
-                foreach (WorkflowDto workflow in query)
-                {
+                Workflows = _mapper.Map<List<WorkflowViewModel>>(query);
 
-                    var temp = ListingDtoParser.Converted(_mapper, workflow.Listing);
-                    if (temp != null)
-                    {
-                        Workflows[i].Listing = temp;
-                    }
-                    i++;
-                }
 
             }
-
+            catch (AutoMapperMappingException e)
+            {
+                throw new MappingException(e.InnerException.Message);
+            }
             catch (Exception e)
             {
                 throw e;
@@ -122,7 +117,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             ReplaceOneResult result;
 
-            FilterDefinition<WorkflowDto> filter = Builders<WorkflowDto>.Filter.Eq(m => m.Id, updatedWorkflow.WorkflowId);
+            FilterDefinition<WorkflowDto> filter = Builders<WorkflowDto>.Filter.Eq(m => m.WorkflowId, updatedWorkflow.WorkflowId);
             try
             {
                 var workflowDto = _mapper.Map<WorkflowDto>(updatedWorkflow);
@@ -150,11 +145,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 var query = await
                     _db.AsQueryable()
-                    .Where(w => w.Listing.Id == listingId
-                            && w.Status != WorkflowStatusEnum.Completed.ToString()
-                            || w.Status != WorkflowStatusEnum.Rejected.ToString())
+                    .Where(w => w.Listing.ListingId == listingId
+                            && (w.Status != WorkflowStatusEnum.Completed.ToString()
+                            || w.Status != WorkflowStatusEnum.Rejected.ToString()))
                     .ToListAsync();
-                if (query.Count > 1) HasPendingWorkflows = true;
+                if (query.Count > 0) HasPendingWorkflows = true;
             }
             catch (Exception e)
             {

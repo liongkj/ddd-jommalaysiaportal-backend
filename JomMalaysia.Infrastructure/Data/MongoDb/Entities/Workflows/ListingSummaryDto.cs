@@ -11,14 +11,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
         [BsonId]
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public MerchantSummaryDto Merchant { get; set; }
+        public string ListingId { get; set; }
+        public WorkflowMerchantSummaryDto Merchant { get; set; }
         public string ListingName { get; set; }
         public string ListingType { get; set; }
-        public string Category { get; set; }
-        public ListingImages ListingImages { get; set; }
-        public ICollection<string> Tags { get; set; }
         public string Status { get; set; }
-        public List<StoreTimesDto> OperatingHours { get; set; }
     }
 }

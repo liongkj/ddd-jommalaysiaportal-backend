@@ -19,15 +19,6 @@ namespace JomMalaysia.Api.Providers
 
         {
 
-            if (context.Exception is DnsResponseException)
-            {
-                context.HttpContext.Response.ContentType = "application/json";
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
-                context.Result = new JsonResult(
-                    new ExceptionResponse(((DnsResponseException)context.Exception).Message));
-
-                return;
-            }
             if (context.Exception is NotAuthorizedException)
             {
                 context.HttpContext.Response.ContentType = "application/json";
@@ -59,8 +50,15 @@ namespace JomMalaysia.Api.Providers
                 return;
             }
 
+            if (context.Exception is DnsResponseException)
+            {
+                context.HttpContext.Response.ContentType = "application/json";
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
+                context.Result = new JsonResult(
+                    new ExceptionResponse(((DnsResponseException)context.Exception).Message));
 
-
+                return;
+            }
 
 
             var code = HttpStatusCode.InternalServerError;

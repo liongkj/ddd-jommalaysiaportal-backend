@@ -9,6 +9,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
         public string WorkflowId { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
+        public string Level { get; set; }
         public ListingSummary Listing { get; set; }
         public UserVM Requester { get; set; }
         public UserVM Responder { get; set; }
@@ -19,6 +20,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
     }
     public class UserVM
     {
+        public string Role { get; set; }
         public string Username { get; set; }
         public string UserId { get; set; }
     }

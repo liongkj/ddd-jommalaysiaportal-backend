@@ -39,18 +39,23 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             }
 
             //verify is there this category
-            var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
-            if (!FindCategoryResponse.Success)
+            Category category = null;
+            if (!string.IsNullOrWhiteSpace(message.CategoryId))
             {
-                outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
-                return false;
+                var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
+                if (!FindCategoryResponse.Success)
+                {
+                    outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
+                    return false;
+                }
+                category = FindCategoryResponse.Category;
+                if (category.IsCategory())
+                {
+                    outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid subcategory"));
+                    return false;
+                }
             }
-            Category category = FindCategoryResponse.Category;
-            if (category.IsCategory())
-            {
-                outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid subcategory"));
-                return false;
-            }
+
             var ListingType = ListingTypeEnum.For(message.ListingType);
             if (ListingType == null)
             {
@@ -58,7 +63,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 return false;
             }
             //create listing factory pattern
-            var NewListing = ListingFactory.CreateListing(ListingType, message, FindCategoryResponse.Category, FindMerchantResponse.Data);
+            var NewListing = ListingFactory.CreateListing(ListingType, message, category, FindMerchantResponse.Data);
             if (NewListing is Listing && NewListing != null) //validate is Listing Type
             {
                 //start transaction

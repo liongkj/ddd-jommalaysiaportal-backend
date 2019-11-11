@@ -68,24 +68,7 @@ namespace JomMalaysia.Core.Mapping
 
             #endregion
 
-            #region workflow
-            CreateMap<Workflow, WorkflowViewModel>()
 
-            ;
-
-            CreateMap<Listing, ListingSummary>()
-
-            ;
-
-
-            CreateMap<Merchant, MerchantVM>()
-                .ForMember(vm => vm.RegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
-            ;
-
-            CreateMap<User, UserVM>()
-            ;
-
-            #endregion
 
         }
     }
