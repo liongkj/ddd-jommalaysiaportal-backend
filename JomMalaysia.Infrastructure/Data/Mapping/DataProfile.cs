@@ -225,18 +225,23 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                            .IncludeAllDerived()
                        ;
 
-            CreateMap<Merchant, WorkflowMerchantSummaryDto>()
-                .ForMember(md => md.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
-                .ForMember(md => md.RegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
-            ;
+
 
             CreateMap<EventListing, ListingSummaryDto>();
             CreateMap<LocalListing, ListingSummaryDto>();
+            CreateMap<AdministrativeListing, ListingSummaryDto>();
+
+            CreateMap<Merchant, WorkflowMerchantSummaryDto>()
+               .ForMember(md => md.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
+               .ForMember(md => md.RegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
+               .ReverseMap()
+           ;
 
             CreateMap<ListingSummaryDto, Listing>()
                             .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.ListingId))
                             .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
                             .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
+                            .ForMember(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                             .IncludeAllDerived()
 
                         ;
@@ -245,6 +250,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         ;
 
             CreateMap<ListingSummaryDto, LocalListing>();
+            CreateMap<ListingSummaryDto, AdministrativeListing>();
 
             CreateMap<ListingStatusEnum, PublishStatus>()
                     ;
@@ -253,6 +259,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<UserDtoSummary, User>()
             .ForMember(u => u.UserId, opt => opt.MapFrom(ud => ud.UserId))
             .ForMember(u => u.Username, opt => opt.MapFrom(ud => ud.Username))
+            .ForMember(u => u.Role, opt => opt.MapFrom(ud => UserRoleEnum.For(ud.Role)))
             .ReverseMap()
             ;
 
@@ -261,9 +268,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             #region workflowdto to workflowvm
             CreateMap<WorkflowDto, WorkflowViewModel>()
+                .ForMember(vm => vm.HistoryData, opt => opt.MapFrom(wd => wd.HistoryData))
 
             ;
-
+            CreateMap<WorkflowSummaryDto, WorkflowViewModel>()
+            ;
             CreateMap<ListingSummaryDto, ListingSummary>()
 
             ;

@@ -60,11 +60,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     workflow.Listing = temp;
                 }
             }
+            catch (AutoMapperMappingException e)
+            {
+                throw new MappingException(e.InnerException.Message);
+            }
             catch (Exception e)
             {
-                var Errors = new List<string>();
-                Errors.Add(e.ToString());
-                return new GetWorkflowResponse(Errors);
+                throw e;
             }
             return workflow != null ? new GetWorkflowResponse(workflow, true) :
                 new GetWorkflowResponse(new List<string> { "workflow not found" });

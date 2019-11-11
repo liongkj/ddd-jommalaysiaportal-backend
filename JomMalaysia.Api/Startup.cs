@@ -88,7 +88,7 @@ namespace JomMalaysia.Api
                 options.Filters.Add(new ApiExceptionFilterAttribute());
 
             })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             //add swagger

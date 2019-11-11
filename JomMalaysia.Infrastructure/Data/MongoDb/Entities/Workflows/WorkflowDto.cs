@@ -27,6 +27,6 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime Created { get; set; }
         [BsonIgnoreIfNull]
-        public ICollection<WorkflowSummaryDto> HistoryData { get; set; }
+        public List<WorkflowSummaryDto> HistoryData { get; set; }
     }
 }
