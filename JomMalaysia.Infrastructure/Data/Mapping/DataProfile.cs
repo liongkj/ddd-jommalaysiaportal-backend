@@ -214,7 +214,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             //dto --> domain
             CreateMap<WorkflowDto, Workflow>()
                 .ForMember(w => w.Status, opt => opt.MapFrom(wd => WorkflowStatusEnum.For(wd.Status)))
-                .ForMember(w => w.Type, opt => opt.MapFrom(wd => WorkflowStatusEnum.For(wd.Type)))
+                .ForMember(w => w.Type, opt => opt.MapFrom(wd => WorkflowTypeEnum.For(wd.Type)))
                 .ForMember(w => w.Listing, opt => opt.Ignore())
                  .ForMember(w => w.Lvl, opt => opt.Ignore())
                  .ForMember(w => w.Requester, opt => opt.MapFrom(wd => wd.Requester))

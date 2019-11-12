@@ -151,8 +151,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 var query = await
                     _db.AsQueryable()
                     .Where(w => w.Listing.ListingId == listingId
-                            && (w.Status != WorkflowStatusEnum.Completed.ToString()
-                            || w.Status != WorkflowStatusEnum.Rejected.ToString()))
+                            && !(w.Status == WorkflowStatusEnum.Completed.ToString()
+                            || w.Status == WorkflowStatusEnum.Rejected.ToString()))
                     .ToListAsync();
                 if (query.Count > 0) HasPendingWorkflows = true;
             }
