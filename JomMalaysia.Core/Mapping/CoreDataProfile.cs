@@ -79,6 +79,8 @@ namespace JomMalaysia.Core.Mapping
             ;
 
             CreateMap<Merchant, MerchantVM>()
+            .ForMember(vm => vm.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
+               .ForMember(vm => vm.RegistrationName, opt => opt.MapFrom(m => m.CompanyRegistration.RegistrationName))
             ;
 
             CreateMap<Workflow, WorkflowSummaryViewModel>();
