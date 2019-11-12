@@ -46,18 +46,21 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
         public async Task<GetWorkflowResponse> GetWorkflowByIdAsync(string workflowId)
         {
-            Workflow workflow;
+            Workflow workflow = null;
             try
             {
                 var query = await
                     _db.AsQueryable()
                     .Where(W => W.WorkflowId == workflowId)
                     .FirstOrDefaultAsync();
-                workflow = _mapper.Map<Workflow>(query);
-                var temp = ListingDtoParser.Converted(_mapper, query.Listing);
-                if (temp != null)
+                if (query != null)
                 {
-                    workflow.Listing = temp;
+                    workflow = _mapper.Map<Workflow>(query);
+                    var temp = ListingDtoParser.Converted(_mapper, query.Listing);
+                    if (temp != null)
+                    {
+                        workflow.Listing = temp;
+                    }
                 }
             }
             catch (AutoMapperMappingException e)

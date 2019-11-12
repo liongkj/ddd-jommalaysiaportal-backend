@@ -16,7 +16,16 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
 
         public DateTime Created { get; set; }
 
-        public ICollection<WorkflowViewModel> HistoryData { get; set; }
+        public ICollection<WorkflowSummaryViewModel> HistoryData { get; set; }
+    }
+
+    public class WorkflowSummaryViewModel
+    {
+        public string Status { get; set; }
+        public string Level { get; set; }
+        public UserVM Responder { get; set; }
+        public string Action { get; set; }
+        public DateTime Created { get; set; }
     }
     public class UserVM
     {

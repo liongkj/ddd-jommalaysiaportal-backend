@@ -68,8 +68,22 @@ namespace JomMalaysia.Core.Mapping
 
             #endregion
 
+            #region workflow to workflowvm
+            CreateMap<Workflow, WorkflowViewModel>()
 
+            ;
 
+            CreateMap<Listing, ListingSummary>();
+
+            CreateMap<User, UserVM>()
+            ;
+
+            CreateMap<Merchant, MerchantVM>()
+            ;
+
+            CreateMap<Workflow, WorkflowSummaryViewModel>();
+
+            #endregion
         }
     }
 }

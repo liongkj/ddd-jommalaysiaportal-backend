@@ -198,18 +198,23 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                     .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
                     .ForMember(wd => wd.Type, opt => opt.MapFrom(w => w.Type.ToString()))
                     .ForMember(wd => wd.Listing, opt => opt.MapFrom(w => w.Listing))
+                    .ReverseMap()
                     ;
 
             CreateMap<Workflow, WorkflowSummaryDto>()
-            .ReverseMap()
+            .ForMember(wd => wd.Status, opt => opt.MapFrom(w => w.Status.ToString()))
+
                 ;
 
+            CreateMap<WorkflowSummaryDto, Workflow>()
+                .ForMember(w => w.Status, opt => opt.MapFrom(wd => WorkflowStatusEnum.For(wd.Status)))
+                ;
 
 
             //dto --> domain
             CreateMap<WorkflowDto, Workflow>()
-                .ForMember(w => w.Status, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowStatusEnum>(wd.Status)))
-                .ForMember(w => w.Type, opt => opt.MapFrom(wd => EnumerationBase.Parse<WorkflowTypeEnum>(wd.Type)))
+                .ForMember(w => w.Status, opt => opt.MapFrom(wd => WorkflowStatusEnum.For(wd.Status)))
+                .ForMember(w => w.Type, opt => opt.MapFrom(wd => WorkflowStatusEnum.For(wd.Type)))
                 .ForMember(w => w.Listing, opt => opt.Ignore())
                  .ForMember(w => w.Lvl, opt => opt.Ignore())
                  .ForMember(w => w.Requester, opt => opt.MapFrom(wd => wd.Requester))
@@ -277,6 +282,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             ;
 
+            CreateMap<WorkflowSummaryDto, WorkflowSummaryViewModel>();
 
             CreateMap<WorkflowMerchantSummaryDto, MerchantVM>()
             ;

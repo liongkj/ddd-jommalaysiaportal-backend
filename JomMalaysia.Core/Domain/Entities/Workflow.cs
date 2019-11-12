@@ -53,6 +53,7 @@ namespace JomMalaysia.Core.Domain.Entities
             Created = DateTime.Now;
             Lvl = parentWorkflow.Status.Id;
             Responder = responder;
+
         }
 
         public void UpdateWorkflowStatus(WorkflowStatusEnum action)
@@ -82,7 +83,8 @@ namespace JomMalaysia.Core.Domain.Entities
             if (!IsCompleted())
             {
                 Lvl++;
-                return WorkflowStatusEnum.For(Lvl);
+                Status = WorkflowStatusEnum.For(Lvl);
+                return Status;
             }
             else
             {
@@ -95,12 +97,14 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private WorkflowStatusEnum WorkflowIsRejected()
         {
-            return WorkflowStatusEnum.Rejected;
+            Status = WorkflowStatusEnum.Rejected;
+            return Status;
         }
         private WorkflowStatusEnum WorkflowHasCompleted()
         {
-            return WorkflowStatusEnum.Completed;
-            //TODO initiate change update listing
+
+            Status = WorkflowStatusEnum.Completed;
+            return Status;
         }
 
         public bool IsCompleted()

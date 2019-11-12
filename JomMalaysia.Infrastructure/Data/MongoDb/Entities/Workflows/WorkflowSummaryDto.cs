@@ -8,7 +8,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
     public class WorkflowSummaryDto
     {
         public UserDtoSummary Responder { get; set; }
-        public int Lvl { get; set; }
+        public string Status { get; set; }
         [BsonIgnoreIfNull]
         public string Comments { get; set; }
         [BsonRepresentation(BsonType.DateTime)]
