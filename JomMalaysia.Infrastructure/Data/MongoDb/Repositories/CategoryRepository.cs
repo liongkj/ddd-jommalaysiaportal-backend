@@ -91,32 +91,6 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return response;
         }
 
-        public async Task<GetCategoryResponse> GetCategoryAsync(string name)
-        {
-            List<Category> c;
-            try
-            {
-                CategoryPath cp = new CategoryPath(name, null);
-                //convert to slug
-                var querystring = cp.ToString();
-                //linq query
-                var query = await
-                    _db.AsQueryable()
-                    .Where(M => M.CategoryPath.StartsWith(querystring))
-                    .ToListAsync().ConfigureAwait(false);
-                c = _mapper.Map<List<Category>>(query);
-            }
-            catch (AutoMapperMappingException e)
-            {
-                throw e;
-            }
-            catch (Exception e)
-            {
-                return new GetCategoryResponse(new List<string> { "Category Repo Error" }, false, e.ToString());
-            }
-            var response = c == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(c, true);
-            return response;
-        }
 
 
         /// <summary>

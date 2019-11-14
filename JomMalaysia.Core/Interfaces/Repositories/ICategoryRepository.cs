@@ -15,7 +15,6 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         //Task<CreateCategoryResponse> CreateCategory(Category Category,Category Subcategory);
         Task<GetAllCategoryResponse> GetAllCategoriesAsync(int PageSize = 20, int PageNumber = 1);
         Task<GetAllCategoryResponse> GetAllCategoriesAsync(string CategoryName);
-        Task<GetCategoryResponse> GetCategoryAsync(string name);
         Task<DeleteCategoryResponse> DeleteAsync(string id);
 
         Task<GetCategoryResponse> FindByNameAsync(string name);
