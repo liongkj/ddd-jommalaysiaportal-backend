@@ -178,13 +178,15 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<Category, CategoryDto>()
                                 .ForMember(cd => cd.Id, opt => opt.MapFrom(c => c.CategoryId))
                                 .ForMember(cd => cd.ParentCategory, opt => opt.Ignore())
+                                .ForMember(cd => cd.CategoryThumbnail, opt => opt.MapFrom(c => c.CategoryThumbnail))
                                 ;
-
+            CreateMap<Image, ImageDto>()
+            .ReverseMap();
 
 
             CreateMap<CategoryDto, Category>()
                .ForMember(c => c.CategoryId, opt => opt.MapFrom(cd => cd.Id))
-               .ForMember(c => c.CategoryThumbnail, opt => opt.MapFrom(cd => new Image(cd.CategoryThumbnail.Url, cd.CategoryThumbnail.ThumbnailUrl)))
+
                 ;
             //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
             //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))

@@ -34,7 +34,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
             try
             {
-                var CategoryDto = _mapper.Map<Category, CategoryDto>(Category);
+                var CategoryDto = _mapper.Map<CategoryDto>(Category);
                 await _db.InsertOneAsync(CategoryDto).ConfigureAwait(false);
             }
             catch (AutoMapperMappingException e)

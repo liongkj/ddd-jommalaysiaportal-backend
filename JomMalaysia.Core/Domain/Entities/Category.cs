@@ -105,7 +105,6 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 throw new ArgumentNullException(nameof(updated));
             }
-            //var oldCategoryName = CategoryName;
             //1. update to new name
             UpdateName(updated);
             //2. Update image
@@ -129,8 +128,10 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private void UpdateImage(Category updated)
         {
-            if (updated.CategoryThumbnail == null) CategoryThumbnail = new Image();
-            else CategoryThumbnail = new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
+            if (updated.CategoryThumbnail == null)
+                CategoryThumbnail = new Image();
+            else
+                CategoryThumbnail = new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
         }
 
         public bool IsCategory()
