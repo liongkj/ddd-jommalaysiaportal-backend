@@ -6,7 +6,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
     public class GetCategoryByIdRequest : IUseCaseRequest<GetCategoryResponse>
     {
 
-        public string Id { get; }
+        public string CategoryId { get; set; }
 
     }
 }

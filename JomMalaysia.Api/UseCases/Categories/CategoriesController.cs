@@ -58,9 +58,13 @@ namespace JomMalaysia.Api.UseCases.Categories
         }
 
         //Get api/categories/{id}
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] GetCategoryByIdRequest req)
+        [HttpGet("{CategoryId}")]
+        public async Task<IActionResult> Get([FromRoute] string categoryId)
         {
+            var req = new GetCategoryByIdRequest
+            {
+                CategoryId = categoryId,
+            };
             try { await _getCategoryByIdUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false); }
             catch (Exception e) { throw e; }
             return _categoryPresenter.ContentResult;

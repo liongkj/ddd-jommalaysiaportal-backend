@@ -16,7 +16,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
         public async Task<bool> Handle(GetCategoryByIdRequest message, IOutputPort<GetCategoryResponse> outputPort)
         {
 
-            var response = await _CategoryRepository.FindByIdAsync(message.Id);
+            var response = await _CategoryRepository.FindByIdAsync(message.CategoryId);
             if (!response.Success)
             {
                 outputPort.Handle(new GetCategoryResponse(response.Errors));
