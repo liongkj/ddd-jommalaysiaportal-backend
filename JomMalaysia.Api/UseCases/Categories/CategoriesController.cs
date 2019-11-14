@@ -57,7 +57,7 @@ namespace JomMalaysia.Api.UseCases.Categories
             return _categoryPresenter.ContentResult;
         }
 
-        //Get api/categories/{slug}
+        //Get api/categories/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] GetCategoryByIdRequest req)
         {
