@@ -108,8 +108,9 @@ namespace JomMalaysia.Core.Domain.Entities
             //var oldCategoryName = CategoryName;
             //1. update to new name
             UpdateName(updated);
-
-            //2. create new category path
+            //2. Update image
+            UpdateImage(updated);
+            //3. create new category path
             if (IsUpdateCategoryOperation)//if update category operation
             {
                 UpdateCategory(updated);
@@ -124,7 +125,11 @@ namespace JomMalaysia.Core.Domain.Entities
             }
 
 
+        }
 
+        private void UpdateImage(Category updated)
+        {
+            CategoryThumbnail = new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
         }
 
         public bool IsCategory()
