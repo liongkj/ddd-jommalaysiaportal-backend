@@ -25,10 +25,10 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Category(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, Image image)
         {
-            CategoryCode = categoryCode;
-            CategoryName = categoryName;
-            CategoryNameMs = categoryNameMs;
-            CategoryNameZh = categoryNameZh;
+            CategoryCode = handleCode(categoryCode, CategoryName); ;
+            CategoryName = categoryName.Trim().ToLower(); ;
+            CategoryNameMs = categoryNameMs.Trim().ToLower(); ;
+            CategoryNameZh = categoryNameZh.Trim().ToLower(); ;
             CategoryThumbnail = image;
         }
 
@@ -129,7 +129,8 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private void UpdateImage(Category updated)
         {
-            CategoryThumbnail = new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
+            if (updated.CategoryThumbnail == null) CategoryThumbnail = new Image();
+            else CategoryThumbnail = new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
         }
 
         public bool IsCategory()
@@ -155,7 +156,18 @@ namespace JomMalaysia.Core.Domain.Entities
         }
 
         #region private methods
-
+        private string handleCode(string categoryCode, string categoryName)
+        {
+            if (categoryCode == null)
+            {
+                var index = categoryName.Length >= 5 ? 5 : categoryName.Length;
+                return categoryName.Substring(0, index).ToUpper();
+            }
+            else
+            {
+                return categoryCode.Trim().ToUpper();
+            }
+        }
         private void UpdateCategory(Category updated)
         {
             if (CategoryPath.Subcategory == null)

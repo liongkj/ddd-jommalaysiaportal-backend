@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 
@@ -38,6 +39,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             }
             if (Category.IsCategory())
             {
+                Category updated = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl));
                 // var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
                 var GetAllCategoriesResponse = await _CategoryRepository.GetAllCategoriesAsync(Category.CategoryName);
                 if (!GetAllCategoriesResponse.Success)
@@ -60,7 +62,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 //  = message.Updated.UpdateListings(ToBeUpdateListings);
 
                 //start update operation
-                List<Category> UpdatedCategories = OldCategory.UpdateCategory(message.Updated, ToBeUpdateCategories);
+                List<Category> UpdatedCategories = OldCategory.UpdateCategory(updated, ToBeUpdateCategories);
 
                 var response = await TransactionHasNoError(UpdatedListings, UpdatedCategories);
 
@@ -68,8 +70,6 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 return response.Success;
                 // throw new NotImplementedException();
             }
-
-
             else
             {
                 return await _updateSubcategoryUseCase.Handle(message, outputPort);

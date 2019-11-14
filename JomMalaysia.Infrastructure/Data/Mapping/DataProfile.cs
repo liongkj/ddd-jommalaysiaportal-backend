@@ -184,6 +184,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<CategoryDto, Category>()
                .ForMember(c => c.CategoryId, opt => opt.MapFrom(cd => cd.Id))
+               .ForMember(c => c.CategoryThumbnail, opt => opt.MapFrom(cd => new Image(cd.CategoryThumbnail.Url, cd.CategoryThumbnail.ThumbnailUrl)))
                 ;
             //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
             //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))

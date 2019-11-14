@@ -23,7 +23,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
             {
                 Thumbnail = new Image();
             }
-            else Thumbnail = new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl);
+            else { Thumbnail = new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl); }
             Category NewCategory = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, Thumbnail);
             if (message.ParentCategory != null) //create subcategory
             {

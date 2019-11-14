@@ -7,6 +7,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
+using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 {
@@ -25,7 +26,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
 
-            //retrieve data start
+            Category updated = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl));
             //check if any listing has this category -currently no need
             var getCategoryResponse = await _CategoryRepository.FindByIdAsync(message.CategoryId);
 
@@ -38,7 +39,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             //retrieve data end
 
             //Update Operation Start
-            ToBeUpdateSubcategory.UpdateCategory(message.Updated, null, false);
+            ToBeUpdateSubcategory.UpdateCategory(updated, null, false);
             //TODO
             var UpdatedListings = ToBeUpdateSubcategory.UpdateListings(ToBeUpdateListings, false);
             //update operation end

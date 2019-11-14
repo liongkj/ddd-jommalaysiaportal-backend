@@ -109,10 +109,9 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //PUT api/categories/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(string id, [FromBody] CategoryDto Updated)
+        public async Task<IActionResult> UpdateCategory(string id, [FromBody] UpdateCategoryRequest req)
         {
-            Category updated = _mapper.Map<Category>(Updated);
-            var req = new UpdateCategoryRequest(id, updated.CategoryCode, updated.CategoryName, updated.CategoryNameMs, updated.CategoryNameZh, updated.CategoryThumbnail);
+            req.CategoryId = id;
             await _updateCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
         }
