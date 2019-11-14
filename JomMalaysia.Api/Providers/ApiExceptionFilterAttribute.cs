@@ -39,7 +39,14 @@ namespace JomMalaysia.Api.Providers
                 return;
             }
 
-
+            if (context.Exception is NotFoundException)
+            {
+                context.HttpContext.Response.ContentType = "application/json";
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                context.Result = new JsonResult(
+                    new ExceptionResponse(((NotFoundException)context.Exception).Message));
+                return;
+            }
 
             if (context.Exception is DuplicatedException)
             {

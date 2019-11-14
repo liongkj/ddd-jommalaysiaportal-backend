@@ -17,7 +17,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<GetAllCategoryResponse> GetAllCategoriesAsync(string CategoryName);
         Task<DeleteCategoryResponse> DeleteAsync(string id);
 
-        Task<GetCategoryResponse> FindByNameAsync(string name);
+
         Task<GetCategoryResponse> FindByNameAsync(string cat, string sub);
         Task<GetCategoryResponse> FindByIdAsync(string id);
 

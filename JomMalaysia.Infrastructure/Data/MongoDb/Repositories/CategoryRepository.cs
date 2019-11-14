@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Exceptions;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
@@ -77,9 +78,16 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     _db.AsQueryable()
                     .Where(M => M.Id.Equals(CategoryId))
                     .FirstOrDefaultAsync();
+                if (query == null) throw new NotFoundException(CategoryId);
                 m = _mapper.Map<Category>(query);
+
+
             }
             catch (AutoMapperMappingException e)
+            {
+                throw e;
+            }
+            catch (NotFoundException e)
             {
                 throw e;
             }
@@ -87,7 +95,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 return new GetCategoryResponse(new List<string> { "FindByIdAsync repo error" }, false, e.ToString());
             }
-            var response = m == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(m, true);
+
+            var response = new GetCategoryResponse(m, true);
             return response;
         }
 
