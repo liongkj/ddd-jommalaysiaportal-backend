@@ -31,7 +31,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
                 return false;
             }
 
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Category, NewMerchant);
+            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Data, NewMerchant);
             #endregion
             if (NewListing is Listing && NewListing != null) //validate is Listing Type
 

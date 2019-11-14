@@ -24,7 +24,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             //generate subcategory object
             var Subcategory = await _Category.FindByNameAsync(message.Category, message.Subcategory);
             var CategoryPath = new CategoryPath(message.Category, message.Subcategory);
-            if (Subcategory.Category != null)
+            if (Subcategory.Data != null)
             {
                 //check whether listing have this category
 
@@ -39,7 +39,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
                     }
                 }
                 //if no then initiate delete subcategory repo
-                var response = await _Category.DeleteAsync(Subcategory.Category.CategoryId);
+                var response = await _Category.DeleteAsync(Subcategory.Data.CategoryId);
                 outputPort.Handle(response);
                 return response.Success;
             }

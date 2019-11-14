@@ -33,7 +33,7 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
                     outputPort.Handle(new ListingResponse(CategoryQuery.Errors, false, CategoryQuery.Message));
                     return false;
                 }
-                category = CategoryQuery.Category.CategoryPath;
+                category = CategoryQuery.Data.CategoryPath;
             }
 
             var ListingQuery = await _listingRepository.GetAllListings(category, message.Type, message.GroupBySub, message.PublishStatus);

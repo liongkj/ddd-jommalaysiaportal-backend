@@ -21,7 +21,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
             try
             {
                 var query = await _CategoryRepo.FindByIdAsync(message.Id);
-                var category = query.Category;
+                var category = query.Data;
                 if (!query.Success)//found category
                 {
                     outputPort.Handle(new DeleteCategoryResponse(message.Id, false, "Category Not Found"));

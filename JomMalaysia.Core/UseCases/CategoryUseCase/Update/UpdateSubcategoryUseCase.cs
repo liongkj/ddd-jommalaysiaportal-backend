@@ -30,7 +30,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             var getCategoryResponse = await _CategoryRepository.FindByIdAsync(message.CategoryId);
 
 
-            var ToBeUpdateSubcategory = getCategoryResponse.Category;
+            var ToBeUpdateSubcategory = getCategoryResponse.Data;
 
             //fetch listing with this subcategory
             var GetListingWithThisSubcategory = await _ListingRepository.GetAllListings(ToBeUpdateSubcategory.CategoryPath);

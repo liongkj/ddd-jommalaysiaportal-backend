@@ -21,9 +21,9 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
             {
                 outputPort.Handle(new GetCategoryResponse(response.Errors));
             }
-            if (response.Category != null)
+            if (response.Data != null)
             {
-                outputPort.Handle(new GetCategoryResponse(response.Category, true));
+                outputPort.Handle(new GetCategoryResponse(response.Data, true));
                 return response.Success;
             }
             else

@@ -28,7 +28,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
                     outputPort.Handle(new CreateCategoryResponse(new List<string> { "Category not found." }));
                     return false;
                 }
-                NewCategory.CreateCategoryPath(ParentCategoryQuery.Category.CategoryName, message.CategoryName);
+                NewCategory.CreateCategoryPath(ParentCategoryQuery.Data.CategoryName, message.CategoryName);
             }
             else
             {

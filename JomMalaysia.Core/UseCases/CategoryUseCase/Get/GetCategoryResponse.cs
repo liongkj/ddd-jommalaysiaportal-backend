@@ -8,7 +8,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
 {
     public class GetCategoryResponse : UseCaseResponseMessage
     {
-        public Category Category { get; }
+        public Category Data { get; }
         public IEnumerable<string> Errors { get; }
         public List<Category> Categories { get; }
 
@@ -19,7 +19,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
 
         public GetCategoryResponse(Category Category, bool success = false, string message = null) : base(success, message)
         {
-            this.Category = Category;
+            this.Data = Category;
         }
 
         public GetCategoryResponse(List<Category> Categories, bool success = false, string message = null) : base(success, message)

@@ -48,7 +48,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                     outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
                     return false;
                 }
-                category = FindCategoryResponse.Category;
+                category = FindCategoryResponse.Data;
                 if (category.IsCategory())
                 {
                     outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid subcategory"));

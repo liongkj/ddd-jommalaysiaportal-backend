@@ -30,7 +30,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
 
             //check if any listing has this category
             var CategoryQuery = await _CategoryRepository.FindByIdAsync(message.CategoryId);
-            var Category = CategoryQuery.Category;
+            var Category = CategoryQuery.Data;
             if (!CategoryQuery.Success)
             {
                 outputPort.Handle(new UpdateCategoryResponse(CategoryQuery.Errors, false, CategoryQuery.Message));
