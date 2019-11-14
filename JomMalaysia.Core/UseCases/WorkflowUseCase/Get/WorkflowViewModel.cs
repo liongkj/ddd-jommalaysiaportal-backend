@@ -26,6 +26,7 @@ namespace JomMalaysia.Core.UseCases.WorkflowUseCase.Get
         public UserVM Responder { get; set; }
         public string Action { get; set; }
         public DateTime Created { get; set; }
+        public string Comments { get; set; }
     }
     public class UserVM
     {

@@ -58,10 +58,9 @@ namespace JomMalaysia.Api.UseCases.Categories
         }
 
         //Get api/categories/{slug}
-        [HttpGet("{slug}")]
-        public async Task<IActionResult> Get(string slug)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute] GetCategoryByIdRequest req)
         {
-            var req = new GetCategoryByIdRequest(slug);
             try { await _getCategoryByIdUseCase.Handle(req, _categoryPresenter).ConfigureAwait(false); }
             catch (Exception e) { throw e; }
             return _categoryPresenter.ContentResult;
@@ -94,10 +93,10 @@ namespace JomMalaysia.Api.UseCases.Categories
         }
 
 
-        //DELETE api/categories/{slug}
+        //DELETE api/categories/{id}
         [HttpDelete("{id}")]
 
-        public async Task<IActionResult> Delete(DeleteCategoryRequest req)
+        public async Task<IActionResult> Delete([FromRoute]DeleteCategoryRequest req)
         {
             await _deleteCategoryUseCase.Handle(req, _categoryPresenter);
             return _categoryPresenter.ContentResult;
