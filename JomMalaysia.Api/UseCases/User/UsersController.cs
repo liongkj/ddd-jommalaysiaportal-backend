@@ -53,7 +53,7 @@ namespace JomMalaysia.Api.UseCases.User
 
         //GET api/users/
         [HttpGet]
-        [Authorize(Roles = "superadmin,manager")]
+
         public async Task<IActionResult> Get()
         {
             await _getAllUserUseCase.Handle(new GetAllUserRequest(), _userPresenter);
@@ -71,6 +71,7 @@ namespace JomMalaysia.Api.UseCases.User
 
         //POST api/users/
         [HttpPost]
+        [Authorize(Roles = "superadmin,manager")]
         public async Task<IActionResult> Post([FromBody]CreateUserRequest req)
         {
 
@@ -81,6 +82,7 @@ namespace JomMalaysia.Api.UseCases.User
 
         //DELETE api/users/{userid}
         [HttpDelete("{userid}")]
+        [Authorize(Roles = "superadmin,manager")]
         public async Task<IActionResult> Delete([FromRoute]string userid)
         {
             var req = new DeleteUserRequest(userid);
@@ -90,6 +92,7 @@ namespace JomMalaysia.Api.UseCases.User
 
 
         [HttpPatch("{userid}")]
+        [Authorize(Roles = "superadmin,manager")]
         public async Task<IActionResult> Update([FromRoute]string userid, [FromBody]UpdateUserRequest updatedUser)
         {
             updatedUser.UserId = userid;

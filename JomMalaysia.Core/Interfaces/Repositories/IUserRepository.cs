@@ -16,6 +16,6 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<GetUserResponse> GetUser(string userId);
         Task<CreateUserResponse> CreateUser(User user);
         Task<DeleteUserResponse> DeleteUser(string Userid);
-        Task<UpdateUserResponse> UpdateUser(string userId, Tuple<List<string>, bool> updatedUserRole);
+        Task<UpdateUserResponse> UpdateUser(string userId, string oldRole, string newRole);
     }
 }

@@ -204,43 +204,41 @@ namespace JomMalaysia.Infrastructure.Auth0
         //    return (deserializedJson.access_token != null) ? deserializedJson.access_token : null;
         //}
 
-        public async Task<UpdateUserResponse> UpdateUser(string userId, Tuple<List<string>, bool> updatedUserRole)
+        public async Task<UpdateUserResponse> UpdateUser(string userId, string oldRole, string newRole)
         {
             var roleIds = await RoleIds();
+            string accessToken = await _tokenManager.GetAccessToken();
             var client = new RestClient($"{_appSetting.AuthorizationApi}/users/{userId}/roles");
 
             IRestResponse response;
-            string accessToken = await _tokenManager.GetAccessToken();
+
             if (roleIds != null)
             {
-                if (updatedUserRole.Item2)//is delete operation remove roles
+                if (oldRole != null)
                 {
-                    var ToDelete = updatedUserRole.Item1;
-                    var filtered = roleIds.Where(x => ToDelete.Equals(x.name.ToLower()));
+                    var ToDelete = roleIds.Where(x => oldRole.Equals(x.name.ToLower()));
                     var DeleteRequest = new RestRequest(userId, Method.DELETE, DataFormat.Json);
                     DeleteRequest.AddHeader("content-type", "application/json");
-                    DeleteRequest.AddJsonBody(filtered);
+                    DeleteRequest.AddJsonBody(ToDelete);
                     DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
                     response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
                 }
-                else
-                {
-                    var ToAdd = updatedUserRole.Item1;
-                    var filtered = roleIds
-                        .Where(x => ToAdd.Contains(x.name.ToLower()))
-                        .Select(x => x._id)
-                        .ToArray();
 
-                    //.Select(x => x.Item1.Where(updatedUserRole.Item1.Contains(x.Item2.ToLower())));
-                    //.Where(x => updatedUserRole.Item1.Contains(x.Item2.ToLower()));
-                    var PatchRequest = new RestRequest(Method.PATCH);
-                    PatchRequest.AddHeader("content-type", "application/json");
-                    PatchRequest.AddHeader("authorization", "Bearer " + accessToken);
-                    PatchRequest.AddJsonBody(filtered);
-                    response = await client.ExecuteTaskAsync(PatchRequest, new CancellationTokenSource().Token);
-                }
+                var ToAdd = roleIds
+                    .Where(x => newRole.Contains(x.name.ToLower()))
+                    .Select(x => x._id)
+                    .ToArray();
+
+                //.Select(x => x.Item1.Where(updatedUserRole.Item1.Contains(x.Item2.ToLower())));
+                //.Where(x => updatedUserRole.Item1.Contains(x.Item2.ToLower()));
+                var PatchRequest = new RestRequest(Method.PATCH);
+                PatchRequest.AddHeader("content-type", "application/json");
+                PatchRequest.AddHeader("authorization", "Bearer " + accessToken);
+                PatchRequest.AddJsonBody(ToAdd);
+                response = await client.ExecuteTaskAsync(PatchRequest, new CancellationTokenSource().Token);
+
                 var UpdateUserResponse = (response.StatusCode == HttpStatusCode.NoContent) ?
-                  new UpdateUserResponse("User Updated to " + updatedUserRole.Item1.Last(), response.IsSuccessful) : //success
+                  new UpdateUserResponse("User Updated to " + newRole, response.IsSuccessful) : //success
                  new UpdateUserResponse(response.Content, response.IsSuccessful);
                 return UpdateUserResponse;
             }

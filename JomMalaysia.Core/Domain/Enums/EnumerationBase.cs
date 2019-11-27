@@ -18,7 +18,7 @@ namespace JomMalaysia.Core.Domain.Enums
             Name = name;
         }
 
-        public override string ToString() => Name;
+        public override string ToString() => Name.ToLower();
 
         public static T Parse<T>(string name) where T : EnumerationBase
         {

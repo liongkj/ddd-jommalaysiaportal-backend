@@ -24,14 +24,14 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Update
                 return false;
             }
             var OldUser = getUserResponse.User;
-            var updatedUserRole = OldUser.UpdateRole(message.Role);
-            if (updatedUserRole == null)
-            {
-                outputPort.Handle(new UpdateUserResponse(new List<string> { "Role not found / Role is not updated" }, false));
+            // var updatedUserRole = OldUser.UpdateRole(message.Role);
+            // if (updatedUserRole == null)
+            // {
+            //     outputPort.Handle(new UpdateUserResponse(new List<string> { "Role not found / Role is not updated" }, false));
 
-                return false;
-            }
-            var UpdateUserResponse = await _userRepository.UpdateUser(message.UserId, updatedUserRole);
+            //     return false;
+            // }
+            var UpdateUserResponse = await _userRepository.UpdateUser(message.UserId, OldUser.Role.ToString(), message.Role);
             // OldUser.UpdateUser();
             outputPort.Handle(UpdateUserResponse);
 

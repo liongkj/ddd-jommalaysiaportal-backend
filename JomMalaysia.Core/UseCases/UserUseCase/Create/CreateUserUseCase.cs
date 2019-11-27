@@ -26,11 +26,11 @@ namespace JomMalaysia.Core.UseCases.UserUseCase.Create
             try
             {
                 User NewUser = new User(message.Username, message.Name, message.Email);
-                var updateRole = NewUser.AssignRole(message.Role);
+
                 var createUserResponse = await _userRepository.CreateUser(NewUser);
                 if (createUserResponse.Success)
                 {
-                    var response = await _userRepository.UpdateUser(createUserResponse.UserId, updateRole);
+                    var response = await _userRepository.UpdateUser(createUserResponse.UserId, null, message.Role.ToLower());
                     if (!response.Success)
                     {
                         await _userRepository.DeleteUser(createUserResponse.UserId); //rollback
