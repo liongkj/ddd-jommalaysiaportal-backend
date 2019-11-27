@@ -71,7 +71,7 @@ namespace JomMalaysia.Core.Domain.Entities
             if (Role != null)//user has role -> get list of to be delete roles
             {
                 var OldIndex = roles.IndexOf(Role.Name.ToLower());
-                // if (OldIndex == NewIndex) return null;
+                if (OldIndex == NewIndex) return Tuple.Create(roles, DeleteOperation);
                 if (OldIndex > NewIndex)
                 {//lower rank, delete{
                     roles.RemoveRange(0, NewIndex + 1);
