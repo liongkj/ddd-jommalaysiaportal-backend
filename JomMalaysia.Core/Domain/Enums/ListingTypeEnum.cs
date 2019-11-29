@@ -6,11 +6,12 @@ namespace JomMalaysia.Core.Domain.Enums
 {
     public class ListingTypeEnum : EnumerationBase
     {
-        public static ListingTypeEnum Local = new ListingTypeEnum(1, nameof(Local).ToLowerInvariant());
-        public static ListingTypeEnum Civic = new ListingTypeEnum(2, nameof(Civic).ToLowerInvariant());
-        public static ListingTypeEnum Event = new ListingTypeEnum(3, nameof(Event).ToLowerInvariant());
-        public static ListingTypeEnum Gover = new ListingTypeEnum(4, nameof(Gover).ToLowerInvariant());
-
+        public static  ListingTypeEnum PrivateSector = new ListingTypeEnum(1, nameof(PrivateSector).ToLowerInvariant());
+        public static ListingTypeEnum ProfessionalService = new ListingTypeEnum(2, nameof(ProfessionalService).ToLowerInvariant());
+        public static ListingTypeEnum GovernmentOrg = new ListingTypeEnum(3, nameof(GovernmentOrg).ToLowerInvariant());
+        public static ListingTypeEnum NonProfitOrg = new ListingTypeEnum(4, nameof(NonProfitOrg).ToLowerInvariant());
+        public static ListingTypeEnum Attraction = new ListingTypeEnum(4, nameof(Attraction).ToLowerInvariant());
+        
         public ListingTypeEnum(int id, string name) : base(id, name)
         {
 
@@ -18,7 +19,6 @@ namespace JomMalaysia.Core.Domain.Enums
 
         public static ListingTypeEnum For(string enumstring)
         {
-
             return Parse<ListingTypeEnum>(enumstring);
         }
     }

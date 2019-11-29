@@ -21,22 +21,18 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
             // .NotEmpty()
             // .SetValidator(new AddressValidator());
             RuleFor(l => l.ListingType).NotEmpty();
-            RuleFor(l => l.CategoryId).NotEmpty().NotNull().
-                When(HasCategory).WithMessage("Please select a valid category for this listing type");
+            RuleFor(l => l.CategoryId).NotEmpty().NotNull()
+                .WithMessage("Please select a valid category for this listing type");
 
             //if listing type is event must have eventdate
-            RuleFor(req => req.EventStartDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
-            RuleFor(req => req.EventEndDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
+//            RuleFor(req => req.EventStartDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid start date for event type listing");
+//            RuleFor(req => req.EventEndDateTime).NotEmpty().NotNull().When(m => m.ListingType.Equals(ListingTypeEnum.Event.ToString())).WithMessage("Please enter a valid end date for event type listing"); ;
 
 
             RuleFor(p => p.MerchantId).NotEmpty().NotNull().WithMessage("Please select a valid merchant");
 
         }
-        protected bool HasCategory(CoreListingRequest x)
-        {
-            return (x.ListingType.Equals(ListingTypeEnum.Local.ToString())
-                    || x.ListingType.Equals(ListingTypeEnum.Event.ToString()));
-        }
+       
 
     }
 }

@@ -12,10 +12,10 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
-using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Infrastructure.Helpers;
 
 public class ListingRepository : IListingRepository
 {

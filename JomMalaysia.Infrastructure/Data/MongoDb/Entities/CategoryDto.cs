@@ -24,6 +24,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities
         [BsonIgnoreIfNull]
         public string ParentCategory { get; set; }
         public string CategoryPath { get; set; }
+        public string CategoryType { get; set; }
         public ImageDto CategoryThumbnail { get; set; }
 
 

@@ -8,6 +8,7 @@ using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Core.UseCases.CategoryUseCase.Update;
 
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update

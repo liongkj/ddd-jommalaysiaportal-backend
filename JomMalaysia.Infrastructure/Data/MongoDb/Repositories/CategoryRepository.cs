@@ -80,8 +80,6 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     .FirstOrDefaultAsync();
                 if (query == null) throw new NotFoundException(CategoryId);
                 m = _mapper.Map<Category>(query);
-
-
             }
             catch (AutoMapperMappingException e)
             {

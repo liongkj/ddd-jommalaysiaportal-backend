@@ -7,6 +7,9 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using System.Collections.Generic;
+using JomMalaysia.Core.Domain.Entities.Listings.Attractions;
+using JomMalaysia.Core.Domain.Entities.Listings.Governments;
+using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
 using JomMalaysia.Infrastructure.Auth0.Entities;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 
@@ -72,26 +75,25 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
+                .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
                 .IncludeAllDerived()
 
                 ;
 
+            CreateMap<PrivateSector, ListingDto>()
+            .IncludeBase<Listing, ListingDto>();
 
+            CreateMap<GovernmentOrg, ListingDto>()
+                .IncludeBase<Listing, ListingDto>();
 
-            CreateMap<EventListing, ListingDto>()
-            .IncludeBase<Listing, ListingDto>()
-            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
-                    ;
-
-            CreateMap<LocalListing, ListingDto>()
-            .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
-            .IncludeBase<Listing, ListingDto>()
-                ;
-
-            CreateMap<AdministrativeListing, ListingDto>()
-                       .IncludeBase<Listing, ListingDto>()
-
-                               ;
+            CreateMap<NonProfitOrg, ListingDto>()
+                       .IncludeBase<Listing, ListingDto>();
+            
+            CreateMap<Attraction, ListingDto>()
+                .IncludeBase<Listing, ListingDto>();
+            
+            CreateMap<ProfessionalService, ListingDto>()
+                .IncludeBase<Listing, ListingDto>();
 
             //dto->domain
             //mapping parent class
@@ -105,28 +107,25 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .ForMember(l => l.OperatingHours, opt => opt.MapFrom(ld => ld.OperatingHours))
                         .ForMember(l => l.CreatedAt, opt => opt.MapFrom(ld => ld.CreatedAt.ToLocalTime()))
                         .ForMember(l => l.ModifiedAt, opt => opt.MapFrom(ld => ld.ModifiedAt.ToLocalTime()))
+                        .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
                         .IncludeAllDerived()
                            ;
             //map to derived class, need to add new mapping with child properties here
-            CreateMap<ListingDto, EventListing>()
-                    .ForMember(e => e.EventStartDateTime, opt => opt.MapFrom(ld => ld.EventStartDateTime.ToLocalTime()))
-                    .ForMember(e => e.EventEndDateTime, opt => opt.MapFrom(ld => ld.EventEndDateTime.ToLocalTime()))
-                    .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
-                    .IncludeBase<ListingDto, Listing>()
+           
+            CreateMap<ListingDto, PrivateSector>()
+                .IncludeBase<ListingDto, Listing>();
 
-                    ;
+            CreateMap<ListingDto, GovernmentOrg>()
+                .IncludeBase<ListingDto, Listing>() ;
 
-            CreateMap<ListingDto, LocalListing>()
-                .IncludeBase<ListingDto, Listing>()
-                .ForMember(l => l.Category, opt => opt.MapFrom(ld => ld.Category))
-
-                ;
-
-            CreateMap<ListingDto, AdministrativeListing>()
-
-                .IncludeBase<ListingDto, Listing>()
-            ;
-
+            CreateMap<ListingDto, NonProfitOrg>()
+                .IncludeBase<ListingDto, Listing>() ;
+            
+            CreateMap<ListingDto, Attraction>()
+                .IncludeBase<ListingDto, Listing>() ;
+            
+            CreateMap<ListingDto, ProfessionalService>()
+                .IncludeBase<ListingDto, Listing>() ;
             #endregion
 
             #region map publish status
@@ -234,10 +233,11 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                        ;
 
 
-
-            CreateMap<EventListing, ListingSummaryDto>();
-            CreateMap<LocalListing, ListingSummaryDto>();
-            CreateMap<AdministrativeListing, ListingSummaryDto>();
+            CreateMap<PrivateSector, ListingSummaryDto>().ReverseMap();
+            CreateMap<ProfessionalService, ListingSummaryDto>().ReverseMap();
+            CreateMap<GovernmentOrg, ListingSummaryDto>().ReverseMap();
+            CreateMap<NonProfitOrg, ListingSummaryDto>().ReverseMap();
+            CreateMap<Attraction, ListingSummaryDto>().ReverseMap();
 
             CreateMap<Merchant, WorkflowMerchantSummaryDto>()
                .ForMember(md => md.SsmId, opt => opt.MapFrom(m => m.CompanyRegistration.SsmId))
@@ -254,12 +254,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
                         ;
 
-            CreateMap<ListingSummaryDto, EventListing>()
-                        ;
-
-            CreateMap<ListingSummaryDto, LocalListing>();
-            CreateMap<ListingSummaryDto, AdministrativeListing>();
-
+           
             CreateMap<ListingStatusEnum, PublishStatus>()
                     ;
 

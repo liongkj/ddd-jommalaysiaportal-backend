@@ -1,10 +1,12 @@
 using System;
 using AutoMapper;
-using JomMalaysia.Core.Domain.Enums;
-using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.Domain.Entities.Listings.Attractions;
+using JomMalaysia.Core.Domain.Entities.Listings.Governments;
+using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
+using JomMalaysia.Core.Domain.Enums;
 
-namespace JomMalaysia.Infrastructure.Data.MongoDb.Helpers
+namespace JomMalaysia.Infrastructure.Helpers
 {
     public static class ListingDtoParser
     {
@@ -13,42 +15,59 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Helpers
             var type = GetListingTypeHelper(list);
             if (list != null)
             {
-                if (type.Equals(typeof(EventListing)))
+                if (type == typeof(PrivateSector))
                 {
-                    var i = mapper.Map<EventListing>(list);
+                    var i = mapper.Map<PrivateSector>(list);
 
                     return i;
                 }
 
-                if (type.Equals(typeof(LocalListing)))
+                if (type == typeof(ProfessionalService))
                 {
-                    var i = mapper.Map<LocalListing>(list);
+                    var i = mapper.Map<ProfessionalService>(list);
                     return i;
                 }
-                if (type.Equals(typeof(AdministrativeListing)))
+                if (type == typeof(GovernmentOrg))
                 {
-                    var i = mapper.Map<AdministrativeListing>(list);
+                    var i = mapper.Map<GovernmentOrg>(list);
+                    return i;
+                }
+                if (type == typeof(NonProfitOrg))
+                {
+                    var i = mapper.Map<NonProfitOrg>(list);
+                    return i;
+                }
+                if (type == typeof(Attraction))
+                {
+                    var i = mapper.Map<Attraction>(list);
                     return i;
                 }
             }
             return null;
         }
 
-        public static Type GetListingTypeHelper(IListingDto list)
+        private static Type GetListingTypeHelper(IListingDto list)
         {
-            if (list.ListingType == ListingTypeEnum.Event.ToString())
+            if (list.ListingType == ListingTypeEnum.Attraction.ToString())
             {
-                return typeof(EventListing);
-
+                return typeof(Attraction);
             }
-            if (list.ListingType == ListingTypeEnum.Local.ToString())
+            if (list.ListingType == ListingTypeEnum.ProfessionalService.ToString())
             {
-                return typeof(LocalListing);
+                return typeof(ProfessionalService);
             }
 
-            if (list.ListingType == ListingTypeEnum.Gover.ToString())
+            if (list.ListingType == ListingTypeEnum.GovernmentOrg.ToString())
             {
-                return typeof(AdministrativeListing);
+                return typeof(GovernmentOrg);
+            }
+            if (list.ListingType == ListingTypeEnum.NonProfitOrg.ToString())
+            {
+                return typeof(NonProfitOrg);
+            }
+            if (list.ListingType == ListingTypeEnum.PrivateSector.ToString())
+            {
+                return typeof(PrivateSector);
             }
             throw new ArgumentException("Error taking listing info from database ");
 

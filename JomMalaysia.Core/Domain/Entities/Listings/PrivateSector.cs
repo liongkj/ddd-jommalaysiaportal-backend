@@ -9,23 +9,20 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 namespace JomMalaysia.Core.Domain.Entities.Listings
 {
     //https://www.dofactory.com/net/factory-method-design-pattern
-    public sealed class CivicListing : Listing
+    public sealed class PrivateSector : Listing
     {
-        private CoreListingRequest listing;
-
-        public CivicListing()
+        public PrivateSector()
         {
 
         }
 
-        public CivicListing(CoreListingRequest listing, Address address, Merchant merchant)
+        public PrivateSector(CoreListingRequest listing, Address address, Merchant merchant)
         {
-            this.listing = listing;
             Address = address;
             Merchant = merchant;
         }
 
-        public CivicListing(CoreListingRequest listing, Category category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.Event, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public PrivateSector(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, ListingTypeEnum.PrivateSector,  category, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
             OpeningHoursStart = listing.EventStartDateTime;
             OpeningHoursEnd = listing.EventEndDateTime;

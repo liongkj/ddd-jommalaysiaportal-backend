@@ -1,6 +1,8 @@
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.Domain.Entities.Listings.Governments;
+using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
@@ -24,17 +26,16 @@ namespace JomMalaysia.Core.Mapping
                 .ForMember(vm => vm.ListingAddress, opt => opt.MapFrom(l => l.Address))
                 .IncludeAllDerived()
             ;
-
-            CreateMap<EventListing, ListingViewModel>()
-                .ForMember(vm => vm.EventStartDateTime, opt => opt.MapFrom(l => l.EventStartDateTime))
-                .ForMember(vm => vm.EventEndDateTime, opt => opt.MapFrom(l => l.EventEndDateTime))
-                .IncludeBase<Listing, ListingViewModel>()
-            ;
-
-            CreateMap<LocalListing, ListingViewModel>()
-           .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
-           .IncludeBase<Listing, ListingViewModel>()
-               ;
+            CreateMap<ProfessionalService, ListingViewModel>()
+                .IncludeBase<Listing, ListingViewModel>();
+            CreateMap<PrivateSector, ListingViewModel>()
+                .IncludeBase<Listing, ListingViewModel>(); 
+            CreateMap<NonProfitOrg, ListingViewModel>()
+                .IncludeBase<Listing, ListingViewModel>();
+            CreateMap<GovernmentOrg, ListingViewModel>()
+                .IncludeBase<Listing, ListingViewModel>();
+            CreateMap<PrivateSector, ListingViewModel>()
+                .IncludeBase<Listing, ListingViewModel>();
 
             CreateMap<Merchant, MerchantViewModel>()
                 .ForMember(vm => vm.SsmId, opt => opt.MapFrom(l => l.CompanyRegistration.SsmId))

@@ -5,55 +5,54 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 
-namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
+namespace JomMalaysia.Core.UseCases.CategoryUseCase.Create
 {
     public class CreateCategoryUseCase : ICreateCategoryUseCase
     {
-        private readonly ICategoryRepository _CategoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CreateCategoryUseCase(ICategoryRepository CategoryRepository)
+        public CreateCategoryUseCase(ICategoryRepository categoryRepository)
         {
-            _CategoryRepository = CategoryRepository;
+            _categoryRepository = categoryRepository;
         }
         public async Task<bool> Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
             Image Thumbnail;
-            if (string.IsNullOrEmpty(message.CategoryImageUrl))
-            {
-                Thumbnail = new Image();
-            }
-            else { Thumbnail = new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl); }
-            Category NewCategory = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, Thumbnail);
+            Thumbnail = string.IsNullOrEmpty(message.CategoryImageUrl) ? 
+                new Image() : //default image
+                new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl);
+            Category newCategory = new Category(message.CategoryType,message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, Thumbnail);
             if (message.ParentCategory != null) //create subcategory
             {
-                var ParentCategoryQuery = await _CategoryRepository.FindByIdAsync(message.ParentCategory);
-                if (!ParentCategoryQuery.Success)
+                var parentCategoryQuery = await _categoryRepository.FindByIdAsync(message.ParentCategory);
+                if (!parentCategoryQuery.Success)
                 {
                     outputPort.Handle(new CreateCategoryResponse(new List<string> { "Category not found." }));
                     return false;
                 }
-                NewCategory.CreateCategoryPath(ParentCategoryQuery.Data.CategoryName, message.CategoryName);
+                newCategory.CreateCategoryPath(parentCategoryQuery.Data.CategoryName, message.CategoryName);
             }
             else
             {
-                NewCategory.CreateCategoryPath(null, message.CategoryName);
+                newCategory.CreateCategoryPath(null, message.CategoryName);
             }
             //Get all check unique
             try
             {
                 //find existing category name
-                var queries = await _CategoryRepository.GetAllCategoriesAsync().ConfigureAwait(false);
+                var queries = await _categoryRepository.GetAllCategoriesAsync().ConfigureAwait(false);
 
 
-                if (NewCategory.HasDuplicate(queries.Data))
+                if (newCategory.HasDuplicate(queries.Data))
                 {//has duplicates
                     outputPort.Handle(new CreateCategoryResponse(new List<string> { "Duplicated Category Name" }));
                     return false;
                 }
                 else
                 {//no duplicate, proceed to add to database
-                    var response = await _CategoryRepository.CreateCategoryAsync(NewCategory);
+                    var response = await _categoryRepository.CreateCategoryAsync(newCategory);
                     outputPort.Handle(response);
                     return response.Success;
                 }

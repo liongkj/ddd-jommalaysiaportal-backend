@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using JomMalaysia.Core.Domain.Entities;
+using JomMalaysia.Core.Domain.Entities.Listings.Governments;
+using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
@@ -25,11 +28,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public AddressRequest Address { get; set; }
         public List<StoreTimesRequest> OperatingHours { get; set; }
 
-
+        public List<Service> ProvidedServices { get; set; }
+        public List<GovDepartment> Departments { get; set; }
         public ListingImages ImageUris { get; set; }
         public DateTime EventStartDateTime { get; set; }
         public DateTime EventEndDateTime { get; set; }
 
 
     }
+
+  
 }

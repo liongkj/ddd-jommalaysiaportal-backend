@@ -1,6 +1,7 @@
 ﻿
 
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.CategoryUseCase.Create;
 
 namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
 {

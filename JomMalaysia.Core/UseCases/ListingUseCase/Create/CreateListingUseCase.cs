@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
-using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
@@ -30,11 +29,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
         }
         public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
         {
-            ///find merchant and add to merchant
-            var FindMerchantResponse = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
-            if (!FindMerchantResponse.Success) //merchant not found
+            var findMerchantResponse = await _merchantRepository.FindByIdAsync(message.MerchantId).ConfigureAwait(false);
+            if (!findMerchantResponse.Success) //merchant not found
             {
-                outputPort.Handle(new CoreListingResponse(FindMerchantResponse.Errors, false, FindMerchantResponse.Message));
+                outputPort.Handle(new CoreListingResponse(findMerchantResponse.Errors, false, findMerchantResponse.Message));
                 return false;
             }
 
@@ -42,13 +40,13 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             Category category = null;
             if (!string.IsNullOrWhiteSpace(message.CategoryId))
             {
-                var FindCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
-                if (!FindCategoryResponse.Success)
+                var findCategoryResponse = await _categoryRepository.FindByIdAsync(message.CategoryId).ConfigureAwait(false);
+                if (!findCategoryResponse.Success)
                 {
-                    outputPort.Handle(new CoreListingResponse(FindCategoryResponse.Errors, false, FindCategoryResponse.Message));
+                    outputPort.Handle(new CoreListingResponse(findCategoryResponse.Errors, false, findCategoryResponse.Message));
                     return false;
                 }
-                category = FindCategoryResponse.Data;
+                category = findCategoryResponse.Data;
                 if (category.IsCategory())
                 {
                     outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid subcategory"));
@@ -56,43 +54,39 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 }
             }
 
-            var ListingType = ListingTypeEnum.For(message.ListingType);
-            if (ListingType == null)
+            var listingType = ListingTypeEnum.For(message.ListingType);
+            if (listingType == null)
             {
                 outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid listing type"));
                 return false;
             }
             //create listing factory pattern
-            var NewListing = ListingFactory.CreateListing(ListingType, message, category, FindMerchantResponse.Data);
-            if (NewListing is Listing && NewListing != null) //validate is Listing Type
+            var newListing = ListingFactory.CreateListing(listingType, message, category, findMerchantResponse.Data);
+            if (newListing != null) //validate is Listing Type
             {
                 //start transaction
                 using (var session = await _transaction.StartSession())
                 {
                     try
                     {
-                        var MerchantUser = FindMerchantResponse.Data;
+                        var merchantUser = findMerchantResponse.Data;
                         session.StartTransaction();
 
                         //create Listing command
-                        var listing = await _listingRepository.CreateListingAsync(NewListing, session).ConfigureAwait(false);
-                        NewListing.ListingId = listing.Id;//retrieve the created listing Id and add into merchant
-                        MerchantUser.AddNewListing(NewListing);
+                        var listing = await _listingRepository.CreateListingAsync(newListing, session).ConfigureAwait(false);
+                        newListing.ListingId = listing.Id;//retrieve the created listing Id and add into merchant
+                        merchantUser.AddNewListing(newListing);
                         //update merchant command
-                        var UpdateMerchantCommand = await _merchantRepository.UpdateMerchantAsyncWithSession(MerchantUser.MerchantId, MerchantUser, session).ConfigureAwait(false);
-                        if (UpdateMerchantCommand.Success)
+                        var updateMerchantCommand = await _merchantRepository.UpdateMerchantAsyncWithSession(merchantUser.MerchantId, merchantUser, session).ConfigureAwait(false);
+                        if (updateMerchantCommand.Success)
                         {
                             await session.CommitTransactionAsync();
                             outputPort.Handle(new CoreListingResponse(listing.Id + " Listing Created Successfully", true));
                             return true;
                         }
-                        else
-                        {
-                            outputPort.Handle(new CoreListingResponse(UpdateMerchantCommand.Errors, UpdateMerchantCommand.Success, UpdateMerchantCommand.Message));
-                            return false;
-                        }
-                        // outputPort.Handle(new CreateListingResponse(listing.Id, true, $"{ GetType().Name } failed"));
-                        // return false;
+                        outputPort.Handle(new CoreListingResponse(updateMerchantCommand.Errors, updateMerchantCommand.Success, updateMerchantCommand.Message));
+                        return false;
+                        
                     }
                     catch (Exception e)
                     {

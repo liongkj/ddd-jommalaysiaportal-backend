@@ -1,10 +1,7 @@
-
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 
-
-namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
+namespace JomMalaysia.Core.UseCases.CategoryUseCase.Update
 {
     public class UpdateCategoryRequest : IUseCaseRequest<UpdateCategoryResponse>
     {

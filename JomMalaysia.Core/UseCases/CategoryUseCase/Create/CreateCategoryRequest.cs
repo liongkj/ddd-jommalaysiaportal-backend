@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
+﻿using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 
-namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
+namespace JomMalaysia.Core.UseCases.CategoryUseCase.Create
 {
     public class CreateCategoryRequest : IUseCaseRequest<CreateCategoryResponse>
     {
@@ -15,6 +13,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Create
         public string ParentCategory { get; set; }
         public string CategoryImageUrl { get; set; }
         public string CategoryThumbnailUrl { get; set; }
+        public CategoryType CategoryType { get; set; }
 
 
     }

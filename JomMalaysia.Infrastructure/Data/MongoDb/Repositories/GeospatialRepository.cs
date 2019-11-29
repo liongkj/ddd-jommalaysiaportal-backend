@@ -8,10 +8,10 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.MobileUseCases;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
-using JomMalaysia.Infrastructure.Data.MongoDb.Helpers;
 using MongoDB.Driver;
 
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Infrastructure.Helpers;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {

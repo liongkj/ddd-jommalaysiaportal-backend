@@ -1,8 +1,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Core.Domain.Entities
@@ -14,6 +16,7 @@ namespace JomMalaysia.Core.Domain.Entities
         public string CategoryName { get; set; }
         public string CategoryNameMs { get; set; }
         public string CategoryNameZh { get; set; }
+        public CategoryType CategoryType { get; set; }
         public CategoryPath CategoryPath { get; set; }
         public Image CategoryThumbnail { get; set; }
 
@@ -23,13 +26,24 @@ namespace JomMalaysia.Core.Domain.Entities
         }
 
 
+        public Category(CategoryType categoryType, string categoryCode, string categoryName, string categoryNameMs,
+            string categoryNameZh, Image image)
+        {
+            CategoryType = categoryType;
+            CategoryCode = HandleCode(categoryCode, CategoryName); ;
+            CategoryName = categoryName.Trim().ToLower(); 
+            CategoryNameMs = categoryNameMs.Trim().ToLower(); 
+            CategoryNameZh = categoryNameZh.Trim().ToLower(); 
+            CategoryThumbnail = image;
+        }
+
         public Category(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, Image image)
         {
-            CategoryCode = handleCode(categoryCode, CategoryName); ;
-            CategoryName = categoryName.Trim().ToLower(); ;
-            CategoryNameMs = categoryNameMs.Trim().ToLower(); ;
-            CategoryNameZh = categoryNameZh.Trim().ToLower(); ;
-            CategoryThumbnail = image;
+            CategoryCode = HandleCode(categoryCode, CategoryName); 
+                        CategoryName = categoryName.Trim().ToLower(); 
+                        CategoryNameMs = categoryNameMs.Trim().ToLower(); 
+                        CategoryNameZh = categoryNameZh.Trim().ToLower(); 
+                        CategoryThumbnail = image;
         }
 
         public bool HasSubcategories(List<Category> subcategories)
@@ -39,23 +53,12 @@ namespace JomMalaysia.Core.Domain.Entities
             {
                 return subcategories.Count > 0;
             }
-
             return false;
         }
 
         public bool HasDuplicate(List<Category> categories)
         {
-            if (categories != null)
-            {
-                foreach (var c in categories)
-                {
-                    if (c.CategoryPath.Equals(CategoryPath))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return categories != null && categories.Any(c => c.CategoryPath.Equals(CategoryPath));
         }
 
 
@@ -79,28 +82,21 @@ namespace JomMalaysia.Core.Domain.Entities
 
         public Dictionary<string, string> UpdateListings(List<Listing> toBeUpdateListings, bool IsUpdateCategoryOperation)
         {
-            Dictionary<string, string> UpdatedListings = new Dictionary<string, string>();
+            Dictionary<string, string> updatedListings = new Dictionary<string, string>();
             foreach (var listing in toBeUpdateListings)
             {
-                var converted = (IWithCategory)listing;
                 CategoryPath cp;
-                if (IsUpdateCategoryOperation)
-                {
-                    cp = new CategoryPath(this.CategoryName, converted.Category.Subcategory);
-
-                }
-                else
-                {
-                    cp = new CategoryPath(converted.Category.Category, this.CategoryName);
-                }
-                UpdatedListings.Add(converted.ListingId, cp.ToString());
+                cp = IsUpdateCategoryOperation ? 
+                    new CategoryPath(CategoryName, listing.Category.Subcategory) 
+                    : new CategoryPath(listing.Category.Category, CategoryName);
+                updatedListings.Add(listing.ListingId, cp.ToString());
             }
-            return UpdatedListings;
+            return updatedListings;
         }
 
         public List<Category> UpdateCategory(Category updated, List<Category> ToBeUpdate = null, bool IsUpdateCategoryOperation = true)
         {
-            List<Category> UpdatedCategories = new List<Category>();
+            List<Category> updatedCategories = new List<Category>();
             if (updated == null)
             {
                 throw new ArgumentNullException(nameof(updated));
@@ -113,51 +109,38 @@ namespace JomMalaysia.Core.Domain.Entities
             if (IsUpdateCategoryOperation)//if update category operation
             {
                 UpdateCategory(updated);
-                UpdatedCategories.Add(this);
-                UpdatedCategories.AddRange(UpdateSubcategories(ToBeUpdate, this));
-                return UpdatedCategories;
+                updatedCategories.Add(this);
+                updatedCategories.AddRange(UpdateSubcategories(ToBeUpdate, this));
+                return updatedCategories;
             }
-            else //IsupdateSubcategoryOperation
-            {
-                UpdateSubcategory(updated);
-                return null;
-            }
-
-
+            UpdateSubcategory(updated);
+            return null;
         }
 
         private void UpdateImage(Category updated)
         {
-            if (updated.CategoryThumbnail == null)
-                CategoryThumbnail = new Image();
-            else
-                CategoryThumbnail = new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
+            CategoryThumbnail = updated.CategoryThumbnail == null ? new Image() : new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
         }
 
         public bool IsCategory()
         {
             return CategoryPath.Subcategory == null;
         }
-
-
-        private List<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
-        {
-            if (subcategories.Count > 0)
-            {
-                List<Category> UpdatedSubs = new List<Category>();
-                foreach (var sub in subcategories)
-                {
-                    sub.CreateCategoryPath(Updated.CategoryPath.Category, sub.CategoryPath.Subcategory, false);
-                    UpdatedSubs.Add(sub);
-                }
-
-                return UpdatedSubs;
-            }
-            return subcategories;
-        }
-
+        
         #region private methods
-        private string handleCode(string categoryCode, string categoryName)
+        private static IEnumerable<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
+        {
+            if (subcategories.Count <= 0) return subcategories;
+            var updatedSubs = new List<Category>();
+            foreach (var sub in subcategories)
+            {
+                sub.CreateCategoryPath(Updated.CategoryPath.Category, sub.CategoryPath.Subcategory, false);
+                updatedSubs.Add(sub);
+            }
+            return updatedSubs;
+        }
+        
+        private static string HandleCode(string categoryCode, string categoryName)
         {
             if (categoryCode == null)
             {
@@ -190,10 +173,7 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private void CreateSubPath(string category, string sub)
         {
-
             CategoryPath = new CategoryPath(category, sub);
-
-
         }
 
 
@@ -201,7 +181,6 @@ namespace JomMalaysia.Core.Domain.Entities
         private void UpdateName(Category updated)
         {
             CategoryCode = updated.CategoryCode;
-
             CategoryName = updated.CategoryName;
             CategoryNameMs = updated.CategoryNameMs;
             CategoryNameZh = updated.CategoryNameZh;
@@ -209,5 +188,10 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         #endregion
 
+    }
+
+    public enum CategoryType
+    {
+    Professionalservice,Governmentorg,Privatesector,Nonprofitorg,Attraction
     }
 }

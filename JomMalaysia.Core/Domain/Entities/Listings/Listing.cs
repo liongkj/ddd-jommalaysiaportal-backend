@@ -18,6 +18,8 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public string Description { get; set; }
         public ICollection<string> Tags { get; private set; }
         public Address Address { get; set; }
+        public CategoryPath Category { get; set; }
+
         public ListingImages ListingImages { get; set; }
         // public ListingStatusEnum Status { get; set; }
 
@@ -28,16 +30,17 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public Listing()
+        protected Listing()
         {
 
         }
-        public Listing(string listingName, Merchant merchant, ListingTypeEnum listingType, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
+
+        protected Listing(string listingName, Merchant merchant, ListingTypeEnum listingType, CategoryPath category, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
         {
             Merchant = merchant;
             ListingName = listingName;
             Description = description;
-
+            Category = category;
             ListingImages = images;
             Address = add;
             Tags = ValidateTags(tags);
