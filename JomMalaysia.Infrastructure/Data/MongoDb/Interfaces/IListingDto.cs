@@ -1,4 +1,4 @@
 public interface IListingDto
 {
-    string ListingType { get; set; }
+    string CategoryType { get; set; }
 }

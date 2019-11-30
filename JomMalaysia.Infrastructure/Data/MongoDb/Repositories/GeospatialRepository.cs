@@ -39,14 +39,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 var locationQuery = new FilterDefinitionBuilder<ListingDto>().GeoWithinCenter(x => x.ListingAddress.Location, userCurrentLocation.Longitude, userCurrentLocation.Latitude, radius)
                    ;
                 FilterDefinition<ListingDto> typeQuery;
-                if (listingType != null)//all
-                {
-                    typeQuery = new FilterDefinitionBuilder<ListingDto>().Where(l => l.ListingType == listingType.ToString());
-                }
-                else
-                {
-                    typeQuery = new FilterDefinitionBuilder<ListingDto>().Empty;
-                }
+                typeQuery = listingType != null ? new FilterDefinitionBuilder<ListingDto>().Where(l => l.CategoryType == listingType.ToString()) : new FilterDefinitionBuilder<ListingDto>().Empty;
 
                 query = await _db
                   .Find(locationQuery & typeQuery)
@@ -66,7 +59,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             }
             catch (Exception ex)
             {
-                res = new ListingResponse(new List<string> { "GetAllListingRepo" }, false, ex.ToString() + ex.Message);
+                res = new ListingResponse(new List<string> { "GetAllListingRepo" }, false, ex + ex.Message);
             }
             return res;
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
@@ -15,14 +16,12 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
         public CategoryPath Category { get; set; }
+        public CategoryType CategoryType { get; set; }
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
 
         public PublishStatusViewModel PublishStatus { get; set; }
-
-        public DateTime? EventStartDateTime { get; set; }
-        public DateTime? EventEndDateTime { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 

@@ -13,59 +13,57 @@ namespace JomMalaysia.Infrastructure.Helpers
         public static Listing Converted(IMapper mapper, IListingDto list)
         {
             var type = GetListingTypeHelper(list);
-            if (list != null)
+            if (list == null) return null;
+            if (type == typeof(PrivateSector))
             {
-                if (type == typeof(PrivateSector))
-                {
-                    var i = mapper.Map<PrivateSector>(list);
+                var i = mapper.Map<PrivateSector>(list);
 
-                    return i;
-                }
+                return i;
+            }
 
-                if (type == typeof(ProfessionalService))
-                {
-                    var i = mapper.Map<ProfessionalService>(list);
-                    return i;
-                }
-                if (type == typeof(GovernmentOrg))
-                {
-                    var i = mapper.Map<GovernmentOrg>(list);
-                    return i;
-                }
-                if (type == typeof(NonProfitOrg))
-                {
-                    var i = mapper.Map<NonProfitOrg>(list);
-                    return i;
-                }
-                if (type == typeof(Attraction))
-                {
-                    var i = mapper.Map<Attraction>(list);
-                    return i;
-                }
+            if (type == typeof(ProfessionalService))
+            {
+                var i = mapper.Map<ProfessionalService>(list);
+                return i;
+            }
+            if (type == typeof(GovernmentOrg))
+            {
+                var i = mapper.Map<GovernmentOrg>(list);
+                return i;
+            }
+            if (type == typeof(NonProfitOrg))
+            {
+                var i = mapper.Map<NonProfitOrg>(list);
+                return i;
+            }
+            if (type == typeof(Attraction))
+            {
+                var i = mapper.Map<Attraction>(list);
+                return i;
             }
             return null;
         }
 
         private static Type GetListingTypeHelper(IListingDto list)
         {
-            if (list.ListingType == ListingTypeEnum.Attraction.ToString())
+            if (list.CategoryType == ListingTypeEnum.Attraction.ToString())
             {
                 return typeof(Attraction);
             }
-            if (list.ListingType == ListingTypeEnum.ProfessionalService.ToString())
+            if (list.CategoryType == ListingTypeEnum.ProfessionalService.ToString())
             {
                 return typeof(ProfessionalService);
             }
 
-            if (list.ListingType == ListingTypeEnum.GovernmentOrg.ToString())
+            if (list.CategoryType == ListingTypeEnum.GovernmentOrg.ToString())
             {
                 return typeof(GovernmentOrg);
             }
-            if (list.ListingType == ListingTypeEnum.NonProfitOrg.ToString())
+            if (list.CategoryType == ListingTypeEnum.NonProfitOrg.ToString())
             {
                 return typeof(NonProfitOrg);
             }
-            if (list.ListingType == ListingTypeEnum.PrivateSector.ToString())
+            if (list.CategoryType == ListingTypeEnum.PrivateSector.ToString())
             {
                 return typeof(PrivateSector);
             }

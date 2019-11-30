@@ -27,6 +27,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public List<StoreTimes> OperatingHours { get; set; }
         public PublishStatus PublishStatus { get; set; }
         public ListingTypeEnum ListingType { get; set; }
+       
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 

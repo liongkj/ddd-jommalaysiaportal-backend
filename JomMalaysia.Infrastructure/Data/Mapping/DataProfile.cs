@@ -6,11 +6,9 @@ using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows;
 using JomMalaysia.Core.Domain.Entities.Listings;
-using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities.Listings.Attractions;
 using JomMalaysia.Core.Domain.Entities.Listings.Governments;
 using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
-using JomMalaysia.Infrastructure.Auth0.Entities;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 
 namespace JomMalaysia.Infrastructure.Data.Mapping
@@ -72,7 +70,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             // domain->dto
             CreateMap<Listing, ListingDto>()
                 .ForMember(ld => ld.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
-                .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                .ForMember(ld => ld.CategoryType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
                 .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
@@ -101,7 +99,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
                         .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                         .ForPath(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
-                        .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
+                        .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.CategoryType)))
                         .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ld.PublishStatus))
                         .ForMember(l => l.Address, opt => opt.MapFrom(ld => ld.ListingAddress))
                         .ForMember(l => l.OperatingHours, opt => opt.MapFrom(ld => ld.OperatingHours))
@@ -184,13 +182,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
 
             CreateMap<CategoryDto, Category>()
-               .ForMember(c => c.CategoryId, opt => opt.MapFrom(cd => cd.Id))
-
-                ;
-            //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.Cate
-            //.ForMember(cd=>cd.CategoryPath, opt=>opt.MapFrom(c=>c.CategoryPath.ToString()))
-            //.ForMember(cd => cd.Subcategories, opt=> opt.MapFrom(c=>c.Subcategories))
-            ;
+                .ForMember(c => c.CategoryId, opt => opt.MapFrom(cd => cd.Id));
             #endregion
 
 
@@ -227,7 +219,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<Listing, ListingSummaryDto>()
                            .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.PublishStatus.Status.ToString()))
-                           .ForMember(ld => ld.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                           .ForMember(ld => ld.CategoryType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                            .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                            .IncludeAllDerived()
                        ;
@@ -247,7 +239,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<ListingSummaryDto, Listing>()
                             .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.ListingId))
-                            .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.ListingType)))
+                            .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.CategoryType)))
                             .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
                             .ForMember(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                             .IncludeAllDerived()

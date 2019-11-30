@@ -16,12 +16,14 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public MerchantSummaryDto Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
-        public string ListingType { get; set; }
+        public string CategoryType { get; set; }
         public AddressDto ListingAddress { get; set; }
         public List<StoreTimesDto> OperatingHours { get; set; }
+        public List<ServiceDto> ProvidedServices { get; set; }
+        public List<GovDepartmentDto> Departments { get; set; }
 
         public string Category { get; set; }
-
+        
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; } = new ListingImages
         {
@@ -38,5 +40,17 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public BsonDateTime CreatedAt { get; set; }
         [BsonIgnoreIfNull]
         public BsonDateTime ModifiedAt { get; set; }
+    }
+
+    public class GovDepartmentDto
+    {
+        public string Name { get; set; }
+        public string ServiceDescription { get; set; }
+    }
+    
+    public class ServiceDto
+    {
+        public string Name { get; set; }
+        public double Price { get; set; }
     }
 }

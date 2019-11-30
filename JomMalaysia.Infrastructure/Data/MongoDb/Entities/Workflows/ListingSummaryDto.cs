@@ -14,7 +14,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Workflows
         public string ListingId { get; set; }
         public WorkflowMerchantSummaryDto Merchant { get; set; }
         public string ListingName { get; set; }
-        public string ListingType { get; set; }
+        public string CategoryType { get; set; }
         public string Status { get; set; }
     }
 }
