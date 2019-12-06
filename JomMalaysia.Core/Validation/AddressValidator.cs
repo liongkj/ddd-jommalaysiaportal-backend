@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.SharedRequest;
 
@@ -17,12 +18,8 @@ namespace JomMalaysia.Core.Validation
                 .NotEmpty()
                 .MaximumLength(10);
             RuleFor(x => x.State)
-                .Cascade(CascadeMode.StopOnFirstFailure)
-                .NotEmpty()
-                .MaximumLength(15);
+                .NotEmpty();
             RuleFor(x => x.Country)
-                .Cascade(CascadeMode.StopOnFirstFailure)
-                .MaximumLength(30)
                 .NotEmpty();
             RuleFor(x => x.PostalCode)
                 .Cascade(CascadeMode.StopOnFirstFailure)
@@ -32,7 +29,7 @@ namespace JomMalaysia.Core.Validation
             //update
             RuleFor(c => c.PostalCode).Matches("^\\d{5}$")
                 //@"^\d{5}$")
-                .When(c => c.Country == "Malaysia")
+                .When(c => c.Country == CountryEnum.MY)
                 .WithMessage("Malaysian Postcodes have 5 digits");
 
         }
