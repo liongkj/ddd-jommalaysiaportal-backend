@@ -1,10 +1,10 @@
 using System;
 using AutoMapper;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Entities.Listings.Attractions;
 using JomMalaysia.Core.Domain.Entities.Listings.Governments;
 using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
-using JomMalaysia.Core.Domain.Enums;
 
 namespace JomMalaysia.Infrastructure.Helpers
 {
@@ -46,24 +46,24 @@ namespace JomMalaysia.Infrastructure.Helpers
 
         private static Type GetListingTypeHelper(IListingDto list)
         {
-            if (list.CategoryType == ListingTypeEnum.Attraction.ToString())
+            if (list.CategoryType == CategoryType.Attraction.ToString())
             {
                 return typeof(Attraction);
             }
-            if (list.CategoryType == ListingTypeEnum.ProfessionalService.ToString())
+            if (list.CategoryType == CategoryType.Professional.ToString())
             {
                 return typeof(ProfessionalService);
             }
 
-            if (list.CategoryType == ListingTypeEnum.GovernmentOrg.ToString())
+            if (list.CategoryType == CategoryType.Government.ToString())
             {
                 return typeof(GovernmentOrg);
             }
-            if (list.CategoryType == ListingTypeEnum.NonProfitOrg.ToString())
+            if (list.CategoryType == CategoryType.Nonprofit.ToString())
             {
                 return typeof(NonProfitOrg);
             }
-            if (list.CategoryType == ListingTypeEnum.PrivateSector.ToString())
+            if (list.CategoryType == CategoryType.Private.ToString())
             {
                 return typeof(PrivateSector);
             }

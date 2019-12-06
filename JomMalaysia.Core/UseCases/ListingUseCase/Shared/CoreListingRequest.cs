@@ -21,21 +21,20 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public string ListingName { get; set; }
         public string Description { get; set; }
 
-        public string ListingType { get; set; }
+        public CategoryType CategoryType { get; set; }
 
         public string CategoryId { get; set; }
         public List<string> Tags { get; set; }
         public AddressRequest Address { get; set; }
         public List<StoreTimesRequest> OperatingHours { get; set; }
-
+        public OfficialContactRequest Contact { get; set; }
         public List<Service> ProvidedServices { get; set; }
         public List<GovDepartment> Departments { get; set; }
         public ListingImages ImageUris { get; set; }
-        public DateTime EventStartDateTime { get; set; }
-        public DateTime EventEndDateTime { get; set; }
+
 
 
     }
 
-  
+
 }

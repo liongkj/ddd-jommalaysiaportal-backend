@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
             RuleFor(x => x.Address);
             // .NotEmpty()
             // .SetValidator(new AddressValidator());
-            RuleFor(l => l.ListingType).NotEmpty();
+            RuleFor(l => l.CategoryType).IsInEnum();
             RuleFor(l => l.CategoryId).NotEmpty().NotNull()
                 .WithMessage("Please select a valid category for this listing type");
 

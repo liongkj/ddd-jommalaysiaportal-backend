@@ -53,15 +53,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                     return false;
                 }
             }
-
-            var listingType = ListingTypeEnum.For(message.ListingType);
-            if (listingType == null)
-            {
-                outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid listing type"));
-                return false;
-            }
+            
             //create listing factory pattern
-            var newListing = ListingFactory.CreateListing(listingType, message, category, findMerchantResponse.Data);
+            var newListing = ListingFactory.CreateListing(message.CategoryType, message, category, findMerchantResponse.Data);
             if (newListing != null) //validate is Listing Type
             {
                 //start transaction

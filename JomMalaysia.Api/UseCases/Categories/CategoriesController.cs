@@ -4,6 +4,7 @@ using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.UseCases.CategoryUseCase.Create;
+using JomMalaysia.Core.UseCases.CategoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CategoryUseCase.Update;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Create;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;

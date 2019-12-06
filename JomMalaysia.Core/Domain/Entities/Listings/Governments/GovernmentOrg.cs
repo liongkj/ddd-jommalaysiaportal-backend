@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings.Governments
         {
 
         }
-        public GovernmentOrg(CoreListingRequest listing, CategoryPath category,  Address address, Merchant merchant) : base(listing.ListingName,  merchant, ListingTypeEnum.GovernmentOrg, category, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public GovernmentOrg(CoreListingRequest listing, CategoryPath category,  Address address, Merchant merchant) : base(listing.ListingName,  merchant, CategoryType.Government, category, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
             Departments = listing.Departments;
         }

@@ -21,7 +21,7 @@ namespace JomMalaysia.Core.Mapping
             #region Listing Mapping
             CreateMap<Listing, ListingViewModel>()
                 .ForMember(vm => vm.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
-                .ForMember(vm => vm.ListingType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                .ForMember(vm => vm.CategoryType, opt => opt.MapFrom(l => l.CategoryType.ToString()))
                 .ForMember(vm => vm.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(vm => vm.ListingAddress, opt => opt.MapFrom(l => l.Address))
                 .IncludeAllDerived()

@@ -1,4 +1,5 @@
 using System;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 
@@ -12,12 +13,12 @@ namespace JomMalaysia.Core.MobileUseCases.GetNearbyListings
 
             Location = new Coordinates(coor[0], coor[1]);
             Radius = radius;
-            Type = type;
+            CategoryType = type;
         }
 
-        public Coordinates Location { get; set; }
-        public double Radius { get; set; }
-        public string Type { get; set; }
+        public Coordinates Location { get;}
+        public double Radius { get;  }
+        public string CategoryType { get; }
 
     }
 }

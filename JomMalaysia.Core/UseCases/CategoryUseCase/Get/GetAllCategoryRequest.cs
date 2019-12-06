@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Interfaces;
+﻿using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 
-namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
+namespace JomMalaysia.Core.UseCases.CategoryUseCase.Get
 {
     public class GetAllCategoryRequest : IUseCaseRequest<GetAllCategoryResponse>
     {

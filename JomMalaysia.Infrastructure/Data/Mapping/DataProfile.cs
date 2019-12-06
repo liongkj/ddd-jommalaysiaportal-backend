@@ -70,7 +70,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             // domain->dto
             CreateMap<Listing, ListingDto>()
                 .ForMember(ld => ld.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
-                .ForMember(ld => ld.CategoryType, opt => opt.MapFrom(l => l.ListingType.ToString()))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
                 .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
@@ -99,7 +98,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.Id))
                         .ForMember(l => l.Tags, opt => opt.MapFrom(ld => ld.Tags))
                         .ForPath(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
-                        .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.CategoryType)))
                         .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ld.PublishStatus))
                         .ForMember(l => l.Address, opt => opt.MapFrom(ld => ld.ListingAddress))
                         .ForMember(l => l.OperatingHours, opt => opt.MapFrom(ld => ld.OperatingHours))
@@ -219,10 +217,9 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<Listing, ListingSummaryDto>()
                            .ForMember(ld => ld.Status, opt => opt.MapFrom(l => l.PublishStatus.Status.ToString()))
-                           .ForMember(ld => ld.CategoryType, opt => opt.MapFrom(l => l.ListingType.ToString()))
+                           .ForMember(ld => ld.CategoryType, opt => opt.MapFrom(l => l.CategoryType.ToString()))
                            .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
-                           .IncludeAllDerived()
-                       ;
+                           .IncludeAllDerived();
 
 
             CreateMap<PrivateSector, ListingSummaryDto>().ReverseMap();
@@ -239,7 +236,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<ListingSummaryDto, Listing>()
                             .ForMember(l => l.ListingId, opt => opt.MapFrom(ld => ld.ListingId))
-                            .ForMember(l => l.ListingType, opt => opt.MapFrom(ld => ListingTypeEnum.For(ld.CategoryType)))
                             .ForMember(l => l.PublishStatus, opt => opt.MapFrom(ld => ListingStatusEnum.For(ld.Status)))
                             .ForMember(l => l.Merchant, opt => opt.MapFrom(ld => ld.Merchant))
                             .IncludeAllDerived()

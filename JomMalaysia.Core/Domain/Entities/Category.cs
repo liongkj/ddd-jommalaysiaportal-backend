@@ -30,7 +30,7 @@ namespace JomMalaysia.Core.Domain.Entities
             string categoryNameZh, Image image)
         {
             CategoryType = categoryType;
-            CategoryCode = HandleCode(categoryCode, CategoryName); ;
+            CategoryCode = HandleCode(categoryCode, categoryName); ;
             CategoryName = categoryName.Trim().ToLower(); 
             CategoryNameMs = categoryNameMs.Trim().ToLower(); 
             CategoryNameZh = categoryNameZh.Trim().ToLower(); 
@@ -140,17 +140,13 @@ namespace JomMalaysia.Core.Domain.Entities
             return updatedSubs;
         }
         
-        private static string HandleCode(string categoryCode, string categoryName)
+        private string HandleCode(string categoryCode, string categoryName)
         {
-            if (categoryCode == null)
-            {
-                var index = categoryName.Length >= 5 ? 5 : categoryName.Length;
-                return categoryName.Substring(0, index).ToUpper();
-            }
-            else
-            {
-                return categoryCode.Trim().ToUpper();
-            }
+            if (categoryCode != null) return categoryCode.Trim().ToUpper();
+            
+            var index = categoryName.Length >= 5 ? 5 : categoryName.Length;
+            return categoryName.Substring(0, index).ToUpper();
+
         }
         private void UpdateCategory(Category updated)
         {
@@ -192,6 +188,10 @@ namespace JomMalaysia.Core.Domain.Entities
 
     public enum CategoryType
     {
-    Professionalservice,Governmentorg,Privatesector,Nonprofitorg,Attraction
+        Professional,
+        Government,
+        Private,
+        Nonprofit,
+        Attraction
     }
 }

@@ -33,8 +33,9 @@ namespace JomMalaysia.Core.UseCases.CategoryUseCase.Create
                     return false;
                 }
                 newCategory.CreateCategoryPath(parentCategoryQuery.Data.CategoryName, message.CategoryName);
+                newCategory.CategoryType = parentCategoryQuery.Data.CategoryType;
             }
-            else
+            else //create parent category
             {
                 newCategory.CreateCategoryPath(null, message.CategoryName);
             }

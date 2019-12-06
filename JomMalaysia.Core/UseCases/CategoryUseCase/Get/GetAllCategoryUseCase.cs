@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 
-namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Get
+namespace JomMalaysia.Core.UseCases.CategoryUseCase.Get
 {
     public class GetAllCategoryUseCase : IGetAllCategoryUseCase
     {

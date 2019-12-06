@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -100,7 +101,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             GetAllListingResponse res;
             List<ListingDto> query;
             List<Listing> Mapped = new List<Listing>();
-            var listingType = ListingTypeEnum.For(type);
+            var parsed = Enum.TryParse( type, out CategoryType ct);
             var publishStatus = ListingStatusEnum.For(status);
 
             var builder = Builders<ListingDto>.Filter;
@@ -113,23 +114,22 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     if (groupBySub)
                     {
                         categoryFilter = builder.Eq(ld => ld.Category, cp.ToString());
-
                     }
                     else
                     {
                         categoryFilter = builder.Where(ld => ld.Category.StartsWith(cp.ToString()));
                     }
-                    filter = filter & categoryFilter;
+                    filter &= categoryFilter;
                 }
                 if (publishStatus != null)
                 {
                     var statusFilter = builder.Eq(ld => ld.PublishStatus.Status, publishStatus.ToString());
-                    filter = filter & statusFilter;
+                    filter &= statusFilter;
                 }
 
-                if (listingType != null)
+                if (parsed)
                 {
-                    var typeFilter = builder.Eq(ld => ld.CategoryType, listingType.ToString());
+                    var typeFilter = builder.Eq(ld => ld.CategoryType.ToLower(), ct.ToString().ToLower());
                     filter &= typeFilter;
                 }
 

@@ -31,10 +31,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
                 return false;
             }
 
-            var NewListing = ListingFactory.CreateListing(ListingTypeEnum.For(message.ListingType), message, FindCategoryResponse.Data, NewMerchant);
+            var NewListing = ListingFactory.CreateListing(message.CategoryType, message, FindCategoryResponse.Data, NewMerchant);
             #endregion
-            if (NewListing is Listing && NewListing != null) //validate is Listing Type
-
+            if (NewListing != null) //validate is Listing Type
             {
                 NewListing.ListingId = message.ListingId;
                 //start transaction
@@ -87,13 +86,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
         private static async Task<Merchant> GetOldMerchant(string id, IListingRepository _listingRepository, IMerchantRepository _merchantRepository)
         {
             var GetListingResponse = await _listingRepository.FindById(id);
-            if (GetListingResponse.Success)
-            {
-                var merchantId = GetListingResponse.Listing.Merchant.MerchantId;
-                var merchant = (await GetMerchant(merchantId, _merchantRepository)).Data;
-                return merchant;
-            }
-            return null;
+            if (!GetListingResponse.Success) return null;
+            var merchantId = GetListingResponse.Listing.Merchant.MerchantId;
+            var merchant = (await GetMerchant(merchantId, _merchantRepository)).Data;
+            return merchant;
         }
         private static bool IsSwitchingOwnership(Merchant newMerchant, Merchant oldMerchant)
         {

@@ -19,15 +19,13 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public ICollection<string> Tags { get; private set; }
         public Address Address { get; set; }
         public CategoryPath Category { get; set; }
-
+        public CategoryType CategoryType { get; set; }
         public ListingImages ListingImages { get; set; }
         // public ListingStatusEnum Status { get; set; }
 
         public Contact Contact { get; set; }
         public List<StoreTimes> OperatingHours { get; set; }
         public PublishStatus PublishStatus { get; set; }
-        public ListingTypeEnum ListingType { get; set; }
-       
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
@@ -36,7 +34,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
-        protected Listing(string listingName, Merchant merchant, ListingTypeEnum listingType, CategoryPath category, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
+        protected Listing(string listingName, Merchant merchant,CategoryType categoryType,CategoryPath category, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
         {
             Merchant = merchant;
             ListingName = listingName;
@@ -45,7 +43,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             ListingImages = images;
             Address = add;
             Tags = ValidateTags(tags);
-            ListingType = listingType;
+            CategoryType = categoryType;
             PublishStatus = new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
 
@@ -64,7 +62,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         public bool IsPublished()
         {
-            return PublishStatus.Status == ListingStatusEnum.Published;
+            return Equals(PublishStatus.Status, ListingStatusEnum.Published);
         }
 
         public bool IsEligibleToUnpublish()
