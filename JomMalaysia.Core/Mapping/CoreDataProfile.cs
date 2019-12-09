@@ -23,13 +23,12 @@ namespace JomMalaysia.Core.Mapping
                 .ForMember(vm => vm.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
                 .ForMember(vm => vm.CategoryType, opt => opt.MapFrom(l => l.CategoryType.ToString()))
                 .ForMember(vm => vm.Merchant, opt => opt.MapFrom(l => l.Merchant))
-                .ForMember(vm => vm.ListingAddress, opt => opt.MapFrom(l => l.Address))
                 .IncludeAllDerived()
             ;
             CreateMap<ProfessionalService, ListingViewModel>()
                 .IncludeBase<Listing, ListingViewModel>();
             CreateMap<PrivateSector, ListingViewModel>()
-                .IncludeBase<Listing, ListingViewModel>(); 
+                .IncludeBase<Listing, ListingViewModel>();
             CreateMap<NonProfitOrg, ListingViewModel>()
                 .IncludeBase<Listing, ListingViewModel>();
             CreateMap<GovernmentOrg, ListingViewModel>()

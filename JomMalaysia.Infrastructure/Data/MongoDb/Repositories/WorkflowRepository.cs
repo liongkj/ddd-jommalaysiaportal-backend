@@ -111,9 +111,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 throw e;
             }
-            var response = Workflows.Count < 1 ?
-                new GetAllWorkflowResponse(new List<string> { "No workflow found" }, false) :
-                new GetAllWorkflowResponse(Workflows, true, $"{Workflows.Count} result found");
+            var response = new GetAllWorkflowResponse(Workflows, true, $"{Workflows.Count} result found");
             return response;
         }
 

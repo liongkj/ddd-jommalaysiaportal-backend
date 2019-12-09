@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public string ListingName { get; set; }
         public string Description { get; set; }
         public string ListingType { get; set; }
-        public AddressViewModel ListingAddress { get; set; }
+        public AddressViewModel Address { get; set; }
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
         public CategoryPath Category { get; set; }
