@@ -42,7 +42,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Category = category;
             ListingImages = images;
             Address = add;
-            Tags = ValidateTags(tags);
+            Tags = tags;
             CategoryType = categoryType;
             PublishStatus = new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
@@ -89,19 +89,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             return ToBeUpdateMerchants;
 
         }
-        public List<string> ValidateTags(List<string> tags)
-        {
-            var Clean = tags.Distinct().Where(s => s != null).ToList();
-            List<string> CleanTags = new List<string>();
 
-            foreach (var t in Clean)
-            {
-                var tag = t.Trim();
-                tag = tag.ToLower();
-                CleanTags.Add(tag);
-            }
-            return CleanTags;
-        }
         private List<StoreTimes> PopulateOperatingHours(List<StoreTimesRequest> OperatingHours)
         {
             List<StoreTimes> store = new List<StoreTimes>();
