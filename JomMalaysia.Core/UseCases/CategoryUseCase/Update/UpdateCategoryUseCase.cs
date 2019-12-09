@@ -40,7 +40,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             }
             if (Category.IsCategory())
             {
-                Category updated = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl));
+                Category updated = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, new Image(message.CategoryImageUrl));
                 // var category = (await _CategoryRepository.FindByNameAsync(message.CategoryName)).Category;
                 var GetAllCategoriesResponse = await _CategoryRepository.GetAllCategoriesAsync(Category.CategoryName);
                 if (!GetAllCategoriesResponse.Success)

@@ -1,22 +1,36 @@
+using System;
 using System.Collections.Generic;
+using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Framework.Helper;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Image : ValueObjectBase
     {
-        public string Url { get; }
-        public string ThumbnailUrl { get; }
-
-        public Image(string url, string thumbnailurl)
+        private string _Url;
+        public string Url
         {
-            Url = url;
-            ThumbnailUrl = thumbnailurl;
+            get
+            {
+                return ImageHelper.GetOptimizedUrl(_Url);
+            }
+            private set
+            {
+
+            }
+
         }
+
+        public Image(string url)
+        {
+            _Url = url;
+        }
+
 
         public Image()
         {
             Url = Constants.DefaultImages.Url;
-            ThumbnailUrl = Constants.DefaultImages.ThumbnailUrl;
+
         }
 
         protected override IEnumerable<object> GetAtomicValues()

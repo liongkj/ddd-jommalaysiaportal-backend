@@ -10,7 +10,7 @@
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="RestSharp" Version="106.6.10" />
+      <PackageReference Include="CloudinaryDotNet" Version="1.9.1" />
 </ItemGroup>
 
 </Project>

@@ -27,7 +27,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
         public async Task<bool> Handle(UpdateCategoryRequest message, IOutputPort<UpdateCategoryResponse> outputPort)
         {
 
-            Category updated = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl));
+            Category updated = new Category(message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, new Image(message.CategoryImageUrl));
             //check if any listing has this category -currently no need
             var getCategoryResponse = await _CategoryRepository.FindByIdAsync(message.CategoryId);
 

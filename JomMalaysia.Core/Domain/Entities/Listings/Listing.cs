@@ -34,7 +34,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
-        protected Listing(string listingName, Merchant merchant,CategoryType categoryType,CategoryPath category, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
+        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
         {
             Merchant = merchant;
             ListingName = listingName;

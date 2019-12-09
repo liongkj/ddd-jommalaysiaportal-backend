@@ -20,10 +20,10 @@ namespace JomMalaysia.Core.UseCases.CategoryUseCase.Create
         public async Task<bool> Handle(CreateCategoryRequest message, IOutputPort<CreateCategoryResponse> outputPort)
         {
             Image Thumbnail;
-            Thumbnail = string.IsNullOrEmpty(message.CategoryImageUrl) ? 
+            Thumbnail = string.IsNullOrEmpty(message.CategoryImageUrl) ?
                 new Image() : //default image
-                new Image(message.CategoryImageUrl, message.CategoryThumbnailUrl);
-            Category newCategory = new Category(message.CategoryType,message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, Thumbnail);
+                new Image(message.CategoryImageUrl);
+            Category newCategory = new Category(message.CategoryType, message.CategoryCode, message.CategoryName, message.CategoryNameMs, message.CategoryNameZh, Thumbnail);
             if (message.ParentCategory != null) //create subcategory
             {
                 var parentCategoryQuery = await _categoryRepository.FindByIdAsync(message.ParentCategory);

@@ -31,19 +31,19 @@ namespace JomMalaysia.Core.Domain.Entities
         {
             CategoryType = categoryType;
             CategoryCode = HandleCode(categoryCode, categoryName); ;
-            CategoryName = categoryName.Trim().ToLower(); 
-            CategoryNameMs = categoryNameMs.Trim().ToLower(); 
-            CategoryNameZh = categoryNameZh.Trim().ToLower(); 
+            CategoryName = categoryName.Trim().ToLower();
+            CategoryNameMs = categoryNameMs.Trim().ToLower();
+            CategoryNameZh = categoryNameZh.Trim().ToLower();
             CategoryThumbnail = image;
         }
 
         public Category(string categoryCode, string categoryName, string categoryNameMs, string categoryNameZh, Image image)
         {
-            CategoryCode = HandleCode(categoryCode, CategoryName); 
-                        CategoryName = categoryName.Trim().ToLower(); 
-                        CategoryNameMs = categoryNameMs.Trim().ToLower(); 
-                        CategoryNameZh = categoryNameZh.Trim().ToLower(); 
-                        CategoryThumbnail = image;
+            CategoryCode = HandleCode(categoryCode, CategoryName);
+            CategoryName = categoryName.Trim().ToLower();
+            CategoryNameMs = categoryNameMs.Trim().ToLower();
+            CategoryNameZh = categoryNameZh.Trim().ToLower();
+            CategoryThumbnail = image;
         }
 
         public bool HasSubcategories(List<Category> subcategories)
@@ -86,8 +86,8 @@ namespace JomMalaysia.Core.Domain.Entities
             foreach (var listing in toBeUpdateListings)
             {
                 CategoryPath cp;
-                cp = IsUpdateCategoryOperation ? 
-                    new CategoryPath(CategoryName, listing.Category.Subcategory) 
+                cp = IsUpdateCategoryOperation ?
+                    new CategoryPath(CategoryName, listing.Category.Subcategory)
                     : new CategoryPath(listing.Category.Category, CategoryName);
                 updatedListings.Add(listing.ListingId, cp.ToString());
             }
@@ -119,14 +119,14 @@ namespace JomMalaysia.Core.Domain.Entities
 
         private void UpdateImage(Category updated)
         {
-            CategoryThumbnail = updated.CategoryThumbnail == null ? new Image() : new Image(updated.CategoryThumbnail.Url, updated.CategoryThumbnail.ThumbnailUrl);
+            CategoryThumbnail = updated.CategoryThumbnail == null ? new Image() : new Image(updated.CategoryThumbnail.Url);
         }
 
         public bool IsCategory()
         {
             return CategoryPath.Subcategory == null;
         }
-        
+
         #region private methods
         private static IEnumerable<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
         {
@@ -139,11 +139,11 @@ namespace JomMalaysia.Core.Domain.Entities
             }
             return updatedSubs;
         }
-        
+
         private string HandleCode(string categoryCode, string categoryName)
         {
             if (categoryCode != null) return categoryCode.Trim().ToUpper();
-            
+
             var index = categoryName.Length >= 5 ? 5 : categoryName.Length;
             return categoryName.Substring(0, index).ToUpper();
 
