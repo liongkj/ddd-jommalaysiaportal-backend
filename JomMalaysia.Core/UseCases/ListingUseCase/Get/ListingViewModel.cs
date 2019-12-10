@@ -11,7 +11,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public MerchantViewModel Merchant { get; set; }
         public string ListingName { get; set; }
         public string Description { get; set; }
-        public string ListingType { get; set; }
         public AddressViewModel Address { get; set; }
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
@@ -41,6 +40,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             public string State { get; set; }
             public string PostalCode { get; set; }
             public string Country { get; set; }
+            public Coordinates Coordinates { get; set; }
         }
 
         public class MerchantViewModel
