@@ -72,7 +72,6 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                 .ForMember(ld => ld.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
                 .ForMember(ld => ld.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(ld => ld.ListingAddress, opt => opt.MapFrom(l => l.Address))
-                .ForMember(ld => ld.Category, opt => opt.MapFrom(l => l.Category))
                 .IncludeAllDerived()
 
                 ;
@@ -85,10 +84,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
             CreateMap<NonProfitOrg, ListingDto>()
                        .IncludeBase<Listing, ListingDto>();
-            
+
             CreateMap<Attraction, ListingDto>()
                 .IncludeBase<Listing, ListingDto>();
-            
+
             CreateMap<ProfessionalService, ListingDto>()
                 .IncludeBase<Listing, ListingDto>();
 
@@ -107,21 +106,21 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
                         .IncludeAllDerived()
                            ;
             //map to derived class, need to add new mapping with child properties here
-           
+
             CreateMap<ListingDto, PrivateSector>()
                 .IncludeBase<ListingDto, Listing>();
 
             CreateMap<ListingDto, GovernmentOrg>()
-                .IncludeBase<ListingDto, Listing>() ;
+                .IncludeBase<ListingDto, Listing>();
 
             CreateMap<ListingDto, NonProfitOrg>()
-                .IncludeBase<ListingDto, Listing>() ;
-            
+                .IncludeBase<ListingDto, Listing>();
+
             CreateMap<ListingDto, Attraction>()
-                .IncludeBase<ListingDto, Listing>() ;
-            
+                .IncludeBase<ListingDto, Listing>();
+
             CreateMap<ListingDto, ProfessionalService>()
-                .IncludeBase<ListingDto, Listing>() ;
+                .IncludeBase<ListingDto, Listing>();
             #endregion
 
             #region map publish status
@@ -242,7 +241,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
 
                         ;
 
-           
+
             CreateMap<ListingStatusEnum, PublishStatus>()
                     ;
 

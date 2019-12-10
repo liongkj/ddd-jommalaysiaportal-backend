@@ -34,13 +34,13 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
-        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImages images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
+        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImagesRequest images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
         {
             Merchant = merchant;
             ListingName = listingName;
             Description = description;
             Category = category;
-            ListingImages = images;
+            ListingImages = GenerateImage(images);
             Address = add;
             Tags = tags;
             CategoryType = categoryType;
@@ -90,12 +90,33 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
+        private ListingImages GenerateImage(ListingImagesRequest images)
+        {
+
+            var ads = new List<Image>();
+            if (images.Ads != null)
+            {
+                foreach (var ad in images.Ads)
+                {
+                    ads.Add(new Image(ad.Url));
+                }
+            }
+
+            var ListingImages = new ListingImages
+            {
+                ListingLogo = new Image(images.ListingLogo.Url),
+                CoverPhoto = new Image(images.CoverPhoto.Url),
+                Ads = ads
+            };
+            return ListingImages;
+        }
+
         private List<StoreTimes> PopulateOperatingHours(List<StoreTimesRequest> OperatingHours)
         {
             List<StoreTimes> store = new List<StoreTimes>();
             foreach (var t in OperatingHours)
             {
-                store.Add(new StoreTimes(t.Day, t.StartTime, t.CloseTime));
+                store.Add(new StoreTimes(t.Day, t.OpenTime, t.CloseTime));
             }
 
             return store;

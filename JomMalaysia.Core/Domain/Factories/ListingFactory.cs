@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Entities;
@@ -12,22 +13,23 @@ namespace JomMalaysia.Core.Domain.Factories
 {
     public static class ListingFactory
     {
-  
+
         public static Listing CreateListing(CategoryType type, CoreListingRequest listing, Category category, Merchant merchant)
-        { 
-            
+        {
+
             var categoryPath = category?.CategoryPath;
+            categoryPath.CategoryId = category.CategoryId;
 
             switch (type)
             {
                 case CategoryType.Attraction:
-                    return new Attraction(listing, categoryPath,GenerateAddress(listing), merchant);
+                    return new Attraction(listing, categoryPath, GenerateAddress(listing), merchant);
                 case CategoryType.Professional:
-                    return new ProfessionalService(listing, categoryPath,GenerateAddress(listing), merchant);
+                    return new ProfessionalService(listing, categoryPath, GenerateAddress(listing), merchant);
                 case CategoryType.Government:
-                    return new GovernmentOrg(listing, categoryPath,GenerateAddress(listing), merchant);
+                    return new GovernmentOrg(listing, categoryPath, GenerateAddress(listing), merchant);
                 case CategoryType.Nonprofit:
-                    return new NonProfitOrg(listing, categoryPath,GenerateAddress(listing), merchant);
+                    return new NonProfitOrg(listing, categoryPath, GenerateAddress(listing), merchant);
                 case CategoryType.Private:
                     return new PrivateSector(listing, categoryPath, GenerateAddress(listing), merchant);
                 default:

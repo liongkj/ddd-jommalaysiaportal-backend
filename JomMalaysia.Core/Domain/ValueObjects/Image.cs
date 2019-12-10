@@ -7,24 +7,21 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Image : ValueObjectBase
     {
-        private string _Url;
+
         public string Url
         {
             get
-            {
-                return ImageHelper.GetOptimizedUrl(_Url);
-            }
-            private set
-            {
+           ;
+            private set;
 
-            }
 
         }
 
         public Image(string url)
         {
-            _Url = url;
+            Url = url;
         }
+
 
 
         public Image()

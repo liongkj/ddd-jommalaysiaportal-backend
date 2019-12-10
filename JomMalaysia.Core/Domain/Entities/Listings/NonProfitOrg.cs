@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         {
 
         }
-        public NonProfitOrg(CoreListingRequest listing,CategoryPath category,  Address address, Merchant merchant) : base(listing.ListingName, merchant, CategoryType.Nonprofit, category,  listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public NonProfitOrg(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, CategoryType.Nonprofit, category, listing.ListingImages, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
 
         }

@@ -47,13 +47,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                     return false;
                 }
                 category = findCategoryResponse.Data;
+
                 if (category.IsCategory())
                 {
                     outputPort.Handle(new CoreListingResponse(new List<string> { "Bad Request" }, false, "Please select a valid subcategory"));
                     return false;
                 }
             }
-            
+
             //create listing factory pattern
             var newListing = ListingFactory.CreateListing(message.CategoryType, message, category, findMerchantResponse.Data);
             if (newListing != null) //validate is Listing Type
@@ -80,7 +81,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                         }
                         outputPort.Handle(new CoreListingResponse(updateMerchantCommand.Errors, updateMerchantCommand.Success, updateMerchantCommand.Message));
                         return false;
-                        
+
                     }
                     catch (Exception e)
                     {

@@ -8,7 +8,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings.Professionals
     public class ProfessionalService : Listing
     {
         public List<Service> ProvidedServices { get; set; }
-        public ProfessionalService(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, CategoryType.Professional, category, listing.ImageUris, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public ProfessionalService(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, CategoryType.Professional, category, listing.ListingImages, listing.Tags, listing.Description, address, listing.OperatingHours)
         {
             ProvidedServices = listing.ProvidedServices;
         }

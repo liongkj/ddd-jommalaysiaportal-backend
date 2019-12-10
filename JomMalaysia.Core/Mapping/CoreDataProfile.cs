@@ -40,7 +40,8 @@ namespace JomMalaysia.Core.Mapping
                 .ForMember(vm => vm.RegistrationName, opt => opt.MapFrom(l => l.CompanyRegistration.RegistrationName))
                 ;
 
-            CreateMap<Address, AddressViewModel>();
+            CreateMap<Address, AddressViewModel>()
+                .ForMember(vm => vm.Coordinates, opt => opt.MapFrom(m => m.Location.Coordinates[0]));
 
             CreateMap<StoreTimes, StoreTimesViewModel>()
             .ForMember(vm => vm.DayOfWeek, opt => opt.MapFrom(l => l.DayOfWeek.Id))

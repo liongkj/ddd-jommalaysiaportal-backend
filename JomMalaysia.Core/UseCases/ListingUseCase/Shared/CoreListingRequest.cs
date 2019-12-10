@@ -30,7 +30,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public OfficialContactRequest Contact { get; set; }
         public List<Service> ProvidedServices { get; set; }
         public List<GovDepartment> Departments { get; set; }
-        public ListingImages ImageUris { get; set; }
+        public ListingImagesRequest ListingImages { get; set; }
 
 
 

@@ -101,7 +101,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             GetAllListingResponse res;
             List<ListingDto> query;
             List<Listing> Mapped = new List<Listing>();
-            var parsed = Enum.TryParse( type, out CategoryType ct);
+            var parsed = Enum.TryParse(type, out CategoryType ct);
             var publishStatus = ListingStatusEnum.For(status);
 
             var builder = Builders<ListingDto>.Filter;
@@ -113,11 +113,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     FilterDefinition<ListingDto> categoryFilter;
                     if (groupBySub)
                     {
-                        categoryFilter = builder.Eq(ld => ld.Category, cp.ToString());
+                        categoryFilter = builder.Eq(ld => ld.Category.ToString(), cp.ToString());
                     }
                     else
                     {
-                        categoryFilter = builder.Where(ld => ld.Category.StartsWith(cp.ToString()));
+                        categoryFilter = builder.Where(ld => ld.Category.ToString().StartsWith(cp.ToString()));
                     }
                     filter &= categoryFilter;
                 }
@@ -168,7 +168,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 if (cp != null)
                 {
-                    var categoryFilter = builder.Where(ld => ld.Category.StartsWith(cp.ToString()));
+                    var categoryFilter = builder.Where(ld => ld.Category.ToString().StartsWith(cp.ToString()));
                     filter &= categoryFilter;
 
                 }
@@ -230,7 +230,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 {
                     var filter = Builders<ListingDto>.Filter.Where(l => l.Id == list.Key);
 
-                    var update = Builders<ListingDto>.Update.Set(l => l.Category, list.Value);
+                    var update = Builders<ListingDto>.Update.Set(l => l.Category.ToString(), list.Value);
 
 
                     var updateOne = new UpdateOneModel<ListingDto>(filter, update);

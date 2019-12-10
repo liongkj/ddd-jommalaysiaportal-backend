@@ -22,8 +22,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public List<ServiceDto> ProvidedServices { get; set; }
         public List<GovDepartmentDto> Departments { get; set; }
 
-        public string Category { get; set; }
-        
+        public CategoryPath Category { get; set; }
+
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; } = new ListingImages
         {
@@ -47,7 +47,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public string Name { get; set; }
         public string ServiceDescription { get; set; }
     }
-    
+
     public class ServiceDto
     {
         public string Name { get; set; }

@@ -11,6 +11,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         public string Category { get; private set; }
         public string Subcategory { get; private set; }
+        public string CategoryId { get; set; }
 
 
         public CategoryPath(string category, string sub)

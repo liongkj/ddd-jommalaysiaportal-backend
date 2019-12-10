@@ -6,6 +6,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
     {
         public int Day { get; set; }
         public string CloseTime { get; set; }
-        public string StartTime { get; set; }
+        public string OpenTime { get; set; }
     }
 }
