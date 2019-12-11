@@ -100,8 +100,9 @@ namespace JomMalaysia.Api.UseCases.Listings
         ///DELETE api/listings/{id}
         ///
         [HttpDelete("{ListingId}")]
-        public async Task<IActionResult> Delete([FromRoute]DeleteListingRequest req)
+        public async Task<IActionResult> Delete([FromRoute] string ListingId)
         {
+            var req = new DeleteListingRequest(ListingId);
             await _deleteListingUseCase.Handle(req, _listingPresenter);
             return _listingPresenter.ContentResult;
         }
