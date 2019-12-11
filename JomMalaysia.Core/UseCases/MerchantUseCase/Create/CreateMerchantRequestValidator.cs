@@ -1,24 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FluentValidation;
-using FluentValidation.AspNetCore;
-using FluentValidation.Results;
-using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Exceptions;
-using JomMalaysia.Core.UseCases.MerchantUseCase.Create;
 using JomMalaysia.Core.Validation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
 {
-    public class CreateMerchantRequestValidator : AbstractValidator<CreateMerchantRequest>, IValidatorInterceptor
+    public class CreateMerchantRequestValidator : AbstractValidator<CreateMerchantRequest>
     {
         public CreateMerchantRequestValidator()
         {
             RuleFor(x => x.Address)
-             .NotEmpty()
              .SetValidator(new AddressValidator());
 
             RuleFor(x => x.OldSsmId)
@@ -35,7 +27,6 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
             .WithMessage("{PropertyName} should have 12 digits.Sample Format (201901000005)");
 
             RuleFor(x => x.CompanyRegistrationName).NotEmpty().WithMessage("{PropertyName} must not be blank");
-            RuleFor(x => x.Contacts.Count).GreaterThan(0).WithMessage("{PropertyName} shuould have at least one primary contact");
 
             RuleForEach(x => x.Contacts).SetValidator(new ContactValidator()).When(x => x.Contacts.Count > 0);
         }
@@ -62,21 +53,5 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Create
 
         }
 
-        public ValidationContext BeforeMvcValidation(ControllerContext controllerContext, ValidationContext validationContext)
-        {
-            return validationContext;
-        }
-
-        public ValidationResult AfterMvcValidation(ControllerContext controllerContext, ValidationContext validationContext, ValidationResult result)
-        {
-
-            if (!result.IsValid)
-            {
-                var failure = new ValidationFailure(result.Errors.FirstOrDefault().PropertyName, result.Errors.FirstOrDefault().ErrorMessage);
-                var ValResult = new ValidationResult(new List<ValidationFailure> { failure });
-                return ValResult;
-            }
-            return result;
-        }
     }
 }

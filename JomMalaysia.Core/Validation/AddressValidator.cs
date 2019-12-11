@@ -15,12 +15,13 @@ namespace JomMalaysia.Core.Validation
             RuleFor(x => x.Add2); //optional
             RuleFor(x => x.City)
                 .Cascade(CascadeMode.StopOnFirstFailure)
-                .NotEmpty()
-                .MaximumLength(10);
-            RuleFor(x => x.State)
                 .NotEmpty();
+
+
+            RuleFor(x => x.State).IsInEnum();
+
             RuleFor(x => x.Country)
-                .NotEmpty();
+                .IsInEnum();
             RuleFor(x => x.PostalCode)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .Length(5)
