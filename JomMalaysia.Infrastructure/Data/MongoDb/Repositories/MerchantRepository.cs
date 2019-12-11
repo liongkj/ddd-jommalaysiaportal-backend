@@ -108,10 +108,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 throw new Exception(e.ToString());
             }
-            var response = merchants.Count < 1 ?
-                new GetAllMerchantResponse(new List<string> { "No Merchants" }, false) :
-                new GetAllMerchantResponse(merchants, true, $"{merchants.Count} result found");
-            return response;
+            return new GetAllMerchantResponse(merchants, true, $"{merchants.Count} result found");
         }
 
         public async Task<UpdateMerchantResponse> UpdateMerchantAsyncWithSession(string id, Merchant updatedMerchant, IClientSessionHandle session)
