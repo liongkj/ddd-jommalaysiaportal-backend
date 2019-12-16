@@ -189,9 +189,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 return new GetAllCategoryResponse(new List<string> { e.ToString() });
             }
-            if (Categories.Count > 0)
-                return new GetAllCategoryResponse(Categories, true, $"{Categories.Count} result found");
-            return new GetAllCategoryResponse(new List<string> { "No Categories Found" });
+
+            return new GetAllCategoryResponse(Categories, true, $"{Categories.Count} result found");
 
         }
 

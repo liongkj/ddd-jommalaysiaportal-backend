@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using AutoMapper;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
@@ -6,6 +8,7 @@ using JomMalaysia.Core.Domain.Entities.Listings.Professionals;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.UseCases.CategoryUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.UserUseCase.Get;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
@@ -84,6 +87,12 @@ namespace JomMalaysia.Core.Mapping
             ;
 
             CreateMap<Workflow, WorkflowSummaryViewModel>();
+
+            #endregion
+
+            #region Category Mapping
+            CreateMap<Category, CategoryViewModel>()
+            .ForMember(vm => vm.CategoryType, opt => opt.MapFrom(m => Enum.GetName(typeof(CategoryType), m.CategoryType)));
 
             #endregion
         }
