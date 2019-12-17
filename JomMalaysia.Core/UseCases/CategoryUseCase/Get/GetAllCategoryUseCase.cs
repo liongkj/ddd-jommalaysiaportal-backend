@@ -26,7 +26,7 @@ namespace JomMalaysia.Core.UseCases.CategoryUseCase.Get
             {
                 var response = await _CategoryRepository.GetAllCategoriesAsync(message.PageSize, message.PageNumber);
                 var vm = _mapper.Map<List<CategoryViewModel>>(response.Categories);
-                var mapped = new GetAllCategoryResponse(vm);
+                var mapped = new GetAllCategoryResponse(vm, response.Success, response.Message);
                 outputPort.Handle(mapped);
                 return response.Success;
             }
