@@ -25,6 +25,7 @@ namespace JomMalaysia.Core.Mapping
             CreateMap<Listing, ListingViewModel>()
                 .ForMember(vm => vm.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
                 .ForMember(vm => vm.Merchant, opt => opt.MapFrom(l => l.Merchant))
+                .ForMember(vm => vm.CategoryType, opt => opt.MapFrom(m => Enum.GetName(typeof(CategoryType), m.CategoryType)))
                 .IncludeAllDerived()
             ;
             CreateMap<ProfessionalService, ListingViewModel>()
