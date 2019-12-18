@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
         public CategoryPath Category { get; set; }
-        public CategoryType CategoryType { get; set; }
+        public string CategoryType { get; set; }
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
