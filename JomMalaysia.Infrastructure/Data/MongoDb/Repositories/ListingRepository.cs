@@ -101,7 +101,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             GetAllListingResponse res;
             List<ListingDto> query;
             List<Listing> Mapped = new List<Listing>();
-            var parsed = Enum.TryParse(type, out CategoryType ct);
+            var parsed = Enum.TryParse<CategoryType>(type, true, out CategoryType ct);
             var publishStatus = ListingStatusEnum.For(status);
 
             var builder = Builders<ListingDto>.Filter;
@@ -129,7 +129,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
                 if (parsed)
                 {
-                    var typeFilter = builder.Eq(ld => ld.CategoryType.ToLower(), ct.ToString().ToLower());
+                    var typeFilter = builder.Where(ld => ld.CategoryType.Equals(ct.ToString()) || ld.CategoryType.Equals(ct.ToString().ToLower()));
                     filter &= typeFilter;
                 }
 

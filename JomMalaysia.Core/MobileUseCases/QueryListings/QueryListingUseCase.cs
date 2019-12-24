@@ -8,6 +8,8 @@ using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.MobileUseCases;
 using JomMalaysia.Core.MobileUseCases.GetNearbyListings;
+using AutoMapper;
+using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 
 namespace JomMalaysia.Core.MobileUseCases.QueryListings
 {
@@ -15,11 +17,13 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
     {
         IListingRepository _listingRepository;
         ICategoryRepository _categoryRepository;
+        IMapper _mapper;
 
-        public QueryListingUseCase(IListingRepository listingRepository, ICategoryRepository categoryRepository)
+        public QueryListingUseCase(IListingRepository listingRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> Handle(QueryListingRequest message, IOutputPort<ListingResponse> outputPort)
@@ -42,7 +46,8 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
                 outputPort.Handle(new ListingResponse(ListingQuery.Errors, false, ListingQuery.Message));
                 return false;
             }
-            outputPort.Handle(new ListingResponse(ListingQuery.Listings, true, ListingQuery.Message));
+            var vm = _mapper.Map<List<ListingViewModel>>(ListingQuery.Listings);
+            outputPort.Handle(new ListingResponse(vm, true, ListingQuery.Message));
             return ListingQuery.Success;
         }
     }

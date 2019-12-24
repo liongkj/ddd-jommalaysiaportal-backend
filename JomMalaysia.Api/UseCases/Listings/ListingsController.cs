@@ -122,7 +122,7 @@ namespace JomMalaysia.Api.UseCases.Listings
         #endregion
 
         [HttpGet("query")]
-        public async Task<IActionResult> GetListingsOfCategory([FromQuery] string category = null, [FromQuery] string type = "all", [FromQuery] bool groupBySub = false, [FromQuery] string status = "pending")
+        public async Task<IActionResult> GetListingsOfCategory([FromQuery] string category = null, [FromQuery] string type = "all", [FromQuery] bool groupBySub = false, [FromQuery] string status = "published")
         {
             QueryListingRequest req = new QueryListingRequest(category, type, groupBySub, status);
             //TODO add query and paging
