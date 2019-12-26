@@ -26,8 +26,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             }
             if (response.Listing != null)
             {
-                var data = _mapper.Map<ListingViewModel>(response.Listing);
-                outputPort.Handle(new GetListingResponse(data, true));
+                var mapped = _mapper.Map<ListingViewModel>(response.Listing);
+                outputPort.Handle(new GetListingResponse(mapped, response.Success, response.Message));
                 return response.Success;
             }
             else
