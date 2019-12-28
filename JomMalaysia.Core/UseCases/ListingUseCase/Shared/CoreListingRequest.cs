@@ -31,6 +31,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public List<Service> ProvidedServices { get; set; }
         public List<GovDepartment> Departments { get; set; }
         public ListingImagesRequest ListingImages { get; set; }
+        public OfficialContact OfficialContact { get; set; }
 
 
 

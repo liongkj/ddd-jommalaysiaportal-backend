@@ -19,7 +19,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
-
+        public OfficialContact OfficialContact { get; set; }
         public PublishStatusViewModel PublishStatus { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

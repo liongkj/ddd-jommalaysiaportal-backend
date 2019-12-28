@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Infrastructure.Data.MongoDb.Interfaces;
 using MongoDB.Bson;
@@ -21,6 +22,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public List<StoreTimesDto> OperatingHours { get; set; }
         public List<ServiceDto> ProvidedServices { get; set; }
         public List<GovDepartmentDto> Departments { get; set; }
+        public OfficialContact OfficialContact { get; set; }
 
         public CategoryPath Category { get; set; }
 

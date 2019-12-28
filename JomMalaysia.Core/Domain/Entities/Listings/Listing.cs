@@ -23,7 +23,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public ListingImages ListingImages { get; set; }
         // public ListingStatusEnum Status { get; set; }
 
-        public Contact Contact { get; set; }
+        public OfficialContact OfficialContact { get; set; }
         public List<StoreTimes> OperatingHours { get; set; }
         public PublishStatus PublishStatus { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -34,7 +34,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
-        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImagesRequest images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours)
+        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImagesRequest images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours, OfficialContact officialContact)
         {
             Merchant = merchant;
             ListingName = listingName;
@@ -46,6 +46,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             CategoryType = categoryType;
             PublishStatus = new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
+            OfficialContact = officialContact;
 
         }
 
@@ -70,14 +71,6 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             return IsPublished();
         }
 
-        public bool HasPrimaryContact()
-        {
-            return Contact != null;
-        }
-        public void UpdateContact(Contact contact)
-        {
-            Contact = Contact.For(contact.Name, contact.Email, contact.Phone);
-        }
 
         public List<Merchant> SwitchOwnershipFromTo(Merchant Old, Merchant New)
         {

@@ -16,7 +16,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
-        public PrivateSector(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, CategoryType.Private, category, listing.ListingImages, listing.Tags, listing.Description, address, listing.OperatingHours)
+        public PrivateSector(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant) : base(listing.ListingName, merchant, CategoryType.Private, category, listing.ListingImages, listing.Tags, listing.Description, address, listing.OperatingHours, listing.OfficialContact)
         {
 
         }

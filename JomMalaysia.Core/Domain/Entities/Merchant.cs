@@ -42,15 +42,7 @@ namespace JomMalaysia.Core.Domain.Entities
         }
         public void AddNewListing(Listing newListing)
         {
-            //get public contact from merchant list of contacts
-            foreach (var c in Contacts)
-            {
-                if (c.IsPrimary)
-                {
-                    newListing.Contact = c;
-                    break;
-                }
-            }
+
             newListing.Merchant = this;
 
             Listings.Add(newListing.ListingId);
@@ -72,13 +64,6 @@ namespace JomMalaysia.Core.Domain.Entities
                     var PrimaryContact = c.SetAsPrimary(c);
                     Contacts.Add(PrimaryContact);
 
-                    if (listings != null) //if merchant has listings
-                    {
-                        foreach (var list in listings)
-                        {
-                            list.UpdateContact(PrimaryContact);
-                        }
-                    }
                 }
                 else //add to back of list
                 {
