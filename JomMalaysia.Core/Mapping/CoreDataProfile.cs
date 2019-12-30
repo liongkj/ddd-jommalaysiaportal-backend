@@ -48,7 +48,7 @@ namespace JomMalaysia.Core.Mapping
                 .ForMember(vm => vm.Coordinates, opt => opt.MapFrom(m => m.Location.Coordinates[0]));
 
             CreateMap<StoreTimes, StoreTimesViewModel>()
-            .ForMember(vm => vm.DayOfWeek, opt => opt.MapFrom(l => l.DayOfWeek.Id))
+            .ForMember(vm => vm.DayOfWeek, opt => opt.MapFrom(l => l.DayOfWeek.Name))
             .ForMember(vm => vm.OpenTime, opt => opt.MapFrom(l => l.OpenTime))
             .ForMember(vm => vm.CloseTime, opt => opt.MapFrom(l => l.CloseTime))
             ;
