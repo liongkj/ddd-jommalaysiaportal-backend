@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.Interfaces.Repositories;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {

@@ -7,6 +7,7 @@ using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
+using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
@@ -86,13 +87,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 return new GetListingResponse(new List<string> { "Get Listing Error" }, false, e.Message);
             }
-            if (item != null) return new GetListingResponse(ListingDtoParser.Converted(_mapper, item), true);
-            return new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
+            return item != null ? new GetListingResponse(ListingDtoParser.Converted(_mapper, item), true) 
+                : new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
         }
 
         public async Task<GetListingResponse> FindByName(string name)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
             //TODO If need this function
         }
 
@@ -101,7 +102,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             GetAllListingResponse res;
             List<ListingDto> query;
             List<Listing> Mapped = new List<Listing>();
-            var parsed = Enum.TryParse<CategoryType>(type, true, out CategoryType ct);
+            var parsed = Enum.TryParse(type, true, out CategoryType ct);
             var publishStatus = ListingStatusEnum.For(status);
 
             var builder = Builders<ListingDto>.Filter;

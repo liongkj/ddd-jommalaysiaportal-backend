@@ -10,7 +10,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public string ListingId { get; set; }
         public MerchantViewModel Merchant { get; set; }
         public string ListingName { get; set; }
-        public string Description { get; set; }
+        public Description Description { get; set; }
         public AddressViewModel Address { get; set; }
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
@@ -19,7 +19,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
-        public OfficialContact OfficialContact { get; set; }
+        public OfficialContactViewModel OfficialContact { get; set; }
+
+        
         public PublishStatusViewModel PublishStatus { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -32,6 +34,17 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 
         }
 
+        public class OfficialContactViewModel
+        {
+            public string MobileNumber { get; set; }
+            public string OfficeNumber { get; set; }
+            public string Website { get; set; }
+            public string Fax { get; set; }
+            public string Email { get; set; }
+
+        }
+
+        
         public class AddressViewModel
         {
             public string Add1 { get; set; }

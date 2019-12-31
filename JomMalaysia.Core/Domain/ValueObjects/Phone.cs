@@ -20,7 +20,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
             try
             {
-                string countryCode = "MY";
+                const string countryCode = "MY";
 
                 PhoneNumber parsedPhone = phoneUtil.Parse(phoneString, countryCode);
 

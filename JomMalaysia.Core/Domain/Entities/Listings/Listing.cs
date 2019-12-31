@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public string ListingId { get; set; }
         public Merchant Merchant { get; set; }
         public string ListingName { get; set; }
-        public string Description { get; set; }
+        public Description Description { get; set; }
         public ICollection<string> Tags { get; private set; }
         public Address Address { get; set; }
         public CategoryPath Category { get; set; }
@@ -34,7 +34,8 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
 
         }
 
-        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImagesRequest images, List<string> tags, string description, Address add, List<StoreTimesRequest> operatingHours, OfficialContact officialContact)
+        protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImagesRequest images,
+            ICollection<string> tags, Description description, Address add, List<StoreTimesRequest> operatingHours, OfficialContact officialContact)
         {
             Merchant = merchant;
             ListingName = listingName;
@@ -95,13 +96,13 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
                 }
             }
 
-            var ListingImages = new ListingImages
+            var listingImages = new ListingImages
             {
                 ListingLogo = new Image(images.ListingLogo.Url),
                 CoverPhoto = new Image(images.CoverPhoto.Url),
                 Ads = ads
             };
-            return ListingImages;
+            return listingImages;
         }
 
         private List<StoreTimes> PopulateOperatingHours(List<StoreTimesRequest> OperatingHours)

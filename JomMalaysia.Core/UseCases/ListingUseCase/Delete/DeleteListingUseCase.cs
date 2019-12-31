@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Domain.Entities.Listings;
+using JomMalaysia.Core.Interfaces.Repositories;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
 {

@@ -19,7 +19,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public string ListingId { get; set; }
         public string MerchantId { get; set; }
         public string ListingName { get; set; }
-        public string Description { get; set; }
+        public Description Description { get; set; }
 
         public CategoryType CategoryType { get; set; }
 
