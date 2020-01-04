@@ -33,7 +33,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public ListingImagesRequest ListingImages { get; set; }
         public OfficialContact OfficialContact { get; set; }
 
-
+        public PublishStatus PublishStatus { get; set; }
 
     }
 

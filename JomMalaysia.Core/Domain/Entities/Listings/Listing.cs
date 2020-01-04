@@ -45,7 +45,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Address = add;
             Tags = tags;
             CategoryType = categoryType;
-            PublishStatus = new PublishStatus();
+            PublishStatus = PublishStatus ?? new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
             OfficialContact = officialContact;
 

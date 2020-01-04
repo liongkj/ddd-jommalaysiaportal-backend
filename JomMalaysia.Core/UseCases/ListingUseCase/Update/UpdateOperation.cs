@@ -36,6 +36,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
             if (NewListing != null) //validate is Listing Type
             {
                 NewListing.ListingId = message.ListingId;
+                NewListing.PublishStatus = message.PublishStatus;
                 //start transaction
                 using (var session = await _transaction.StartSession())
                 {
