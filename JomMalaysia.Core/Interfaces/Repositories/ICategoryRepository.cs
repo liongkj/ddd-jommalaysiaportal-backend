@@ -6,6 +6,7 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using MongoDB.Driver;
+using static JomMalaysia.Core.UseCases.ListingUseCase.Get.ListingViewModel;
 
 namespace JomMalaysia.Core.Interfaces.Repositories
 {
@@ -18,11 +19,14 @@ namespace JomMalaysia.Core.Interfaces.Repositories
         Task<DeleteCategoryResponse> DeleteAsync(string id);
 
 
-        Task<GetCategoryResponse> FindByNameAsync(string cat, string sub);
         Task<GetCategoryResponse> FindByIdAsync(string id);
 
         Task<UpdateCategoryResponse> UpdateManyWithSession(List<Category> categories, IClientSessionHandle session);
         Task<UpdateCategoryResponse> UpdateCategoryWithSession(string id, Category Category, IClientSessionHandle session);
+
+        //helper method
+
+        Task<CategoryPathViewModel> FindByNameAsync(string cat, string sub);
 
     }
 }

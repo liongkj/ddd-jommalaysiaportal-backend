@@ -26,6 +26,7 @@ namespace JomMalaysia.Core.Mapping
                 .ForMember(vm => vm.PublishStatus, opt => opt.MapFrom(l => l.PublishStatus))
                 .ForMember(vm => vm.Merchant, opt => opt.MapFrom(l => l.Merchant))
                 .ForMember(vm => vm.CategoryType, opt => opt.MapFrom(m => Enum.GetName(typeof(CategoryType), m.CategoryType)))
+                .ForMember(vm => vm.Category, opt => opt.Ignore())
                 .IncludeAllDerived()
             ;
             CreateMap<ProfessionalService, ListingViewModel>()
@@ -58,6 +59,7 @@ namespace JomMalaysia.Core.Mapping
             ;
 
             CreateMap<OfficialContact, OfficialContactViewModel>();
+
             #endregion
 
 

@@ -15,7 +15,7 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-
+using static JomMalaysia.Core.UseCases.ListingUseCase.Get.ListingViewModel;
 
 namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 {
@@ -105,12 +105,15 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<GetCategoryResponse> FindByNameAsync(string name)
+        public async Task<CategoryPathViewModel> FindByNameAsync(string cat, string sub)
         {
-            Category m;
+            CategoryPathViewModel m;
+            Category category;
+            Category subcategory;
             try
             {
-                CategoryPath cp = new CategoryPath(name, null);
+                //find category
+                CategoryPath cp = new CategoryPath(cat, null);
                 //convert to slug
                 var querystring = cp.ToString();
                 //linq query
@@ -118,55 +121,35 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     _db.AsQueryable()
                     .Where(M => M.CategoryPath.Equals(querystring))
                     .FirstOrDefaultAsync();
-                m = _mapper.Map<Category>(query);
-            }
-            catch (AutoMapperMappingException e)
-            {
-                throw e;
-            }
-            catch (Exception e)
-            {
-                return new GetCategoryResponse(new List<string> { "FindByNameAsync repo error" }, false, e.ToString());
-            }
-            var response = m == null ? new GetCategoryResponse(new List<string> { "Category Not Found" }, false) : new GetCategoryResponse(m, true);
-            return response;
-        }
+                category = _mapper.Map<Category>(query);
 
-        /// <summary>
-        /// Get subcategory given category and subcategory name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public async Task<GetCategoryResponse> FindByNameAsync(string cat, string sub)
-        {
-            Category m;
-            try
-            {
-                CategoryPath cp = new CategoryPath(cat, sub);
+                //find subcategory
+                CategoryPath subcp = new CategoryPath(cat, sub);
                 //convert to slug
-                var querystring = cp.ToString();
+                var subquerystring = subcp.ToString();
                 //linq query
-                var query = await
+                var subquery = await
                     _db.AsQueryable()
                     .Where(M => M.CategoryPath.Equals(querystring))
-                    .FirstOrDefaultAsync()
-                    .ConfigureAwait(false);
-                m = _mapper.Map<Category>(query);
+                    .FirstOrDefaultAsync();
+                subcategory = _mapper.Map<Category>(subquery);
+
+                m = new CategoryPathViewModel
+                {
+                    CategoryId = subcategory.CategoryId,
+                    Category = category,
+                    Subcategory = subcategory
+                };
             }
-            catch (AutoMapperMappingException e)
+
+            catch (Exception e)
             {
                 throw e;
             }
-            catch (Exception e)
-            {
-                return new GetCategoryResponse(new List<string> { "FindByName Repo Error" }, false, e.ToString());
-            }
 
-            var response = m == null ?
-                new GetCategoryResponse(new List<string> { "Subcategory Not Found" }, false, "Subcategory Not Found")
-                : new GetCategoryResponse(m, true);
-            return response;
+            return m;
         }
+
 
         public async Task<GetAllCategoryResponse> GetAllCategoriesAsync(int PageSize = 20, int PageNumber = 1)
         {

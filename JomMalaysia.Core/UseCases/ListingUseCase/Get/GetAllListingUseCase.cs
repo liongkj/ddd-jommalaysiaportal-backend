@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,10 +13,12 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
     {
         private readonly IListingRepository _listingRepository;
         private readonly IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public GetAllListingUseCase(IListingRepository listingRepository, IMapper mapper)
+        public GetAllListingUseCase(IListingRepository listingRepository, IMapper mapper, ICategoryRepository categoryRepository)
         {
             _listingRepository = listingRepository;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
         public async Task<bool> Handle(GetAllListingRequest message, IOutputPort<GetAllListingResponse> outputPort)
@@ -24,8 +27,15 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             List<ListingViewModel> listingVM;
             try
             {
+
                 var getAllListingResponse = await _listingRepository.GetAllListings(null).ConfigureAwait(false);
                 listingVM = _mapper.Map<List<ListingViewModel>>(getAllListingResponse.Listings);
+                foreach (var l in getAllListingResponse.Listings)
+                {
+                    var category = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
+                    listingVM.Where(x => x.ListingId == l.ListingId).FirstOrDefault().Category = category;
+                }
+
                 response = new GetAllListingResponse(listingVM, getAllListingResponse.Success, getAllListingResponse.Message);
             }
 

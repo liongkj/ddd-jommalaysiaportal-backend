@@ -10,10 +10,12 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
     {
         private readonly IListingRepository _listingRepository;
         private readonly IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public GetListingUseCase(IListingRepository listingRepository, IMapper mapper)
+        public GetListingUseCase(IListingRepository listingRepository, IMapper mapper, ICategoryRepository categoryRepository)
         {
             _listingRepository = listingRepository;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
         public async Task<bool> Handle(GetListingRequest message, IOutputPort<GetListingResponse> outputPort)
@@ -27,7 +29,10 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             }
             if (response.Listing != null)
             {
+                var category = await _categoryRepository.FindByNameAsync(response.Listing.Category.Category, response.Listing.Category.Subcategory);
+
                 var mapped = _mapper.Map<ListingViewModel>(response.Listing);
+                mapped.Category = category;
                 outputPort.Handle(new GetListingResponse(mapped, response.Success, response.Message));
                 return response.Success;
             }

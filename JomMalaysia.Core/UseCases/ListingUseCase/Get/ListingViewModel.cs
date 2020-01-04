@@ -15,7 +15,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public AddressViewModel Address { get; set; }
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
-        public CategoryViewModel Category { get; set; }
+        public CategoryPathViewModel Category { get; set; }
         public string CategoryType { get; set; }
 
         public ICollection<string> Tags { get; set; }
@@ -26,6 +26,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public PublishStatusViewModel PublishStatus { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+
+
+        public class CategoryPathViewModel
+        {
+            public String CategoryId { get; set; }
+            public Category Category { get; set; }
+            public Category Subcategory { get; set; }
+        }
 
         public class StoreTimesViewModel
         {
