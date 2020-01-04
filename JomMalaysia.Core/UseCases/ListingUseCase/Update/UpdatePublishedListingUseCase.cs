@@ -36,11 +36,11 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
             _loginInfo = loginInfo;
         }
         #endregion
-        public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort)
+        public async Task<bool> Handle(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort, Listing oldListing)
         {
             var AppUser = _loginInfo.AuthenticatedUser();
             if (AppUser != null && AppUser.CanUpdateLiveListing())
-                return await UpdateOperation.HandleListingUpdate(message, outputPort, _categoryRepository, _transaction, _merchantRepository, _listingRepository);
+                return await UpdateOperation.HandleListingUpdate(message, outputPort, _categoryRepository, _transaction, _merchantRepository, _listingRepository, oldListing);
             outputPort.Handle(new CoreListingResponse(new List<string> { "Unauthorized" }, false, "You are not authorized to update a live listing"));
             return false;
 

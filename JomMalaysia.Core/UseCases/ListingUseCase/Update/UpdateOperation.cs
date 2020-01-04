@@ -4,6 +4,7 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
+using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
@@ -13,7 +14,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
 {
     public static class UpdateOperation
     {
-        public static async Task<bool> HandleListingUpdate(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort, ICategoryRepository _categoryRepository, IMongoDbContext _transaction, IMerchantRepository _merchantRepository, IListingRepository _listingRepository)
+        public static async Task<bool> HandleListingUpdate(CoreListingRequest message, IOutputPort<CoreListingResponse> outputPort, ICategoryRepository _categoryRepository, IMongoDbContext _transaction, IMerchantRepository _merchantRepository, IListingRepository _listingRepository, Listing oldListing = null)
         {
             #region Handle Find Merchant, Category, find related workflow and create new listing object
             var FindMerchantResponse = await GetMerchant(message.MerchantId, _merchantRepository);
@@ -36,7 +37,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
             if (NewListing != null) //validate is Listing Type
             {
                 NewListing.ListingId = message.ListingId;
-                NewListing.PublishStatus = message.PublishStatus;
+                NewListing.PublishStatus = oldListing.PublishStatus;
                 //start transaction
                 using (var session = await _transaction.StartSession())
                 {

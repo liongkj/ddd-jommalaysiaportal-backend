@@ -51,11 +51,11 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Update
 
             if (!OldListing.IsPublished())
             {//hanldle unpublished listing
-                return await UpdateOperation.HandleListingUpdate(message, outputPort, _categoryRepository, _transaction, _merchantRepository, _listingRepository);
+                return await UpdateOperation.HandleListingUpdate(message, outputPort, _categoryRepository, _transaction, _merchantRepository, _listingRepository, OldListing);
             }
             else
             {//handle published listing
-                return await _updatePublishedListingUseCase.Handle(message, outputPort);
+                return await _updatePublishedListingUseCase.Handle(message, outputPort, OldListing);
             }
         }
 
