@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.UseCases.CategoryUseCase.Get;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {
@@ -14,14 +15,14 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public AddressViewModel Address { get; set; }
         public List<StoreTimesViewModel> OperatingHours { get; set; }
 
-        public CategoryPath Category { get; set; }
+        public CategoryViewModel Category { get; set; }
         public string CategoryType { get; set; }
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
         public OfficialContactViewModel OfficialContact { get; set; }
 
-        
+
         public PublishStatusViewModel PublishStatus { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -44,7 +45,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 
         }
 
-        
+
         public class AddressViewModel
         {
             public string Add1 { get; set; }
