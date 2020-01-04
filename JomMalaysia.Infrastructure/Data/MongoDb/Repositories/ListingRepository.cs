@@ -71,6 +71,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public async Task<GetListingResponse> FindById(string id)
         {
             ListingDto item;
+            Listing mapped;
             try
             {
                 var query =
@@ -81,13 +82,13 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 ;
 
                 item = _mapper.Map<ListingDto>(query);
-
+                mapped = ListingDtoParser.Converted(_mapper, item);
             }
             catch (Exception e)
             {
                 return new GetListingResponse(new List<string> { "Get Listing Error" }, false, e.Message);
             }
-            return item != null ? new GetListingResponse(ListingDtoParser.Converted(_mapper, item), true) 
+            return item != null ? new GetListingResponse(mapped, true)
                 : new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
         }
 

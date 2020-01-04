@@ -7,7 +7,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 {
     public class Phone : ValueObjectBase
     {
-    
+
         private Phone() { }
 
         public string Number { get; set; }
@@ -24,7 +24,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
                 PhoneNumber parsedPhone = phoneUtil.Parse(phoneString, countryCode);
 
-                phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.RFC3966);
+                phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
 
             }
             catch (Exception ex)

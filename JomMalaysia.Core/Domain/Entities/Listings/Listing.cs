@@ -35,7 +35,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         }
 
         protected Listing(string listingName, Merchant merchant, CategoryType categoryType, CategoryPath category, ListingImagesRequest images,
-            ICollection<string> tags, Description description, Address add, List<StoreTimesRequest> operatingHours, OfficialContact officialContact)
+            ICollection<string> tags, Description description, Address add, List<StoreTimesRequest> operatingHours, OfficialContact officialContact, PublishStatus publishStatus)
         {
             Merchant = merchant;
             ListingName = listingName;
@@ -45,7 +45,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
             Address = add;
             Tags = tags;
             CategoryType = categoryType;
-            PublishStatus = PublishStatus ?? new PublishStatus();
+            PublishStatus = publishStatus ?? new PublishStatus();
             OperatingHours = PopulateOperatingHours(operatingHours);
             OfficialContact = officialContact;
 

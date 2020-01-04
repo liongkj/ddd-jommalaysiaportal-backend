@@ -58,6 +58,7 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             .ForMember(c => c.Phone, opt => opt.MapFrom(cd => (Phone)cd.Phone))
             .ForMember(c => c.Email, opt => opt.MapFrom(cd => cd.Email))
             .ForMember(c => c.Name, opt => opt.MapFrom(cd => (Name)cd.Name))
+            .ReverseMap()
             ;
 
             // Domain to dto
@@ -91,6 +92,10 @@ namespace JomMalaysia.Infrastructure.Data.Mapping
             CreateMap<ProfessionalService, ListingDto>()
                 .IncludeBase<Listing, ListingDto>();
 
+            CreateMap<OfficialContact, OfficialContactDto>()
+                .ForMember(od => od.OfficeNumber, opt => opt.MapFrom(o => o.OfficeNumber.ToString()))
+                .ForMember(od => od.MobileNumber, opt => opt.MapFrom(o => o.MobileNumber.ToString()))
+                .ReverseMap();
             //dto->domain
             //mapping parent class
             CreateMap<ListingDto, Listing>()

@@ -10,6 +10,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
 
         public ImageRequest CoverPhoto { get; set; }
 
-        public List<ImageRequest> Ads { get; }
+        public List<ImageRequest> Ads { get; set; }
     }
 }

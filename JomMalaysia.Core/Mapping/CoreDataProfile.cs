@@ -56,6 +56,8 @@ namespace JomMalaysia.Core.Mapping
             CreateMap<PublishStatus, PublishStatusViewModel>()
             .ForMember(vm => vm.Status, opt => opt.MapFrom(l => l.Status.ToString()))
             ;
+
+            CreateMap<OfficialContact, OfficialContactViewModel>();
             #endregion
 
 
