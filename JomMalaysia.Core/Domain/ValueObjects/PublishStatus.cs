@@ -10,10 +10,17 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         public DateTime? ValidityStart { get; private set; }
         public DateTime? ValidityEnd { get; private set; }
-
+        ///Feature flag to direct publish listing
+        ///Change here after worklfow feature is done
+        private const bool WorkflowFeatureEnabled = false;
         public PublishStatus()
         {
-            Status = ListingStatusEnum.Pending;
+
+            if (WorkflowFeatureEnabled) Status = ListingStatusEnum.Pending;
+            else
+            {
+                Status = ListingStatusEnum.Published;
+            }
 
         }
 

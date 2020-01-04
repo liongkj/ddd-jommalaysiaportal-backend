@@ -23,7 +23,6 @@ using FluentValidation.AspNetCore;
 using JomMalaysia.Api.Providers;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using FluentValidation;
-using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Api.Scope;
 using System.Collections.Generic;
 using JomMalaysia.Core.Mapping;
@@ -52,8 +51,6 @@ namespace JomMalaysia.Api
 
             }).AddJwtBearer(options =>
             {
-
-
                 options.Authority = Configuration["Auth0:Authority"];
                 options.Audience = Configuration["Auth0:Audience"];
 
@@ -109,17 +106,13 @@ namespace JomMalaysia.Api
 
                 });
 
-
             // Auto Mapper Configurations
             services.AddSingleton(new MapperConfiguration(mc =>
                  {
-
                      mc.AddProfile(new Auth0DataProfile());
                      mc.AddProfile(new DataProfile());
                      mc.AddProfile(new CoreDataProfile());
                  }).CreateMapper());
-
-
 
             // Now register our services with Autofac container.
             var builder = new ContainerBuilder();

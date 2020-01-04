@@ -66,7 +66,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                     {
                         var merchantUser = findMerchantResponse.Data;
                         session.StartTransaction();
-
                         //create Listing command
                         var listing = await _listingRepository.CreateListingAsync(newListing, session).ConfigureAwait(false);
                         newListing.ListingId = listing.Id;//retrieve the created listing Id and add into merchant
