@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
@@ -47,6 +48,12 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
                 return false;
             }
             var vm = _mapper.Map<List<ListingViewModel>>(ListingQuery.Listings);
+            foreach (var l in ListingQuery.Listings)
+            {
+                var cat = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
+                vm.Where(x => x.ListingId == l.ListingId).FirstOrDefault().Category = cat;
+            }
+
             outputPort.Handle(new ListingResponse(vm, true, ListingQuery.Message));
             return ListingQuery.Success;
         }
