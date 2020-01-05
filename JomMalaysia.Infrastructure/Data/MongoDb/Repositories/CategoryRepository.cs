@@ -130,7 +130,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 //linq query
                 var subquery = await
                     _db.AsQueryable()
-                    .Where(M => M.CategoryPath.Equals(querystring))
+                    .Where(M => M.CategoryPath.Equals(subquerystring))
                     .FirstOrDefaultAsync();
                 subcategory = _mapper.Map<Category>(subquery);
 
