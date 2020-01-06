@@ -27,7 +27,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public List<string> Tags { get; set; }
         public AddressRequest Address { get; set; }
         public List<StoreTimesRequest> OperatingHours { get; set; }
-        public OfficialContactRequest Contact { get; set; }
         public List<Service> ProvidedServices { get; set; }
         public List<GovDepartment> Departments { get; set; }
         public ListingImagesRequest ListingImages { get; set; }
