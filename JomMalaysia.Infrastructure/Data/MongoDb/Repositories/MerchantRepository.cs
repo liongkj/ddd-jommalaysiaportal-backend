@@ -111,7 +111,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return new GetAllMerchantResponse(merchants, true, $"{merchants.Count} result found");
         }
 
-        public async Task<UpdateMerchantResponse> UpdateMerchantAsyncWithSession(string id, Merchant updatedMerchant, IClientSessionHandle session)
+        public async Task<UpdateMerchantResponse> UpdateMerchantAsyncWithSession(string id, Merchant updatedMerchant, IClientSessionHandle session = null)
         {
             ReplaceOneResult result;
             var merchantDto = _mapper.Map<MerchantDto>(updatedMerchant);
