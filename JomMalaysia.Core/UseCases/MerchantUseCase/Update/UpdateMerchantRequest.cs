@@ -9,7 +9,7 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
     public class UpdateMerchantRequest : IUseCaseRequest<UpdateMerchantResponse>
     {
 
-        public string MerchantId { get; }
+        public string MerchantId { get; set; }
         public string SsmId { get; set; }
         public string OldSsmId { get; set; }
         public string CompanyRegistrationName { get; set; }

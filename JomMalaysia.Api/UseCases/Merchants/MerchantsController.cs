@@ -93,10 +93,10 @@ namespace JomMalaysia.Api.UseCases.Merchants
 
         //PUT api/merchants/{id}
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody] UpdateMerchantRequest updatedMerchant)
+        public async Task<IActionResult> Update(string id, [FromBody] UpdateMerchantRequest updatedMerchant)
         {
-
-            _updateMerchantUseCase.Handle(updatedMerchant, _updateMerchantPresenter);
+            updatedMerchant.MerchantId = id;
+            await _updateMerchantUseCase.Handle(updatedMerchant, _updateMerchantPresenter);
             return _updateMerchantPresenter.ContentResult;
         }
 

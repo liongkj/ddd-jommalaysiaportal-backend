@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
@@ -19,11 +20,12 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
         public async Task<bool> Handle(UpdateMerchantRequest message, IOutputPort<UpdateMerchantResponse> outputPort)
         {
 
-            var add = message.Address;
-            var CompanyRegistration = new CompanyRegistration(message.SsmId, message.CompanyRegistrationName, message.OldSsmId);
+
             try
             {
-                await _merchantRepository.FindBySsmIdAsync(message.SsmId).ConfigureAwait(false);
+                var add = message.Address;
+                var CompanyRegistration = new CompanyRegistration(message.SsmId, message.CompanyRegistrationName, message.OldSsmId);
+                // await _merchantRepository.FindBySsmIdAsync(message.SsmId).ConfigureAwait(false);
 
                 //create new merchant
                 Merchant merchant = new Merchant(CompanyRegistration, new Address(add.Add1, add.Add2, add.City, add.State, add.PostalCode, add.Country));
@@ -39,15 +41,28 @@ namespace JomMalaysia.Core.UseCases.MerchantUseCase.Update
                 }
                 using (var session = await _transaction.StartSession())
                 {
+                    UpdateMerchantResponse response;
+                    try
+                    {
+                        session.StartTransaction();
+                        response = await _merchantRepository.UpdateMerchantAsyncWithSession(message.MerchantId, merchant, session);
+                        outputPort.Handle(response);
+                    }
+                    catch (Exception e)
+                    {
+                        await session.AbortTransactionAsync();
+                        outputPort.Handle(new UpdateMerchantResponse(new List<string> { e.Source }, false, e.Message));
+                        return false;
+                    }
                     //verify update??
-                    var response = await _merchantRepository.UpdateMerchantAsyncWithSession(message.MerchantId, merchant, session);
 
-                    outputPort.Handle(response);
+                    await session.CommitTransactionAsync();
                     return response.Success;
                 }
             }
             catch (Exception e)
             {
+
                 throw e;
             }
         }
