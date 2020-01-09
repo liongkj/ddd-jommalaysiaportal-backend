@@ -13,7 +13,7 @@ namespace JomMalaysia.Core.Interfaces.Repositories
     {
 
         Task<CoreListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
-        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null, string type = "all", bool groupBySub = false, string publishStatus = "published");
+        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null, string type = "all", bool groupBySub = false, string publishStatus = "published", string selectedDistrict = "");
         Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null);
         Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
 
