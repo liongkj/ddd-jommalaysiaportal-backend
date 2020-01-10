@@ -41,7 +41,7 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
                 category = CategoryQuery.Data.CategoryPath;
             }
 
-            var ListingQuery = await _listingRepository.GetAllListings(category, message.Type, message.GroupBySub, message.PublishStatus, message.SelectedDistrict);
+            var ListingQuery = await _listingRepository.GetAllListings(category, message.Type, message.GroupBySub, message.PublishStatus, message.SelectedCity);
             if (!ListingQuery.Success)
             {
                 outputPort.Handle(new ListingResponse(ListingQuery.Errors, false, ListingQuery.Message));
