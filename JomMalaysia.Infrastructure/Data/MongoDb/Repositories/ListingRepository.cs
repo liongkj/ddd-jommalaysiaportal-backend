@@ -98,7 +98,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             //TODO If need this function
         }
 
-        public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp, string type, bool groupBySub, string status, string city)
+        public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp, string type, bool groupBySub, string status, string city, bool isFeatured)
         {
             GetAllListingResponse res;
             List<ListingDto> query;
@@ -140,6 +140,12 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 {
                     var cityFilter = builder.Where(ld => ld.ListingAddress.City.ToLower() == city.ToLower());
                     filter &= cityFilter;
+                }
+
+                if (isFeatured)
+                {
+                    var featuredFilter = builder.Where(ld => ld.IsFeatured == true);
+                    filter &= featuredFilter;
                 }
 
                 query = await _db.Find(filter)

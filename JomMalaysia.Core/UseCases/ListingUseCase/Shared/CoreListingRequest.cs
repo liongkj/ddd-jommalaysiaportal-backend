@@ -31,6 +31,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Shared
         public List<GovDepartment> Departments { get; set; }
         public ListingImagesRequest ListingImages { get; set; }
         public OfficialContactRequest OfficialContact { get; set; }
+        public bool IsFeatured { get; set; }
 
         public PublishStatus PublishStatus { get; set; }
 
