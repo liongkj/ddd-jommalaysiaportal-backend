@@ -21,6 +21,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; }
         public OfficialContactViewModel OfficialContact { get; set; }
+        public bool IsFeatured { get; set; } = false;
 
 
         public PublishStatusViewModel PublishStatus { get; set; }

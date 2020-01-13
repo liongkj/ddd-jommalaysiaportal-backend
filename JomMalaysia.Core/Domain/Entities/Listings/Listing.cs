@@ -22,6 +22,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings
         public CategoryType CategoryType { get; set; }
         public ListingImages ListingImages { get; set; }
         // public ListingStatusEnum Status { get; set; }
+        public bool IsFeatured { get; set; } = false;
 
         public OfficialContact OfficialContact { get; set; }
         public List<StoreTimes> OperatingHours { get; set; }

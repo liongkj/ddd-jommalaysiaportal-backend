@@ -25,6 +25,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public OfficialContactDto OfficialContact { get; set; }
 
         public CategoryPath Category { get; set; }
+        public bool IsFeatured
+        {
+            get; set;
+        } = false;
 
         public ICollection<string> Tags { get; set; }
         public ListingImages ListingImages { get; set; } = new ListingImages
