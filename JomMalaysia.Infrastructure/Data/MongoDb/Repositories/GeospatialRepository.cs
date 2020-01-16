@@ -25,8 +25,8 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             _db = context.Database.GetCollection<ListingDto>("Listing");
             // TODO how to add index
-           
-            
+
+
             _mapper = mapper;
         }
 
