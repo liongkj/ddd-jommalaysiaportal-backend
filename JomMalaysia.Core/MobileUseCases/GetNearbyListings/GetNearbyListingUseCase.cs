@@ -21,7 +21,7 @@ namespace JomMalaysia.Core.MobileUseCases.GetNearbyListings
         public async Task<bool> Handle(GetNearbyListingRequest message, IOutputPort<ListingResponse> outputPort)
         {
             var NearbyListingQuery = await _geospatialQuery.GetListingsWithinRadius(message.Location, message.Radius, message.CategoryType);
-            outputPort.Handle(NearbyListingQuery);
+            outputPort.Handle(new ListingResponse(NearbyListingQuery.Data,NearbyListingQuery.Success,NearbyListingQuery.Message));
             return NearbyListingQuery.Success;
         }
     }

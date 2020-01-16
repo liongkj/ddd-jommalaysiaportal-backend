@@ -51,7 +51,7 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
             foreach (var l in ListingQuery.Listings)
             {
                 var cat = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
-                vm.Where(x => x.ListingId == l.ListingId).FirstOrDefault().Category = cat;
+                if (vm != null) vm.FirstOrDefault(x => x.ListingId == l.ListingId).Category = cat;
             }
 
             outputPort.Handle(new ListingResponse(vm, true, ListingQuery.Message));

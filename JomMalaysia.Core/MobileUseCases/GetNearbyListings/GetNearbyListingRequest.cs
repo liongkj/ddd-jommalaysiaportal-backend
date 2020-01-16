@@ -7,18 +7,9 @@ namespace JomMalaysia.Core.MobileUseCases.GetNearbyListings
 {
     public class GetNearbyListingRequest : IUseCaseRequest<ListingResponse>
     {
-        public GetNearbyListingRequest(string location, double radius, string type)
-        {
-            var coor = location.Split(',');
-
-            Location = new Coordinates(coor[0], coor[1]);
-            Radius = radius;
-            CategoryType = type;
-        }
-
-        public Coordinates Location { get;}
-        public double Radius { get;  }
-        public string CategoryType { get; }
+ public Coordinates Location { get; set; }
+        public double Radius { get; set; } = 10.0;
+        public string CategoryType { get; set; } = "all";
 
     }
 }
