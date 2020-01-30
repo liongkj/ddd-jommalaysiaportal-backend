@@ -12,7 +12,7 @@ namespace JomMalaysia.Core.Domain.Entities.Listings.Attractions
 
         }
         public Attraction(CoreListingRequest listing, CategoryPath category, Address address, Merchant merchant, OfficialContact officialContact) :
-            base(listing.ListingName, merchant, CategoryType.Attraction, category, listing.ListingImages, listing.Tags, listing.Description, address, listing.OperatingHours, officialContact, listing.PublishStatus)
+            base(listing.ListingName, merchant, CategoryType.Attraction, category, listing.ListingImages, listing.Tags, listing.Description, address, listing.OperatingHours, officialContact, listing.PublishStatus, listing.IsFeatured)
         {
 
         }
