@@ -35,15 +35,24 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             var ToBeUpdateSubcategory = getCategoryResponse.Data;
 
             //fetch listing with this subcategory
-            var GetListingWithThisSubcategory = await _ListingRepository.GetAllListings(ToBeUpdateSubcategory.CategoryPath);
-            var ToBeUpdateListings = GetListingWithThisSubcategory.Listings;
+            var GetListingWithThisSubcategory = await _ListingRepository.GetAllListings(ToBeUpdateSubcategory.CategoryPath, true);
+            var UpdatedListings = new Dictionary<string, CategoryPath>();
+            List<Listing> ToBeUpdateListings = null;
+            if (GetListingWithThisSubcategory.Success)
+            {
+                ToBeUpdateListings = GetListingWithThisSubcategory.Listings;
+
+                //TODO
+                if (ToBeUpdateListings.Count > 0)
+                    UpdatedListings = ToBeUpdateSubcategory.UpdateListings(ToBeUpdateListings, false);
+                //update operation end
+            }
+
             //retrieve data end
 
             //Update Operation Start
             ToBeUpdateSubcategory.UpdateCategory(updated, null, false);
-            //TODO
-            var UpdatedListings = ToBeUpdateSubcategory.UpdateListings(ToBeUpdateListings, false);
-            //update operation end
+
 
 
             UpdateCategoryResponse updateCategoryResponse;
@@ -54,7 +63,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 {
                     session.StartTransaction();
                     //start update operation
-                    if (ToBeUpdateListings.Count > 0)
+                    if (ToBeUpdateListings != null && ToBeUpdateListings.Count > 0)
                     {
 
                         updateListingResponse = await _ListingRepository.UpdateCategoryAsyncWithSession(UpdatedListings, session);

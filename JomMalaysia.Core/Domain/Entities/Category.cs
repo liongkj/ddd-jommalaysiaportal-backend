@@ -80,16 +80,17 @@ namespace JomMalaysia.Core.Domain.Entities
 
         }
 
-        public Dictionary<string, string> UpdateListings(List<Listing> toBeUpdateListings, bool IsUpdateCategoryOperation)
+        public Dictionary<string, CategoryPath> UpdateListings(List<Listing> toBeUpdateListings, bool IsUpdateCategoryOperation)
         {
-            Dictionary<string, string> updatedListings = new Dictionary<string, string>();
+            Dictionary<string, CategoryPath> updatedListings = new Dictionary<string, CategoryPath>();
             foreach (var listing in toBeUpdateListings)
             {
                 CategoryPath cp;
                 cp = IsUpdateCategoryOperation ?
                     new CategoryPath(CategoryName, listing.Category.Subcategory)
                     : new CategoryPath(listing.Category.Category, CategoryName);
-                updatedListings.Add(listing.ListingId, cp.ToString());
+                cp.CategoryId = CategoryId;
+                updatedListings.Add(listing.ListingId, cp);
             }
             return updatedListings;
         }

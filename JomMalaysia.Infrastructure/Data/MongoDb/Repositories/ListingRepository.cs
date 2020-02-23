@@ -6,6 +6,7 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
+using JomMalaysia.Core.Exceptions;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
@@ -171,7 +172,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return res;
         }
 
-        public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp)
+        public async Task<GetAllListingResponse> GetAllListings(CategoryPath cp, bool isSameSubcategory = true)
         {
             GetAllListingResponse res;
             List<ListingDto> query;
@@ -183,22 +184,26 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 if (cp != null)
                 {
-                    var categoryFilter = builder.Where(ld => ld.Category.ToString().StartsWith(cp.ToString()));
-                    filter &= categoryFilter;
+                    filter &= builder.Eq(ld => ld.Category.Category, cp.Category.ToLower());
 
-                }
-
-                query = await _db.Find(filter)
-                    .ToListAsync();
-                foreach (ListingDto list in query)
-                {
-                    var temp = ListingDtoParser.Converted(_mapper, list);
-                    if (temp != null)
+                    if (isSameSubcategory)
                     {
-                        Mapped.Add(temp);
+                        filter &= builder.Eq(ld => ld.Category.Subcategory, cp.Subcategory.ToLower());
                     }
-                }
 
+                    query = await _db.Find(filter)
+                        .ToListAsync();
+                    foreach (ListingDto list in query)
+                    {
+                        var temp = ListingDtoParser.Converted(_mapper, list);
+                        if (temp != null)
+                        {
+                            Mapped.Add(temp);
+                        }
+                    }
+
+
+                }
                 res = new GetAllListingResponse(Mapped, true, $"Returned {Mapped.Count} results");
             }
             catch (Exception e)
@@ -235,7 +240,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             return new CoreListingResponse(listing.ListingId, result.IsAcknowledged, "update success");
         }
 
-        public async Task<CoreListingResponse> UpdateCategoryAsyncWithSession(Dictionary<string, string> toBeUpdateListings, IClientSessionHandle session)
+        public async Task<CoreListingResponse> UpdateCategoryAsyncWithSession(Dictionary<string, CategoryPath> toBeUpdateListings, IClientSessionHandle session)
         {
             BulkWriteResult result;
             var bulkOps = new List<WriteModel<ListingDto>>();
@@ -245,7 +250,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 {
                     var filter = Builders<ListingDto>.Filter.Where(l => l.Id == list.Key);
 
-                    var update = Builders<ListingDto>.Update.Set(l => l.Category.ToString(), list.Value);
+                    var update = Builders<ListingDto>.Update.Set(l => l.Category, list.Value);
 
 
                     var updateOne = new UpdateOneModel<ListingDto>(filter, update);

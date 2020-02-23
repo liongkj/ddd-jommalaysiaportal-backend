@@ -51,7 +51,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 var ToBeUpdateCategories = GetAllCategoriesResponse.Categories.Where(x => !x.IsCategory()).ToList();
                 var OldCategory = GetAllCategoriesResponse.Categories.Where(x => x.IsCategory()).FirstOrDefault();
 
-                var GetListingWithCategories = await _ListingRepository.GetAllListings(OldCategory.CategoryPath);
+                var GetListingWithCategories = await _ListingRepository.GetAllListings(OldCategory.CategoryPath, false);
                 if (!GetListingWithCategories.Success) //handle get listing
                 {
                     outputPort.Handle(new UpdateCategoryResponse(GetListingWithCategories.Errors, false, GetListingWithCategories.Message));
@@ -59,7 +59,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
                 }
                 List<Listing> ToBeUpdateListings = GetListingWithCategories.Listings;
                 //TODO
-                var UpdatedListings = new Dictionary<string, string>();
+                var UpdatedListings = new Dictionary<string, CategoryPath>();
                 //  = message.Updated.UpdateListings(ToBeUpdateListings);
 
                 //start update operation
@@ -77,7 +77,7 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Update
             }
         }
 
-        private async Task<UpdateCategoryResponse> TransactionHasNoError(Dictionary<string, string> UpdatedListing, List<Category> updatedSubcategories)
+        private async Task<UpdateCategoryResponse> TransactionHasNoError(Dictionary<string, CategoryPath> UpdatedListing, List<Category> updatedSubcategories)
         {
             using (var session = await _transaction.StartSession())
             {

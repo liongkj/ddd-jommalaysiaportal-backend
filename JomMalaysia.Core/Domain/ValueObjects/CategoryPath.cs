@@ -43,7 +43,8 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                 CategoryPathString = Regex.Replace(CategoryPathString, ",", " ").Trim();
                 var strings = CategoryPathString.Split(" ");
                 Cat.Category = GeneratePhrase(strings[0]);
-                Cat.Subcategory = GeneratePhrase(strings[1]);
+                if (strings.Length > 1)
+                    Cat.Subcategory = GeneratePhrase(strings[1]);
             }
             catch (Exception) { }
             return Cat;
@@ -54,7 +55,8 @@ namespace JomMalaysia.Core.Domain.ValueObjects
             return For(CategoryString);
         }
 
-        //build category path string
+        ///build category path string
+        ///example=>,category,subcatgory,
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
@@ -71,9 +73,10 @@ namespace JomMalaysia.Core.Domain.ValueObjects
                     builder.Append(sub);
                 }
 
+
             }
             builder.Append(DLM);
-
+            Console.WriteLine(builder.ToString());
             return builder.ToString();
         }
 

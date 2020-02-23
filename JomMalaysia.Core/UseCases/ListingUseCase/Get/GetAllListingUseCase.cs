@@ -28,7 +28,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             try
             {
 
-                var getAllListingResponse = await _listingRepository.GetAllListings(null).ConfigureAwait(false);
+                var getAllListingResponse = await _listingRepository.GetAllListings(null,false).ConfigureAwait(false);
                 listingVM = _mapper.Map<List<ListingViewModel>>(getAllListingResponse.Listings);
                 foreach (var l in getAllListingResponse.Listings)
                 {

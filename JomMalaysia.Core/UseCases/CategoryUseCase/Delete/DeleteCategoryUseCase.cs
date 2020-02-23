@@ -30,8 +30,8 @@ namespace JomMalaysia.Core.UseCases.CatogoryUseCase.Delete
                 //TODO if is subcategory
                 if (!category.IsCategory())
                 {
-                    var AssociatedListings = await _LisitngRepo.GetAllListings(category.CategoryPath);
-                    if (AssociatedListings.Listings.Count > 0)//found category
+                    var AssociatedListings = await _LisitngRepo.GetAllListings(category.CategoryPath, true);
+                    if (AssociatedListings.Listings?.Count > 0)//found category
                     {
                         outputPort.Handle(new DeleteCategoryResponse(message.Id, false, "This category still has listing associated with it"));
                         return false;

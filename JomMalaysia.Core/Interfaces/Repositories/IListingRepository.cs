@@ -14,12 +14,12 @@ namespace JomMalaysia.Core.Interfaces.Repositories
 
         Task<CoreListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session);
         Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null, string type = "all", bool groupBySub = false, string publishStatus = "published", string selectedCity = "", bool isFeatured = false);
-        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null);
+        Task<GetAllListingResponse> GetAllListings(CategoryPath cp = null, bool isSameSubcategory = true);
         Task<DeleteListingResponse> DeleteAsyncWithSession(string id, IClientSessionHandle session);
 
         Task<GetListingResponse> FindByName(string name);
         Task<GetListingResponse> FindById(string id);
         Task<CoreListingResponse> UpdateAsyncWithSession(Listing listing, IClientSessionHandle session = null);
-        Task<CoreListingResponse> UpdateCategoryAsyncWithSession(Dictionary<string, string> toBeUpdateListings, IClientSessionHandle session); //optimize performance
+        Task<CoreListingResponse> UpdateCategoryAsyncWithSession(Dictionary<string, CategoryPath> toBeUpdateListings, IClientSessionHandle session); //optimize performance
     }
 }
