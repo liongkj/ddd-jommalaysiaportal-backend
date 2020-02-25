@@ -7,6 +7,7 @@ using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Shared;
 using JomMalaysia.Core.UseCases.ListingUseCase.Update;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 {
     [Route("api/[controller]")]
     [ApiController]
+
     // [Authorize(Policies.EDITOR)]
     public class ListingsController : ControllerBase
     {
@@ -88,7 +90,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
             return _listingPresenter.ContentResult;
         }
-
+        [Authorize]
         // POST api/listings
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CoreListingRequest ListingObject)
@@ -100,6 +102,7 @@ namespace JomMalaysia.Api.UseCases.Listings
         ///delete listing
         ///DELETE api/listings/{id}
         ///
+        [Authorize]
         [HttpDelete("{ListingId}")]
         public async Task<IActionResult> Delete([FromRoute] string ListingId)
         {
@@ -110,7 +113,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         ///edit a listing
         //PUT api/listings/{id}
-
+        [Authorize]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, [FromBody] CoreListingRequest ListingObject)
         {

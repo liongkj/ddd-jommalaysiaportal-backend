@@ -12,12 +12,14 @@ using JomMalaysia.Core.UseCases.MerchantUseCase.Get;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Get.Request;
 using JomMalaysia.Core.UseCases.MerchantUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Merchants
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MerchantsController : ControllerBase
     {
         private readonly IMapper _mapper;

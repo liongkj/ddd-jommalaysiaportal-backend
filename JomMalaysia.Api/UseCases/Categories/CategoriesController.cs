@@ -11,11 +11,13 @@ using JomMalaysia.Core.UseCases.CatogoryUseCase.Delete;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Get;
 using JomMalaysia.Core.UseCases.CatogoryUseCase.Update;
 using JomMalaysia.Infrastructure.Data.MongoDb.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Categories
 {
     [Route("api/[controller]")]
+
     [ApiController]
     public class CategoriesController : ControllerBase
     {
@@ -75,6 +77,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
 
         // POST api/Categories
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
         {
@@ -84,6 +87,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
 
         [HttpPost("{id}/subcategories")]
+        [Authorize]
         public async Task<IActionResult> CreateSubcategory([FromRoute] string id, [FromBody] CreateCategoryRequest request)
         {
 
@@ -102,7 +106,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //DELETE api/categories/{id}
         [HttpDelete("{id}")]
-
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute]DeleteCategoryRequest req)
         {
             await _deleteCategoryUseCase.Handle(req, _categoryPresenter);
@@ -112,6 +116,7 @@ namespace JomMalaysia.Api.UseCases.Categories
 
         //PUT api/categories/{id}
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateCategory(string id, [FromBody] UpdateCategoryRequest req)
         {
             req.CategoryId = id;

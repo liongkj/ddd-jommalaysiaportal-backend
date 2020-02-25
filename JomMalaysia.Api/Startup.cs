@@ -27,6 +27,7 @@ using JomMalaysia.Api.Scope;
 using System.Collections.Generic;
 using JomMalaysia.Core.Mapping;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JomMalaysia.Api
 {
@@ -53,7 +54,10 @@ namespace JomMalaysia.Api
             {
                 options.Authority = Configuration["Auth0:Authority"];
                 options.Audience = Configuration["Auth0:Audience"];
-
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
                 options.EventsType = typeof(AppUserRoleValidation);
 
             });
