@@ -191,18 +191,19 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                         filter &= builder.Eq(ld => ld.Category.Subcategory, cp.Subcategory.ToLower());
                     }
 
-                    query = await _db.Find(filter)
+
+
+
+                }
+                query = await _db.Find(filter)
                         .ToListAsync();
-                    foreach (ListingDto list in query)
+                foreach (ListingDto list in query)
+                {
+                    var temp = ListingDtoParser.Converted(_mapper, list);
+                    if (temp != null)
                     {
-                        var temp = ListingDtoParser.Converted(_mapper, list);
-                        if (temp != null)
-                        {
-                            Mapped.Add(temp);
-                        }
+                        Mapped.Add(temp);
                     }
-
-
                 }
                 res = new GetAllListingResponse(Mapped, true, $"Returned {Mapped.Count} results");
             }
