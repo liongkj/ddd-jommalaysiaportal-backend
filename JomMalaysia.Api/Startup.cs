@@ -57,6 +57,8 @@ namespace JomMalaysia.Api
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     NameClaimType = ClaimTypes.NameIdentifier
+
+
                 };
                 options.EventsType = typeof(AppUserRoleValidation);
 

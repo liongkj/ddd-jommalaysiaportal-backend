@@ -38,10 +38,10 @@ namespace JomMalaysia.Api.Providers
         public override async Task TokenValidated(TokenValidatedContext context)
         {
             var accessToken = context.SecurityToken as JwtSecurityToken;
-            var role = context.Principal.Claims.Where(x => x.Type == _auth0Setting.AdditionalClaimsRoles).FirstOrDefault();
+            // var role = context.Principal.Claims.Where(x => x.Type == _auth0Setting.AdditionalClaimsRoles).FirstOrDefault();
             var userid = accessToken.Subject;
 
-            var exp = context.Principal.Claims.Where(x => x.Type == "").FirstOrDefault();
+            // var exp = context.Principal.Claims.Where(x => x.Type == "").FirstOrDefault();
 
             var getUserReponse = await _userRepository.GetUser(userid.ToString());
             if (getUserReponse.Success)
