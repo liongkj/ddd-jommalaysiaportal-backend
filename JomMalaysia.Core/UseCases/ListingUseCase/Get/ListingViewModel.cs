@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.UseCases.CategoryUseCase.Get;
+using JomMalaysia.Core.UseCases.SharedRequest;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 {
@@ -52,18 +52,6 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
             public string Fax { get; set; }
             public string Email { get; set; }
 
-        }
-
-
-        public class AddressViewModel
-        {
-            public string Add1 { get; set; }
-            public string Add2 { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string PostalCode { get; set; }
-            public string Country { get; set; }
-            public Coordinates Coordinates { get; set; }
         }
 
         public class MerchantViewModel

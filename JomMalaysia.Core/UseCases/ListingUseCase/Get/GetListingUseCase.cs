@@ -36,11 +36,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
                 outputPort.Handle(new GetListingResponse(mapped, response.Success, response.Message));
                 return response.Success;
             }
-            else
-            {
-                outputPort.Handle(new GetListingResponse(response.Errors, false, "Listing Deleted or Not Found"));
-                return false;
-            }
+
+            outputPort.Handle(new GetListingResponse(response.Errors, false, "Listing Deleted or Not Found"));
+            return false;
         }
     }
 }

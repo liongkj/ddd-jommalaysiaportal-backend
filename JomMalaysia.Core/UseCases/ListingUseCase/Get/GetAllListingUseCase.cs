@@ -33,7 +33,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
                 foreach (var l in getAllListingResponse.Listings)
                 {
                     var category = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
-                    listingVM.Where(x => x.ListingId == l.ListingId).FirstOrDefault().Category = category;
+                    listingVM.FirstOrDefault(x => x.ListingId == l.ListingId).Category = category;
                 }
 
                 response = new GetAllListingResponse(listingVM, getAllListingResponse.Success, getAllListingResponse.Message);

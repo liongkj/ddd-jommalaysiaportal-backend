@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
-using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Interfaces.Repositories;
 
 namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
@@ -30,18 +28,18 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
             }
 
 
-            var ToBeDeleted = getListingResponse.Listing;
-            var getMerchantResponse = await _merchantRepository.FindByIdAsync(ToBeDeleted.Merchant.MerchantId).ConfigureAwait(false);
-            var Merchant = getMerchantResponse.Data;
-            if (ToBeDeleted.IsSafeToDelete()) //check if it is safe to delete
+            var toBeDeleted = getListingResponse.Listing;
+            var getMerchantResponse = await _merchantRepository.FindByIdAsync(toBeDeleted.Merchant.MerchantId).ConfigureAwait(false);
+            var merchant = getMerchantResponse.Merchant;
+            if (toBeDeleted.IsSafeToDelete()) //check if it is safe to delete
             {
-                Merchant.RemoveListing(ToBeDeleted);
+                merchant.RemoveListing(toBeDeleted);
                 using (var session = await _transaction.StartSession())
                 {
                     try
                     {
                         session.StartTransaction();
-                        var UpdateMerchantResponse = await _merchantRepository.UpdateMerchantAsyncWithSession(Merchant.MerchantId, Merchant, session).ConfigureAwait(false);
+                        var updateMerchantResponse = await _merchantRepository.UpdateMerchantAsyncWithSession(merchant.MerchantId, merchant, session).ConfigureAwait(false);
                         var deleteListingResponse = await _listingRepository.DeleteAsyncWithSession(message.ListingId, session).ConfigureAwait(false);
                         if (deleteListingResponse.Success)
                         {
@@ -49,11 +47,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
                             outputPort.Handle(deleteListingResponse);
                             return deleteListingResponse.Success;
                         }
-                        else
-                        {
-                            outputPort.Handle(new DeleteListingResponse(deleteListingResponse.Errors, deleteListingResponse.Success, deleteListingResponse.Message));
-                            return false;
-                        }
+
+                        outputPort.Handle(new DeleteListingResponse(deleteListingResponse.Errors, deleteListingResponse.Success, deleteListingResponse.Message));
+                        return false;
                     }
                     catch (Exception e)
                     {
@@ -67,11 +63,8 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Delete
 
             }
 
-            else //NOT SAFE TO DELETE 
-            {
-                outputPort.Handle(new DeleteListingResponse(message.ListingId, false, "Listing is still published."));
-                return false;
-            }
+            outputPort.Handle(new DeleteListingResponse(message.ListingId, false, "Listing is still published."));
+            return false;
 
 
         }

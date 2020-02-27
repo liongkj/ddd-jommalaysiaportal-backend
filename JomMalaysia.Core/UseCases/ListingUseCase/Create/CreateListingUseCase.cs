@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.Factories;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
@@ -56,7 +55,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
             }
 
             //create listing factory pattern
-            var newListing = ListingFactory.CreateListing(message.CategoryType, message, category, findMerchantResponse.Data);
+            var newListing = ListingFactory.CreateListing(message.CategoryType, message, category, findMerchantResponse.Merchant);
             if (newListing != null) //validate is Listing Type
             {
                 //start transaction
@@ -64,7 +63,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 {
                     try
                     {
-                        var merchantUser = findMerchantResponse.Data;
+                        var merchantUser = findMerchantResponse.Merchant;
                         session.StartTransaction();
                         //create Listing command
                         var listing = await _listingRepository.CreateListingAsync(newListing, session).ConfigureAwait(false);
@@ -95,12 +94,9 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Create
                 }
 
             }
-            else
-            {
 
-                outputPort.Handle(new CoreListingResponse(new List<string> { "Listing Factory Exception" }, false, "Create Listing Operation Failed"));
-                return false;
-            }
+            outputPort.Handle(new CoreListingResponse(new List<string> { "Listing Factory Exception" }, false, "Create Listing Operation Failed"));
+            return false;
         }
 
     }

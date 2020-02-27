@@ -22,7 +22,6 @@ using Microsoft.AspNetCore.Authorization;
 using FluentValidation.AspNetCore;
 using JomMalaysia.Api.Providers;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
-using FluentValidation;
 using JomMalaysia.Api.Scope;
 using System.Collections.Generic;
 using JomMalaysia.Core.Mapping;

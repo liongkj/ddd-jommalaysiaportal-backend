@@ -10,10 +10,12 @@ using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.UseCases.CategoryUseCase.Get;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
+using JomMalaysia.Core.UseCases.SharedRequest;
 using JomMalaysia.Core.UseCases.UserUseCase.Get;
 using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 using JomMalaysia.Framework.Helper;
 using static JomMalaysia.Core.UseCases.ListingUseCase.Get.ListingViewModel;
+using MerchantViewModel = JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response.MerchantViewModel;
 
 namespace JomMalaysia.Core.Mapping
 {
@@ -40,7 +42,7 @@ namespace JomMalaysia.Core.Mapping
             CreateMap<PrivateSector, ListingViewModel>()
                 .IncludeBase<Listing, ListingViewModel>();
 
-            CreateMap<Merchant, MerchantViewModel>()
+            CreateMap<Merchant, MerchantVM>()
                 .ForMember(vm => vm.SsmId, opt => opt.MapFrom(l => l.CompanyRegistration.SsmId))
                 .ForMember(vm => vm.RegistrationName, opt => opt.MapFrom(l => l.CompanyRegistration.RegistrationName))
                 ;
@@ -62,8 +64,13 @@ namespace JomMalaysia.Core.Mapping
 
             #endregion
 
-
-            #region map user
+            #region Merchant Mapping
+            CreateMap<Merchant,MerchantViewModel>()
+                ;
+            
+            #endregion
+            
+            #region User Mapping
             CreateMap<User, UserViewModel>()
                 .ForMember(vm => vm.Name, opt => opt.MapFrom(u => u.Name.ToString()))
                 .ForMember(vm => vm.Email, opt => opt.MapFrom(u => u.Email.ToString()))
@@ -76,7 +83,7 @@ namespace JomMalaysia.Core.Mapping
 
             #endregion
 
-            #region workflow to workflowvm
+            #region Workflow mapping
             CreateMap<Workflow, WorkflowViewModel>()
 
             ;
