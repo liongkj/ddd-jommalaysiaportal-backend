@@ -9,7 +9,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
     public class ListingViewModel
     {
         public string ListingId { get; set; }
-        public MerchantViewModel Merchant { get; set; }
+        public MerchantVM Merchant { get; set; }
         public string ListingName { get; set; }
         public Description Description { get; set; }
         public AddressViewModel Address { get; set; }
@@ -54,7 +54,7 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 
         }
 
-        public class MerchantViewModel
+        public class MerchantVM
         {
             public string MerchantId { get; set; }
             public string SsmId { get; set; }

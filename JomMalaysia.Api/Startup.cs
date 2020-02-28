@@ -1,32 +1,29 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using System.Security.Claims;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using System.Reflection;
-using JomMalaysia.Core;
-using JomMalaysia.Infrastructure;
-using JomMalaysia.Infrastructure.Data.Mapping;
-using JomMalaysia.Infrastructure.Data.MongoDb;
-using JomMalaysia.Core.Interfaces;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using JomMalaysia.Presentation.Scope;
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using JomMalaysia.Api.Providers;
-using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Api.Scope;
-using System.Collections.Generic;
+using JomMalaysia.Core;
+using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Mapping;
-using System.Security.Claims;
+using JomMalaysia.Infrastructure;
+using JomMalaysia.Infrastructure.Auth0.Mapping;
+using JomMalaysia.Infrastructure.Data.Mapping;
+using JomMalaysia.Infrastructure.Data.MongoDb;
+using JomMalaysia.Presentation.Scope;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace JomMalaysia.Api
 {
@@ -40,7 +37,7 @@ namespace JomMalaysia.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
 
             // Add Authentication Services
@@ -56,8 +53,6 @@ namespace JomMalaysia.Api
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     NameClaimType = ClaimTypes.NameIdentifier
-
-
                 };
                 options.EventsType = typeof(AppUserRoleValidation);
 
@@ -85,30 +80,40 @@ namespace JomMalaysia.Api
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc
-            services.AddMvc(options =>
+            services.AddRazorPages();
+            services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new ApiExceptionFilterAttribute());
-
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)
+                
+            }).AddNewtonsoftJson(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
-
             //add swagger
             services.AddSwaggerGen(
                 c =>
                 {
-                    c.SwaggerDoc("v1", new Info { Title = "JomMalaysiaAPI", Version = "v1" });
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "JomMalaysiaAPI", Version = "v1" });
 
-                    c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {
-                        In = "header",
+                        In = ParameterLocation.Header,
                         Description = "Please enter into field the word 'Bearer' following by space and JWT Token",
                         Name = "Authorization",
-                        Type = "apiKey"
+                        Type = SecuritySchemeType.ApiKey
                     });
-                    c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
-                         { "Bearer", Enumerable.Empty<string>() }});
-
+                    
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                        { 
+                            new OpenApiSecurityScheme 
+                            { 
+                                Reference = new OpenApiReference 
+                                { 
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer" 
+                                } 
+                            },
+                            new string[] { } 
+                        } 
+                    });
                 });
 
             // Auto Mapper Configurations
@@ -119,32 +124,31 @@ namespace JomMalaysia.Api
                      mc.AddProfile(new CoreDataProfile());
                  }).CreateMapper());
 
-            // Now register our services with Autofac container.
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new CoreModule());
-            builder.RegisterModule(new InfrastructureModule());
             //builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();
             //builder.RegisterType<AppSetting>().As<IAppSetting>().InstancePerLifetimeScope();
-
-            // Presenters
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
-            builder.Populate(services);
-            var container = builder.Build();
-
-            // Create the IServiceProvider based on the container.
-            return new AutofacServiceProvider(container);
-
         }
-
+        public void ConfigureContainer(ContainerBuilder builder) {
+          
+            // Use and configure Autofac
+            builder.RegisterModule(new CoreModule());
+            builder.RegisterModule(new InfrastructureModule());
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
+            
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -155,16 +159,15 @@ namespace JomMalaysia.Api
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-            // app.UseMiddleware(typeof(ExceptionHandlerSerializer));
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(x =>
             {
-
-                routes.MapRoute(
+                x.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                x.MapRazorPages();
             });
-
-
         }
     }
 }

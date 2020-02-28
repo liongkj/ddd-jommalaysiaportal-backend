@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using JomMalaysia.Core.Domain.Entities;
-using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Infrastructure.Auth0.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

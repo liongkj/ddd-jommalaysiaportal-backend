@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using com.google.i18n.phonenumbers.geocoding;
-using libphonenumber;
+using PhoneNumbers;
 
 namespace JomMalaysia.Core.Domain.ValueObjects
 {
@@ -16,15 +15,15 @@ namespace JomMalaysia.Core.Domain.ValueObjects
         public static Phone For(string phoneString)
         {
             var phone = new Phone();
-            PhoneNumberUtil phoneUtil = PhoneNumberUtil.Instance;
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
 
             try
             {
                 const string countryCode = "MY";
 
-                PhoneNumber parsedPhone = phoneUtil.Parse(phoneString, countryCode);
+                var parsedPhone = phoneUtil.Parse(phoneString, countryCode);
 
-                phone.Number = parsedPhone.Format(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                phone.Number = phoneUtil.FormatNumberForMobileDialing(parsedPhone,countryCode,true);
 
             }
             catch (Exception ex)

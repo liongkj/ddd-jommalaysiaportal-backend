@@ -16,6 +16,7 @@ using JomMalaysia.Core.UseCases.WorkflowUseCase.Get;
 using JomMalaysia.Framework.Helper;
 using static JomMalaysia.Core.UseCases.ListingUseCase.Get.ListingViewModel;
 using MerchantViewModel = JomMalaysia.Core.UseCases.MerchantUseCase.Get.Response.MerchantViewModel;
+using MerchantVM = JomMalaysia.Core.UseCases.WorkflowUseCase.Get.MerchantVM;
 
 namespace JomMalaysia.Core.Mapping
 {
@@ -42,7 +43,7 @@ namespace JomMalaysia.Core.Mapping
             CreateMap<PrivateSector, ListingViewModel>()
                 .IncludeBase<Listing, ListingViewModel>();
 
-            CreateMap<Merchant, MerchantVM>()
+            CreateMap<Merchant, ListingViewModel.MerchantVM>()
                 .ForMember(vm => vm.SsmId, opt => opt.MapFrom(l => l.CompanyRegistration.SsmId))
                 .ForMember(vm => vm.RegistrationName, opt => opt.MapFrom(l => l.CompanyRegistration.RegistrationName))
                 ;
