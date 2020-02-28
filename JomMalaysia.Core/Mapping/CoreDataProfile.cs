@@ -67,6 +67,8 @@ namespace JomMalaysia.Core.Mapping
             #region Merchant Mapping
             CreateMap<Merchant,MerchantViewModel>()
                 ;
+
+            CreateMap<Contact, ContactViewModel>();
             
             #endregion
             
