@@ -18,12 +18,12 @@ https://jommalaysiaapi.azurewebsites.net/
 * [x] fetch listing with category
 * [x] Update pending and live listing
 
-* [ ] Create Event listing
+* [x] Create Event listing
 
-- [ ] Query published listing
-- [ ] Query government listing type
-- [ ] query event
-- [ ] Start do frontend gateway
+- [x] Query published listing
+- [x] Query government listing type
+- [x] query event
+- [x] Start do frontend gateway
 
 ##category
 
