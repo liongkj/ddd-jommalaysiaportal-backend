@@ -1,14 +1,9 @@
 ﻿using System.Linq;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.ValueObjects;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
-using JomMalaysia.Core.Domain.Entities.Listings;
-using JomMalaysia.Core.MobileUseCases;
-using JomMalaysia.Core.MobileUseCases.GetNearbyListings;
 using AutoMapper;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 
@@ -32,30 +27,30 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
             CategoryPath category = null;
             if (message.CategoryId != null)
             {
-                var CategoryQuery = await _categoryRepository.FindByIdAsync(message.CategoryId);
-                if (!CategoryQuery.Success)
+                var categoryQuery = await _categoryRepository.FindByIdAsync(message.CategoryId);
+                if (!categoryQuery.Success)
                 {
-                    outputPort.Handle(new ListingResponse(CategoryQuery.Errors, false, CategoryQuery.Message));
+                    outputPort.Handle(new ListingResponse(categoryQuery.Errors, false, categoryQuery.Message));
                     return false;
                 }
-                category = CategoryQuery.Data.CategoryPath;
+                category = categoryQuery.Data.CategoryPath;
             }
 
-            var ListingQuery = await _listingRepository.GetAllListings(category, message.Type, message.GroupBySub, message.PublishStatus, message.SelectedCity, message.Featured);
-            if (!ListingQuery.Success)
+            var listingQuery = await _listingRepository.GetAllListings(category, message.Type, message.GroupBySub, message.PublishStatus, message.SelectedCity, message.Featured);
+            if (!listingQuery.Success)
             {
-                outputPort.Handle(new ListingResponse(ListingQuery.Errors, false, ListingQuery.Message));
+                outputPort.Handle(new ListingResponse(listingQuery.Errors, false, listingQuery.Message));
                 return false;
             }
-            var vm = _mapper.Map<List<ListingViewModel>>(ListingQuery.Listings);
-            foreach (var l in ListingQuery.Listings)
+            var vm = _mapper.Map<List<ListingViewModel>>(listingQuery.Listings);
+            foreach (var l in listingQuery.Listings)
             {
                 var cat = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
                 if (vm != null) vm.FirstOrDefault(x => x.ListingId == l.ListingId).Category = cat;
             }
 
-            outputPort.Handle(new ListingResponse(vm, true, ListingQuery.Message));
-            return ListingQuery.Success;
+            outputPort.Handle(new ListingResponse(vm, true, listingQuery.Message));
+            return listingQuery.Success;
         }
     }
 }
