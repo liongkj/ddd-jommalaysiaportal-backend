@@ -23,7 +23,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Managers
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("content-type", "application/json");
                 request.AddParameter("application/json", "{\"client_id\":\"" + _appSetting.Auth0ClientId + "\",\"client_secret\":\"" + _appSetting.Auth0ClientSecret + "\",\"audience\":\"https://jomn9.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
-                IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+                IRestResponse response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
                 dynamic deserializedJson = JsonConvert.DeserializeObject(response.Content);
 
                 return deserializedJson.access_token ?? null;
@@ -39,7 +39,7 @@ namespace JomMalaysia.Infrastructure.Auth0.Managers
                 "\",\"audience\":\"" + _appSetting.AuthorizationAudience +
                 "\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
 
-                IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+                IRestResponse response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
                 dynamic deserializedJson = JsonConvert.DeserializeObject(response.Content);
 
                 return deserializedJson.access_token ?? null;

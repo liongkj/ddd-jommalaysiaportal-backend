@@ -49,7 +49,7 @@ namespace JomMalaysia.Core.MobileUseCases.QueryListings
                 if (vm != null) vm.FirstOrDefault(x => x.ListingId == l.ListingId).Category = cat;
             }
 
-            outputPort.Handle(new ListingResponse(vm, true, listingQuery.Message));
+            outputPort.Handle(new ListingResponse(vm, listingQuery.Success, listingQuery.Message));
             return listingQuery.Success;
         }
     }

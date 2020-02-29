@@ -39,7 +39,7 @@ namespace JomMalaysia.Infrastructure.Auth0
         //    var request = new RestRequest(Method.POST);
         //    request.AddHeader("content-type", "application/json");
         //    request.AddParameter("application/json", "{\"client_id\":\"" + _appSetting.Auth0ClientId + "\",\"client_secret\":\"" + _appSetting.Auth0ClientSecret + "\",\"audience\":\"https://jomn9.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
-        //    IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+        //    IRestResponse response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
         //    dynamic deserializedJson = JsonConvert.DeserializeObject(response.Content);
 
         //    return (deserializedJson.access_token != null) ? deserializedJson.access_token : null;
@@ -57,7 +57,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 var client = new RestClient($"{_appSetting.Auth0UserManagementApi}?per_page=" + countperpage + "&page=" + page + "&include_totals=true");
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("authorization", "Bearer " + await _tokenManager.GetAccessToken("auth0"));
-                IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+                IRestResponse response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
 
                 deserializedJson = JsonConvert.DeserializeObject<Auth0PagingHelper<Auth0User>>(response.Content);
 
@@ -92,7 +92,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 var client = new RestClient(_appSetting.Auth0UserManagementApi);
                 var GetRequest = new RestRequest(userId, Method.GET);
                 GetRequest.AddHeader("authorization", "Bearer " + accessToken);
-                GetResponse = await client.ExecuteTaskAsync(GetRequest, new CancellationTokenSource().Token);
+                GetResponse = await client.ExecuteAsync(GetRequest, new CancellationTokenSource().Token);
                 if (GetResponse.StatusCode == HttpStatusCode.OK)
                 {
                     var auth0User = JsonConvert.DeserializeObject<Auth0User>(GetResponse.Content);
@@ -128,7 +128,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 request.AddHeader("authorization", "Bearer " + accessToken);
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(userDto);
-                response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+                response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
             }
             catch (Exception e)
             {
@@ -164,7 +164,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 var client = new RestClient(_appSetting.Auth0UserManagementApi);
                 var DeleteRequest = new RestRequest(Userid, Method.DELETE);
                 DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
-                response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+                response = await client.ExecuteAsync(DeleteRequest, new CancellationTokenSource().Token);
                 if (response.IsSuccessful)
                 {
                     deleteUserResponse = new DeleteUserResponse("User Deleted Successfully", true);
@@ -198,7 +198,7 @@ namespace JomMalaysia.Infrastructure.Auth0
         //    "\",\"audience\":\"" + _appSetting.AuthorizationAudience +
         //    "\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
 
-        //    IRestResponse response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+        //    IRestResponse response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
         //    dynamic deserializedJson = JsonConvert.DeserializeObject(response.Content);
 
         //    return (deserializedJson.access_token != null) ? deserializedJson.access_token : null;
@@ -221,7 +221,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                     DeleteRequest.AddHeader("content-type", "application/json");
                     DeleteRequest.AddJsonBody(ToDelete);
                     DeleteRequest.AddHeader("authorization", "Bearer " + accessToken);
-                    response = await client.ExecuteTaskAsync(DeleteRequest, new CancellationTokenSource().Token);
+                    response = await client.ExecuteAsync(DeleteRequest, new CancellationTokenSource().Token);
                 }
 
                 var ToAdd = roleIds
@@ -235,7 +235,7 @@ namespace JomMalaysia.Infrastructure.Auth0
                 PatchRequest.AddHeader("content-type", "application/json");
                 PatchRequest.AddHeader("authorization", "Bearer " + accessToken);
                 PatchRequest.AddJsonBody(ToAdd);
-                response = await client.ExecuteTaskAsync(PatchRequest, new CancellationTokenSource().Token);
+                response = await client.ExecuteAsync(PatchRequest, new CancellationTokenSource().Token);
 
                 var UpdateUserResponse = (response.StatusCode == HttpStatusCode.NoContent) ?
                   new UpdateUserResponse("User Updated to " + newRole, response.IsSuccessful) : //success
@@ -253,7 +253,7 @@ namespace JomMalaysia.Infrastructure.Auth0
             var client = new RestClient(_appSetting.AuthorizationApi);
             var request = new RestRequest("roles", Method.GET);
             request.AddHeader("authorization", "Bearer " + accessToken);
-            var response = await client.ExecuteTaskAsync(request, new CancellationTokenSource().Token);
+            var response = await client.ExecuteAsync(request, new CancellationTokenSource().Token);
 
             var deserializedJson = JsonConvert.DeserializeObject<Auth0RoleList>(response.Content);
 

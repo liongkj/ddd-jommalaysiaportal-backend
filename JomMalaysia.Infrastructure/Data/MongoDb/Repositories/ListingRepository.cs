@@ -6,7 +6,6 @@ using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Domain.Entities.Listings;
 using JomMalaysia.Core.Domain.Enums;
 using JomMalaysia.Core.Domain.ValueObjects;
-using JomMalaysia.Core.Exceptions;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.UseCases.ListingUseCase.Delete;
@@ -35,17 +34,17 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         public async Task<CoreListingResponse> CreateListingAsync(Listing listing, IClientSessionHandle session)
         {
             //var ListingDto = _mapper.Map<ListingDto>(listing);
-            var Dto = (ListingDto)_mapper.Map(
+            var dto = (ListingDto)_mapper.Map(
                 listing,
                 listing.GetType(),
                 new ListingDto().GetType()
             );
             //TODO
-            Dto.CreatedAt = DateTime.UtcNow;
+            dto.CreatedAt = DateTime.UtcNow;
             try
             {
-                await _db.InsertOneAsync(session, Dto).ConfigureAwait(false);
-                return new CoreListingResponse(Dto.Id, true);
+                await _db.InsertOneAsync(session, dto).ConfigureAwait(false);
+                return new CoreListingResponse(dto.Id, true);
             }
             catch (Exception e)
             {
@@ -77,11 +76,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             {
                 var query =
                     await _db.AsQueryable()
-                        .Where(M => M.Id == id)
-                        .Select(M => M)
+                        .Where(m => m.Id == id)
+                        .Select(m => m)
                         .FirstOrDefaultAsync();
-                ;
-
+                
                 item = _mapper.Map<ListingDto>(query);
                 mapped = ListingDtoParser.Converted(_mapper, item);
             }
@@ -93,7 +91,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                 : new GetListingResponse(new List<string> { "Listing Not Found" }, false, "Listing Repo failed");
         }
 
-        public async Task<GetListingResponse> FindByName(string name)
+        public  Task<GetListingResponse> FindByName(string name)
         {
             throw new NotImplementedException();
             //TODO If need this function
@@ -103,7 +101,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             GetAllListingResponse res;
             List<ListingDto> query;
-            List<Listing> Mapped = new List<Listing>();
+            List<Listing> mapped = new List<Listing>();
             var parsed = Enum.TryParse(type, true, out CategoryType ct);
             var publishStatus = ListingStatusEnum.For(status);
 
@@ -145,7 +143,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
 
                 if (isFeatured)
                 {
-                    var featuredFilter = builder.Where(ld => ld.IsFeatured == true);
+                    var featuredFilter = builder.Where(ld => ld.IsFeatured);
                     filter &= featuredFilter;
                 }
 
@@ -158,11 +156,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     var temp = ListingDtoParser.Converted(_mapper, list);
                     if (temp != null)
                     {
-                        Mapped.Add(temp);
+                        mapped.Add(temp);
                     }
                 }
 
-                res = new GetAllListingResponse(Mapped, true, $"Returned {Mapped.Count} results");
+                res = new GetAllListingResponse(mapped, true, $"Returned {mapped.Count} results");
             }
             catch (Exception e)
             {
@@ -176,7 +174,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
         {
             GetAllListingResponse res;
             List<ListingDto> query;
-            List<Listing> Mapped = new List<Listing>();
+            List<Listing> mapped = new List<Listing>();
 
             var builder = Builders<ListingDto>.Filter;
             var filter = builder.Empty;
@@ -202,10 +200,10 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
                     var temp = ListingDtoParser.Converted(_mapper, list);
                     if (temp != null)
                     {
-                        Mapped.Add(temp);
+                        mapped.Add(temp);
                     }
                 }
-                res = new GetAllListingResponse(Mapped, true, $"Returned {Mapped.Count} results");
+                res = new GetAllListingResponse(mapped, true, $"Returned {mapped.Count} results");
             }
             catch (Exception e)
             {
@@ -224,11 +222,11 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Repositories
             FilterDefinition<ListingDto> filter = Builders<ListingDto>.Filter.Eq(m => m.Id, listing.ListingId);
             try
             {
-                var ListingDto = _mapper.Map<ListingDto>(listing);
-                ListingDto.ModifiedAt = DateTime.Now;
+                var listingDto = _mapper.Map<ListingDto>(listing);
+                listingDto.ModifiedAt = DateTime.Now;
                 if (session != null)
-                    result = await _db.ReplaceOneAsync(session, filter, ListingDto);
-                else result = await _db.ReplaceOneAsync(filter, ListingDto);
+                    result = await _db.ReplaceOneAsync(session, filter, listingDto);
+                else result = await _db.ReplaceOneAsync(filter, listingDto);
             }
             catch (AutoMapperMappingException e)
             {

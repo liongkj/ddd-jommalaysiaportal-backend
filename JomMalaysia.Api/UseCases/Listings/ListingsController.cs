@@ -26,7 +26,6 @@ namespace JomMalaysia.Api.UseCases.Listings
         private readonly IGetListingUseCase _getListingUseCase;
         private readonly IDeleteListingUseCase _deleteListingUseCase;
 
-        private readonly IMapper _mapper;
         private readonly IUpdateListingUseCase _updateListingUseCase;
 
         private readonly IGetNearbyListingUseCase _getNearbyListingUseCase;
@@ -36,7 +35,7 @@ namespace JomMalaysia.Api.UseCases.Listings
 
         public ListingsController(ICreateListingUseCase createListingUseCase,
 
-            ListingPresenter ListingPresenter,
+            ListingPresenter listingPresenter,
             IGetAllListingUseCase getAllListingUseCase,
             IGetListingUseCase getListingUseCase,
             IDeleteListingUseCase deleteListingUseCase,
@@ -49,7 +48,7 @@ namespace JomMalaysia.Api.UseCases.Listings
             )
         {
             _createListingUseCase = createListingUseCase;
-            _listingPresenter = ListingPresenter;
+            _listingPresenter = listingPresenter;
             _getAllListingUseCase = getAllListingUseCase;
             _getListingUseCase = getListingUseCase;
             _searchListingUseCase = searchListingUseCase;
