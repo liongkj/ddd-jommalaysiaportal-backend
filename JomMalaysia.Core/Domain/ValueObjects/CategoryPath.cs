@@ -76,7 +76,6 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
             }
             builder.Append(DLM);
-            Console.WriteLine(builder.ToString());
             return builder.ToString();
         }
 

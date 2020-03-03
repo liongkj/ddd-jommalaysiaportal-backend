@@ -26,7 +26,7 @@ namespace JomMalaysia.Core.Domain.ValueObjects
 
         public Image()
         {
-            Url = Constants.DefaultImages.Url;
+           
 
         }
 
