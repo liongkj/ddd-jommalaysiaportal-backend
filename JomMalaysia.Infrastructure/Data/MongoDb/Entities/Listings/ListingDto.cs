@@ -28,12 +28,7 @@ namespace JomMalaysia.Infrastructure.Data.MongoDb.Entities.Listings
         public bool IsFeatured { get; set; } = false;
 
         public ICollection<string> Tags { get; set; }
-        public ListingImages ListingImages { get; set; } = new ListingImages
-        {
-            ListingLogo = new Image(),
-            CoverPhoto = new Image(),
-
-        };
+        public ListingImages ListingImages { get; set; }
 
         public PublishStatusDto PublishStatus { get; set; }
         [BsonIgnoreIfNull]
