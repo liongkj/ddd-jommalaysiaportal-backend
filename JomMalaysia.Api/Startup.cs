@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Security.Claims;
 using Autofac;
 using AutoMapper;
@@ -17,11 +18,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -80,6 +83,7 @@ namespace JomMalaysia.Api
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc
+            services.AddResponseCaching();
             services.AddRazorPages();
             services.AddControllersWithViews(options =>
             {
@@ -160,6 +164,20 @@ namespace JomMalaysia.Api
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseRouting();
+            app.UseResponseCaching();
+            app.Use(async (context, next) =>
+            {
+                context.Response.GetTypedHeaders().CacheControl = 
+                    new CacheControlHeaderValue
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(10)
+                    };
+                context.Response.Headers[HeaderNames.Vary] = 
+                    new[] { "Accept-Encoding" };
+
+                await next();
+            });
             app.UseAuthorization();
             app.UseEndpoints(x =>
             {
