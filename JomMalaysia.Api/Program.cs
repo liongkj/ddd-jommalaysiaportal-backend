@@ -1,4 +1,5 @@
-﻿using Autofac.Extensions.DependencyInjection;
+﻿using System.Net;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -18,7 +19,8 @@ namespace JomMalaysia.Api
                 {
                     webBuilder.ConfigureKestrel(serverOptions =>
                         {
-                            
+
+                            serverOptions.Listen(IPAddress.Loopback, 5000);
                         })
                         .UseStartup<Startup>();
                 });

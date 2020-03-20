@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.ResponseCaching;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -84,11 +85,12 @@ namespace JomMalaysia.Api
 
             //Add Mvc
             services.AddResponseCaching();
+
             services.AddRazorPages();
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new ApiExceptionFilterAttribute());
-                
+
             }).AddNewtonsoftJson(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
             //add swagger
@@ -104,19 +106,19 @@ namespace JomMalaysia.Api
                         Name = "Authorization",
                         Type = SecuritySchemeType.ApiKey
                     });
-                    
+
                     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                        { 
-                            new OpenApiSecurityScheme 
-                            { 
-                                Reference = new OpenApiReference 
-                                { 
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
                                     Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer" 
-                                } 
+                                    Id = "Bearer"
+                                }
                             },
-                            new string[] { } 
-                        } 
+                            new string[] { }
+                        }
                     });
                 });
 
@@ -131,13 +133,14 @@ namespace JomMalaysia.Api
             //builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();
             //builder.RegisterType<AppSetting>().As<IAppSetting>().InstancePerLifetimeScope();
         }
-        public void ConfigureContainer(ContainerBuilder builder) {
-          
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+
             // Use and configure Autofac
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new InfrastructureModule());
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
-            
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -167,15 +170,21 @@ namespace JomMalaysia.Api
             app.UseResponseCaching();
             app.Use(async (context, next) =>
             {
-                context.Response.GetTypedHeaders().CacheControl = 
+                context.Response.GetTypedHeaders().CacheControl =
                     new CacheControlHeaderValue
                     {
                         Public = true,
                         MaxAge = TimeSpan.FromSeconds(10)
                     };
-                context.Response.Headers[HeaderNames.Vary] = 
+                context.Response.Headers[HeaderNames.Vary] =
                     new[] { "Accept-Encoding" };
 
+                var responseCachingFeature = context.Features.Get<IResponseCachingFeature>();
+
+                if (responseCachingFeature != null)
+                {
+                    responseCachingFeature.VaryByQueryKeys = new[] { "*" };
+                }
                 await next();
             });
             app.UseAuthorization();
