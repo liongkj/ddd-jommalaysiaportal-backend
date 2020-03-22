@@ -10,6 +10,7 @@ using JomMalaysia.Core;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Mapping;
 using JomMalaysia.Infrastructure;
+using JomMalaysia.Infrastructure.Algolia;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Infrastructure.Data.Mapping;
 using JomMalaysia.Infrastructure.Data.MongoDb;
@@ -81,6 +82,10 @@ namespace JomMalaysia.Api
 
             services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
+            
+            //add algolia
+            services.Configure<AlgoliaSettings>(Configuration.GetSection(nameof(AlgoliaClient)));
+            services.AddSingleton<IAlgoliaSettings>(sp => sp.GetRequiredService<IOptions<AlgoliaSettings>>().Value);
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc
