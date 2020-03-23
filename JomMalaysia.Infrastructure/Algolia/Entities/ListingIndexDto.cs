@@ -36,6 +36,8 @@ namespace JomMalaysia.Infrastructure.Algolia.Entities
        public string Add1 { get; set; }
 
        public string Add2 { get; set; }
+       
+       public string City { get; set; }
     }
 
     public class GeoIndexDto
