@@ -1,29 +1,32 @@
-﻿using System.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Interfaces.Repositories;
+using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 
-namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
+namespace JomMalaysia.Core.Indexes
 {
-    public class GetAllListingUseCase : IGetAllListingUseCase
-    {
+    public class BatchIndexPlacesUseCase:IBatchIndexPlacesUseCase
+    { 
         private readonly IListingRepository _listingRepository;
         private readonly IMapper _mapper;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IIndex<ListingViewModel> _indexer;
 
-        public GetAllListingUseCase(IListingRepository listingRepository, IMapper mapper, ICategoryRepository categoryRepository)
+        public BatchIndexPlacesUseCase(IIndex<ListingViewModel> indexer, IGetAllListingUseCase listingRepo, IListingRepository listingRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
+            _indexer = indexer;
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
-        public async Task<bool> Handle(GetAllListingRequest message, IOutputPort<GetAllListingResponse> outputPort)
+
+        public async Task<bool> Handle(AlgoliaIndexRequest message, IOutputPort<AlgoliaIndexResponse> outputPort)
         {
-            GetAllListingResponse response;
+            AlgoliaIndexResponse response;
             List<ListingViewModel> listingVM;
             try
             {
@@ -35,19 +38,18 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
                     var category = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
                     listingVM.FirstOrDefault(x => x.ListingId == l.ListingId).Category = category;
                 }
-
-                response = new GetAllListingResponse(listingVM, getAllListingResponse.Success, getAllListingResponse.Message);
+                var result = await _indexer.SaveObject(listingVM);
+                response =  new AlgoliaIndexResponse(result,true); 
             }
 
             catch (Exception e)
             {
-                response = new GetAllListingResponse(new List<string> { e.ToString() });
+                response = new AlgoliaIndexResponse(new List<string> {e.Message});
             }
 
             outputPort.Handle(response);
 
             return response.Success;
-
         }
     }
 }

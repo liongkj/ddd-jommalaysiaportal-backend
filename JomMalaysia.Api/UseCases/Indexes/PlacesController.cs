@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Autofac.Features.Indexed;
 using JomMalaysia.Api.UseCases.Listings;
+using JomMalaysia.Core.Indexes;
 using JomMalaysia.Core.Interfaces.Repositories;
 using JomMalaysia.Core.MobileUseCases.GetNearbyListings;
 using JomMalaysia.Core.MobileUseCases.QueryListings;
@@ -26,14 +27,14 @@ namespace JomMalaysia.Api.UseCases.Indexes
         #region Dependencies
 
         
-        private readonly IGetAllListingUseCase _getAllListing;
+        private readonly IBatchIndexPlacesUseCase _batchIndexPlaces;
         private readonly IndexPresenter _presenter;
 
-        public PlacesController( IGetAllListingUseCase getAllListing, IndexPresenter presenter)
+        public PlacesController(  IndexPresenter presenter, IBatchIndexPlacesUseCase batchIndexPlaces)
         {
             
-            _getAllListing = getAllListing;
             _presenter = presenter;
+            _batchIndexPlaces = batchIndexPlaces;
         }
         
         

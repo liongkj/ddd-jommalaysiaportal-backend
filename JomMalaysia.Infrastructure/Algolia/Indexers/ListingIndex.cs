@@ -22,7 +22,7 @@ namespace JomMalaysia.Infrastructure.Algolia.Indexers
         public async Task<BatchIndexingResponse> SaveObject(IEnumerable<ListingViewModel> items)
         {
             var list = _mapper.Map<List<ListingIndexDto>>(items);
-          return  await _indexClient.Index.SaveObjectsAsync(list);
+          return await _indexClient.Index.SaveObjectsAsync(list);
         }
     }
 

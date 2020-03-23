@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Algolia.Search.Models.Common;
-using JomMalaysia.Core.Indexes;
 
-namespace JomMalaysia.Infrastructure.Algolia
+namespace JomMalaysia.Core.Indexes
 {
     public interface IIndex<T>
     {
