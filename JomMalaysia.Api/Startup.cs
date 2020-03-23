@@ -11,6 +11,7 @@ using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Mapping;
 using JomMalaysia.Infrastructure;
 using JomMalaysia.Infrastructure.Algolia;
+using JomMalaysia.Infrastructure.Algolia.Mapping;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Infrastructure.Data.Mapping;
 using JomMalaysia.Infrastructure.Data.MongoDb;

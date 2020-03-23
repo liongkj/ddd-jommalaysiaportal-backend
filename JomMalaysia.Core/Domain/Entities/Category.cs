@@ -46,6 +46,8 @@ namespace JomMalaysia.Core.Domain.Entities
             CategoryThumbnail = image;
         }
 
+        
+
         public bool HasSubcategories(List<Category> subcategories)
         {
             if (subcategories
@@ -117,7 +119,7 @@ namespace JomMalaysia.Core.Domain.Entities
             UpdateSubcategory(updated);
             return null;
         }
-
+        #region private methods
         private void UpdateImage(Category updated)
         {
             CategoryThumbnail = updated.CategoryThumbnail == null ? new Image() : new Image(updated.CategoryThumbnail.Url);
@@ -128,7 +130,7 @@ namespace JomMalaysia.Core.Domain.Entities
             return CategoryPath.Subcategory == null;
         }
 
-        #region private methods
+        
         private static IEnumerable<Category> UpdateSubcategories(List<Category> subcategories, Category Updated)
         {
             if (subcategories.Count <= 0) return subcategories;
