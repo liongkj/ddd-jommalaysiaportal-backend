@@ -5,7 +5,7 @@ using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Api.UseCases.Indexes
 {
-    public sealed class IndexPresenter : IOutputPort<AlgoliaIndexResponse>
+    public sealed class IndexPresenter : IOutputPort<UseCaseResponseMessage>
     {
         public JsonContentResult ContentResult { get; }
 
@@ -14,7 +14,7 @@ namespace JomMalaysia.Api.UseCases.Indexes
             ContentResult = new JsonContentResult();
         }
         
-        public void Handle(AlgoliaIndexResponse response)
+        public void Handle(UseCaseResponseMessage response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
             ContentResult.Content = JsonSerializer.SerializeObject(response);

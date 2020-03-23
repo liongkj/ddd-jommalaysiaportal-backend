@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JomMalaysia.Api.UseCases.Indexes
 {
-    [Route("api/indexes/[controller]")]
+    [Route("api/algolia/[controller]")]
     [ApiController]
 
     // [Authorize(Policies.EDITOR)]
@@ -30,7 +30,7 @@ namespace JomMalaysia.Api.UseCases.Indexes
         private readonly IBatchIndexPlacesUseCase _batchIndexPlaces;
         private readonly IndexPresenter _presenter;
 
-        public PlacesController(  IndexPresenter presenter, IBatchIndexPlacesUseCase batchIndexPlaces)
+        public PlacesController( IBatchIndexPlacesUseCase batchIndexPlaces,IndexPresenter presenter)
         {
             
             _presenter = presenter;
@@ -40,10 +40,11 @@ namespace JomMalaysia.Api.UseCases.Indexes
         
         #endregion
 
-        [HttpGet]
+        [HttpPost(nameof(Batch))]
         public async Task<IActionResult> Batch()
         {
-            throw new NotImplementedException();
+            await _batchIndexPlaces.Handle(new AlgoliaIndexRequest(), _presenter);
+            return _presenter.ContentResult;
         }
 
     }

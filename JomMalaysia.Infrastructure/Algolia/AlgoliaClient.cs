@@ -1,18 +1,25 @@
+using System;
 using Algolia.Search.Clients;
 using JomMalaysia.Core.Interfaces;
 
 namespace JomMalaysia.Infrastructure.Algolia
 {
-    public class AlgoliaClient:IAlgoliaClient
+    public class AlgoliaClient : IAlgoliaClient
     {
-        public SearchClient Client { get; }
-        public SearchIndex Index { get; }
+        private SearchClient _client;
+        public SearchIndex Index { get; set; }
 
-         public AlgoliaClient(IAlgoliaSettings settings)
+        public AlgoliaClient(IAlgoliaSetting config)
         {
-            Client= new SearchClient(settings.AppId, settings.ApiKey);
-            Index = Client.InitIndex(settings.IndexName);
+            try
+            {
+                _client = new SearchClient(config.AppId, config.ApiKey);
+                Index = _client.InitIndex(config.IndexName);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
-        
     }
 }

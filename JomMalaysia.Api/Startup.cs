@@ -84,8 +84,9 @@ namespace JomMalaysia.Api
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
             
             //add algolia
-            services.Configure<AlgoliaSettings>(Configuration.GetSection(nameof(AlgoliaClient)));
-            services.AddSingleton<IAlgoliaSettings>(sp => sp.GetRequiredService<IOptions<AlgoliaSettings>>().Value);
+            
+            services.Configure<AlgoliaSetting>(Configuration.GetSection(nameof(AlgoliaClient)));
+            services.AddSingleton<IAlgoliaSetting>(sp => sp.GetRequiredService<IOptions<AlgoliaSetting>>().Value);
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc

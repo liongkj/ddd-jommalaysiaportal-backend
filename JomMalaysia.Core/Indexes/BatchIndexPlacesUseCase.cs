@@ -14,11 +14,11 @@ namespace JomMalaysia.Core.Indexes
         private readonly IListingRepository _listingRepository;
         private readonly IMapper _mapper;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IIndex<ListingViewModel> _indexer;
+        private readonly IListingIndexer _listingIndexer;
 
-        public BatchIndexPlacesUseCase(IIndex<ListingViewModel> indexer, IGetAllListingUseCase listingRepo, IListingRepository listingRepository, ICategoryRepository categoryRepository, IMapper mapper)
+        public BatchIndexPlacesUseCase(IListingIndexer listingIndexer, IListingRepository listingRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _indexer = indexer;
+            _listingIndexer = listingIndexer;
             _listingRepository = listingRepository;
             _categoryRepository = categoryRepository;
             _mapper = mapper;
@@ -38,7 +38,7 @@ namespace JomMalaysia.Core.Indexes
                     var category = await _categoryRepository.FindByNameAsync(l.Category.Category, l.Category.Subcategory);
                     listingVM.FirstOrDefault(x => x.ListingId == l.ListingId).Category = category;
                 }
-                var result = await _indexer.SaveObject(listingVM);
+                var result = await _listingIndexer.SaveObject(listingVM);
                 response =  new AlgoliaIndexResponse(result,true); 
             }
 

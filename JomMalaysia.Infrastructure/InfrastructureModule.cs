@@ -28,7 +28,11 @@ namespace JomMalaysia.Infrastructure
             builder.RegisterType<Auth0AccessTokenManager>()
                .AsImplementedInterfaces()
                .InstancePerLifetimeScope();
-
+            
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(repo => repo.Name.EndsWith("Indexer"))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                    .Where(repo => repo.Name.EndsWith("Repository"))

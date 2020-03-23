@@ -9,11 +9,11 @@ using JomMalaysia.Infrastructure.Algolia.Entities;
 
 namespace JomMalaysia.Infrastructure.Algolia.Indexers
 {
-    public class ListingIndex:IIndex<ListingViewModel>
+    public class ListingIndexer:IListingIndexer
     {
         private readonly IAlgoliaClient _indexClient;
         private readonly IMapper _mapper;
-        public ListingIndex( IAlgoliaClient indexClient, IMapper mapper)
+        public ListingIndexer( IAlgoliaClient indexClient, IMapper mapper)
         {
             _indexClient = indexClient;
             _mapper = mapper;
