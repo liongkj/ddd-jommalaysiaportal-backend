@@ -16,18 +16,26 @@ namespace JomMalaysia.Infrastructure.Algolia.Entities
         public Description Description { get; set; }
         public AddressIndexDto Address { get; set; }
 
-        public ListingViewModel.CategoryPathViewModel Category { get; set; }
+        public CategoryIndexDto Category { get; set; }
         public string CategoryType { get; set; }
 
-        public ICollection<string> Tags { get; set; }
+        public ICollection<string> _tags { get; set; }
         public GeoIndexDto _geoloc { get; set; }
     }
-    
+    public class CategoryIndexDto
+    {
+        //include category type
+       public List<string> En;
+        
+       public List<string> Ms;
+        
+       public List<string> Zh;
+    }
     public class AddressIndexDto
     {
-        string Add1 { get; set; }
+       public string Add1 { get; set; }
 
-        string Add2 { get; set; }
+       public string Add2 { get; set; }
     }
 
     public class GeoIndexDto
@@ -37,12 +45,7 @@ namespace JomMalaysia.Infrastructure.Algolia.Entities
         public double lng { get; set; }
     }
 
-    public class CategoryIndexDto
-    {
-        //TODO
-        // "media_category": "tv series",                 // string attribute for filtering
-        // "subject_category": ["drugs", "divorced dad"], 
-    }
+   
 
     public class MerchantIndexDto
     {

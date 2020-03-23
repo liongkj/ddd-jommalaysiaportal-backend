@@ -31,9 +31,36 @@ namespace JomMalaysia.Core.UseCases.ListingUseCase.Get
 
         public class CategoryPathViewModel
         {
-            public String CategoryId { get; set; }
+            public string CategoryId { get; set; }
             public Category Category { get; set; }
             public Category Subcategory { get; set; }
+            
+            /// <summary>
+            /// for Algolia multilingual datatype
+            /// </summary>
+            /// <param name="locale"></param>
+            /// <returns>List of string according to locale</returns>
+            public List<string> getCategoryFor(string locale)
+            {
+                locale = locale.ToLower();
+                var keyword = new List<string>();
+                switch (locale)
+                {
+                    case "ms": keyword.Add(Category.CategoryNameMs);
+                        keyword.Add(Subcategory.CategoryNameMs);
+                        break;
+                
+                    case "zh": keyword.Add(Category.CategoryNameZh);
+                        keyword.Add(Subcategory.CategoryNameZh);
+                        break;
+                
+                    default: keyword.Add(Category.CategoryName);
+                        keyword.Add(Subcategory.CategoryName);
+                        break;
+                }
+
+                return keyword;
+            }
         }
 
         public class StoreTimesViewModel
