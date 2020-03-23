@@ -10,6 +10,7 @@ using JomMalaysia.Core;
 using JomMalaysia.Core.Interfaces;
 using JomMalaysia.Core.Mapping;
 using JomMalaysia.Infrastructure;
+using JomMalaysia.Infrastructure.Algolia;
 using JomMalaysia.Infrastructure.Auth0.Mapping;
 using JomMalaysia.Infrastructure.Data.Mapping;
 using JomMalaysia.Infrastructure.Data.MongoDb;
@@ -81,6 +82,11 @@ namespace JomMalaysia.Api
 
             services.Configure<MongoSettings>(Configuration.GetSection(nameof(MongoDbContext)));
             services.AddSingleton<IMongoSettings>(sp => sp.GetRequiredService<IOptions<MongoSettings>>().Value);
+            
+            //add algolia
+            
+            services.Configure<AlgoliaSetting>(Configuration.GetSection(nameof(AlgoliaClient)));
+            services.AddSingleton<IAlgoliaSetting>(sp => sp.GetRequiredService<IOptions<AlgoliaSetting>>().Value);
             //services.AddSingleton<MerchantRepository>();
 
             //Add Mvc
@@ -128,6 +134,8 @@ namespace JomMalaysia.Api
                      mc.AddProfile(new Auth0DataProfile());
                      mc.AddProfile(new DataProfile());
                      mc.AddProfile(new CoreDataProfile());
+                     mc.AddProfile(new AlgoliaDataProfile());
+                     
                  }).CreateMapper());
 
             //builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();

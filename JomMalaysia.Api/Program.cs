@@ -20,7 +20,7 @@ namespace JomMalaysia.Api
                     webBuilder.ConfigureKestrel(serverOptions =>
                         {
 
-                            serverOptions.Listen(IPAddress.Loopback, 5000);
+                            // serverOptions.Listen(IPAddress.Loopback, 5000);
                         })
                         .UseStartup<Startup>();
                 });
