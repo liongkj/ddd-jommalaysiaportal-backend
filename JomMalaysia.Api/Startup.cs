@@ -134,6 +134,8 @@ namespace JomMalaysia.Api
                      mc.AddProfile(new Auth0DataProfile());
                      mc.AddProfile(new DataProfile());
                      mc.AddProfile(new CoreDataProfile());
+                     mc.AddProfile(new AlgoliaDataProfile());
+                     
                  }).CreateMapper());
 
             //builder.RegisterType<ClaimBasedLoginInfoProvider>().As<ILoginInfoProvider>().InstancePerLifetimeScope();

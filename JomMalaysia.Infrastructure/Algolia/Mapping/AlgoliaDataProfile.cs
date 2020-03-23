@@ -5,12 +5,12 @@ using JomMalaysia.Infrastructure.Algolia.Entities;
 
 namespace JomMalaysia.Infrastructure.Algolia
 {
-    public class AlgoliaProfile: Profile
+    public class AlgoliaDataProfile: Profile
     {
-        public AlgoliaProfile()
+        public AlgoliaDataProfile()
         {
             CreateMap<ListingViewModel, ListingIndexDto>()
-                .ForPath(dto => dto.ObjectId, opt => opt.MapFrom(o => o.ListingId))
+                .ForPath(dto => dto.ObjectID, opt => opt.MapFrom(o => o.ListingId))
                 .ForPath(dto => dto.Merchant, opt => opt.MapFrom(o => o.Merchant))
                 ;
 

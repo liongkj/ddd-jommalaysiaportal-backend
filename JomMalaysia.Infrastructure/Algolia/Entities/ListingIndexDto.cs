@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using JomMalaysia.Core.Domain.Entities;
 using JomMalaysia.Core.UseCases.ListingUseCase.Get;
 using JomMalaysia.Core.UseCases.SharedRequest;
+using MongoDB.Bson;
 
 namespace JomMalaysia.Infrastructure.Algolia.Entities
 {
     public class ListingIndexDto
     {
-        public string ObjectId { get; set; }
+        public string ObjectID { get; set; }
         public MerchantIndexDto Merchant { get; set; }
         public string ListingName { get; set; }
         public Description Description { get; set; }
