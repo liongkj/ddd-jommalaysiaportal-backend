@@ -2,6 +2,7 @@ Web API for Jommalaysia web app frontend : https://github.com/liongkj/JomMalaysi
 https://jommalaysiaapi.azurewebsites.net/
 
 [![Build Status](https://dev.azure.com/busylikedog/biscat/_apis/build/status/jommalaysiaapi%20-%20CI?branchName=master)](https://dev.azure.com/busylikedog/biscat/_build/latest?definitionId=1&branchName=master)
+[![BCH compliance](https://bettercodehub.com/edge/badge/liongkj/jommalaysiaportal?branch=master)](https://bettercodehub.com/)
 
 ## TODO
 
