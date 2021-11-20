@@ -11,7 +11,7 @@ namespace JomMalaysia.Core.UseCases.CategoryUseCase.Create
 {
     public class CreateCategoryUseCase : ICreateCategoryUseCase
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryReposdsdsdsdsitory;
 
         public CreateCategoryUseCase(ICategoryRepository categoryRepository)
         {
